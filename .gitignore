@@ -1,0 +1,6 @@
+vim/.netrwhist
+vim/addons/*
+!vim/addons/vim-addon-manager
+
+zsh/.histfile
+zsh/.zcompdump
