@@ -5,10 +5,10 @@ alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'
 alias la='ls -A'
 
-alias cp='nocorrect cp --interactive --verbose --recursive --preserve=all'
-alias mv='nocorrect mv --verbose --interactive'
+alias cp='nocorrect cp --interactive --recursive --preserve=all'
+alias mv='nocorrect mv --interactive'
 
-alias rm='nocorrect rm -Irv'
+alias rm='nocorrect rm -Ir'
 
 alias grep='grep --color=auto'
 
@@ -16,9 +16,6 @@ alias du='du --human-readable --total'
 alias df='df --human-readable'
 
 alias nohup='nohup > /dev/null $1'
-
-alias cd..='cd ..'
-alias cd~='cd ~'
 
 alias -s {avi,mpeg,mpg,mov,m2v}=vlc
 alias -s {odt,doc,sxw,rtf}=openoffice.org
@@ -29,7 +26,7 @@ alias -s {jpg,png,svg,xpm,bmp}=gpicview
  #alias -s {odt,doc,sxw,xls,doc,rtf}=
  alias -s {png,gif,jpg,jpeg}=fbv
  alias -s {pdf}=apvlv
-} 
+}
 
 autoload -U pick-web-browser
 alias -s {html,htm,xhtml}=pick-web-browser
@@ -45,7 +42,7 @@ if [ -f /usr/bin/grc ]; then
     alias configure='grc ./configure'
     alias cat="grc cat"
     alias tail="grc tail"
-    alias head="grc head" 
+    alias head="grc head"
 fi
 
 
@@ -59,6 +56,7 @@ alias git="nocorrect git"
 
 alias ve="virtualenv --no-site-packages --distribute"
 alias mkve="mkvirtualenv --no-site-packages --distribute"
+alias pipi="pip install"
 alias pipf="pip install --src=/arch/naspeh/libs"
 
 venv_has() {

@@ -1,0 +1,64 @@
+#! /usr/bin/env python
+# vim: filetype=python
+#
+# Python startup file. Version 0.1.
+# Install by save this file as ~/.pythonrc and setting PYTHONSTARTUP
+# environment variable to ~/.pythonrc.
+#
+# Copyright (C) 2003-2008 Dmitry Vasiliev <dima@hlabs.spb.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+try:
+    import readline
+    import rlcompleter
+except ImportError:
+    readline = rlcompleter = None
+
+
+def write_history(history):
+    """Write interactive interpreter session."""
+    import sys
+    import readline
+    try:
+        readline.write_history_file(history)
+    except IOError, args:
+        print >>sys.stderr, ("Error writing history file %s: %s" %
+            (history, args[1]))
+
+def read_history():
+    """Read interactive interpreter session."""
+    import sys
+    import errno
+    import atexit
+    from os.path import expanduser
+
+    readline.parse_and_bind("tab: complete")
+    history = expanduser("~/.python_history")
+    if not history.startswith('~'):
+        atexit.register(write_history, history)
+        try:
+            readline.read_history_file(history)
+        except IOError, args:
+            if args[0] != errno.ENOENT:
+                print >>sys.stderr, ("Error reading history file %s: %s" %
+                    (history, args[1]))
+
+
+if __name__ == "__main__":
+    if readline is not None and '__file__' in locals():
+        read_history()
+        del __file__
+    del readline, rlcompleter, read_history, write_history

@@ -1,0 +1,18 @@
+[ui]
+verbose=True
+username = Grisha <naspeh@pusto.org>
+
+[pager]
+pager = more
+attend = log, glog, diff
+
+[extensions]
+churn =
+color =
+graphlog =
+fetch =
+purge =
+pager =
+rebase =
+hgshelve=/home/naspeh/.hgext/hgshelve.py
+#progress =

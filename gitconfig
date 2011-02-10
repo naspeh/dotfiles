@@ -1,0 +1,35 @@
+[user]
+    name = Grisha Kostyuk
+    email = naspeh@gmail.com
+
+[giggle]
+    main-window-maximized = true
+    main-window-geometry = 278x63+0+25
+    history-view-vpane-position = 351
+    main-window-view = HistoryView
+    file-view-vpane-position = 502
+
+[color]
+    ui = auto
+[color]
+    ui = true
+[color "diff"]
+    whitespace = red reverse
+
+[core]
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    excludesfile = /home/naspeh/.gitignore
+
+[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff
+    lg = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ls = ls-files
+
+[merge]
+    tool = meld

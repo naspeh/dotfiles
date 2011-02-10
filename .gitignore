@@ -1,3 +1,5 @@
+*.pyc
+
 vim/.netrwhist
 vim/addons/*
 !vim/addons/vim-addon-manager

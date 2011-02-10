@@ -66,9 +66,9 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{11}%r'
 zstyle ':vcs_info:*' enable git hg svn
 precmd () {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
-        zstyle ':vcs_info:*' formats ' [%F{green}%b%c%u%F{blue}]'
+        zstyle ':vcs_info:*' formats '[%F{green}%b%c%u%F{blue}]'
     } else {
-        zstyle ':vcs_info:*' formats ' [%F{green}%b%c%u%F{red} ●%F{blue}]'
+        zstyle ':vcs_info:*' formats '[%F{green}%b%c%u%F{red} ●%F{blue}]'
     }
 
     vcs_info
@@ -98,17 +98,17 @@ prompt_jobs='${fg_cyan}%1(j.(%j) .)'
 prompt_time='${fg_brown}[%T] '
 prompt_pwd='${fg_blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
 #prompt_git_branch='${fg_purple}%f%(1v.%F{green}%1v%f.) '
-prompt_git_branch='${vcs_info_msg_0_}%F{blue}'
+prompt_vcs_info='${vcs_info_msg_0_}%F{blue}'
 prompt_exit_code='${fg_light_red}%(0?..%? ↵)${fg_no_color}'
 prompt_sigil='${fg_cyan}%(!.${fg_red}.)$ '
-prompt_end='${fg_dark_gray}'
+prompt_end='${fg_no_color}'
 
-setopt prompt_subst
+#setopt prompt_subst
 # left
 #PROMPT='%F{blue}%n@%m %c${vcs_info_msg_0_}%F{blue} %(?/%F{blue}/%F{red})%% %{$reset_color%}'
 #PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_git_branch$prompt_jobs$prompt_sigil$prompt_end"
 #PS1="${fg_cyan}┌─${fg_cyan}──$prompt_time$prompt_user_host$prompt_pwd$prompt_git_branch$prompt_jobs
-PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_git_branch$prompt_jobs
+PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_vcs_info$prompt_jobs
 $prompt_sigil$prompt_end"
 
 # right

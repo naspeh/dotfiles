@@ -362,6 +362,7 @@ autocmd InsertLeave * set nocursorline
 " Templates
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
+iab pdbtrace import pdb; pdb.set_trace()<esc>
 
 python << EOF
 import site
