@@ -317,8 +317,8 @@ call MapDo('<F5>', 'NERDTreeClose<cr>:TlistToggle')
 call MapDo('<F6>', 'GundoToggle')
 
 " F7
-" let g:pcs_hotkey='<F7>'
-call MapDo('<F7>', 'call Pyflakes()')
+let g:pcs_hotkey='<F7>'
+"call MapDo('<F7>', 'call Pyflakes()')
 
 " F8 - Pep8
 call MapDo('<F8>', 'call Pep8()')
