@@ -4,6 +4,7 @@
 alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'
 alias la='ls -A'
+alias l='l -lA'
 
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'

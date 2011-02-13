@@ -22,16 +22,6 @@ SAVEHIST=$HISTSIZE
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 
-
-export LESS_TERMCAP_mb=$'\E[01;31m'       # начало мерцающего стиля
-export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # начало полужирного стиля
-export LESS_TERMCAP_me=$'\E[0m'           # окончание мерцающего или
-export LESS_TERMCAP_so=$'\E[38;5;246m'    # начало служебной информации
-export LESS_TERMCAP_se=$'\E[0m'           # окончание служебной
-export LESS_TERMCAP_us=$'\E[04;38;5;146m' # начало подчеркивания
-export LESS_TERMCAP_ue=$'\E[0m'           # окончание подчеркивания
-
-
 export PYTHONSTARTUP=~/.pythonrc
 
 export WORKON_HOME=$HOME/.virtualenvs
