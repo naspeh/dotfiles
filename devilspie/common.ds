@@ -1,0 +1,29 @@
+(begin
+    ;(debug)
+    ;(println "_NET_WM_STATE " (window_property "_NET_WM_STATE"))
+    ;(println "_NET_WM_WINDOW_TYPE " (window_property "_NET_WM_WINDOW_TYPE"))
+    (if
+        (or
+            (contains(application_name) "Vim")
+            (contains(application_name) "Terminal")
+            (contains(window_name) "New Tab - Google Chrome")
+            (contains(window_name) "FatRat")
+            (contains(window_name) "Document Viewer")
+            (contains(window_name) "Clementine")
+        )
+       (maximize)
+    )
+    (if
+        (or
+            (contains(application_name) "godesk")
+        )
+        (focus)
+    )
+    (if (is (application_name) "stardict")
+        (begin
+            ;(debug)
+            (focus)
+            (geometry "792x399+488+376")
+        )
+    )
+)
