@@ -62,7 +62,14 @@ alias pipf="pip install --src=/arch/naspeh/libs"
 
 venv_has() {
     if [ -e .venv ]; then
-        workon `cat .venv`
+        ve=`cat .venv`
+        if [ -e $ve ];then
+            source "$ve/bin/activate"
+            which python
+        else
+            workon $ve
+            which python
+        fi
     fi
 }
 venv_cd () {

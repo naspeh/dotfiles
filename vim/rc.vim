@@ -288,7 +288,7 @@ call LeaderToggle('s',  'spell')
 call LeaderToggle('m',  'modifiable')
 
 " New line and exit from insert mode
-map <S-O> i<CR><ESC>
+"map <S-O> i<CR><ESC>
 
 " CTRL-F для omni completion
 imap <C-F> <C-X><C-O>
