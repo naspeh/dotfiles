@@ -138,13 +138,16 @@ endfun
 fun! LeaderToggle(key, opt)
     "nnoremap <leader><space> :nohls<CR>
     "nmap <silent> ,p :set invpaste<CR>:set paste?<CR>
-    execute "nmap <leader>".a:key." :set ".a:opt."! ".a:opt."?<cr>"
+    execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
 endfun
 
 fun! Add(addons, ...)
     call scriptmanager#Activate(a:addons)
 endfun
 
+fun! RcReload()
+    source ~/.vimrc
+endfun
 
 " ------------------------------
 " Plugins activate
@@ -176,10 +179,11 @@ fun! ActivateAddons()
     "call Add('pyflakes3161', 'При сохранении')
     call Add('python_check_syntax')
     "call Add('pythoncomplete')
-    call Add(['python_tag_import', 'indentpython3003'])
+    "call Add(['python_tag_import', 'indentpython3003'])
 
+    call Add('html5')
     call Add('Jinja')
-    call Add(['mako1858', 'mako2663'])
+    "call Add(['mako1858', 'mako2663'])
 
     " CSS
     "call Add('css_color')
@@ -271,6 +275,8 @@ imap <M-k> <Up>
 " Nice scrolling if line wrap
 noremap j gj
 noremap k gk
+noremap <Down> gj
+noremap <Up> gk
 
 " Fast scrool
 nnoremap <C-e> 3<C-e>
@@ -286,6 +292,10 @@ call LeaderToggle('p', 'paste')
 call LeaderToggle('w',  'wrap')
 call LeaderToggle('s',  'spell')
 call LeaderToggle('m',  'modifiable')
+
+nmap <leader>r :call RcReload()<cr>
+nmap <leader>c :cwin<cr>
+nmap <leader>cc :cclose<cr>
 
 " New line and exit from insert mode
 "map <S-O> i<CR><ESC>
@@ -343,7 +353,7 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
 " Auto reload vim settins
-au! bufwritepost rc.vim source ~/.vimrc
+"au! bufwritepost rc.vim source ~/.vimrc
 
 autocmd BufNewFile,BufRead *.html,*.htm set ft=xhtml
 autocmd BufNewFile,BufRead *.less set ft=css

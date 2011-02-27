@@ -1,8 +1,6 @@
 #!/bin/zsh
 # vim: set filetype=zsh
 
-#PROMPT=$'%B%{\e[0;36m%}┌─[%{\e[0;33m%}%n%{\e[0;36m%}@%{\e[0;33m%}%m%{\e[0;36m%}]──(%{\e[0;33m%}%~%{\e[0;36m%})\n└─[%{\e[0;39m%}%# %{\e[0;36m%}>%b'
-
 ### COLORS ###
 fg_green=$'%{\e[0;32m%}'
 fg_blue=$'%{\e[0;34m%}'
@@ -49,15 +47,7 @@ preexec () {
 
 
 # prompt helpers
-
 autoload -Uz vcs_info
-
-#precmd() {
-  #psvar=()
-  #vcs_info
-  #[[ -n $vcs_info_msg_0_ ]] && psvar[1]="$vcs_info_msg_0_"
-#}
-#zstyle ':vcs_info:*' formats '%s:%b'
 
 zstyle ':vcs_info:*' stagedstr '%F{28} ●'
 zstyle ':vcs_info:*' unstagedstr '%F{11} ●'
@@ -76,17 +66,6 @@ precmd () {
 
 setopt prompt_subst
 
-
-current_git_branch() {
-  git symbolic-ref HEAD 2> /dev/null | cut -d/ -f3-
-}
-
-git_prompt_info() {
-  if [[ -n "$(current_git_branch)" ]]; then
-    echo "$(current_git_branch) "
-  fi
-}
-
 pwd_length() {
   local length
   (( length = $COLUMNS / 2 - 25 ))
@@ -97,21 +76,18 @@ prompt_user_host='%(!.${fg_red}.$fg_green%B)'`if [[ ! $HOME == */$USER ]] echo '
 prompt_jobs='${fg_cyan}%1(j.(%j) .)'
 prompt_time='${fg_brown}[%T] '
 prompt_pwd='${fg_blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
-#prompt_git_branch='${fg_purple}%f%(1v.%F{green}%1v%f.) '
 prompt_vcs_info='${vcs_info_msg_0_}%F{blue}'
 prompt_exit_code='${fg_light_red}%(0?..%? ↵)${fg_no_color}'
 prompt_sigil='${fg_cyan}%(!.${fg_red}.)$ '
 prompt_end='${fg_no_color}'
 
-#setopt prompt_subst
 # left
+#PROMPT=$'%B%{\e[0;36m%}┌─[%{\e[0;33m%}%n%{\e[0;36m%}@%{\e[0;33m%}%m%{\e[0;36m%}]──(%{\e[0;33m%}%~%{\e[0;36m%})\n└─[%{\e[0;39m%}%# %{\e[0;36m%}>%b'
 #PROMPT='%F{blue}%n@%m %c${vcs_info_msg_0_}%F{blue} %(?/%F{blue}/%F{red})%% %{$reset_color%}'
 #PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_git_branch$prompt_jobs$prompt_sigil$prompt_end"
 #PS1="${fg_cyan}┌─${fg_cyan}──$prompt_time$prompt_user_host$prompt_pwd$prompt_git_branch$prompt_jobs
-PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_vcs_info$prompt_jobs
+PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_vcs_info$prompt_jobs$prompt_exit_code
 $prompt_sigil$prompt_end"
 
 # right
-RPS1="$prompt_exit_code"
-
-
+#RPS1="$prompt_exit_code"
