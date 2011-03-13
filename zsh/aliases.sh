@@ -9,7 +9,7 @@ alias l='l -lA'
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
 
-alias rm='nocorrect rm -Ir'
+alias rmi='nocorrect rm -Ir'
 
 alias grep='grep --color=auto'
 
