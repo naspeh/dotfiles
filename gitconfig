@@ -1,13 +1,14 @@
 [user]
-    name = Grisha K.
+	name = Grisha K.
     email = naspeh@gmail.com
 
 [giggle]
-    main-window-maximized = true
-    main-window-geometry = 278x63+0+25
+	main-window-maximized = true
+	main-window-geometry = 0x0+0+0
     history-view-vpane-position = 351
     main-window-view = HistoryView
     file-view-vpane-position = 502
+	show-graph = true
 
 [color]
     ui = auto

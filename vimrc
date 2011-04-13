@@ -72,7 +72,7 @@ set confirm
 " report all changes
 set report=0
 " Не перерисовывать окно при работе макросов
-"set lazyredraw
+set lazyredraw
 set ttyfast
 
 " Поддержка мыши
@@ -145,10 +145,6 @@ fun! Add(addons, ...)
     call vam#ActivateAddons(a:addons)
 endfun
 
-fun! RcReload()
-    source ~/.vimrc
-endfun
-
 " ------------------------------
 " Plugins activate
 " ------------------------------
@@ -175,6 +171,7 @@ fun! ActivateAddons()
 
     call Add('python30', '#python_fn')
     call Add('pep83160', '#pep8')
+    call Add('pep83430', '#pep8', 'https://github.com/jbking/vim-pep8/')
     "call Add('pyflakes2441')
     "call Add('pyflakes3161', 'При сохранении')
     call Add('python_check_syntax')
@@ -192,6 +189,8 @@ fun! ActivateAddons()
     call Add('EasyGrep')
     call Add('Gundo')
     call Add('ScrollColors')
+    call Add(['tlib', 'tregisters', 'tselectbuffer'])
+    call Add('minibufexplorer_-_Elegant_buffer_explorer')
   catch /.*/
     echoe v:exception
   endtry
@@ -257,6 +256,18 @@ let no_pyflakes_maps = 1
 " Gundo
 let g:gundo_width = 35
 
+" MiniBufExplorer
+"let g:miniBufExplVSplit = 20   " column width in chars
+"let g:miniBufExplMaxSize = 20
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplorerMoreThanOne = 1
+let g:miniBufExplModSelTarget = 1
+"let g:miniBufExplForceSyntaxEnable = 1
+let g:miniBufExplSplitBelow = 0
+
 
 " ------------------------------
 " Hot keys
@@ -293,7 +304,8 @@ call LeaderToggle('w',  'wrap')
 call LeaderToggle('s',  'spell')
 call LeaderToggle('m',  'modifiable')
 
-nmap <leader>r :call RcReload()<cr>
+" .vimrc reload
+nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>c :cwin<cr>
 nmap <leader>cc :cclose<cr>
 
@@ -315,6 +327,7 @@ call MapDo('<F2>', 'wincmd w')
 
 " F3 - BufExplorer
 call MapDo('<F3>', 'BufExplorer')
+"call MapDo('<F3>', 'TSelectBuffer')
 
 " F4 - NERDTree
 call MapDo('<F4>', 'TlistClose<cr>:NERDTreeToggle')
@@ -332,10 +345,13 @@ let g:pcs_hotkey='<F7>'
 
 " F8 - Pep8
 call MapDo('<F8>', 'call Pep8()')
+"call MapDo('<F8>', 'Pep8Update')
 
 " F9 - Trim trailing spaces
 call MapDo('<F9>', 'call TrimSpaces()')
 
+" F11
+call MapDo('<F11>', 'TMiniBufExplorer')
 
 " ------------------------------
 " Autocommands
@@ -355,7 +371,7 @@ autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 " Auto reload vim settins
 "au! bufwritepost rc.vim source ~/.vimrc
 
-autocmd BufNewFile,BufRead *.html,*.htm set ft=xhtml
+"autocmd BufNewFile,BufRead *.html,*.htm set ft=xhtml
 autocmd BufNewFile,BufRead *.less set ft=css
 
 "autocmd BufWritePost *.py call Pyflakes()
