@@ -190,7 +190,7 @@ fun! ActivateAddons()
     call Add('Gundo')
     call Add('ScrollColors')
     call Add(['tlib', 'tregisters', 'tselectbuffer'])
-    call Add('minibufexplorer_-_Elegant_buffer_explorer')
+    "call Add('minibufexplorer_-_Elegant_buffer_explorer')
   catch /.*/
     echoe v:exception
   endtry
@@ -351,7 +351,7 @@ call MapDo('<F8>', 'call Pep8()')
 call MapDo('<F9>', 'call TrimSpaces()')
 
 " F11
-call MapDo('<F11>', 'TMiniBufExplorer')
+"call MapDo('<F11>', 'TMiniBufExplorer')
 
 " ------------------------------
 " Autocommands
@@ -371,7 +371,7 @@ autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 " Auto reload vim settins
 "au! bufwritepost rc.vim source ~/.vimrc
 
-"autocmd BufNewFile,BufRead *.html,*.htm set ft=xhtml
+autocmd BufNewFile,BufRead *.html,*.htm set ft=html
 autocmd BufNewFile,BufRead *.less set ft=css
 
 "autocmd BufWritePost *.py call Pyflakes()
