@@ -31,8 +31,8 @@ set ignorecase
 set hlsearch
 set incsearch
 
-set number
 syntax on
+set number
 let python_highlight_all = 1
 
 set list

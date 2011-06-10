@@ -13,10 +13,11 @@ fg_light_gray=$'%{\e[0;37m%}'
 fg_dark_gray=$'%{\e[1;30m%}'
 fg_light_blue=$'%{\e[1;34m%}'
 fg_light_green=$'%{\e[1;32m%}'
-fg_light_cyan=$'%{\e[1;36m%}' fg_light_red=$'%{\e[1;31m%}'
+fg_light_cyan=$'%{\e[1;36m%}'
+fg_light_red=$'%{\e[1;31m%}'
 fg_light_purple=$'%{\e[1;35m%}'
-fg_no_color=$'%{\e[0m%}'
 
+fg_no_color=$'%{\e[0m%}'
 fg_white=$'%{\e[1;37m%}'
 fg_black=$'%{\e[0;30m%}'
 

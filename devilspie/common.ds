@@ -11,7 +11,7 @@
             (contains(window_name) "Document Viewer")
             (contains(window_name) "Clementine")
         )
-       (maximize)
+        (maximize)
     )
     (if
         (or
@@ -24,6 +24,19 @@
             ;(debug)
             (focus)
             (geometry "792x399+488+376")
+        )
+    )
+    (if (is (window_name) "oDesk Team")
+        (close)
+    )
+    (if
+        (and
+            (contains(window_name) "Skype")
+            (matches(window_name) " Chat$")
+        )
+        (begin
+            ;(debug)
+            (geometry "792x618+239+158")
         )
     )
 )
