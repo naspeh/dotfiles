@@ -63,7 +63,7 @@ alias pipf="pip install --src=/arch/naspeh/libs"
 venv_has() {
     if [ -e .venv ]; then
         ENV_NAME=`cat .venv`
-        ACTIVATE="$ve/bin/activate"
+        ACTIVATE="$ENV_NAME/bin/activate"
         if [ -e $ACTIVATE ]; then
             source $ACTIVATE
             which python
