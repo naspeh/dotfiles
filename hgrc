@@ -1,6 +1,7 @@
 [ui]
-verbose=True
+verbose = True
 username = Grisha K. <naspeh@pusto.org>
+ignore = ~/hgignore
 
 [pager]
 pager = more
