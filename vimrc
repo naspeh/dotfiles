@@ -160,6 +160,7 @@ endfun
 " ------------------------------
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+Bundle 'https://github.com/gmarik/vundle.git'
 
 Bundle 'https://github.com/scrooloose/nerdtree.git'
 Bundle 'https://github.com/tpope/vim-fugitive.git'
@@ -179,10 +180,12 @@ Bundle 'python_check_syntax.vim'
 "let pom_key_open='<leader>g'
 Bundle 'https://github.com/mjbrownie/Python-Tag-Import.git'
 
+Bundle 'jQuery'
 Bundle 'Jinja'
 "Bundle 'https://github.com/othree/html5.vim.git'
 Bundle 'https://github.com/othree/html5-syntax.vim.git'
 Bundle 'https://github.com/cakebaker/scss-syntax.vim.git'
+Bundle "Markdown"
 
 Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
 let g:buffergator_split_size='7'
@@ -365,8 +368,9 @@ filetype plugin on     " enables filetype specific plugins
 " Auto reload vim settins
 "au! bufwritepost rc.vim source ~/.vimrc
 
-autocmd BufNewFile,BufRead *.html,*.htm set ft=html
+autocmd BufNewFile,BufRead *.{html,htm} set ft=html
 autocmd BufNewFile,BufRead *.less set ft=css
+autocmd BufNewFile,BufRead *.{md,mkd,mdt} set ft=markdown
 
 "autocmd BufWritePost *.py call Pyflakes()
 
