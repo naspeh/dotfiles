@@ -166,6 +166,9 @@ fun! ActivateAddons()
         \'Gist',
     \])
 
+    call Add('ack')
+    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+
     call Add(['AutoComplPop', 'L9'])
     "call Add('neocomplcache')
 
