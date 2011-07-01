@@ -83,6 +83,16 @@ set mousehide
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
 set whichwrap+=<,>,[,]
 
+if v:version >= 703
+    " highlight column 80
+    setlocal colorcolumn=80
+else
+    " Подсветка больше 80 символов
+    highlight OverLength ctermbg=grey ctermfg=black guibg=#eeeeff
+    match OverLength /\%80v.\+/
+endif
+
+
 if has('gui')
     " Скрыть панель в gui версии
     set guioptions-=T
@@ -148,58 +158,39 @@ endfun
 " ------------------------------
 " Plugins activate
 " ------------------------------
-fun! ActivateAddons()
-  set runtimepath+=~/.vim/addons/vim-addon-manager
-  try
-    call Add([
-        \'The_NERD_tree',
-        \'The_NERD_Commenter',
-        \'bufexplorer.zip',
-        \'grep',
-        \'matchit.zip',
-        \'taglist',
-        \'xmledit',
-        \
-        \'vcscommand',
-        \'fugitive',
-        \
-        \'Gist',
-    \])
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
 
-    call Add('ack')
-    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+Bundle 'https://github.com/scrooloose/nerdtree.git'
+Bundle 'https://github.com/tpope/vim-fugitive.git'
+Bundle 'bufexplorer.zip'
+Bundle 'taglist.vim'
 
-    call Add(['AutoComplPop', 'L9'])
-    "call Add('neocomplcache')
+Bundle 'AutoComplPop', 'L9'
 
-    call Add('python30', '#python_fn')
-    call Add('pep83160', '#pep8')
-    call Add('pep83430', '#pep8', 'https://github.com/jbking/vim-pep8/')
-    "call Add('pyflakes2441')
-    "call Add('pyflakes3161', 'При сохранении')
-    call Add('python_check_syntax')
-    "call Add('pythoncomplete')
-    "call Add(['python_tag_import', 'indentpython3003'])
+Bundle 'ack.vim'
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
-    call Add('html5')
-    call Add('Jinja')
-    "call Add(['mako1858', 'mako2663'])
+Bundle 'python.vim'
+Bundle 'pep8--Driessen'
+"Bundle 'https://github.com/jbking/vim-pep8/'
+Bundle 'python_check_syntax.vim'
+"Bundle 'python_open_module'
+"let pom_key_open='<leader>g'
+Bundle 'https://github.com/mjbrownie/Python-Tag-Import.git'
 
-    " CSS
-    "call Add('css_color')
-    call Add('scss-syntax')
+Bundle 'Jinja'
+"Bundle 'https://github.com/othree/html5.vim.git'
+Bundle 'https://github.com/othree/html5-syntax.vim.git'
+Bundle 'https://github.com/cakebaker/scss-syntax.vim.git'
 
-    call Add('EasyGrep')
-    call Add('Gundo')
-    call Add('ScrollColors')
-    call Add(['tlib', 'tregisters', 'tselectbuffer'])
-    "call Add('minibufexplorer_-_Elegant_buffer_explorer')
-  catch /.*/
-    echoe v:exception
-  endtry
-endf
-call ActivateAddons()
+Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
+let g:buffergator_split_size='7'
+let g:buffergator_viewport_split_policy='T'
 
+if v:version >= 703
+    Bundle 'Gundo'
+endif
 
 " ------------------------------
 " Plugins setup
@@ -364,12 +355,12 @@ filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
 "filetype plugin indent on
 
-autocmd FileType python call TextWidth()
-" autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+"autocmd FileType python call TextWidth()
+"autocmd FileType python set omnifunc=pythoncomplete#Complete
+"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
 " Auto reload vim settins
 "au! bufwritepost rc.vim source ~/.vimrc

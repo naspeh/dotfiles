@@ -2,7 +2,10 @@
 
 vim/.netrwhist
 vim/addons/*
-!vim/addons/vim-addon-manager
+!vim/addons/vim-addon-manager/
+
+vim/bundle/*
+!vim/bundle/vundle/
 
 zsh/.histfile
 zsh/.zcompdump
