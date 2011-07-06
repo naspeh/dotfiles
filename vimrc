@@ -56,9 +56,6 @@ set wildmenu
 set wildcharm=<TAB>
 set wildignore=*.pyc
 " Удалить pythonhelper.vim, чтоб эта строка отображалась
-"set statusline=%<%f\ [%R%W]%y[%{&encoding}\]%1*%{(&modified)?'\ [+]\ ':''}%*%=%c%V,%l\ %P\ [%n]
-"set statusline=%<%f\ %y[%{&encoding}\]%1*%{(&modified)?'\ [+]\ ':''}%*%=%c%V,%l\ %P\ [%n]
-"set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff}\ %{&ft}\ %{&encoding})\ %{fugitive#statusline()}
 set statusline=%<%f%h%m%r%=%{fugitive#statusline()}\ (%{&ff}\ %{&ft}\ %{&encoding})\ %b\ 0x%B\ %l,%c%V\ %P
 set laststatus=2
 " Показывать незавершенные команды в статусбаре
@@ -83,16 +80,6 @@ set mousehide
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
 set whichwrap+=<,>,[,]
 
-if v:version >= 703
-    " highlight column 80
-    setlocal colorcolumn=80
-else
-    " Подсветка больше 80 символов
-    highlight OverLength ctermbg=grey ctermfg=black guibg=#eeeeff
-    match OverLength /\%80v.\+/
-endif
-
-
 if has('gui')
     " Скрыть панель в gui версии
     set guioptions-=T
@@ -109,6 +96,91 @@ if has('gui')
 
 endif
 
+" ------------------------------
+" Plugins activate
+" ------------------------------
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'https://github.com/gmarik/vundle.git'
+
+Bundle 'https://github.com/scrooloose/nerdtree.git'
+let NERDTreeWinSize = 35
+let NERDTreeChDirMode=2
+let NERDTreeShowBookmarks=1
+
+Bundle 'bufexplorer.zip'
+let g:bufExplorerShowRelativePath=1
+let g:bufExplorerSplitOutPathName=0
+let g:bufExplorerSortBy='fullpath'
+let g:bufExplorerShowTabBuffer=1
+
+
+Bundle 'taglist.vim'
+let Tlist_Compact_Format          = 1   " Do not show help
+let Tlist_Enable_Fold_Column      = 0   " Don't Show the fold indicator column
+let Tlist_Exit_OnlyWindow         = 1   " If you are last kill your self
+let Tlist_GainFocus_On_ToggleOpen = 1   " Jump to taglist window to open
+let Tlist_Show_One_File           = 1   " Displaying tags for only one file
+let Tlist_Use_Right_Window        = 0   " Split to rigt side of the screen
+let Tlist_Use_SingleClick         = 1   " Single mouse click open tag
+let Tlist_WinWidth                = 35  " Taglist win width
+let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
+
+Bundle 'AutoComplPop', 'L9'
+let g:acp_ignorecaseOption = 0
+
+Bundle 'https://github.com/tpope/vim-fugitive.git'
+
+Bundle 'ack.vim'
+"let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
+
+Bundle 'python.vim'
+Bundle 'pep8--Driessen'
+"Bundle 'https://github.com/jbking/vim-pep8/'
+Bundle 'python_check_syntax.vim'
+"Bundle 'python_open_module'
+let pom_key_open='<leader>g'
+"Bundle 'https://github.com/mjbrownie/Python-Tag-Import.git'
+
+Bundle 'jQuery'
+Bundle 'Jinja'
+"Bundle 'https://github.com/othree/html5.vim.git'
+Bundle 'https://github.com/othree/html5-syntax.vim.git'
+Bundle 'https://github.com/cakebaker/scss-syntax.vim.git'
+Bundle "Markdown"
+
+"Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
+let g:buffergator_split_size='7'
+let g:buffergator_viewport_split_policy='T'
+
+if v:version >= 703
+    Bundle 'Gundo'
+    let g:gundo_width = 35
+endif
+
+" Ropevim
+"let g:ropevim_vim_completion=1
+"let g:ropevim_extended_complete=0
+let g:ropevim_guess_project=1
+"let g:ropevim_enable_autoimport=0
+"let g:ropevim_codeassist_maxfixes=3
+"let g:ropevim_autoimport_modules = []
+
+"Bundle 'pyflakes.vim'
+"let g:pyflakes_use_quickfix = 0
+let no_pyflakes_maps = 1
+
+"Bundle 'minibufexpl.vim'
+"let g:miniBufExplVSplit = 20   " column width in chars
+"let g:miniBufExplMaxSize = 20
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplorerMoreThanOne = 1
+let g:miniBufExplModSelTarget = 1
+"let g:miniBufExplForceSyntaxEnable = 1
+let g:miniBufExplSplitBelow = 0
 
 " ------------------------------
 " Functions
@@ -151,121 +223,6 @@ fun! LeaderToggle(key, opt)
     execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
 endfun
 
-fun! Add(addons, ...)
-    call vam#ActivateAddons(a:addons)
-endfun
-
-" ------------------------------
-" Plugins activate
-" ------------------------------
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'https://github.com/gmarik/vundle.git'
-
-Bundle 'https://github.com/scrooloose/nerdtree.git'
-Bundle 'https://github.com/tpope/vim-fugitive.git'
-Bundle 'bufexplorer.zip'
-Bundle 'taglist.vim'
-
-Bundle 'AutoComplPop', 'L9'
-
-Bundle 'ack.vim'
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-
-Bundle 'python.vim'
-Bundle 'pep8--Driessen'
-"Bundle 'https://github.com/jbking/vim-pep8/'
-Bundle 'python_check_syntax.vim'
-"Bundle 'python_open_module'
-"let pom_key_open='<leader>g'
-Bundle 'https://github.com/mjbrownie/Python-Tag-Import.git'
-
-Bundle 'jQuery'
-Bundle 'Jinja'
-"Bundle 'https://github.com/othree/html5.vim.git'
-Bundle 'https://github.com/othree/html5-syntax.vim.git'
-Bundle 'https://github.com/cakebaker/scss-syntax.vim.git'
-Bundle "Markdown"
-
-Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
-let g:buffergator_split_size='7'
-let g:buffergator_viewport_split_policy='T'
-
-if v:version >= 703
-    Bundle 'Gundo'
-endif
-
-" ------------------------------
-" Plugins setup
-" ------------------------------
-
-" Taglist
-let Tlist_Compact_Format          = 1   " Do not show help
-let Tlist_Enable_Fold_Column      = 0   " Don't Show the fold indicator column
-let Tlist_Exit_OnlyWindow         = 1   " If you are last kill your self
-let Tlist_GainFocus_On_ToggleOpen = 1   " Jump to taglist window to open
-let Tlist_Show_One_File           = 1   " Displaying tags for only one file
-let Tlist_Use_Right_Window        = 0   " Split to rigt side of the screen
-let Tlist_Use_SingleClick         = 1   " Single mouse click open tag
-let Tlist_WinWidth                = 35  " Taglist win width
-let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
-
-" NERDTree
-let NERDTreeWinSize = 35
-let NERDTreeChDirMode=2
-let NERDTreeShowBookmarks=1
-
-" Ropevim
-"let g:ropevim_vim_completion=1
-"let g:ropevim_extended_complete=0
-let g:ropevim_guess_project=1
-"let g:ropevim_enable_autoimport=0
-"let g:ropevim_codeassist_maxfixes=3
-"let g:ropevim_autoimport_modules = []
-
-" BufExplorer
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerSplitOutPathName=0
-let g:bufExplorerSortBy='fullpath'
-let g:bufExplorerShowTabBuffer=1
-
-"let g:acp_behaviorUserDefinedFunction = 'RopeCodeAssistInsertMode()'
-let g:acp_ignorecaseOption = 0
-
-" Disable AutoComplPop.
-" let g:acp_enableAtStartup = 0
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 1
-" Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
-" Use camel case completion.
-let g:neocomplcache_enable_camel_case_completion = 1
-" Use underbar completion.
-let g:neocomplcache_enable_underbar_completion = 1
-" Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-
-" Pyflakes
-"let g:pyflakes_use_quickfix = 0
-let no_pyflakes_maps = 1
-
-" Gundo
-let g:gundo_width = 35
-
-" MiniBufExplorer
-"let g:miniBufExplVSplit = 20   " column width in chars
-"let g:miniBufExplMaxSize = 20
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplorerMoreThanOne = 1
-let g:miniBufExplModSelTarget = 1
-"let g:miniBufExplForceSyntaxEnable = 1
-let g:miniBufExplSplitBelow = 0
-
-
 " ------------------------------
 " Hot keys
 " ------------------------------
@@ -297,9 +254,9 @@ let mapleader = ","
 "call LeaderToggle('<space>', 'hlsearch')
 call LeaderToggle('h', 'hlsearch')
 call LeaderToggle('p', 'paste')
-call LeaderToggle('w',  'wrap')
-call LeaderToggle('s',  'spell')
-call LeaderToggle('m',  'modifiable')
+call LeaderToggle('w', 'wrap')
+call LeaderToggle('s', 'spell')
+call LeaderToggle('m', 'modifiable')
 
 " .vimrc reload
 nmap <leader>r :source ~/.vimrc<cr>
@@ -349,7 +306,7 @@ call MapDo('<F9>', 'call TrimSpaces()')
 
 " F11
 "call MapDo('<F11>', 'TMiniBufExplorer')
-
+call MapDo('<F11>', 'call TextWidth()')
 " ------------------------------
 " Autocommands
 " ------------------------------
