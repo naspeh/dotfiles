@@ -10,6 +10,7 @@
             (contains(window_name) "FatRat")
             (contains(window_name) "Document Viewer")
             (contains(window_name) "Clementine")
+            (is(window_name) "DreamPie")
         )
         (maximize)
     )
@@ -36,7 +37,7 @@
         )
         (begin
             ;(debug)
-            (geometry "792x618+239+158")
+            (geometry "792x618+250+160")
         )
     )
 )

@@ -269,7 +269,7 @@ nmap <leader>cc :cclose<cr>
 " CTRL-F для omni completion
 imap <C-F> <C-X><C-O>
 
-map <C-A> ggVG
+"map <C-A> ggVG
 
 " < & > - делаем отступы для блоков
 vmap < <gv

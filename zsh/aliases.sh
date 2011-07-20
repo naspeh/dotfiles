@@ -8,6 +8,7 @@ alias l='l -lA'
 
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
+alias pc="rsync -P"
 
 alias rmi='nocorrect rm -Ir'
 
