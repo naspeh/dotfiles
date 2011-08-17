@@ -19,6 +19,8 @@ alias df='df --human-readable'
 
 alias nohup='nohup > /dev/null $1'
 
+alias x=startx
+
 alias -s {avi,mpeg,mpg,mov,m2v}=vlc
 alias -s {odt,doc,sxw,rtf}=openoffice.org
 alias -s {pdf,djvu}=evince

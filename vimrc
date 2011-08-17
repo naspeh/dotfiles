@@ -88,7 +88,7 @@ if has('gui')
     " Отключаем графические табы (текстовые занимают меньше места)
     "set guioptions-=e
 
-    set guifont=monospace\ 9
+    "set guifont=monospace\ 9
 
     " Filename
     :amenu 20.351 &Edit.Copy\ FileName :let @*=expand("%:t")<CR>
@@ -131,18 +131,17 @@ let g:acp_ignorecaseOption = 0
 
 Bundle 'https://github.com/tpope/vim-fugitive.git'
 
-Bundle 'ack.vim'
+"Bundle 'ack.vim'
 "let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
+Bundle 'EasyGrep'
 
 Bundle 'python.vim'
 Bundle 'pep8--Driessen'
 "Bundle 'https://github.com/jbking/vim-pep8/'
 Bundle 'python_check_syntax.vim'
-"Bundle 'python_open_module'
-let pom_key_open='<leader>g'
-"Bundle 'https://github.com/mjbrownie/Python-Tag-Import.git'
 
 Bundle 'jQuery'
+Bundle 'jslint.vim'
 Bundle 'Jinja'
 "Bundle 'https://github.com/othree/html5.vim.git'
 Bundle 'https://github.com/othree/html5-syntax.vim.git'
@@ -150,8 +149,9 @@ Bundle 'https://github.com/cakebaker/scss-syntax.vim.git'
 Bundle "Markdown"
 
 "Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
-let g:buffergator_split_size='7'
-let g:buffergator_viewport_split_policy='T'
+let g:buffergator_sort_regime = 'filepath'
+let g:buffergator_display_regime = 'filepath'
+let g:buffergator_viewport_split_policy = 'B'
 
 if v:version >= 703
     Bundle 'Gundo'
@@ -262,14 +262,13 @@ call LeaderToggle('m', 'modifiable')
 nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>c :cwin<cr>
 nmap <leader>cc :cclose<cr>
+nmap <leader>a ggVG<cr>
 
 " New line and exit from insert mode
 "map <S-O> i<CR><ESC>
 
 " CTRL-F для omni completion
 imap <C-F> <C-X><C-O>
-
-"map <C-A> ggVG
 
 " < & > - делаем отступы для блоков
 vmap < <gv
@@ -348,7 +347,7 @@ iab pdbtrace import pdb; pdb.set_trace()<esc>
 python << EOF
 import site
 site.addsitedir(
-    '/usr/local/lib/python2.6/dist-packages'
+    '/usr/local/lib/python2.7/dist-packages'
 )
 EOF
 

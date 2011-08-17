@@ -17,6 +17,7 @@
     (if
         (or
             (contains(application_name) "godesk")
+            (contains(application_name) "oDesk Team")
         )
         (focus)
     )
@@ -24,7 +25,8 @@
         (begin
             ;(debug)
             (focus)
-            (geometry "792x399+488+376")
+            (geometry "800x427+800+448")
+            ;(geometry "792x399+488+376")
         )
     )
     (if (is (window_name) "oDesk Team")
@@ -37,7 +39,8 @@
         )
         (begin
             ;(debug)
-            (geometry "792x618+250+160")
+            (geometry "808x674+367+201")
+            ;(geometry "792x618+250+160")
         )
     )
 )
