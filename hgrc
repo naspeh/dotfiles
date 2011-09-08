@@ -1,6 +1,6 @@
 [ui]
 verbose = True
-username = Grisha K. <naspeh@pusto.org>
+username = Grisha K. <naspeh@gmail.com>
 ignore = ~/.hgignore
 
 [pager]
