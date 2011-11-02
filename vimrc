@@ -135,18 +135,19 @@ Bundle 'https://github.com/tpope/vim-fugitive.git'
 "let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
 Bundle 'EasyGrep'
 
+Bundle 'pyflakes'
 Bundle 'python.vim'
 Bundle 'pep8--Driessen'
 "Bundle 'https://github.com/jbking/vim-pep8/'
-Bundle 'python_check_syntax.vim'
+"Bundle 'python_check_syntax.vim'
 
 Bundle 'jQuery'
 Bundle 'jslint.vim'
 Bundle 'Jinja'
-"Bundle 'https://github.com/othree/html5.vim.git'
+Bundle 'https://github.com/othree/html5.vim.git'
 Bundle 'https://github.com/othree/html5-syntax.vim.git'
 Bundle 'https://github.com/cakebaker/scss-syntax.vim.git'
-Bundle "Markdown"
+Bundle 'Markdown'
 
 "Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
 let g:buffergator_sort_regime = 'filepath'
@@ -293,8 +294,9 @@ call MapDo('<F5>', 'NERDTreeClose<cr>:TlistToggle')
 call MapDo('<F6>', 'GundoToggle')
 
 " F7
-let g:pcs_hotkey='<F7>'
-"call MapDo('<F7>', 'call Pyflakes()')
+"let g:pcs_hotkey='<F7>'
+call MapDo('<F7>', 'call Pyflakes()')
+autocmd BufWritePost *.py call Pyflakes()
 
 " F8 - Pep8
 call MapDo('<F8>', 'call Pep8()')
@@ -314,26 +316,25 @@ filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
 "filetype plugin indent on
 
-"autocmd FileType python call TextWidth()
+autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
+autocmd BufNewFile,BufRead *.{less,css} setlocal ft=css
+autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
+
+autocmd FileType python call TextWidth()
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
 "autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 "autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 "autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
-" Auto reload vim settins
-"au! bufwritepost rc.vim source ~/.vimrc
-
-autocmd BufNewFile,BufRead *.{html,htm} set ft=html
-autocmd BufNewFile,BufRead *.less set ft=css
-autocmd BufNewFile,BufRead *.{md,mkd,mdt} set ft=markdown
-
-"autocmd BufWritePost *.py call Pyflakes()
+autocmd FileType js,css,html setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
 
+" Auto reload vim settins
+"au! bufwritepost rc.vim source ~/.vimrc
 
 " ------------------------------
 " Misc
@@ -342,7 +343,7 @@ autocmd InsertLeave * set nocursorline
 " Templates
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
-iab pdbtrace import pdb; pdb.set_trace()<esc>
+iab pytrace import pdb; pdb.set_trace()<esc>
 
 python << EOF
 import site

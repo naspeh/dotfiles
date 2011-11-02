@@ -8,7 +8,7 @@ alias l='l -lA'
 
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
-alias pc="rsync -P"
+alias pc='rsync -P'
 
 alias rmi='nocorrect rm -Ir'
 
@@ -19,7 +19,9 @@ alias df='df --human-readable'
 
 alias nohup='nohup > /dev/null $1'
 
-alias x=startx
+alias x='startx'
+
+alias timesync='ntpdate ua.pool.ntp.org'
 
 alias -s {avi,mpeg,mpg,mov,m2v}=vlc
 alias -s {odt,doc,sxw,rtf}=openoffice.org
