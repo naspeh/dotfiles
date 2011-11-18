@@ -96,14 +96,15 @@ if has('gui')
 
 endif
 
+
 " ------------------------------
 " Plugins activate
 " ------------------------------
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-Bundle 'https://github.com/gmarik/vundle.git'
+Bundle 'gmarik/vundle'
 
-Bundle 'https://github.com/scrooloose/nerdtree.git'
+Bundle 'scrooloose/nerdtree'
 let NERDTreeWinSize = 35
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=1
@@ -129,7 +130,7 @@ let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
 Bundle 'AutoComplPop', 'L9'
 let g:acp_ignorecaseOption = 0
 
-Bundle 'https://github.com/tpope/vim-fugitive.git'
+Bundle 'tpope/vim-fugitive'
 
 "Bundle 'ack.vim'
 "let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
@@ -144,9 +145,9 @@ Bundle 'pep8--Driessen'
 Bundle 'jQuery'
 Bundle 'jslint.vim'
 Bundle 'Jinja'
-Bundle 'https://github.com/othree/html5.vim.git'
-Bundle 'https://github.com/othree/html5-syntax.vim.git'
-Bundle 'https://github.com/cakebaker/scss-syntax.vim.git'
+Bundle 'othree/html5.vim'
+Bundle 'othree/html5-syntax.vim'
+Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'Markdown'
 
 "Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
@@ -182,6 +183,12 @@ let g:miniBufExplorerMoreThanOne = 1
 let g:miniBufExplModSelTarget = 1
 "let g:miniBufExplForceSyntaxEnable = 1
 let g:miniBufExplSplitBelow = 0
+
+Bundle 'LustyJuggler'
+Bundle 'unite.vim'
+
+filetype plugin indent on     " required!
+
 
 " ------------------------------
 " Functions
@@ -224,6 +231,7 @@ fun! LeaderToggle(key, opt)
     execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
 endfun
 
+
 " ------------------------------
 " Hot keys
 " ------------------------------
@@ -264,6 +272,8 @@ nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>c :cwin<cr>
 nmap <leader>cc :cclose<cr>
 nmap <leader>a ggVG<cr>
+"nmap <leader>b :LustyJuggler<cr>
+nmap <leader>b :Unite buffer<cr>
 
 " New line and exit from insert mode
 "map <S-O> i<CR><ESC>
@@ -308,6 +318,8 @@ call MapDo('<F9>', 'call TrimSpaces()')
 " F11
 "call MapDo('<F11>', 'TMiniBufExplorer')
 call MapDo('<F11>', 'call TextWidth()')
+
+
 " ------------------------------
 " Autocommands
 " ------------------------------
@@ -336,11 +348,10 @@ autocmd InsertLeave * set nocursorline
 " Auto reload vim settins
 "au! bufwritepost rc.vim source ~/.vimrc
 
+
 " ------------------------------
 " Misc
 " ------------------------------
-
-" Templates
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
 iab pytrace import pdb; pdb.set_trace()<esc>
