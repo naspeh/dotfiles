@@ -11,7 +11,7 @@
             (contains(window_name) "Document Viewer")
             (contains(window_name) "Clementine")
             (is(window_name) "DreamPie")
-            (contains(window_name) "Iceweasel")
+            ;(contains(window_name) "Iceweasel")
         )
         (maximize)
     )

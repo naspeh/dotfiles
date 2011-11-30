@@ -187,7 +187,7 @@ let g:miniBufExplSplitBelow = 0
 Bundle 'LustyJuggler'
 Bundle 'unite.vim'
 
-filetype plugin indent on     " required!
+"filetype plugin indent on     " required!
 
 
 " ------------------------------
