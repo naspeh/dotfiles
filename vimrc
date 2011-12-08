@@ -1,6 +1,9 @@
 "Вырубаем режим совместимости с VI:
 set nocompatible
 
+set background=dark
+color darkblue
+
 " Localization
 set langmenu=none            " Always use english menu
 set keymap=russian-jcukenwin " Переключение раскладок клавиатуры по <C-^>
@@ -93,7 +96,6 @@ if has('gui')
     " Filename
     :amenu 20.351 &Edit.Copy\ FileName :let @*=expand("%:t")<CR>
     :amenu 20.353 &Edit.Copy\ FullPath :let @*=expand("%:p")<CR>
-
 endif
 
 
@@ -185,7 +187,13 @@ let g:miniBufExplModSelTarget = 1
 let g:miniBufExplSplitBelow = 0
 
 Bundle 'LustyJuggler'
-Bundle 'unite.vim'
+nmap <leader>b :LustyJuggler<cr>
+
+"Bundle 'unite.vim'
+"nmap <leader>b :Unite buffer<cr>
+
+Bundle 'Solarized'
+"color solarized
 
 "filetype plugin indent on     " required!
 
@@ -272,8 +280,6 @@ nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>c :cwin<cr>
 nmap <leader>cc :cclose<cr>
 nmap <leader>a ggVG<cr>
-"nmap <leader>b :LustyJuggler<cr>
-nmap <leader>b :Unite buffer<cr>
 
 " New line and exit from insert mode
 "map <S-O> i<CR><ESC>

@@ -76,11 +76,11 @@ pwd_length() {
 prompt_user_host='%(!.${fg_red}.$fg_green%B)'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
 prompt_jobs='${fg_cyan}%1(j.(%j) .)'
 prompt_time='${fg_brown}[%T] '
-prompt_pwd='${fg_blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
+prompt_pwd='${fg_light_blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
 prompt_vcs_info='${vcs_info_msg_0_}%F{blue}'
 prompt_exit_code='${fg_light_red}%(0?..%? ↵)${fg_no_color}'
-prompt_sigil='${fg_cyan}%(!.${fg_red}.)$ '
-prompt_end='${fg_no_color}'
+prompt_sigil='${fg_cyan}%(!.${fg_red}.)\$ '
+prompt_end='%f'
 
 # left
 #PROMPT=$'%B%{\e[0;36m%}┌─[%{\e[0;33m%}%n%{\e[0;36m%}@%{\e[0;33m%}%m%{\e[0;36m%}]──(%{\e[0;33m%}%~%{\e[0;36m%})\n└─[%{\e[0;39m%}%# %{\e[0;36m%}>%b'
