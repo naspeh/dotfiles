@@ -46,6 +46,19 @@ preexec () {
   titlebar_preexec
 }
 
+battery_charge () {
+  # Battery 0: Discharging, 94%, 03:46:34 remaining
+  bat_percent=`acpi | awk -F ':' {'print $2;'} | awk -F ',' {'print $2;'} | sed -e "s/\s//" -e "s/%.*//"`
+
+  if [ $bat_percent -lt 20 ]; then cl='%F{red}'
+  elif [ $bat_percent -lt 50 ]; then cl='%F{yellow}'
+  else cl='%F{green}'
+  fi
+
+  filled=${(l:`expr $bat_percent / 10`::▸:)}
+  empty=${(l:`expr 10 - $bat_percent / 10`::▹:)}
+  echo $cl$filled$empty'%F{default}'
+}
 
 # prompt helpers
 autoload -Uz vcs_info
@@ -73,12 +86,13 @@ pwd_length() {
   echo $(($length < 20 ? 20 : $length))
 }
 
-prompt_user_host='%(!.${fg_red}.$fg_green%B)'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
+prompt_user_host='%(!.${fg_light_red}.${fg_light_green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
 prompt_jobs='${fg_cyan}%1(j.(%j) .)'
 prompt_time='${fg_brown}[%T] '
 prompt_pwd='${fg_light_blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
 prompt_vcs_info='${vcs_info_msg_0_}%F{blue}'
-prompt_exit_code='${fg_light_red}%(0?..%? ↵)${fg_no_color}'
+prompt_exit_code='${fg_red}%(0?..%? ↵)${fg_no_color}'
+prompt_battery='[%*] $(battery_charge)'
 prompt_sigil='${fg_cyan}%(!.${fg_red}.)\$ '
 prompt_end='%f'
 
@@ -91,4 +105,4 @@ PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_vcs_info$prompt_jobs$prompt
 $prompt_sigil$prompt_end"
 
 # right
-#RPS1="$prompt_exit_code"
+#RPS1="$prompt_battery"
