@@ -5,7 +5,8 @@
     (if
         (or
             (contains(application_name) "Vim")
-            (contains(application_name) "Terminal")
+            (contains(window_name) "Terminal -")
+            (contains(application_name) "x-terminal-emulator")
             (contains(window_name) "New Tab - Google Chrome")
             (contains(window_name) "FatRat")
             (contains(window_name) "Document Viewer")
@@ -26,7 +27,7 @@
         (begin
             ;(debug)
             (focus)
-            (geometry "800x425-0-0")
+            (geometry "800x425+800-0")
             ;(geometry "800x427+800+448")
             ;(geometry "792x399+488+376")
         )

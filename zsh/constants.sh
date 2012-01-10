@@ -25,6 +25,6 @@ setopt hist_ignore_all_dups
 export PYTHONSTARTUP=~/.pythonrc
 
 export WORKON_HOME=$HOME/.virtualenvs
-source /usr/local/bin/virtualenvwrapper.sh
+source /usr/bin/virtualenvwrapper.sh
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true

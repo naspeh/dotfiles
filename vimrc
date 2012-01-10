@@ -144,6 +144,25 @@ Bundle 'pep8--Driessen'
 "Bundle 'https://github.com/jbking/vim-pep8/'
 "Bundle 'python_check_syntax.vim'
 
+"Bundle 'gordyt/rope-vim'
+Bundle 'timo/rope-vim'
+Bundle 'rygwdn/rope-omni'
+"let g:ropevim_vim_completion=1
+"let g:ropevim_extended_complete=0
+let g:ropevim_guess_project=1
+"let g:ropevim_enable_autoimport=0
+"let g:ropevim_codeassist_maxfixes=3
+"let g:ropevim_autoimport_modules = []
+
+"Bundle 'Python-mode-klen'
+let g:pymode_syntax = 1
+let g:pymode_run_key = '<leader>e'
+let g:pymode_lint_checker = 'pyflakes'
+
+"Bundle 'pyflakes.vim'
+"let g:pyflakes_use_quickfix = 0
+let no_pyflakes_maps = 1
+
 Bundle 'jQuery'
 Bundle 'jslint.vim'
 Bundle 'Jinja'
@@ -152,27 +171,15 @@ Bundle 'othree/html5-syntax.vim'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'Markdown'
 
-"Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
-let g:buffergator_sort_regime = 'filepath'
-let g:buffergator_display_regime = 'filepath'
-let g:buffergator_viewport_split_policy = 'B'
-
 if v:version >= 703
     Bundle 'Gundo'
     let g:gundo_width = 35
 endif
 
-" Ropevim
-"let g:ropevim_vim_completion=1
-"let g:ropevim_extended_complete=0
-let g:ropevim_guess_project=1
-"let g:ropevim_enable_autoimport=0
-"let g:ropevim_codeassist_maxfixes=3
-"let g:ropevim_autoimport_modules = []
-
-"Bundle 'pyflakes.vim'
-"let g:pyflakes_use_quickfix = 0
-let no_pyflakes_maps = 1
+"Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
+let g:buffergator_sort_regime = 'filepath'
+let g:buffergator_display_regime = 'filepath'
+let g:buffergator_viewport_split_policy = 'B'
 
 "Bundle 'minibufexpl.vim'
 "let g:miniBufExplVSplit = 20   " column width in chars
@@ -186,16 +193,14 @@ let g:miniBufExplModSelTarget = 1
 "let g:miniBufExplForceSyntaxEnable = 1
 let g:miniBufExplSplitBelow = 0
 
-Bundle 'LustyJuggler'
-nmap <leader>b :LustyJuggler<cr>
+"Bundle 'LustyJuggler'
+"nmap <leader>b :LustyJuggler<cr>
 
 "Bundle 'unite.vim'
 "nmap <leader>b :Unite buffer<cr>
 
-Bundle 'Solarized'
+"Bundle 'Solarized'
 "color solarized
-
-"filetype plugin indent on     " required!
 
 
 " ------------------------------
@@ -363,10 +368,18 @@ iab pyutf8 # -*- coding: utf-8 -*-<esc>
 iab pytrace import pdb; pdb.set_trace()<esc>
 
 python << EOF
-import site
-site.addsitedir(
-    '/usr/local/lib/python2.7/dist-packages'
-)
+#iimport site
+#site.addsitedir(
+#    '/usr/local/lib/python2.7/dist-packages'
+#)
+EOF
+python << EOF
+import os, sys
+ve_dir = os.environ.get('VIRTUAL_ENV')
+if ve_dir:
+    ve_dir in sys.path or sys.path.insert(0, ve_dir)
+    activate_this = os.path.join(os.path.join(ve_dir, 'bin'), 'activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
 EOF
 
 set secure  " must be written at the last.  see :help 'secure'.
