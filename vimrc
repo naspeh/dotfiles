@@ -365,7 +365,8 @@ autocmd InsertLeave * set nocursorline
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
-iab pytrace import pdb; pdb.set_trace()<esc>
+iab pdb import pdb; pdb.set_trace()<esc>
+iab ipdb import ipdb; ipdb.set_trace()<esc>
 
 python << EOF
 #iimport site
