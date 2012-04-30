@@ -21,18 +21,10 @@ alias nohup='nohup > /dev/null $1'
 
 alias x='startx'
 
-alias timesync='ntpdate ua.pool.ntp.org'
-
 alias -s {avi,mpeg,mpg,mov,m2v}=vlc
-alias -s {odt,doc,sxw,rtf}=openoffice.org
+alias -s {odt,doc,sxw,rtf}=libreoffice
 alias -s {pdf,djvu}=evince
-alias -s {jpg,png,svg,xpm,bmp}=gpicview
-
-[[ -z $DISPLAY ]] && {
- #alias -s {odt,doc,sxw,xls,doc,rtf}=
- alias -s {png,gif,jpg,jpeg}=fbv
- alias -s {pdf}=apvlv
-}
+alias -s {jpg,png,svg,xpm,bmp}=ristrettow
 
 autoload -U pick-web-browser
 alias -s {html,htm,xhtml}=pick-web-browser
@@ -53,18 +45,22 @@ fi
 
 
 alias killall="killall --interactive --verbose"
-
+alias git="nocorrect git"
 alias free="free -t -m"
 
 alias myip="curl ip.appspot.com"
-
-alias git="nocorrect git"
+alias batstat="cat /sys/class/power_supply/BAT0/power_now && acpi"
+alias timesync='ntpdate ua.pool.ntp.org'
 
 alias ve="virtualenv --no-site-packages --distribute"
 alias mkve="mkvirtualenv --no-site-packages --distribute"
 alias pipi="pip install"
 alias pipf="pip install --src=/arch/naspeh/libs"
 
+alias pycrm="find . -name \"*.pyc\" -exec rm -rf {} \;"
+alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
+alias hdmi1="xrandr --output LVDS1 --auto --output HDMI1 --auto --right-of LVDS1"
+alias dp1="xrandr --output LVDS-1 --auto --output DP-1 --auto --right-of LVDS-1"
 venv_has() {
     if [ -e .venv ]; then
         ENV_NAME=`cat .venv`

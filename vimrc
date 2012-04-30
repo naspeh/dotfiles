@@ -1,8 +1,11 @@
 "Вырубаем режим совместимости с VI:
 set nocompatible
 
-set background=dark
-color darkblue
+"set background=dark
+"color darkblue
+"set background=light
+color delek
+"color zellner
 
 " Localization
 set langmenu=none            " Always use english menu
@@ -30,7 +33,7 @@ set smartindent
 set smarttab
 
 " Поиск
-set ignorecase
+"set ignorecase
 set hlsearch
 set incsearch
 
@@ -39,7 +42,8 @@ set number
 let python_highlight_all = 1
 
 set list
-set listchars=tab:>-,trail:~,extends:+,precedes:+
+"set listchars=tab:>-,trail:~,extends:+,precedes:+
+set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 set linebreak
 
 " Don't make chaos on my display
@@ -96,6 +100,8 @@ if has('gui')
     " Filename
     :amenu 20.351 &Edit.Copy\ FileName :let @*=expand("%:t")<CR>
     :amenu 20.353 &Edit.Copy\ FullPath :let @*=expand("%:p")<CR>
+
+    "set go-=m "remove menubar
 endif
 
 
@@ -136,13 +142,18 @@ Bundle 'tpope/vim-fugitive'
 
 "Bundle 'ack.vim'
 "let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
-Bundle 'EasyGrep'
+"Bundle 'EasyGrep'
+Bundle 'grep.vim'
+let Grep_Skip_Dirs = '.git .hg _generated_media'
+let Grep_Skip_Files = '*.bak *~ *.pyc'
 
 Bundle 'pyflakes'
-Bundle 'python.vim'
-Bundle 'pep8--Driessen'
+"Bundle 'python.vim'
+"Bundle 'pep8--Driessen'
+Bundle 'nvie/vim-flake8'
 "Bundle 'https://github.com/jbking/vim-pep8/'
 "Bundle 'python_check_syntax.vim'
+"Bundle 'pythoncomplete'
 
 "Bundle 'gordyt/rope-vim'
 Bundle 'timo/rope-vim'
@@ -202,6 +213,13 @@ let g:miniBufExplSplitBelow = 0
 "Bundle 'Solarized'
 "color solarized
 
+Bundle 'kien/ctrlp.vim'
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_custom_ignore = {
+    \'dir':  '\.git$\|\.hg$\|\.svn$\|_generated_media$',
+\}
+"let g:ctrlp_regexp = 0
+"let g:ctrlp_match_window_bottom = 1
 
 " ------------------------------
 " Functions
@@ -244,7 +262,6 @@ fun! LeaderToggle(key, opt)
     execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
 endfun
 
-
 " ------------------------------
 " Hot keys
 " ------------------------------
@@ -259,11 +276,26 @@ imap <M-h> <Left>
 imap <M-j> <Down>
 imap <M-k> <Up>
 
+
 " Nice scrolling if line wrap
 noremap j gj
 noremap k gk
 noremap <Down> gj
 noremap <Up> gk
+
+" Easy buffer navigation
+noremap <C-l>  <C-w>l
+noremap <C-h>  <C-w>h
+noremap <C-j>  <C-w>j
+noremap <C-k>  <C-w>k
+
+noremap <M-Right>  <C-w>l
+noremap <M-Left>  <C-w>h
+noremap <M-Down>  <C-w>j
+noremap <M-Up>  <C-w>k
+
+noremap <C-space>  :wincmd w<cr>
+noremap <leader>v <C-w>v
 
 " Fast scrool
 nnoremap <C-e> 3<C-e>
@@ -282,8 +314,8 @@ call LeaderToggle('m', 'modifiable')
 
 " .vimrc reload
 nmap <leader>r :source ~/.vimrc<cr>
-nmap <leader>c :cwin<cr>
 nmap <leader>cc :cclose<cr>
+nmap <leader>c :cwin<cr>
 nmap <leader>a ggVG<cr>
 
 " New line and exit from insert mode
@@ -298,11 +330,15 @@ vmap > >gv
 
 " F2 - Previous window
 "call MapDo('<F2>', ':wincmd p')
-call MapDo('<F2>', 'wincmd w')
+"call MapDo('<F2>', 'wincmd w')
+call MapDo('<C-Tab>', 'wincmd w')
+
 
 " F3 - BufExplorer
-call MapDo('<F3>', 'BufExplorer')
+"call MapDo('<F3>', 'BufExplorer')
 "call MapDo('<F3>', 'TSelectBuffer')
+"call MapDo('<F3>', 'CtrlPBuffer')
+call MapDo('<F3>', 'CtrlPMRUFiles')
 
 " F4 - NERDTree
 call MapDo('<F4>', 'TlistClose<cr>:NERDTreeToggle')
@@ -314,13 +350,29 @@ call MapDo('<F5>', 'NERDTreeClose<cr>:TlistToggle')
 "set pastetoggle=<F6>
 call MapDo('<F6>', 'GundoToggle')
 
-" F7
+" F7, F8
+let g:flake8_auto = 0
+fun! FlakeToggle()
+    if g:flake8_auto == 0
+        let g:flake8_auto = 1
+    else
+        let g:flake8_auto = 0
+    endif
+endfun
+fun! FlakeAuto()
+    echo "flake8_auto:" g:flake8_auto
+    if g:flake8_auto == 1
+        call Flake8()
+    endif
+endfun
+autocmd BufWritePost *.py call FlakeAuto()
 "let g:pcs_hotkey='<F7>'
-call MapDo('<F7>', 'call Pyflakes()')
-autocmd BufWritePost *.py call Pyflakes()
-
-" F8 - Pep8
-call MapDo('<F8>', 'call Pep8()')
+"call MapDo('<F7>', 'call Pyflakes()')
+"call MapDo('<F7>', 'call FlakeToggle()')
+nmap <leader>f :call FlakeToggle()<cr>
+call MapDo('<F8>', 'call Flake8()')
+"autocmd BufWritePost *.py call Pyflakes()
+"call MapDo('<F8>', 'call Pep8()')
 "call MapDo('<F8>', 'Pep8Update')
 
 " F9 - Trim trailing spaces
@@ -350,7 +402,7 @@ autocmd FileType python call TextWidth()
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 "autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
-autocmd FileType js,css,html setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+"autocmd FileType js,css,html setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
@@ -364,16 +416,11 @@ autocmd InsertLeave * set nocursorline
 " Misc
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
-iab pyutf8 # -*- coding: utf-8 -*-<esc>
+iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pdb import pdb; pdb.set_trace()<esc>
 iab ipdb import ipdb; ipdb.set_trace()<esc>
+iab pudb import pudb; pudb.set_trace()<esc>
 
-python << EOF
-#iimport site
-#site.addsitedir(
-#    '/usr/local/lib/python2.7/dist-packages'
-#)
-EOF
 python << EOF
 import os, sys
 ve_dir = os.environ.get('VIRTUAL_ENV')

@@ -24,3 +24,4 @@ zstyle ':completion:*:processes' sort false
 zstyle ':completion:*:processes-names' command 'ps xho command'
 
 #setopt correctall
+unsetopt correct_all
