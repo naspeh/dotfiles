@@ -145,7 +145,7 @@ Bundle 'tpope/vim-fugitive'
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
 let Grep_Skip_Dirs = '.git .hg _generated_media'
-let Grep_Skip_Files = '*.bak *~ *.pyc'
+let Grep_Skip_Files = '*.bak *~ *.pyc, _generated_media*'
 
 Bundle 'pyflakes'
 "Bundle 'python.vim'
@@ -165,11 +165,6 @@ let g:ropevim_guess_project=1
 "let g:ropevim_codeassist_maxfixes=3
 "let g:ropevim_autoimport_modules = []
 
-"Bundle 'Python-mode-klen'
-let g:pymode_syntax = 1
-let g:pymode_run_key = '<leader>e'
-let g:pymode_lint_checker = 'pyflakes'
-
 "Bundle 'pyflakes.vim'
 "let g:pyflakes_use_quickfix = 0
 let no_pyflakes_maps = 1
@@ -181,6 +176,7 @@ Bundle 'othree/html5.vim'
 Bundle 'othree/html5-syntax.vim'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'Markdown'
+Bundle 'plasticboy/vim-markdown'
 
 if v:version >= 703
     Bundle 'Gundo'
@@ -358,9 +354,9 @@ fun! FlakeToggle()
     else
         let g:flake8_auto = 0
     endif
+    echo 'g:flake8_auto ='g:flake8_auto
 endfun
 fun! FlakeAuto()
-    echo "flake8_auto:" g:flake8_auto
     if g:flake8_auto == 1
         call Flake8()
     endif
@@ -370,6 +366,7 @@ autocmd BufWritePost *.py call FlakeAuto()
 "call MapDo('<F7>', 'call Pyflakes()')
 "call MapDo('<F7>', 'call FlakeToggle()')
 nmap <leader>f :call FlakeToggle()<cr>
+call MapDo('<F7>', 'call FlakeToggle()')
 call MapDo('<F8>', 'call Flake8()')
 "autocmd BufWritePost *.py call Pyflakes()
 "call MapDo('<F8>', 'call Pep8()')
@@ -417,6 +414,7 @@ autocmd InsertLeave * set nocursorline
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
+iab pyutf8 # -*- coding: utf-8 -*-<esc>
 iab pdb import pdb; pdb.set_trace()<esc>
 iab ipdb import ipdb; ipdb.set_trace()<esc>
 iab pudb import pudb; pudb.set_trace()<esc>

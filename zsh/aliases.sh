@@ -24,7 +24,7 @@ alias x='startx'
 alias -s {avi,mpeg,mpg,mov,m2v}=vlc
 alias -s {odt,doc,sxw,rtf}=libreoffice
 alias -s {pdf,djvu}=evince
-alias -s {jpg,png,svg,xpm,bmp}=ristrettow
+alias -s {jpg,png,svg,xpm,bmp}=gthumb
 
 autoload -U pick-web-browser
 alias -s {html,htm,xhtml}=pick-web-browser
@@ -49,27 +49,30 @@ alias git="nocorrect git"
 alias free="free -t -m"
 
 alias myip="curl ip.appspot.com"
-alias batstat="cat /sys/class/power_supply/BAT0/power_now && acpi"
 alias timesync='ntpdate ua.pool.ntp.org'
 
-alias ve="virtualenv --no-site-packages --distribute"
-alias mkve="mkvirtualenv --no-site-packages --distribute"
 alias pipi="pip install"
 alias pipf="pip install --src=/arch/naspeh/libs"
 
-alias pycrm="find . -name \"*.pyc\" -exec rm -rf {} \;"
+alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
 alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
+
 alias hdmi1="xrandr --output LVDS1 --auto --output HDMI1 --auto --right-of LVDS1"
-alias dp1="xrandr --output LVDS-1 --auto --output DP-1 --auto --right-of LVDS-1"
+alias dp1auto="xrandr --output LVDS-1 --auto --output DP-1 --auto --right-of LVDS-1"
+alias dp1mode="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode "
+alias dp1mode1080p="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode 1920x1080"
+alias dp1mode720p="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode 1280x720"
+
 venv_has() {
     if [ -e .venv ]; then
         ENV_NAME=`cat .venv`
         ACTIVATE="$ENV_NAME/bin/activate"
-        if [ -e $ACTIVATE ]; then
+        if [ -e $ACTIVATE ] && [ "$VIRTUAL_ENV" != "$ENV_NAME" ]; then
             source $ACTIVATE
             which python
         else
-            if [ -e "$WORKON_HOME/$ENV_NAME/bin/activate" ]; then
+            ENV_PATH="$WORKON_HOME/$ENV_NAME"
+            if [ -e "$ENV_PATH/bin/activate" ] && [ "$VIRTUAL_ENV" != "$ENV_PATH" ]; then
                 workon $ENV_NAME
                 which python
             fi
@@ -79,4 +82,7 @@ venv_has() {
 venv_cd () {
     cd "$@" && venv_has
 }
+alias ve="virtualenv --no-site-packages --distribute"
+alias mkve="mkvirtualenv --no-site-packages --distribute"
+alias onve="venv_has"
 alias cd="venv_cd"
