@@ -85,7 +85,7 @@ set mousemodel=popup
 set mousehide
 
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
-set whichwrap+=<,>,[,]
+"set whichwrap+=<,>,[,]
 
 if has('gui')
     " Скрыть панель в gui версии
@@ -135,8 +135,11 @@ let Tlist_Use_SingleClick         = 1   " Single mouse click open tag
 let Tlist_WinWidth                = 35  " Taglist win width
 let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
 
-Bundle 'AutoComplPop', 'L9'
-let g:acp_ignorecaseOption = 0
+"Bundle 'AutoComplPop', 'L9'
+"let g:acp_ignorecaseOption = 0
+Bundle 'Shougo/neocomplcache'
+let g:acp_enableAtStartup = 0
+let g:neocomplcache_enable_at_startup = 1
 
 Bundle 'tpope/vim-fugitive'
 
@@ -145,7 +148,7 @@ Bundle 'tpope/vim-fugitive'
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
 let Grep_Skip_Dirs = '.git .hg _generated_media'
-let Grep_Skip_Files = '*.bak *~ *.pyc, _generated_media*'
+let Grep_Skip_Files = '*.bak *~ *.pyc _generated_media*'
 
 Bundle 'pyflakes'
 "Bundle 'python.vim'
@@ -242,10 +245,10 @@ fun! TrimSpaces()
 endfun
 
 fun! MapDo(key, cmd)
-    execute "nmap ".a:key." " . ":".a:cmd."<CR>"
-    execute "cmap ".a:key." " . "<C-C>:".a:cmd."<CR>"
-    execute "imap ".a:key." " . "<Esc>:".a:cmd."<CR>"
-    execute "vmap ".a:key." " . "<Esc>:".a:cmd."<CR>gv"
+    execute "nmap ".a:key." " . a:cmd
+    execute "cmap ".a:key." " . "<C-C>".a:cmd
+    execute "imap ".a:key." " . "<Esc>".a:cmd
+    execute "vmap ".a:key." " . "<Esc>".a:cmd."gv"
 endfun
 
 fun! MapToggle(key, opt)
@@ -258,13 +261,22 @@ fun! LeaderToggle(key, opt)
     execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
 endfun
 
+fun! TextMode()
+    setlocal wrap
+    setlocal nolist
+    setlocal nocursorline
+    setlocal spell
+    " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
+    set whichwrap+=<,>,[,]
+endfun
+
 " ------------------------------
 " Hot keys
 " ------------------------------
 
 " Заставляет комбинацию shift-insert работать как в Xterm
-map <S-Insert> <MiddleMouse>
-map! <S-Insert> <MiddleMouse>
+imap <S-Insert> <MiddleMouse>
+"map! <S-Insert> <MiddleMouse>
 
 " Text navigation in insert mode
 imap <M-l> <Right>
@@ -285,12 +297,12 @@ noremap <C-h>  <C-w>h
 noremap <C-j>  <C-w>j
 noremap <C-k>  <C-w>k
 
-noremap <M-Right>  <C-w>l
-noremap <M-Left>  <C-w>h
-noremap <M-Down>  <C-w>j
-noremap <M-Up>  <C-w>k
+call MapDo('<M-Right>',  '<C-w>l')
+call MapDo('<M-Left>',  '<C-w>h')
+call MapDo('<M-Down>',  '<C-w>j')
+call MapDo('<M-Up>',  '<C-w>k')
 
-noremap <C-space>  :wincmd w<cr>
+call MapDo('<C-space>', ':wincmd w<cr>')
 noremap <leader>v <C-w>v
 
 " Fast scrool
@@ -313,6 +325,7 @@ nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>cc :cclose<cr>
 nmap <leader>c :cwin<cr>
 nmap <leader>a ggVG<cr>
+nmap <leader>t :call TextMode()<cr>
 
 " New line and exit from insert mode
 "map <S-O> i<CR><ESC>
@@ -327,24 +340,24 @@ vmap > >gv
 " F2 - Previous window
 "call MapDo('<F2>', ':wincmd p')
 "call MapDo('<F2>', 'wincmd w')
-call MapDo('<C-Tab>', 'wincmd w')
+call MapDo('<C-Tab>', ':wincmd w<cr>')
 
 
 " F3 - BufExplorer
 "call MapDo('<F3>', 'BufExplorer')
 "call MapDo('<F3>', 'TSelectBuffer')
 "call MapDo('<F3>', 'CtrlPBuffer')
-call MapDo('<F3>', 'CtrlPMRUFiles')
+call MapDo('<F3>', ':CtrlPMRUFiles<cr>')
 
 " F4 - NERDTree
-call MapDo('<F4>', 'TlistClose<cr>:NERDTreeToggle')
+call MapDo('<F4>', ':TlistClose<cr>:NERDTreeToggle<cr>')
 
 " F5 - ctags
-call MapDo('<F5>', 'NERDTreeClose<cr>:TlistToggle')
+call MapDo('<F5>', ':NERDTreeClose<cr>:TlistToggle<cr>')
 
 " F6 - Gundo
 "set pastetoggle=<F6>
-call MapDo('<F6>', 'GundoToggle')
+call MapDo('<F6>', ':GundoToggle<cr>')
 
 " F7, F8
 let g:flake8_auto = 0
@@ -363,21 +376,21 @@ fun! FlakeAuto()
 endfun
 autocmd BufWritePost *.py call FlakeAuto()
 "let g:pcs_hotkey='<F7>'
-"call MapDo('<F7>', 'call Pyflakes()')
-"call MapDo('<F7>', 'call FlakeToggle()')
+"call MapDo('<F7>', ':call Pyflakes()')
+"call MapDo('<F7>', ':call FlakeToggle()')
 nmap <leader>f :call FlakeToggle()<cr>
-call MapDo('<F7>', 'call FlakeToggle()')
-call MapDo('<F8>', 'call Flake8()')
+call MapDo('<F7>', ':call FlakeToggle()<cr>')
+call MapDo('<F8>', ':call Flake8()<cr>')
 "autocmd BufWritePost *.py call Pyflakes()
 "call MapDo('<F8>', 'call Pep8()')
 "call MapDo('<F8>', 'Pep8Update')
 
 " F9 - Trim trailing spaces
-call MapDo('<F9>', 'call TrimSpaces()')
+call MapDo('<F9>', ':call TrimSpaces()<cr>')
 
 " F11
 "call MapDo('<F11>', 'TMiniBufExplorer')
-call MapDo('<F11>', 'call TextWidth()')
+call MapDo('<F11>', ':call TextWidth()<cr>')
 
 
 " ------------------------------

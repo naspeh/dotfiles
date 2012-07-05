@@ -7,6 +7,7 @@ export HISTIGNORE="&:ls:[bf]g:exit"
 
 export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
+export BROWSER=chromium
 
 # type a directory's name to cd to it
 compctl -/ cd
@@ -23,13 +24,26 @@ source $(which virtualenvwrapper.sh)
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true
 
-bindkey -v
+bindkey -e
+#autoload -U edit-command-line
+#zle -N  edit-command-line
+#bindkey -M vicmd v edit-command-line
 
-zstyle ':completion:*' completer _complete _match _ignored _approximate _files
+#function zle-line-init zle-keymap-select {
+#    RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+#    RPS2=$RPS1
+#    zle reset-prompt
+#}
+#zle -N zle-line-init
+#zle -N zle-keymap-select
+
+
+zstyle ':completion:*' completer _complete _match _ignored _files
+#zstyle ':completion:*' completer _complete _match _ignored _approximate _files
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' max-errors 2
+zstyle ':completion:*' max-errors 1
 zstyle ':completion:*' menu select=long-list select=0
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 #zstyle ':completion:*' use-compctl false
@@ -98,6 +112,7 @@ fi
 alias killall="killall --interactive --verbose"
 alias git="nocorrect git"
 alias free="free -t -m"
+alias pacman-clear="pacman -Rs $(pacman -Qtdq)"
 
 alias myip="curl ip.appspot.com"
 alias timesync='ntpdate ua.pool.ntp.org'
@@ -137,7 +152,6 @@ alias ve="virtualenv --no-site-packages --distribute"
 alias mkve="mkvirtualenv --no-site-packages --distribute"
 alias onve="venv_has"
 alias cd="venv_cd"
-
 
 ## Load other configuration ##
 for rc in $ZDOTDIR/*.sh
