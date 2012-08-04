@@ -1,64 +1,59 @@
-#! /usr/bin/env python
-# vim: filetype=python
-#
-# Python startup file. Version 0.1.
-# Install by save this file as ~/.pythonrc and setting PYTHONSTARTUP
-# environment variable to ~/.pythonrc.
-#
-# Copyright (C) 2003-2008 Dmitry Vasiliev <dima@hlabs.spb.ru>
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+#  /* vim: set filetype=python : */
+
+import logging
+import os
+import sys
+
+logger = logging.getLogger(__name__)
+
+
+# Enable Pretty Printing for stdout
+def _pprint_displayhook(value):
+    import pprint
+
+    if value is not None:
+        try:
+            import __builtin__
+            __builtin__._ = value
+        except ImportError:
+            import builtins
+            builtins._ = value
+
+        pprint.pprint(value)
+
+sys.displayhook = _pprint_displayhook
+
+# bpython + django
+try:
+    from django.core.management import setup_environ
+    import settings
+    setup_environ(settings)
+except:
+    pass
+
+# If we're working with a Django project, set up the environment
+if 'DJANGO_SETTINGS_MODULE' in os.environ:
+    from django.db.models.loading import get_models
+    from django.test.client import Client
+    from django.test.utils import (setup_test_environment,
+                                   teardown_test_environment)
+    from django.conf import settings as S
+
+    class DjangoModelAggregate(object):
+        def __init__(self):
+            for m in get_models():
+                setattr(self, m.__name__, m)
+
+    M = DjangoModelAggregate()
+    C = Client()
 
 try:
     import readline
-    import rlcompleter
 except ImportError:
-    readline = rlcompleter = None
-
-
-def write_history(history):
-    """Write interactive interpreter session."""
-    import sys
-    import readline
-    try:
-        readline.write_history_file(history)
-    except IOError, args:
-        print >>sys.stderr, ("Error writing history file %s: %s" %
-            (history, args[1]))
-
-def read_history():
-    """Read interactive interpreter session."""
-    import sys
-    import errno
-    import atexit
-    from os.path import expanduser
-
+    logger.error("Module readline not available.")
+else:
+    import rlcompleter
     readline.parse_and_bind("tab: complete")
-    history = expanduser("~/.python_history")
-    if not history.startswith('~'):
-        atexit.register(write_history, history)
-        try:
-            readline.read_history_file(history)
-        except IOError, args:
-            if args[0] != errno.ENOENT:
-                print >>sys.stderr, ("Error reading history file %s: %s" %
-                    (history, args[1]))
+    del readline, rlcompleter
 
-
-if __name__ == "__main__":
-    if readline is not None and '__file__' in locals():
-        read_history()
-        del __file__
-    del readline, rlcompleter, read_history, write_history
+del logging, os, sys

@@ -62,7 +62,6 @@ set tabstop=4
 set wildmenu
 set wildcharm=<TAB>
 set wildignore=*.pyc
-" Удалить pythonhelper.vim, чтоб эта строка отображалась
 set statusline=%<%f%h%m%r%=%{fugitive#statusline()}\ (%{&ff}\ %{&ft}\ %{&encoding})\ %b\ 0x%B\ %l,%c%V\ %P
 set laststatus=2
 " Показывать незавершенные команды в статусбаре
@@ -83,6 +82,13 @@ set ttyfast
 set mouse=a
 set mousemodel=popup
 set mousehide
+
+" share clipboard with system clipboard
+"set clipboard+=unnamed
+set clipboard=unnamedplus
+
+" don't use Ex mode, use Q for formatting
+map Q gq
 
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
 "set whichwrap+=<,>,[,]
@@ -116,6 +122,7 @@ Bundle 'scrooloose/nerdtree'
 let NERDTreeWinSize = 35
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.pyc$']
 
 Bundle 'bufexplorer.zip'
 let g:bufExplorerShowRelativePath=1
@@ -135,11 +142,11 @@ let Tlist_Use_SingleClick         = 1   " Single mouse click open tag
 let Tlist_WinWidth                = 35  " Taglist win width
 let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
 
-"Bundle 'AutoComplPop', 'L9'
-"let g:acp_ignorecaseOption = 0
-Bundle 'Shougo/neocomplcache'
-let g:acp_enableAtStartup = 0
-let g:neocomplcache_enable_at_startup = 1
+Bundle 'AutoComplPop', 'L9'
+let g:acp_ignorecaseOption = 0
+"Bundle 'Shougo/neocomplcache'
+"let g:acp_enableAtStartup = 0
+"let g:neocomplcache_enable_at_startup = 1
 
 Bundle 'tpope/vim-fugitive'
 
@@ -147,7 +154,7 @@ Bundle 'tpope/vim-fugitive'
 "let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let Grep_Skip_Dirs = '.git .hg _generated_media'
+let Grep_Skip_Dirs = '.ropeproject .git .hg _generated_media'
 let Grep_Skip_Files = '*.bak *~ *.pyc _generated_media*'
 
 Bundle 'pyflakes'
@@ -160,7 +167,7 @@ Bundle 'nvie/vim-flake8'
 
 "Bundle 'gordyt/rope-vim'
 Bundle 'timo/rope-vim'
-Bundle 'rygwdn/rope-omni'
+"Bundle 'rygwdn/rope-omni'
 "let g:ropevim_vim_completion=1
 "let g:ropevim_extended_complete=0
 let g:ropevim_guess_project=1
@@ -213,12 +220,34 @@ let g:miniBufExplSplitBelow = 0
 "color solarized
 
 Bundle 'kien/ctrlp.vim'
-let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
     \'dir':  '\.git$\|\.hg$\|\.svn$\|_generated_media$',
 \}
+" CtrlP settings
+let g:ctrlp_extensions = ['tag', 'quickfix', 'dir', 'line']
+let g:ctrlp_working_path_mode = 2
+let g:ctrlp_mruf_relative = 1
 "let g:ctrlp_regexp = 0
-"let g:ctrlp_match_window_bottom = 1
+
+"let g:ctrlp_user_command = [
+"    \'.git', 'cd %s && git ls-files | grep -v -e /migrations/ -e /static/img'
+"\]
+let g:ctrlp_ignore_ = ' | grep -v -e /migrations/ -e ^_generated_media -e ^\.ropeproject'
+let g:ctrlp_user_command = {
+    \'types': {
+        \1: ['.git', 'cd %s && git ls-files' . g:ctrlp_ignore_],
+        \2: ['.hg', 'hg --cwd %s locate -I .' . g:ctrlp_ignore_],
+    \},
+    \'fallback': 'find %s -type f' . g:ctrlp_ignore_
+\}
+"let g:ctrlp_user_command = 'find %s -type f'
+
+Bundle 'powerman/vim-plugin-ruscmd'
+
+"Bundle 'xterm16.vim'
+"color xterm16
+let xterm16_colormap = 'soft'
+let xterm16_brightness = 'med'
 
 " ------------------------------
 " Functions
@@ -270,6 +299,18 @@ fun! TextMode()
     set whichwrap+=<,>,[,]
 endfun
 
+set guioptions+=a
+function! MakePattern(text)
+  let pat = escape(a:text, '\')
+  let pat = substitute(pat, '\_s\+$', '\\s\\*', '')
+  let pat = substitute(pat, '^\_s\+', '\\s\\*', '')
+  let pat = substitute(pat, '\_s\+',  '\\_s\\+', 'g')
+  return '\\V' . escape(pat, '\"')
+endfunction
+nnoremap <F2> :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+vnoremap <silent> <F2> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
+"nmap <leader><space> :set invhls<CR>:let @/="<C-r><C-w>"<CR>
+
 " ------------------------------
 " Hot keys
 " ------------------------------
@@ -302,7 +343,7 @@ call MapDo('<M-Left>',  '<C-w>h')
 call MapDo('<M-Down>',  '<C-w>j')
 call MapDo('<M-Up>',  '<C-w>k')
 
-call MapDo('<C-space>', ':wincmd w<cr>')
+"call MapDo('<C-space>', ':wincmd w<cr>')
 noremap <leader>v <C-w>v
 
 " Fast scrool
@@ -313,7 +354,7 @@ nnoremap <C-y> 3<C-y>
 let mapleader = ","
 
 " Leader
-"call LeaderToggle('<space>', 'hlsearch')
+call LeaderToggle('<space>', 'hlsearch')
 call LeaderToggle('h', 'hlsearch')
 call LeaderToggle('p', 'paste')
 call LeaderToggle('w', 'wrap')
@@ -326,6 +367,9 @@ nmap <leader>cc :cclose<cr>
 nmap <leader>c :cwin<cr>
 nmap <leader>a ggVG<cr>
 nmap <leader>t :call TextMode()<cr>
+
+nmap <leader>g :RopeGotoDefinition<cr>
+nmap <leader>i :RopeOrganizeImports<cr>
 
 " New line and exit from insert mode
 "map <S-O> i<CR><ESC>
@@ -346,9 +390,9 @@ call MapDo('<C-Tab>', ':wincmd w<cr>')
 " F3 - BufExplorer
 "call MapDo('<F3>', 'BufExplorer')
 "call MapDo('<F3>', 'TSelectBuffer')
-"call MapDo('<F3>', 'CtrlPBuffer')
-call MapDo('<F3>', ':CtrlPMRUFiles<cr>')
-
+"call MapDo('<F2>', ':CtrlPBuffer<cr>')
+call MapDo('<F3>', ':CtrlPMixed<cr>')
+"call MapDo('<F3>', ':CtrlPCurWD<cr>')
 " F4 - NERDTree
 call MapDo('<F4>', ':TlistClose<cr>:NERDTreeToggle<cr>')
 
