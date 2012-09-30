@@ -4,8 +4,10 @@ set nocompatible
 "set background=dark
 "color darkblue
 "set background=light
-color delek
+"color delek
 "color zellner
+"color desert
+
 
 " Localization
 set langmenu=none            " Always use english menu
@@ -60,8 +62,9 @@ set tabstop=4
 
 " Формат строки состояния
 set wildmenu
-set wildcharm=<TAB>
+set wildmode=longest,full
 set wildignore=*.pyc
+"set wildcharm=<TAB>
 set statusline=%<%f%h%m%r%=%{fugitive#statusline()}\ (%{&ff}\ %{&ft}\ %{&encoding})\ %b\ 0x%B\ %l,%c%V\ %P
 set laststatus=2
 " Показывать незавершенные команды в статусбаре
@@ -79,9 +82,13 @@ set lazyredraw
 set ttyfast
 
 " Поддержка мыши
-set mouse=a
+set mouse=r
 set mousemodel=popup
 set mousehide
+
+" Scrolling
+noremap <C-k> 14j14<C-e>
+noremap <C-l> 14k14<C-y>
 
 " share clipboard with system clipboard
 "set clipboard+=unnamed
@@ -154,7 +161,7 @@ Bundle 'tpope/vim-fugitive'
 "let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let Grep_Skip_Dirs = '.ropeproject .git .hg _generated_media'
+let Grep_Skip_Dirs = '.ropeproject .git .hg _generated_media migrations'
 let Grep_Skip_Files = '*.bak *~ *.pyc _generated_media*'
 
 Bundle 'pyflakes'
@@ -216,7 +223,7 @@ let g:miniBufExplSplitBelow = 0
 "Bundle 'unite.vim'
 "nmap <leader>b :Unite buffer<cr>
 
-"Bundle 'Solarized'
+Bundle 'Solarized'
 "color solarized
 
 Bundle 'kien/ctrlp.vim'
@@ -244,10 +251,15 @@ let g:ctrlp_user_command = {
 
 Bundle 'powerman/vim-plugin-ruscmd'
 
-"Bundle 'xterm16.vim'
-"color xterm16
-let xterm16_colormap = 'soft'
+Bundle 'xterm16.vim'
+let xterm16_colormap = 'softlight'
 let xterm16_brightness = 'med'
+color xterm16
+
+"Bundle 'scrooloose/nerdcommenter'
+"Bundle 'tomtom/tcomment_vim'
+
+Bundle 'comments.vim'
 
 " ------------------------------
 " Functions
@@ -342,8 +354,7 @@ call MapDo('<M-Right>',  '<C-w>l')
 call MapDo('<M-Left>',  '<C-w>h')
 call MapDo('<M-Down>',  '<C-w>j')
 call MapDo('<M-Up>',  '<C-w>k')
-
-"call MapDo('<C-space>', ':wincmd w<cr>')
+call MapDo('<C-tab>', ':wincmd w<cr>')
 noremap <leader>v <C-w>v
 
 " Fast scrool
@@ -364,7 +375,7 @@ call LeaderToggle('m', 'modifiable')
 " .vimrc reload
 nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>cc :cclose<cr>
-nmap <leader>c :cwin<cr>
+"nmap <leader>c :cwin<cr>
 nmap <leader>a ggVG<cr>
 nmap <leader>t :call TextMode()<cr>
 
@@ -390,9 +401,10 @@ call MapDo('<C-Tab>', ':wincmd w<cr>')
 " F3 - BufExplorer
 "call MapDo('<F3>', 'BufExplorer')
 "call MapDo('<F3>', 'TSelectBuffer')
-"call MapDo('<F2>', ':CtrlPBuffer<cr>')
-call MapDo('<F3>', ':CtrlPMixed<cr>')
+call MapDo('<F3>', ':CtrlPBuffer<cr>')
+"call MapDo('<F3>', ':CtrlPMixed<cr>')
 "call MapDo('<F3>', ':CtrlPCurWD<cr>')
+"call MapDo('<F3>', ':CtrlPLastMode<cr>')
 " F4 - NERDTree
 call MapDo('<F4>', ':TlistClose<cr>:NERDTreeToggle<cr>')
 

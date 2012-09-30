@@ -9,6 +9,14 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
 
+#case $TERM in
+#    xterm*)
+#        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+#        ;;
+#esac
+export TERM='xterm-256color'
+[ -n "$TMUX" ] && export TERM=screen-256color
+
 # type a directory's name to cd to it
 compctl -/ cd
 
@@ -71,11 +79,13 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='l -lA'
 
+alias pc='rsync -P'
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
-alias pc='rsync -P'
-
 alias rmi='nocorrect rm -Ir'
+
+alias tmux='tmux -2'
+alias mc='mc -b'
 
 alias grep='grep --color=auto'
 
