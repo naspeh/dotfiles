@@ -21,7 +21,7 @@ def _pprint_displayhook(value):
 
         pprint.pprint(value)
 
-sys.displayhook = _pprint_displayhook
+#sys.displayhook = _pprint_displayhook
 
 # bpython + django
 try:

@@ -8,6 +8,7 @@ export HISTIGNORE="&:ls:[bf]g:exit"
 export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
+export ZLS_COLORS=$LS_COLORS
 
 #case $TERM in
 #    xterm*)

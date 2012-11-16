@@ -27,7 +27,7 @@
         (begin
             ;(debug)
             (focus)
-            (geometry "800x425+800-0")
+            (geometry "800x425-0-0")
         )
     )
     (if (is (window_name) "oDesk Team")

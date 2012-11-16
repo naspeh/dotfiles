@@ -165,7 +165,7 @@ let Grep_Skip_Dirs = '.ropeproject .git .hg _generated_media migrations'
 let Grep_Skip_Files = '*.bak *~ *.pyc _generated_media*'
 
 Bundle 'pyflakes'
-"Bundle 'python.vim'
+Bundle 'python.vim'
 "Bundle 'pep8--Driessen'
 Bundle 'nvie/vim-flake8'
 "Bundle 'https://github.com/jbking/vim-pep8/'
@@ -253,13 +253,12 @@ Bundle 'powerman/vim-plugin-ruscmd'
 
 Bundle 'xterm16.vim'
 let xterm16_colormap = 'softlight'
-let xterm16_brightness = 'med'
+let xterm16_brightness = 'high'
 color xterm16
 
 "Bundle 'scrooloose/nerdcommenter'
 "Bundle 'tomtom/tcomment_vim'
-
-Bundle 'comments.vim'
+"Bundle 'comments.vim'
 
 " ------------------------------
 " Functions
@@ -375,7 +374,7 @@ call LeaderToggle('m', 'modifiable')
 " .vimrc reload
 nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>cc :cclose<cr>
-"nmap <leader>c :cwin<cr>
+nmap <leader>c :cwin<cr>
 nmap <leader>a ggVG<cr>
 nmap <leader>t :call TextMode()<cr>
 
