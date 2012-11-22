@@ -331,10 +331,10 @@ imap <S-Insert> <MiddleMouse>
 "map! <S-Insert> <MiddleMouse>
 
 " Text navigation in insert mode
-imap <M-l> <Right>
-imap <M-h> <Left>
-imap <M-j> <Down>
-imap <M-k> <Up>
+"imap <M-l> <Right>
+"imap <M-h> <Left>
+"imap <M-j> <Down>
+"imap <M-k> <Up>
 
 
 " Nice scrolling if line wrap
@@ -349,10 +349,10 @@ noremap <C-h>  <C-w>h
 noremap <C-j>  <C-w>j
 noremap <C-k>  <C-w>k
 
-call MapDo('<M-Right>',  '<C-w>l')
-call MapDo('<M-Left>',  '<C-w>h')
-call MapDo('<M-Down>',  '<C-w>j')
-call MapDo('<M-Up>',  '<C-w>k')
+"call MapDo('<M-Right>',  '<C-w>l')
+"call MapDo('<M-Left>',  '<C-w>h')
+"call MapDo('<M-Down>',  '<C-w>j')
+"call MapDo('<M-Up>',  '<C-w>k')
 call MapDo('<C-tab>', ':wincmd w<cr>')
 noremap <leader>v <C-w>v
 
