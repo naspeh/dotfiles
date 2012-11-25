@@ -3,7 +3,7 @@
     (if
         (or
             (contains(application_name) "Vim")
-            (contains(window_name) "Terminal -")
+            (is(window_name) "Terminal")
             (contains(application_name) "x-terminal-emulator")
             (contains(window_name) "LilyTerm")
             (contains(window_name) "New Tab - Google Chrome")
@@ -34,19 +34,23 @@
         (close)
     )
     (if
+        (and
+            (matches(application_name) "Pidgin")
+            (matches(window_role) "conversation")
+        )
+        (begin
+            (geometry "800x650+350-0")
+        )
+    )
+    (if
         (or
-            ;(and
-            ;    (matches(application_name) "Pidgin")
-            ;    (not (matches(window_name) "Buddy List"))
-            ;)
             (and
                 (contains(window_name) "Skype")
-                (matches(window_name) " Chat$")
+                (matches(window_role) "ConversationsWindow")
             )
         )
         (begin
-            ;(debug)
-            (geometry "808x674+367-0")
+            (geometry "950x650+350-0")
         )
     )
 )

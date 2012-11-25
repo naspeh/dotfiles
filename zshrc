@@ -2,13 +2,15 @@
 
 ZDOTDIR=~/.zsh
 
+eval `dircolors ~/.zsh/dircolors/dircolors.ansi-light`
+
 export HISTTIMEFORMAT="%t%d.%m.%y %H:%M:%S%t"
 export HISTIGNORE="&:ls:[bf]g:exit"
 
 export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
-export ZLS_COLORS=$LS_COLORS
+#export ZLS_COLORS=$LS_COLORS
 
 #case $TERM in
 #    xterm*)
@@ -123,7 +125,7 @@ fi
 alias killall="killall --interactive --verbose"
 alias git="nocorrect git"
 alias free="free -t -m"
-alias pacman-clear="pacman -Rs $(pacman -Qtdq)"
+alias pacman-clear='pacman -Rs "$(pacman -Qtdq)"'
 
 alias myip="curl ip.appspot.com"
 alias timesync='ntpdate ua.pool.ntp.org'
