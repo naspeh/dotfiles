@@ -264,14 +264,14 @@ pwd_length() {
 # B(bold), K(background color), F(foreground color)
 # %F{yellow} - make the foreground color yellow
 # %f - reset the foreground color to the default
-prompt_user_host='%(!.%F{red}.%F{green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
+prompt_user_host='%B%(!.%F{red}.%F{green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
 prompt_time='%F{magenta}[%T] '
-prompt_pwd='%F{blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
+prompt_pwd='%B%F{blue}%$(pwd_length)<...<%(!.%/.%~)%<< %b'
 prompt_vcs_info='%f${vcs_info_msg_0_}'
 prompt_exit_code='%F{red}%(0?..%? ↵)%f'
 prompt_jobs='%F{cyan}%1(j.(%j) .)'
-prompt_sigil='%F{green}%(!.%F{red}.)\$ '
-prompt_end='%f'
+prompt_sigil='%B%F{green}%(!.%F{red}.)\$ '
+prompt_end='%b%f'
 prompt_battery='$(battery_charge)%F{default}'
 
 # left
