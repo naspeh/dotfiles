@@ -11,22 +11,32 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
 
-if [ -f /usr/bin/vimpager ]; then
-    export PAGER=vimpager
-    alias less=$PAGER
-fi
+#PAGER=less
+#if [ -f /usr/bin/vimpager ]; then
+#    export PAGER=vimpager
+#fi
+#alias less=$PAGER
 
 export TERM='xterm-256color'
 [ -n "$TMUX" ] && export TERM=screen-256color
-
-# type a directory's name to cd to it
-compctl -/ cd
 
 HISTFILE=~/.zsh/.histfile
 HISTSIZE=1000
 SAVEHIST=$HISTSIZE
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
+setopt appendhistory
+setopt sharehistory
+
+setopt autocd
+setopt beep
+setopt extendedglob
+setopt nomatch
+setopt notify
+unsetopt correct_all
+
+# type a directory's name to cd to it
+compctl -/ cd
 
 bindkey -e
 #autoload -U edit-command-line
@@ -41,35 +51,70 @@ bindkey -e
 #zle -N zle-line-init
 #zle -N zle-keymap-select
 
+#autoload -Uz compinit; compinit
 
-zstyle ':completion:*' completer _complete _match _ignored _files
-#zstyle ':completion:*' completer _complete _match _ignored _approximate _files
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' max-errors 1
-zstyle ':completion:*' menu select=long-list select=0
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-#zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
-#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+#zstyle ':completion:*' completer _complete _match _ignored _files
+##zstyle ':completion:*' completer _complete _match _ignored _approximate _files
+#zstyle ':completion:*' group-name ''
+#zstyle ':completion:*' list-colors ''
+#zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+#zstyle ':completion:*' max-errors 1
+#zstyle ':completion:*' menu select=long-list select=0
+#zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+##zstyle ':completion:*' use-compctl false
+#zstyle ':completion:*' verbose true
+##zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-autoload -Uz compinit; compinit
-autoload colors; colors
-setopt appendhistory sharehistory autocd beep extendedglob nomatch notify
+## tab completion for PID :D
+#zstyle ':completion:*:*:kill:*' menu yes select
+#zstyle ':completion:*:kill:*' force-list always
 
-# tab completion for PID :D
+#zstyle ':completion:*:processes' command 'ps -xuf'
+#zstyle ':completion:*:processes' sort false
+
+#zstyle ':completion:*:processes-names' command 'ps xho command'
+
+zmodload zsh/complist
+autoload -Uz compinit
+compinit
+zstyle :compinstall filename '${HOME}/.zshrc'
+
+#- buggy
+zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+#-/buggy
+
+zstyle ':completion:*:pacman:*' force-list always
+zstyle ':completion:*:*:pacman:*' menu yes select
+
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
 zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:kill:*'   force-list always
 
-zstyle ':completion:*:processes' command 'ps -xuf'
-zstyle ':completion:*:processes' sort false
+zstyle ':completion:*:*:killall:*' menu yes select
+zstyle ':completion:*:killall:*'   force-list always
 
-zstyle ':completion:*:processes-names' command 'ps xho command'
-
-unsetopt correct_all
 
 ## Aliases ##
+if [ -f /usr/bin/grc ]; then
+    alias grc='grc --colour=auto'
+    alias ping='grc ping'
+    alias last='grc last'
+    alias netstat='grc netstat'
+    alias traceroute='grc traceroute'
+    alias make='grc make'
+    alias gcc='grc gcc'
+    alias configure='grc ./configure'
+    alias cat="grc cat"
+    alias tail="grc tail"
+    alias head="grc head"
+fi
+
+alias cat='vimcat'
+alias tmux='tmux -2'
+alias mc='mc -b'
+
 alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'
 alias la='ls -A'
@@ -79,9 +124,6 @@ alias pc='rsync -P'
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
 alias rmi='nocorrect rm -Ir'
-
-alias tmux='tmux -2'
-alias mc='mc -b'
 
 alias grep='grep --color=auto'
 
@@ -99,21 +141,6 @@ alias -s {jpg,png,svg,xpm,bmp}=mirage
 
 autoload -U pick-web-browser
 alias -s {html,htm,xhtml}=pick-web-browser
-
-if [ -f /usr/bin/grc ]; then
-    alias grc='grc --colour=auto'
-    alias ping='grc ping'
-    alias last='grc last'
-    alias netstat='grc netstat'
-    alias traceroute='grc traceroute'
-    alias make='grc make'
-    alias gcc='grc gcc'
-    alias configure='grc ./configure'
-    alias cat="grc cat"
-    alias tail="grc tail"
-    alias head="grc head"
-fi
-
 
 alias killall="killall --interactive --verbose"
 alias git="nocorrect git"
@@ -167,9 +194,89 @@ alias pipf="pip install --src=/arch/naspeh/libs"
 alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
 alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
-## Load other configuration ##
-for rc in $ZDOTDIR/*.sh
-do
-    source $rc
-done
-unset rc
+## Prompt ##
+autoload colors; colors
+setopt prompt_subst
+
+# Decide if we need to set titlebar text.
+case $TERM in
+    (xterm*|rxvt)
+        titlebar_precmd () { print -Pn "\e]0;%n@%m: %~\a" }
+        titlebar_preexec () { print -Pn "\e]0;$1 %n@%m: %~\a" }
+        ;;
+    (screen*)
+        titlebar_precmd () { echo -ne "\ek${1%% *}\e\\" }
+        titlebar_preexec () { echo -ne "\ek${1%% *}\e\\" }
+        ;;
+    (*)
+        titlebar_precmd () {}
+        titlebar_preexec () {}
+        ;;
+esac
+precmd () {
+    titlebar_precmd
+}
+preexec () {
+    titlebar_preexec
+}
+
+# VCS info
+autoload -Uz vcs_info
+
+zstyle ':vcs_info:*' stagedstr '%F{28} ●'
+zstyle ':vcs_info:*' unstagedstr '%F{11} ●'
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{11}%r'
+zstyle ':vcs_info:*' enable git hg svn
+precmd () {
+    if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
+        zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{blue}]'
+    } else {
+        zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{red} ●%F{blue}]'
+    }
+
+    vcs_info
+    titlebar_precmd
+}
+
+battery_charge () {
+  # Battery 0: Discharging, 94%, 03:46:34 remaining
+  bat_percent=`acpi | awk -F ':' {'print $2;'} | awk -F ',' {'print $2;'} | sed -e "s/\s//" -e "s/%.*//"`
+
+  if [ $bat_percent -lt 20 ]; then cl='%F{red}'
+  elif [ $bat_percent -lt 50 ]; then cl='%F{yellow}'
+  else cl='%F{green}'
+  fi
+
+  filled=${(l:`expr $bat_percent / 10`::▸:)}
+  empty=${(l:`expr 10 - $bat_percent / 10`::▹:)}
+  #echo $cl$filled$empty'
+  echo '$cl$bat_percent'
+}
+
+pwd_length() {
+  local length
+  (( length = $COLUMNS / 2 - 25 ))
+  echo $(($length < 20 ? 20 : $length))
+}
+
+# red, green, yellow, blue, magenta, cyan, white, black
+# B(bold), K(background color), F(foreground color)
+# %F{yellow} - make the foreground color yellow
+# %f - reset the foreground color to the default
+prompt_user_host='%(!.%F{red}.%F{green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
+prompt_time='%F{magenta}[%T] '
+prompt_pwd='%F{blue}%$(pwd_length)<...<%(!.%/.%~)%<< '
+prompt_vcs_info='%f${vcs_info_msg_0_}'
+prompt_exit_code='%F{red}%(0?..%? ↵)%f'
+prompt_jobs='%F{cyan}%1(j.(%j) .)'
+prompt_sigil='%F{green}%(!.%F{red}.)\$ '
+prompt_end='%f'
+prompt_battery='$(battery_charge)%F{default}'
+
+# left
+PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_vcs_info$prompt_jobs$prompt_exit_code
+$prompt_sigil$prompt_end"
+
+# right
+#RPS1="$prompt_battery"
