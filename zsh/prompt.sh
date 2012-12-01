@@ -26,9 +26,9 @@ fg_black=$'%{\e[0;30m%}'
 case $TERM in
   (xterm*|rxvt)
     titlebar_precmd () { print -Pn "\e]0;%n@%m: %~\a" }
-    titlebar_preexec () { print -Pn "\e]0;%n@%m: $1\a" }
+    titlebar_preexec () { print -Pn "\e]0;$1 %n@%m: %~\a" }
     ;;
-    (screen)
+  (screen*)
     titlebar_precmd () { echo -ne "\ek${1%% *}\e\\" }
     titlebar_preexec () { echo -ne "\ek${1%% *}\e\\" }
     ;;
@@ -37,13 +37,11 @@ case $TERM in
     titlebar_preexec () {}
     ;;
 esac
-
 precmd () {
-  titlebar_precmd
+    titlebar_precmd
 }
-
 preexec () {
-  titlebar_preexec
+    titlebar_preexec
 }
 
 battery_charge () {
@@ -76,6 +74,7 @@ precmd () {
     }
 
     vcs_info
+    titlebar_precmd
 }
 
 setopt prompt_subst

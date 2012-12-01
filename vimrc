@@ -1,13 +1,14 @@
 "Вырубаем режим совместимости с VI:
 set nocompatible
 
+set title
+
 "set background=dark
 "color darkblue
 "set background=light
 "color delek
 "color zellner
 "color desert
-
 
 " Localization
 set langmenu=none            " Always use english menu
@@ -41,7 +42,7 @@ set incsearch
 
 syntax on
 set number
-let python_highlight_all = 1
+let python_highlight_all=1
 
 set list
 "set listchars=tab:>-,trail:~,extends:+,precedes:+
@@ -256,9 +257,19 @@ let xterm16_colormap = 'softlight'
 let xterm16_brightness = 'high'
 color xterm16
 
-"Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdcommenter'
 "Bundle 'tomtom/tcomment_vim'
 "Bundle 'comments.vim'
+"Bundle 'python_open_module'
+let g:pom_key_open = '<leader>j'
+
+"set foldenable
+"set foldcolumn=1
+"Bundle 'Python-Syntax-Folding'
+"Bundle 'Efficient-python-folding'
+"Bundle 'sunsol/vim_python_fold_compact'
+"noremap f zA
+"noremap F za
 
 " ------------------------------
 " Functions
@@ -461,7 +472,7 @@ autocmd BufNewFile,BufRead *.{less,css} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
 
 autocmd FileType python call TextWidth()
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python set omnifunc=pythoncomplete#Complete
 "autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 "autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags

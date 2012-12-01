@@ -2,7 +2,7 @@
 
 ZDOTDIR=~/.zsh
 
-eval `dircolors ~/.zsh/dircolors/dircolors.ansi-light`
+#eval `dircolors ~/.zsh/dircolors/dircolors.ansi-light`
 
 export HISTTIMEFORMAT="%t%d.%m.%y %H:%M:%S%t"
 export HISTIGNORE="&:ls:[bf]g:exit"
@@ -10,13 +10,7 @@ export HISTIGNORE="&:ls:[bf]g:exit"
 export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
-#export ZLS_COLORS=$LS_COLORS
 
-#case $TERM in
-#    xterm*)
-#        precmd () {print -Pn "\e]0;%n@%m: %~\a"}
-#        ;;
-#esac
 export TERM='xterm-256color'
 [ -n "$TMUX" ] && export TERM=screen-256color
 
