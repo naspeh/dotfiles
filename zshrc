@@ -11,6 +11,11 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
 
+if [ -f /usr/bin/vimpager ]; then
+    export PAGER=vimpager
+    alias less=$PAGER
+fi
+
 export TERM='xterm-256color'
 [ -n "$TMUX" ] && export TERM=screen-256color
 
@@ -22,12 +27,6 @@ HISTSIZE=1000
 SAVEHIST=$HISTSIZE
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
-
-export PYTHONSTARTUP=~/.pythonrc
-export WORKON_HOME=$HOME/.virtualenvs
-source $(which virtualenvwrapper.sh)
-export PIP_VIRTUALENV_BASE=$WORKON_HOME
-export PIP_RESPECT_VIRTUALENV=true
 
 bindkey -e
 #autoload -U edit-command-line
@@ -96,7 +95,7 @@ alias x='startx'
 alias -s {avi,mpeg,mpg,mov,m2v}=vlc
 alias -s {odt,doc,sxw,rtf}=libreoffice
 alias -s {pdf,djvu}=evince
-alias -s {jpg,png,svg,xpm,bmp}=gthumb
+alias -s {jpg,png,svg,xpm,bmp}=mirage
 
 autoload -U pick-web-browser
 alias -s {html,htm,xhtml}=pick-web-browser
@@ -119,22 +118,24 @@ fi
 alias killall="killall --interactive --verbose"
 alias git="nocorrect git"
 alias free="free -t -m"
-alias pacman-clear='pacman -Rs "$(pacman -Qtdq)"'
+[ -f "$(which pacman)" ] && alias pacclear='pacman -Rs "$(pacman -Qtdq)"'
 
 alias myip="curl ip.appspot.com"
 alias timesync='ntpdate ua.pool.ntp.org'
-
-alias pipi="pip install"
-alias pipf="pip install --src=/arch/naspeh/libs"
-
-alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
-alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
 alias hdmi1="xrandr --output LVDS1 --auto --output HDMI1 --auto --right-of LVDS1"
 alias dp1auto="xrandr --output LVDS-1 --auto --output DP-1 --auto --right-of LVDS-1"
 alias dp1mode="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode "
 alias dp1mode1080p="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode 1920x1080"
 alias dp1mode720p="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode 1280x720"
+
+#export PYTHONSTARTUP=~/.pythonrc
+if [ -f "$(which virtualenvwrapper.sh)" ]; then
+    source $(which virtualenvwrapper.sh)
+fi
+export WORKON_HOME=$HOME/.virtualenvs
+export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export PIP_RESPECT_VIRTUALENV=true
 
 venv_has() {
     if [ -e .venv ]; then
@@ -159,6 +160,12 @@ alias ve="virtualenv --no-site-packages --distribute"
 alias mkve="mkvirtualenv --no-site-packages --distribute"
 alias onve="venv_has"
 alias cd="venv_cd"
+
+alias pipi="pip install"
+alias pipf="pip install --src=/arch/naspeh/libs"
+
+alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
+alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
 ## Load other configuration ##
 for rc in $ZDOTDIR/*.sh
