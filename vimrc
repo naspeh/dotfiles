@@ -127,7 +127,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 Bundle 'scrooloose/nerdtree'
-let NERDTreeWinSize = 35
+let NERDTreeWinSize=35
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.pyc$']
@@ -151,10 +151,10 @@ let Tlist_WinWidth                = 35  " Taglist win width
 let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
 
 Bundle 'AutoComplPop', 'L9'
-let g:acp_ignorecaseOption = 0
+let g:acp_ignorecaseOption=0
 "Bundle 'Shougo/neocomplcache'
-"let g:acp_enableAtStartup = 0
-"let g:neocomplcache_enable_at_startup = 1
+"let g:acp_enableAtStartup=0
+"let g:neocomplcache_enable_at_startup=1
 
 Bundle 'tpope/vim-fugitive'
 
@@ -162,8 +162,8 @@ Bundle 'tpope/vim-fugitive'
 "let g:ackprg='ack-grep --with-filename --nocolor --nogroup --column'
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let Grep_Skip_Dirs = '.ropeproject .git .hg _generated_media migrations'
-let Grep_Skip_Files = '*.bak *~ *.pyc _generated_media*'
+let Grep_Skip_Dirs='.ropeproject .git .hg _generated_media migrations'
+let Grep_Skip_Files='*.bak *~ *.pyc _generated_media*'
 
 Bundle 'pyflakes'
 Bundle 'python.vim'
@@ -181,11 +181,11 @@ Bundle 'timo/rope-vim'
 let g:ropevim_guess_project=1
 "let g:ropevim_enable_autoimport=0
 "let g:ropevim_codeassist_maxfixes=3
-"let g:ropevim_autoimport_modules = []
+"let g:ropevim_autoimport_modules=[]
 
 "Bundle 'pyflakes.vim'
-"let g:pyflakes_use_quickfix = 0
-let no_pyflakes_maps = 1
+"let g:pyflakes_use_quickfix=0
+let no_pyflakes_maps=1
 
 Bundle 'jQuery'
 Bundle 'jslint.vim'
@@ -198,25 +198,25 @@ Bundle 'plasticboy/vim-markdown'
 
 if v:version >= 703
     Bundle 'Gundo'
-    let g:gundo_width = 35
+    let g:gundo_width=35
 endif
 
 "Bundle 'https://github.com/jeetsukumaran/vim-buffergator.git'
-let g:buffergator_sort_regime = 'filepath'
-let g:buffergator_display_regime = 'filepath'
-let g:buffergator_viewport_split_policy = 'B'
+let g:buffergator_sort_regime='filepath'
+let g:buffergator_display_regime='filepath'
+let g:buffergator_viewport_split_policy='B'
 
 "Bundle 'minibufexpl.vim'
-"let g:miniBufExplVSplit = 20   " column width in chars
-"let g:miniBufExplMaxSize = 20
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplorerMoreThanOne = 1
-let g:miniBufExplModSelTarget = 1
-"let g:miniBufExplForceSyntaxEnable = 1
-let g:miniBufExplSplitBelow = 0
+"let g:miniBufExplVSplit=20   " column width in chars
+"let g:miniBufExplMaxSize=20
+let g:miniBufExplMapWindowNavVim=1
+let g:miniBufExplMapWindowNavArrows=1
+let g:miniBufExplMapCTabSwitchBufs=1
+let g:miniBufExplUseSingleClick=1
+let g:miniBufExplorerMoreThanOne=1
+let g:miniBufExplModSelTarget=1
+"let g:miniBufExplForceSyntaxEnable=1
+let g:miniBufExplSplitBelow=0
 
 "Bundle 'LustyJuggler'
 "nmap <leader>b :LustyJuggler<cr>
@@ -228,40 +228,40 @@ Bundle 'Solarized'
 "color solarized
 
 Bundle 'kien/ctrlp.vim'
-let g:ctrlp_custom_ignore = {
+let g:ctrlp_custom_ignore={
     \'dir':  '\.git$\|\.hg$\|\.svn$\|_generated_media$',
 \}
 " CtrlP settings
-let g:ctrlp_extensions = ['tag', 'quickfix', 'dir', 'line']
-let g:ctrlp_working_path_mode = 2
-let g:ctrlp_mruf_relative = 1
-"let g:ctrlp_regexp = 0
+let g:ctrlp_extensions=['tag', 'quickfix', 'dir', 'line']
+let g:ctrlp_working_path_mode=2
+let g:ctrlp_mruf_relative=1
+"let g:ctrlp_regexp=0
 
-"let g:ctrlp_user_command = [
+"let g:ctrlp_user_command=[
 "    \'.git', 'cd %s && git ls-files | grep -v -e /migrations/ -e /static/img'
 "\]
-let g:ctrlp_ignore_ = ' | grep -v -e /migrations/ -e ^_generated_media -e ^\.ropeproject'
-let g:ctrlp_user_command = {
+let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^_generated_media -e ^\.ropeproject'
+let g:ctrlp_user_command={
     \'types': {
         \1: ['.git', 'cd %s && git ls-files' . g:ctrlp_ignore_],
         \2: ['.hg', 'hg --cwd %s locate -I .' . g:ctrlp_ignore_],
     \},
     \'fallback': 'find %s -type f' . g:ctrlp_ignore_
 \}
-"let g:ctrlp_user_command = 'find %s -type f'
+"let g:ctrlp_user_command='find %s -type f'
 
 Bundle 'powerman/vim-plugin-ruscmd'
 
 Bundle 'xterm16.vim'
-let xterm16_colormap = 'softlight'
-let xterm16_brightness = 'high'
+let xterm16_colormap='softlight'
+let xterm16_brightness='high'
 color xterm16
 
 Bundle 'scrooloose/nerdcommenter'
 "Bundle 'tomtom/tcomment_vim'
 "Bundle 'comments.vim'
 "Bundle 'python_open_module'
-let g:pom_key_open = '<leader>j'
+let g:pom_key_open='<leader>j'
 
 "set foldenable
 "set foldcolumn=1
@@ -323,10 +323,10 @@ endfun
 
 set guioptions+=a
 function! MakePattern(text)
-  let pat = escape(a:text, '\')
-  let pat = substitute(pat, '\_s\+$', '\\s\\*', '')
-  let pat = substitute(pat, '^\_s\+', '\\s\\*', '')
-  let pat = substitute(pat, '\_s\+',  '\\_s\\+', 'g')
+  let pat=escape(a:text, '\')
+  let pat=substitute(pat, '\_s\+$', '\\s\\*', '')
+  let pat=substitute(pat, '^\_s\+', '\\s\\*', '')
+  let pat=substitute(pat, '\_s\+',  '\\_s\\+', 'g')
   return '\\V' . escape(pat, '\"')
 endfunction
 nnoremap <F2> :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
@@ -372,7 +372,7 @@ nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 
 " set custom map leader to ','
-let mapleader = ","
+let mapleader=","
 
 " Leader
 call LeaderToggle('<space>', 'hlsearch')
@@ -426,12 +426,12 @@ call MapDo('<F5>', ':NERDTreeClose<cr>:TlistToggle<cr>')
 call MapDo('<F6>', ':GundoToggle<cr>')
 
 " F7, F8
-let g:flake8_auto = 0
+let g:flake8_auto=0
 fun! FlakeToggle()
     if g:flake8_auto == 0
-        let g:flake8_auto = 1
+        let g:flake8_auto=1
     else
-        let g:flake8_auto = 0
+        let g:flake8_auto=0
     endif
     echo 'g:flake8_auto ='g:flake8_auto
 endfun
