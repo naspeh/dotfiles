@@ -186,7 +186,7 @@ venv_cd() {
 }
 venv_info() {
     if [ $VIRTUAL_ENV ]; then
-        echo "%F{blue}[%F{magenta}venv: %B`basename $VIRTUAL_ENV`%b%F{blue}] "
+        echo "%F{blue}[%F{cyan}venv: %B`basename $VIRTUAL_ENV`%b%F{blue}] "
     fi
 }
 alias ve="virtualenv --no-site-packages --distribute"
