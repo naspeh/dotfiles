@@ -174,7 +174,6 @@ venv_has() {
         else
             ENV_PATH="$WORKON_HOME/$ENV_NAME"
             export ACTIVATE="$ENV_PATH/bin/activate"
-            echo $ACTIVATE
             if [ -e "$ACTIVATE" ]; then
                 source $ACTIVATE
                 which python
@@ -182,8 +181,13 @@ venv_has() {
         fi
     fi
 }
-venv_cd () {
+venv_cd() {
     cd "$@" && venv_has
+}
+venv_info() {
+    if [ $VIRTUAL_ENV ]; then
+        echo "%F{blue}[%F{magenta}venv: %B`basename $VIRTUAL_ENV`%b%F{blue}] "
+    fi
 }
 alias ve="virtualenv --no-site-packages --distribute"
 alias mkve="mkvirtualenv --no-site-packages --distribute"
@@ -232,9 +236,9 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{11}%r'
 zstyle ':vcs_info:*' enable git hg svn
 precmd () {
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
-        zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{blue}]'
+        zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{blue}] '
     } else {
-        zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{red} ●%F{blue}]'
+        zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{red} ●%F{blue}] '
     }
 
     vcs_info
@@ -266,19 +270,20 @@ pwd_length() {
 # B(bold), K(background color), F(foreground color)
 # %F{yellow} - make the foreground color yellow
 # %f - reset the foreground color to the default
-prompt_user_host='%B%(!.%F{red}.%F{green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
-prompt_time='%F{magenta}[%T] '
-prompt_pwd='%B%F{blue}%$(pwd_length)<...<%(!.%/.%~)%<< %b'
-prompt_vcs_info='%f${vcs_info_msg_0_}'
-prompt_exit_code='%F{red}%(0?..%? ↵)%f'
-prompt_jobs='%F{cyan}%1(j.(%j) .)'
-prompt_sigil='%B%F{green}%(!.%F{red}.)\$ '
-prompt_end='%b%f'
-prompt_battery='$(battery_charge)%F{default}'
+p_user_host='%B%(!.%F{red}.%F{green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
+p_time='%F{magenta}[%T] '
+p_pwd='%B%F{blue}%$(pwd_length)<...<%(!.%/.%~)%<< %b'
+p_vcs_info='%f${vcs_info_msg_0_}'
+p_venv_info='%f$(venv_info)'
+p_exit_code='%F{red}%(0?..%? ↵)%f'
+p_jobs='%F{cyan}%1(j.(%j) .)'
+p_sigil='%B%F{green}%(!.%F{red}.)\$ '
+p_end='%b%f'
+p_battery='$(battery_charge)%F{default}'
 
 # left
-PS1="$prompt_time$prompt_user_host$prompt_pwd$prompt_vcs_info$prompt_jobs$prompt_exit_code
-$prompt_sigil$prompt_end"
+PS1="$p_time$p_user_host$p_pwd$p_venv_info$p_vcs_info$p_jobs$p_exit_code
+$p_sigil$p_end"
 
 # right
-#RPS1="$prompt_battery"
+#RPS1="$p_battery"
