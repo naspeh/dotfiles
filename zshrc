@@ -75,8 +75,7 @@ bindkey -e
 #zstyle ':completion:*:processes-names' command 'ps xho command'
 
 zmodload zsh/complist
-autoload -Uz compinit
-compinit
+autoload -Uz compinit; compinit
 zstyle :compinstall filename '${HOME}/.zshrc'
 
 #- buggy
@@ -111,7 +110,7 @@ if [ -f /usr/bin/grc ]; then
     alias head="grc head"
 fi
 
-alias cat='vimcat'
+#alias cat='vimcat'
 alias tmux='tmux -2'
 alias mc='mc -b'
 
@@ -166,15 +165,18 @@ export PIP_RESPECT_VIRTUALENV=true
 
 venv_has() {
     if [ -e .venv ]; then
+        VIRTUAL_ENV_DISABLE_PROMPT=1
         ENV_NAME=`cat .venv`
         ACTIVATE="$ENV_NAME/bin/activate"
-        if [ -e $ACTIVATE ] && [ "$VIRTUAL_ENV" != "$ENV_NAME" ]; then
+        if [ -e $ACTIVATE ]; then
             source $ACTIVATE
             which python
         else
             ENV_PATH="$WORKON_HOME/$ENV_NAME"
-            if [ -e "$ENV_PATH/bin/activate" ] && [ "$VIRTUAL_ENV" != "$ENV_PATH" ]; then
-                workon $ENV_NAME
+            export ACTIVATE="$ENV_PATH/bin/activate"
+            echo $ACTIVATE
+            if [ -e "$ACTIVATE" ]; then
+                source $ACTIVATE
                 which python
             fi
         fi
