@@ -165,19 +165,19 @@ export PIP_RESPECT_VIRTUALENV=true
 
 venv_has() {
     if [ -e .venv ]; then
-        VIRTUAL_ENV_DISABLE_PROMPT=1
-        ENV_NAME=`cat .venv`
-        ACTIVATE="$ENV_NAME/bin/activate"
-        if [ -e $ACTIVATE ]; then
-            source $ACTIVATE
-            which python
+        env_name=`cat .venv`
+        activate="$env_name/bin/activate"
+        if [ -e $activate ]; then
+            env_path=env_name
         else
-            ENV_PATH="$WORKON_HOME/$ENV_NAME"
-            export ACTIVATE="$ENV_PATH/bin/activate"
-            if [ -e "$ACTIVATE" ]; then
-                source $ACTIVATE
-                which python
-            fi
+            env_path="$WORKON_HOME/$env_name"
+            activate="$env_path/bin/activate"
+        fi
+
+        if [ -e "$activate" ] && [ "$VIRTUAL_ENV" != "$env_path" ]; then
+            VIRTUAL_ENV_DISABLE_PROMPT=1
+            source $activate
+            which python
         fi
     fi
 }
