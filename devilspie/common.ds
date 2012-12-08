@@ -7,7 +7,10 @@
             (contains(application_name) "x-terminal-emulator")
             (contains(window_name) "LilyTerm")
             (contains(window_name) "New Tab - Google Chrome")
-            (contains(window_name) "- Chromium")
+            (and
+                (contains(window_name) "Chromium")
+                (matches(window_role) "browser")
+            )
             (contains(window_name) "FatRat")
             (contains(window_name) "Document Viewer")
             (contains(window_name) "Clementine")

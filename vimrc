@@ -32,7 +32,7 @@ set ruler
 
 " Включить автоотступы
 set autoindent
-set smartindent
+"set smartindent
 set smarttab
 
 " Поиск
@@ -94,9 +94,6 @@ noremap <C-l> 14k14<C-y>
 " share clipboard with system clipboard
 "set clipboard+=unnamed
 set clipboard=unnamedplus
-
-" don't use Ex mode, use Q for formatting
-map Q gq
 
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
 "set whichwrap+=<,>,[,]
@@ -258,6 +255,12 @@ let xterm16_brightness='high'
 color xterm16
 
 Bundle 'scrooloose/nerdcommenter'
+let NERDCreateDefaultMappings=0
+nmap <leader><space> :call NERDComment('n', 'AlignLeft')<cr>
+vmap <leader><space> :call NERDComment('x', 'AlignLeft')<cr>
+nmap <leader><space><space> :call NERDComment('n', 'Uncomment')<cr>
+vmap <leader><space><space> :call NERDComment('x', 'Uncomment')<cr>
+
 "Bundle 'tomtom/tcomment_vim'
 "Bundle 'comments.vim'
 "Bundle 'python_open_module'
@@ -270,6 +273,8 @@ let g:pom_key_open='<leader>j'
 "Bundle 'sunsol/vim_python_fold_compact'
 "noremap f zA
 "noremap F za
+
+"Bundle 'hynek/vim-python-pep8-indent'
 
 " ------------------------------
 " Functions
@@ -375,14 +380,12 @@ nnoremap <C-y> 3<C-y>
 let mapleader=","
 
 " Leader
-call LeaderToggle('<space>', 'hlsearch')
 call LeaderToggle('h', 'hlsearch')
 call LeaderToggle('p', 'paste')
 call LeaderToggle('w', 'wrap')
 call LeaderToggle('s', 'spell')
 call LeaderToggle('m', 'modifiable')
 
-" .vimrc reload
 nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>cc :cclose<cr>
 nmap <leader>c :cwin<cr>
@@ -392,8 +395,32 @@ nmap <leader>t :call TextMode()<cr>
 nmap <leader>g :RopeGotoDefinition<cr>
 nmap <leader>i :RopeOrganizeImports<cr>
 
-" New line and exit from insert mode
-"map <S-O> i<CR><ESC>
+" Toggle the quickfix window {{{
+" From Steve Losh, http://learnvimscriptthehardway.stevelosh.com/chapters/38.html
+let g:quickfix_is_open = 0
+
+function! QuickfixToggle()
+    if g:quickfix_is_open
+        cclose
+        let g:quickfix_is_open = 0
+        execute g:quickfix_return_to_window . "wincmd w"
+    else
+        let g:quickfix_return_to_window = winnr()
+        cwin
+        let g:quickfix_is_open = 1
+    endif
+endfunction
+
+nnoremap <C-q> :call QuickfixToggle()<cr>
+nnoremap <leader>q :call QuickfixToggle()<cr>
+" }}}
+
+" Use Q for formatting the current paragraph (or visual selection)
+vnoremap Q gq
+nnoremap Q gqap
+
+" Reselect text that was just pasted with ,v
+nnoremap <leader>v V`]
 
 " CTRL-F для omni completion
 imap <C-F> <C-X><C-O>
@@ -465,7 +492,7 @@ call MapDo('<F11>', ':call TextWidth()<cr>')
 
 filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
-"filetype plugin indent on
+filetype plugin indent on
 
 autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
 autocmd BufNewFile,BufRead *.{less,css} setlocal ft=css

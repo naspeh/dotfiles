@@ -78,6 +78,8 @@ zmodload zsh/complist
 autoload -Uz compinit; compinit
 zstyle :compinstall filename '${HOME}/.zshrc'
 
+zstyle ':completion:*' completer _complete _match _ignored _files
+
 #- buggy
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
