@@ -51,50 +51,50 @@ bindkey -e
 #zle -N zle-line-init
 #zle -N zle-keymap-select
 
-#autoload -Uz compinit; compinit
-
-#zstyle ':completion:*' completer _complete _match _ignored _files
-##zstyle ':completion:*' completer _complete _match _ignored _approximate _files
-#zstyle ':completion:*' group-name ''
-#zstyle ':completion:*' list-colors ''
-#zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-#zstyle ':completion:*' max-errors 1
-#zstyle ':completion:*' menu select=long-list select=0
-#zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-##zstyle ':completion:*' use-compctl false
-#zstyle ':completion:*' verbose true
-##zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-## tab completion for PID :D
-#zstyle ':completion:*:*:kill:*' menu yes select
-#zstyle ':completion:*:kill:*' force-list always
-
-#zstyle ':completion:*:processes' command 'ps -xuf'
-#zstyle ':completion:*:processes' sort false
-
-#zstyle ':completion:*:processes-names' command 'ps xho command'
-
-zmodload zsh/complist
 autoload -Uz compinit; compinit
-zstyle :compinstall filename '${HOME}/.zshrc'
 
 zstyle ':completion:*' completer _complete _match _ignored _files
+#zstyle ':completion:*' completer _complete _match _ignored _approximate _files
+#zstyle ':completion:*' group-name ''
+#zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*' max-errors 1
+zstyle ':completion:*' menu select=long-list select=0
+#zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+#zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-#- buggy
-zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
-zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
-#-/buggy
-
-zstyle ':completion:*:pacman:*' force-list always
-zstyle ':completion:*:*:pacman:*' menu yes select
-
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
+# tab completion for PID :D
 zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*'   force-list always
+zstyle ':completion:*:kill:*' force-list always
 
-zstyle ':completion:*:*:killall:*' menu yes select
-zstyle ':completion:*:killall:*'   force-list always
+zstyle ':completion:*:processes' command 'ps -xuf'
+zstyle ':completion:*:processes' sort false
+
+zstyle ':completion:*:processes-names' command 'ps xho command'
+
+#zmodload zsh/complist
+#autoload -Uz compinit; compinit
+#zstyle :compinstall filename '${HOME}/.zshrc'
+
+#zstyle ':completion:*' completer _complete _match _ignored _files
+
+##- buggy
+#zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+#zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+##-/buggy
+
+#zstyle ':completion:*:pacman:*' force-list always
+#zstyle ':completion:*:*:pacman:*' menu yes select
+
+#zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+#zstyle ':completion:*:*:kill:*' menu yes select
+#zstyle ':completion:*:kill:*'   force-list always
+
+#zstyle ':completion:*:*:killall:*' menu yes select
+#zstyle ':completion:*:killall:*'   force-list always
 
 
 ## Aliases ##
@@ -112,19 +112,14 @@ if [ -f /usr/bin/grc ]; then
     alias head="grc head"
 fi
 
-#alias cat='vimcat'
 alias tmux='tmux -2'
 alias mc='mc -b'
 
 alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'
-alias la='ls -A'
-alias l='l -lA'
 
-alias pc='rsync -P'
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
-alias rmi='nocorrect rm -Ir'
 
 alias grep='grep --color=auto'
 
@@ -146,7 +141,7 @@ alias -s {html,htm,xhtml}=pick-web-browser
 alias killall="killall --interactive --verbose"
 alias git="nocorrect git"
 alias free="free -t -m"
-[ -f "$(which pacman)" ] && alias pacclear='pacman -Rs "$(pacman -Qtdq)"'
+[ -f "$(which pacman)" ] && alias pacclear="pacman -Rs \`pacman -Qtdq\`"
 
 alias myip="curl ip.appspot.com"
 alias timesync='ntpdate ua.pool.ntp.org'
