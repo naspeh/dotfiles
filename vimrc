@@ -217,7 +217,7 @@ Bundle 'milkypostman/vim-togglelist'
 
 
 Bundle 'scrooloose/nerdtree'
-call MapDo('<F4>', ':NERDTreeToggle<cr>')
+"call MapDo('<F4>', ':NERDTreeToggle<cr>')
 let NERDTreeWinSize=35
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=1
@@ -245,8 +245,8 @@ let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
 
 
 Bundle 'majutsushi/tagbar'
-call MapDo('<F5>', ':TagbarToggle<cr>')
-
+"call MapDo('<F5>', ':TagbarToggle<cr>')
+call MapDo('<leader>t', ':TagbarToggle<cr>')
 
 Bundle 'AutoComplPop', 'L9'
 let g:acp_ignorecaseOption=0
@@ -274,8 +274,9 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let Grep_Skip_Dirs='.ropeproject .git .hg _generated_media migrations'
+let Grep_Skip_Dirs='.ropeproject .git .hg _generated_media'
 let Grep_Skip_Files='*.bak *~ *.pyc _generated_media*'
+nnoremap <silent> <F1> :Grep<CR>
 
 
 Bundle 'python.vim'
@@ -334,9 +335,8 @@ endif
 
 Bundle 'kien/ctrlp.vim'
 call MapDo('<F3>', ':CtrlPBuffer<cr>')
-"call MapDo('<F3>', ':CtrlPMixed<cr>')
-"call MapDo('<F3>', ':CtrlPCurWD<cr>')
-"call MapDo('<F3>', ':CtrlPLastMode<cr>')
+call MapDo('<F4>', ':CtrlPCurWD<cr>')
+call MapDo('<F5>', ':CtrlPBufTag<cr>')
 let g:ctrlp_custom_ignore={
     \'dir':  '\.git$\|\.hg$\|\.svn$\|_generated_media$',
 \}
