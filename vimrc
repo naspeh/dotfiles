@@ -205,7 +205,7 @@ let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
 let g:syntastic_enable_highlighting=0
 let g:syntastic_auto_loc_list=2
-nmap <leader>S :SyntasticToggleMode<cr>
+nmap <leader>s :SyntasticToggleMode<cr>
 "call MapDo('<F7>', ':SyntasticToggleMode<cr>')
 call MapDo('<F8>', ':SyntasticCheck<cr>')
 
@@ -287,8 +287,9 @@ Bundle 'python.vim'
 "Bundle 'pythoncomplete'
 
 
-Bundle 'nvie/vim-flake8'
+"Bundle 'nvie/vim-flake8'
 let g:flake8_auto=0
+nmap <leader>f :call Flake8()<cr>
 fun! FlakeToggle()
     if g:flake8_auto == 0
         let g:flake8_auto=1
@@ -454,13 +455,13 @@ vnoremap <silent> <F2> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
 " ------------------------------
 filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
-filetype plugin indent on
+"filetype plugin indent on
 
 "autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
 
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+"autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags

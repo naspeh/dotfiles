@@ -146,11 +146,18 @@ alias free="free -t -m"
 alias myip="curl ip.appspot.com"
 alias timesync='ntpdate ua.pool.ntp.org'
 
-alias hdmi1="xrandr --output LVDS1 --auto --output HDMI1 --auto --right-of LVDS1"
-alias dp1auto="xrandr --output LVDS-1 --auto --output DP-1 --auto --right-of LVDS-1"
-alias dp1mode="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode "
-alias dp1mode1080p="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode 1920x1080"
-alias dp1mode720p="xrandr --output LVDS-1 --auto --output DP-1 --right-of LVDS-1 --mode 1280x720"
+monic() {
+    mode='--auto'
+    output='HDMI1'
+    if [ $1 ]; then
+        output=$1
+    fi
+    if [ $2 ]; then
+        mode="--mode $2"
+    fi
+    xrandr --output LVDS1 --auto --output $output --right-of LVDS1 $mode
+    echo "xrandr --output LVDS1 --auto --output $output --right-of LVDS1 $mode"
+}
 
 #export PYTHONSTARTUP=~/.pythonrc
 if [ -f "$(which virtualenvwrapper.sh)" ]; then
@@ -159,6 +166,7 @@ fi
 export WORKON_HOME=$HOME/.virtualenvs
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true
+export VIRTUALENV_DISTRIBUTE=true
 
 venv_has() {
     if [ -e .venv ]; then
