@@ -114,6 +114,8 @@ nnoremap <F1> <nop>
 nnoremap Q <nop>
 set shortmess+=I
 
+"set autoread
+
 let mapleader=","
 
 " ------------------------------
@@ -218,6 +220,7 @@ Bundle 'milkypostman/vim-togglelist'
 
 Bundle 'scrooloose/nerdtree'
 "call MapDo('<F4>', ':NERDTreeToggle<cr>')
+call MapDo('<leader>n', ':NERDTreeToggle<cr>')
 let NERDTreeWinSize=35
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=1
@@ -385,9 +388,10 @@ vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>
 Bundle 'davidhalter/jedi-vim'
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#rename_command = 0
+let g:jedi#related_names_command = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#show_function_definition = 0
-
+let g:jedi#autocompletion_command = "<C-Space>"
 
 "Bundle 't9md/vim-quickhl'
 "call MapDo('<leader><space>', '<Plug>(quickhl-toggle)')
@@ -432,6 +436,7 @@ call LeaderToggle('w', 'wrap')
 call LeaderToggle('s', 'spell')
 call LeaderToggle('m', 'modifiable')
 
+nmap <leader>2t :setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2<cr>
 nmap <leader>r :source ~/.vimrc<cr>
 "nmap <leader>cc :cclose<cr>
 "nmap <leader>c :copen<cr>
@@ -473,6 +478,8 @@ autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
 
+autocmd BufWinEnter,WinEnter * checktime
+autocmd FileChangedShell * echo "Warning: File changed on disk"
 
 " ------------------------------
 " Misc

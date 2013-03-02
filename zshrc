@@ -11,6 +11,8 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
 
+REPORTTIME=5
+
 #PAGER=less
 #if [ -f /usr/bin/vimpager ]; then
 #    export PAGER=vimpager
@@ -160,34 +162,34 @@ monic() {
 }
 
 #export PYTHONSTARTUP=~/.pythonrc
-if [ -f "$(which virtualenvwrapper.sh)" ]; then
-    source $(which virtualenvwrapper.sh)
-fi
 export WORKON_HOME=$HOME/.virtualenvs
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=true
 export VIRTUALENV_DISTRIBUTE=true
 
-venv_has() {
+venv_auto() {
     if [ -e .venv ]; then
-        env_name=`cat .venv`
-        activate="$env_name/bin/activate"
-        if [ -e $activate ]; then
-            env_path=env_name
-        else
-            env_path="$WORKON_HOME/$env_name"
-            activate="$env_path/bin/activate"
-        fi
+        venv_do `cat .venv`
+    fi
+}
+venv_do() {
+    env_name=$1
+    activate="$env_name/bin/activate"
+    if [ -e $activate ]; then
+        env_path=env_name
+    else
+        env_path="$WORKON_HOME/$env_name"
+        activate="$env_path/bin/activate"
+    fi
 
-        if [ -e "$activate" ] && [ "$VIRTUAL_ENV" != "$env_path" ]; then
-            VIRTUAL_ENV_DISABLE_PROMPT=1
-            source $activate
-            which python
-        fi
+    if [ -e "$activate" ] && [ "$VIRTUAL_ENV" != "$env_path" ]; then
+        VIRTUAL_ENV_DISABLE_PROMPT=1
+        source $activate
+        which python
     fi
 }
 venv_cd() {
-    cd "$@" && venv_has
+    cd "$@" && venv_auto
 }
 venv_info() {
     if [ $VIRTUAL_ENV ]; then
@@ -195,8 +197,6 @@ venv_info() {
     fi
 }
 alias ve="virtualenv --no-site-packages --distribute"
-alias mkve="mkvirtualenv --no-site-packages --distribute"
-alias onve="venv_has"
 alias cd="venv_cd"
 
 alias pipi="pip install"
