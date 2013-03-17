@@ -11,7 +11,7 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
 
-REPORTTIME=5
+REPORTTIME=2
 
 #PAGER=less
 #if [ -f /usr/bin/vimpager ]; then
@@ -115,7 +115,7 @@ if [ -f /usr/bin/grc ]; then
 fi
 
 alias tmux='tmux -2'
-alias mc='mc -b'
+#alias mc='mc -b'
 
 alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'
@@ -157,8 +157,9 @@ monic() {
     if [ $2 ]; then
         mode="--mode $2"
     fi
-    xrandr --output LVDS1 --auto --output $output --right-of LVDS1 $mode
-    echo "xrandr --output LVDS1 --auto --output $output --right-of LVDS1 $mode"
+    cmd="xrandr --output LVDS1 --auto --output $output --below LVDS1 $mode"
+    echo $cmd
+    eval $cmd
 }
 
 #export PYTHONSTARTUP=~/.pythonrc
@@ -169,10 +170,15 @@ export VIRTUALENV_DISTRIBUTE=true
 
 venv_auto() {
     if [ -e .venv ]; then
-        venv_do `cat .venv`
+        venv `cat .venv`
     fi
 }
-venv_do() {
+venv() {
+    if [ -z "$1" ]; then
+        echo "List of virtualenvs:"
+        ls $WORKON_HOME
+        return 1
+    fi
     env_name=$1
     activate="$env_name/bin/activate"
     if [ -e $activate ]; then
@@ -196,9 +202,15 @@ venv_info() {
         echo "%F{blue}[%F{cyan}env: %B`basename $VIRTUAL_ENV`%b%F{blue}] "
     fi
 }
+_venv_complete () {
+    reply=( $( cd $WORKON_HOME && ls -d *) )
+}
+compctl -K _venv_complete venv
+
 alias ve="virtualenv --no-site-packages --distribute"
 alias cd="venv_cd"
 
+alias pip="nocorrect pip"
 alias pipi="pip install"
 alias pipf="pip install --src=/arch/naspeh/libs"
 
@@ -275,20 +287,20 @@ pwd_length() {
 # B(bold), K(background color), F(foreground color)
 # %F{yellow} - make the foreground color yellow
 # %f - reset the foreground color to the default
-p_user_host='%B%(!.%F{red}.%F{green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
-p_time='%F{magenta}[%T] '
-p_pwd='%B%F{blue}%$(pwd_length)<...<%(!.%/.%~)%<< %b'
+p_user_host='%f%B%(!.%F{red}.%F{green})'`if [[ ! $HOME == */$USER ]] echo '%n@'`'%m%b:'
+p_time='%f%F{magenta}[%T] '
+p_pwd='%f%B%F{blue}%$(pwd_length)<...<%(!.%/.%~)%<< %b'
 p_vcs_info='%f${vcs_info_msg_0_}'
 p_venv_info='%f$(venv_info)'
-p_exit_code='%F{red}%(0?..%? ↵)%f'
-p_jobs='%F{cyan}%1(j.(%j) .)'
-p_sigil='%B%F{green}%(!.%F{red}.)\$ '
-p_end='%b%f'
-p_battery='$(battery_charge)%F{default}'
+p_exit_code='%f%F{red}%(0?..%? ↵)'
+p_jobs='%f%F{cyan}%1(j.(%j) .)'
+p_sigil='%f%B%F{green}%(!.%F{red}.)\$ '
+p_end='%f%b'
+p_battery='%f$(battery_charge)%F{default}'
 
 # left
 PS1="$p_time$p_user_host$p_pwd$p_venv_info$p_vcs_info$p_jobs$p_exit_code
-$p_sigil$p_end"
+$p_sigil$p_end%f"
 
 # right
 #RPS1="$p_battery"

@@ -114,9 +114,31 @@ nnoremap <F1> <nop>
 nnoremap Q <nop>
 set shortmess+=I
 
-"set autoread
-
 let mapleader=","
+
+filetype on            " enables filetype detection
+filetype plugin on     " enables filetype specific plugins
+"filetype plugin indent on
+
+"autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
+autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
+autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
+
+"autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+
+"autocmd FileType js,css,html setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+
+" Highlight insert mode
+autocmd InsertEnter * set cursorline
+autocmd InsertLeave * set nocursorline
+
+set autoread
+autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
+autocmd FileChangedShell * echo "Warning: File changed on disk"
 
 " ------------------------------
 " Functions
@@ -456,40 +478,13 @@ vnoremap <silent> <F2> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
 
 
 " ------------------------------
-" Autocommands
-" ------------------------------
-filetype on            " enables filetype detection
-filetype plugin on     " enables filetype specific plugins
-"filetype plugin indent on
-
-"autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
-autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
-autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
-
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
-"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-"autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-
-"autocmd FileType js,css,html setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-
-" Highlight insert mode
-autocmd InsertEnter * set cursorline
-autocmd InsertLeave * set nocursorline
-
-autocmd BufWinEnter,WinEnter * checktime
-autocmd FileChangedShell * echo "Warning: File changed on disk"
-
-" ------------------------------
 " Misc
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
 iab pdb import pdb; pdb.set_trace()<esc>
-iab ipdb import ipdb; ipdb.set_trace()
-iab pudb import pudb; pudb.set_trace()<esc>
+iab ipdb import ipdb; ipdb.set_trace()<esc>
 
 python << EOF
 import os, sys
