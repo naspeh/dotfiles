@@ -30,13 +30,12 @@ Bundle "godlygeek/tabular"
 Bundle 'scrooloose/syntastic'
 "g:syntastic_less_use_less_lint=1
 let g:syntastic_check_on_open=1
-let g:syntastic_enable_signs=1
+let g:syntastic_enable_signs=0
 let g:syntastic_enable_highlighting=0
-let g:syntastic_auto_loc_list=2
+let g:syntastic_auto_loc_list=0
 nmap <leader>s :SyntasticToggleMode<cr>
 "call MapDo('<F7>', ':SyntasticToggleMode<cr>')
-call MapDo('<F8>', ':SyntasticCheck<cr>')
-
+call MapDo('<F8>', ':Errors<cr>:lclose<cr>')
 
 Bundle 'milkypostman/vim-togglelist'
 "The default mappings are:
@@ -46,7 +45,7 @@ Bundle 'milkypostman/vim-togglelist'
 
 Bundle 'scrooloose/nerdtree'
 "call MapDo('<F4>', ':NERDTreeToggle<cr>')
-call MapDo('<leader>n', ':NERDTreeToggle<cr>')
+call MapDo('<leader>f', ':NERDTreeToggle<cr>')
 let NERDTreeWinSize=35
 let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=1
@@ -118,7 +117,7 @@ Bundle 'python.vim'
 
 "Bundle 'nvie/vim-flake8'
 let g:flake8_auto=0
-nmap <leader>f :call Flake8()<cr>
+"nmap <leader>f :call Flake8()<cr>
 fun! FlakeToggle()
     if g:flake8_auto == 0
         let g:flake8_auto=1
@@ -200,6 +199,8 @@ vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>
 
 "Bundle 'tomtom/tcomment_vim'
 "Bundle 'comments.vim'
+"Bundle 'tpope/vim-commentary'
+"autocmd FileType python set commentstring=#%s
 
 
 "set foldenable

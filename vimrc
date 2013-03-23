@@ -1,3 +1,6 @@
+set nocompatible
+let mapleader=","
+
 " ------------------------------
 " Functions
 " ------------------------------
@@ -52,22 +55,16 @@ fun! TextMode()
 endfun
 nmap <leader>t :call TextMode()<cr>
 
+
 " ------------------------------
 " Configure
 " ------------------------------
+
+" Load plugins
 source ~/.vim/plugins.vim
 
-"Вырубаем режим совместимости с VI:
-set nocompatible
-
+" set window title
 set title
-
-"set background=dark
-"color darkblue
-"set background=light
-"color delek
-"color zellner
-"color desert
 
 " Localization
 set langmenu=none            " Always use english menu
@@ -126,7 +123,9 @@ set wildmode=longest,full
 set wildignore=*.pyc
 "set wildcharm=<TAB>
 set statusline=%<%f%h%m%r%=%{fugitive#statusline()}\ (%{&ff}\ %{&ft}\ %{&encoding})\ %b\ 0x%B\ %l,%c%V\ %P
-set laststatus=2
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 " Показывать незавершенные команды в статусбаре
 set showcmd
 hi StatusLineBufferNumber guifg=fg guibg=bg gui=bold
@@ -151,6 +150,7 @@ set clipboard=unnamedplus
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
 "set whichwrap+=<,>,[,]
 
+"GVIM
 if has('gui')
     " Скрыть панель в gui версии
     set guioptions-=T
@@ -159,7 +159,11 @@ if has('gui')
     " Отключаем графические табы (текстовые занимают меньше места)
     "set guioptions-=e
 
-    "set guifont=monospace\ 9
+    " Disable scrollbars
+    set guioptions+=LlRrb
+    set guioptions-=LlRrb
+
+    set guifont=monospace\ 8
 
     " Filename
     :amenu 20.351 &Edit.Copy\ FileName :let @*=expand("%:t")<CR>
@@ -172,8 +176,6 @@ endif
 nnoremap <F1> <nop>
 nnoremap Q <nop>
 set shortmess+=I
-
-let mapleader=","
 
 filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
@@ -208,7 +210,7 @@ imap <S-Insert> <MiddleMouse>
 "map! <S-Insert> <MiddleMouse>
 
 " CTRL-F для omni completion
-imap <C-F> <C-X><C-O>
+"imap <C-F> <C-X><C-O>
 
 " < & > - делаем отступы для блоков
 vmap < <gv
@@ -242,6 +244,7 @@ nmap <leader>r :source ~/.vimrc<cr>
 "nmap <leader>cc :cclose<cr>
 "nmap <leader>c :copen<cr>
 nmap <leader>a ggVG<cr>
+nmap <leader>n :lnext<cr>
 
 set guioptions+=a
 function! MakePattern(text)
@@ -262,8 +265,8 @@ vnoremap <silent> <F2> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
-iab pdb import pdb; pdb.set_trace()<esc>
-iab ipdb import ipdb; ipdb.set_trace()<esc>
+iab pyb import pdb; pdb.set_trace()<esc>
+iab pyi import ipdb; ipdb.set_trace()<esc>
 
 python << EOF
 import os, sys
