@@ -21,6 +21,23 @@ fun! LeaderToggle(key, opt)
     execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
 endfun
 
+fun! VarToggle(name, ...)
+    let v1=0
+    let v2=1
+    if a:0 == 2
+        let v1 = a:1
+    endif
+    if a:0 == 3
+        let v2 = a:2
+    endif
+    if eval(a:name) == v1
+        execute 'let '.a:name.'='.v2
+    else
+        execute 'let '.a:name.'='.v1
+    endif
+    echo a:name.'='.eval(a:name)
+endfun
+
 fun! TextWidth()
     if v:version >= 703
         " highlight column 80
@@ -53,7 +70,7 @@ fun! TextMode()
     " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
     set whichwrap+=<,>,[,]
 endfun
-nmap <leader>t :call TextMode()<cr>
+nmap <leader>tt :call TextMode()<cr>
 
 
 " ------------------------------
@@ -245,6 +262,7 @@ nmap <leader>r :source ~/.vimrc<cr>
 "nmap <leader>c :copen<cr>
 nmap <leader>a ggVG<cr>
 nmap <leader>n :lnext<cr>
+nmap <leader>nn :lfirst<cr>
 
 set guioptions+=a
 function! MakePattern(text)

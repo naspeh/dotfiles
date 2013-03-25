@@ -32,10 +32,11 @@ Bundle 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=0
 let g:syntastic_enable_highlighting=0
-let g:syntastic_auto_loc_list=0
+let g:syntastic_auto_loc_list=1
 nmap <leader>s :SyntasticToggleMode<cr>
 "call MapDo('<F7>', ':SyntasticToggleMode<cr>')
 call MapDo('<F8>', ':Errors<cr>:lclose<cr>')
+nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list')<cr>
 
 Bundle 'milkypostman/vim-togglelist'
 "The default mappings are:
@@ -75,6 +76,10 @@ let Tlist_Display_Tag_Scope       = 1   " Show tag scope next to the tag name
 Bundle 'majutsushi/tagbar'
 "call MapDo('<F5>', ':TagbarToggle<cr>')
 call MapDo('<leader>t', ':TagbarToggle<cr>')
+let g:tagbar_autofocus=1
+let g:tagbar_sort=1
+let g:tagbar_foldlevel=0
+
 
 Bundle 'AutoComplPop', 'L9'
 let g:acp_ignorecaseOption=0
@@ -192,10 +197,10 @@ color xterm16
 
 Bundle 'scrooloose/nerdcommenter'
 let NERDCreateDefaultMappings=0
-nnoremap <leader>c :call NERDComment('n', 'AlignLeft')<cr>
-vnoremap <leader>c :call NERDComment('x', 'AlignLeft')<cr>
-nnoremap <leader>cc :call NERDComment('n', 'Uncomment')<cr>
-vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>
+nnoremap <leader>c :call NERDComment('n', 'AlignLeft')<cr>gv
+vnoremap <leader>c :call NERDComment('x', 'AlignLeft')<cr>gv
+nnoremap <leader>cc :call NERDComment('n', 'Uncomment')<cr>gv
+vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
 
 "Bundle 'tomtom/tcomment_vim'
 "Bundle 'comments.vim'
