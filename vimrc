@@ -22,13 +22,15 @@ fun! LeaderToggle(key, opt)
 endfun
 
 fun! VarToggle(name, ...)
-    let v1=0
-    let v2=1
-    if a:0 == 2
-        let v1 = a:1
+    if a:0 >= 1
+        let v1=a:1
+    else
+        let v1=0
     endif
-    if a:0 == 3
-        let v2 = a:2
+    if a:0 >= 2
+        let v2=a:2
+    else
+        let v2=1
     endif
     if eval(a:name) == v1
         execute 'let '.a:name.'='.v2
@@ -106,12 +108,16 @@ Bundle 'scrooloose/syntastic'
 "g:syntastic_less_use_less_lint=1
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=0
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
 let g:syntastic_enable_highlighting=0
-let g:syntastic_auto_loc_list=0
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=2
+let g:syntastic_loc_list_height=3
+let g:syntastic_stl_format = '[%E{Err: #%e}%B{, }%W{Warn: #%w}]'
 nmap <leader>s :SyntasticToggleMode<cr>
-"call MapDo('<F7>', ':SyntasticToggleMode<cr>')
-call MapDo('<F8>', ':Errors<cr>:lclose<cr>')
-nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list')<cr>
+call MapDo('<F8>', ':Errors<cr>')
+nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
 Bundle 'milkypostman/vim-togglelist'
 "The default mappings are:
@@ -293,6 +299,7 @@ set statusline+=\ %b\ 0x%B\ %l,%c%V\ %P
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+set laststatus=2
 " Показывать незавершенные команды в статусбаре
 set showcmd
 hi StatusLineBufferNumber guifg=fg guibg=bg gui=bold
