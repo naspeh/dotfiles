@@ -16,8 +16,6 @@ fun! MapToggle(key, opt)
 endfun
 
 fun! LeaderToggle(key, opt)
-    "nnoremap <leader><space> :nohls<CR>
-    "nmap <silent> ,p :set invpaste<CR>:set paste?<CR>
     execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
 endfun
 
@@ -107,13 +105,13 @@ Bundle "godlygeek/tabular"
 Bundle 'scrooloose/syntastic'
 "g:syntastic_less_use_less_lint=1
 let g:syntastic_check_on_open=1
-let g:syntastic_enable_signs=0
+let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_enable_highlighting=0
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=2
-let g:syntastic_loc_list_height=3
+let g:syntastic_loc_list_height=2
 let g:syntastic_stl_format = '[%E{Err: #%e}%B{, }%W{Warn: #%w}]'
 nmap <leader>s :SyntasticToggleMode<cr>
 call MapDo('<F8>', ':Errors<cr>')
@@ -149,9 +147,8 @@ let g:acp_enableAtStartup=1
 
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let Grep_Skip_Dirs='.ropeproject .git .hg _generated_media'
+let Grep_Skip_Dirs='.git .hg _generated_media'
 let Grep_Skip_Files='*.bak *~ *.pyc _generated_media*'
-nnoremap <silent> <F1> :Grep<CR>
 
 
 Bundle 'python.vim'
@@ -162,11 +159,11 @@ Bundle 'python.vim'
 "Bundle 'pythoncomplete'
 
 
-if v:version >= 703
-    Bundle 'Gundo'
-    call MapDo('<F6>', ':GundoToggle<cr>')
-    let g:gundo_width=35
-endif
+"if v:version >= 703
+"    Bundle 'Gundo'
+"    call MapDo('<F6>', ':GundoToggle<cr>')
+"    let g:gundo_width=35
+"endif
 
 
 Bundle 'kien/ctrlp.vim'
@@ -180,7 +177,7 @@ let g:ctrlp_extensions=['tag', 'quickfix', 'dir', 'line']
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_mruf_relative=1
 "let g:ctrlp_regexp=0
-let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^_generated_media -e ^\.ropeproject'
+let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^_generated_media'
 let g:ctrlp_user_command={
     \'types': {
         \1: ['.git', 'cd %s && git ls-files' . g:ctrlp_ignore_],
@@ -226,6 +223,8 @@ let g:jedi#related_names_command = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#show_function_definition = 0
 let g:jedi#autocompletion_command = "<C-Space>"
+
+Bundle 'airblade/vim-gitgutter'
 
 
 " ------------------------------
@@ -273,7 +272,6 @@ set number
 let python_highlight_all=1
 
 set list
-"set listchars=tab:>-,trail:~,extends:+,precedes:+
 set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 set linebreak
 
@@ -359,6 +357,7 @@ filetype plugin on     " enables filetype specific plugins
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
 
+set completeopt-=preview
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
@@ -436,8 +435,8 @@ vnoremap <silent> <F2> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
-iab pyb import pdb; pdb.set_trace()<esc>
-iab pyi import ipdb; ipdb.set_trace()<esc>
+iab pdbt import pdb; pdb.set_trace()<esc>
+iab ipdbt import ipdb; ipdb.set_trace()<esc>
 
 python << EOF
 import os, sys

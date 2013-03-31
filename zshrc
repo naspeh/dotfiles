@@ -13,12 +13,6 @@ export BROWSER=chromium
 
 REPORTTIME=2
 
-#PAGER=less
-#if [ -f /usr/bin/vimpager ]; then
-#    export PAGER=vimpager
-#fi
-#alias less=$PAGER
-
 export TERM='xterm-256color'
 [ -n "$TMUX" ] && export TERM=screen-256color
 
@@ -76,29 +70,6 @@ zstyle ':completion:*:processes' sort false
 
 zstyle ':completion:*:processes-names' command 'ps xho command'
 
-#zmodload zsh/complist
-#autoload -Uz compinit; compinit
-#zstyle :compinstall filename '${HOME}/.zshrc'
-
-#zstyle ':completion:*' completer _complete _match _ignored _files
-
-##- buggy
-#zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
-#zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
-##-/buggy
-
-#zstyle ':completion:*:pacman:*' force-list always
-#zstyle ':completion:*:*:pacman:*' menu yes select
-
-#zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
-#zstyle ':completion:*:*:kill:*' menu yes select
-#zstyle ':completion:*:kill:*'   force-list always
-
-#zstyle ':completion:*:*:killall:*' menu yes select
-#zstyle ':completion:*:killall:*'   force-list always
-
-
 ## Aliases ##
 if [ -f /usr/bin/grc ]; then
     alias grc='grc --colour=auto'
@@ -115,7 +86,7 @@ if [ -f /usr/bin/grc ]; then
 fi
 
 alias tmux='tmux -2'
-#alias mc='mc -b'
+alias mc='mc -b'
 
 alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'
@@ -143,6 +114,7 @@ alias -s {html,htm,xhtml}=pick-web-browser
 alias killall="killall --interactive --verbose"
 alias git="nocorrect git"
 alias free="free -t -m"
+
 [ -f "$(which pacman)" ] && alias pacclear="pacman -Rs \`pacman -Qtdq\`"
 
 alias myip="curl ip.appspot.com"
@@ -262,21 +234,6 @@ precmd () {
     titlebar_precmd
 }
 
-battery_charge () {
-  # Battery 0: Discharging, 94%, 03:46:34 remaining
-  bat_percent=`acpi | awk -F ':' {'print $2;'} | awk -F ',' {'print $2;'} | sed -e "s/\s//" -e "s/%.*//"`
-
-  if [ $bat_percent -lt 20 ]; then cl='%F{red}'
-  elif [ $bat_percent -lt 50 ]; then cl='%F{yellow}'
-  else cl='%F{green}'
-  fi
-
-  filled=${(l:`expr $bat_percent / 10`::▸:)}
-  empty=${(l:`expr 10 - $bat_percent / 10`::▹:)}
-  #echo $cl$filled$empty'
-  echo '$cl$bat_percent'
-}
-
 pwd_length() {
   local length
   (( length = $COLUMNS / 2 - 25 ))
@@ -296,11 +253,7 @@ p_exit_code='%f%F{red}%(0?..%? ↵)'
 p_jobs='%f%F{cyan}%1(j.(%j) .)'
 p_sigil='%f%B%F{green}%(!.%F{red}.)\$ '
 p_end='%f%b'
-p_battery='%f$(battery_charge)%F{default}'
 
 # left
 PS1="$p_time$p_user_host$p_pwd$p_venv_info$p_vcs_info$p_jobs$p_exit_code
 $p_sigil$p_end%f"
-
-# right
-#RPS1="$p_battery"
