@@ -31,9 +31,9 @@ fun! VarToggle(name, ...)
         let v2=1
     endif
     if eval(a:name) == v1
-        execute 'let '.a:name.'='.v2
+        execute 'let '.a:name.'="'.v2.'"'
     else
-        execute 'let '.a:name.'='.v1
+        execute 'let '.a:name.'="'.v1.'"'
     endif
     echo a:name.'='.eval(a:name)
 endfun
@@ -98,6 +98,9 @@ Bundle 'lepture/vim-css'
 "Bundle 'plasticboy/vim-markdown'
 
 
+Bundle 'maksimr/vim-jsbeautify'
+noremap <leader>j :call JsBeautify()<cr>
+
 "http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
 Bundle "godlygeek/tabular"
 
@@ -147,9 +150,11 @@ let g:acp_enableAtStartup=1
 
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let Grep_Skip_Dirs='.git .hg _generated_media'
+let Grep_Skip_Dirs1='.git .hg _generated_media'
+let Grep_Skip_Dirs2=Grep_Skip_Dirs1.' migrations'
+let Grep_Skip_Dirs=Grep_Skip_Dirs2
 let Grep_Skip_Files='*.bak *~ *.pyc _generated_media*'
-
+noremap <leader>gg :call VarToggle('g:Grep_Skip_Dirs', Grep_Skip_Dirs1, Grep_Skip_Dirs2)<cr>
 
 Bundle 'python.vim'
 "Bundle 'pyflakes'
@@ -242,10 +247,15 @@ set langmenu=none            " Always use english menu
 set keymap=russian-jcukenwin " Переключение раскладок клавиатуры по <C-^>
 set iminsert=0               " Раскладка по умолчанию - английская
 set imsearch=0               " Раскладка по умолчанию при поиске - английская
-set spelllang=en,ru          " Языки для проверки правописания
+set spelllang=en_us,ru_yo    " Языки для проверки правописания
 set encoding=utf-8
 set fileencodings=utf-8,cp1251,koi8-r,cp866
 set termencoding=utf-8
+
+"fun! SetUsLayout()
+"  silent !sh -c 'setxkbmap us && setxkbmap us,ru'
+"endfun
+"autocmd InsertLeave * call SetUsLayout()
 
 " Не создавать резервных копий файлов
 set nobackup
