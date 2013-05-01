@@ -97,7 +97,6 @@ Bundle 'lepture/vim-css'
 "Bundle 'Markdown'
 "Bundle 'plasticboy/vim-markdown'
 
-
 Bundle 'maksimr/vim-jsbeautify'
 noremap <leader>j :call JsBeautify()<cr>
 
@@ -108,10 +107,11 @@ Bundle "godlygeek/tabular"
 Bundle 'scrooloose/syntastic'
 "g:syntastic_less_use_less_lint=1
 let g:syntastic_check_on_open=1
-let g:syntastic_enable_signs=1
+let g:syntastic_enable_signs=0
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
-let g:syntastic_enable_highlighting=0
+let g:syntastic_enable_balloons=1
+let g:syntastic_enable_highlighting=1
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_loc_list_height=2
@@ -119,6 +119,7 @@ let g:syntastic_stl_format = '[%E{Err: #%e}%B{, }%W{Warn: #%w}]'
 nmap <leader>s :SyntasticToggleMode<cr>
 call MapDo('<F8>', ':Errors<cr>')
 nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
+
 
 Bundle 'milkypostman/vim-togglelist'
 "The default mappings are:
@@ -229,7 +230,8 @@ let g:jedi#popup_on_dot = 0
 let g:jedi#show_function_definition = 0
 let g:jedi#autocompletion_command = "<C-Space>"
 
-Bundle 'airblade/vim-gitgutter'
+
+"Bundle 'airblade/vim-gitgutter'
 
 
 " ------------------------------
@@ -366,6 +368,7 @@ filetype plugin on     " enables filetype specific plugins
 "autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
+autocmd BufNewFile,BufRead *.t2t setlocal ft=txt2tags
 
 set completeopt-=preview
 "autocmd FileType python set omnifunc=pythoncomplete#Complete

@@ -94,6 +94,9 @@ alias ll='ls -l'
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
 
+alias rsync='nocorrect rsync'
+alias git="nocorrect git"
+
 alias grep='grep --color=auto'
 
 alias du='du --human-readable --total'
@@ -107,12 +110,9 @@ alias -s {avi,mpeg,mpg,mov,m2v}=vlc
 alias -s {odt,doc,sxw,rtf}=libreoffice
 alias -s {pdf,djvu}=evince
 alias -s {jpg,png,svg,xpm,bmp}=mirage
-
-autoload -U pick-web-browser
-alias -s {html,htm,xhtml}=pick-web-browser
+alias -s {html,htm,xhtml}=chromium
 
 alias killall="killall --interactive --verbose"
-alias git="nocorrect git"
 alias free="free -t -m"
 
 [ -f "$(which pacman)" ] && alias pacclear="pacman -Rs \`pacman -Qtdq\`"
@@ -129,7 +129,7 @@ monic() {
     if [ $2 ]; then
         mode="--mode $2"
     fi
-    cmd="xrandr --output LVDS1 --auto --output $output --below LVDS1 $mode"
+    cmd="xrandr --output LVDS1 --auto --output $output --right-of LVDS1 $mode"
     echo $cmd
     eval $cmd
 }
