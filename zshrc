@@ -2,20 +2,16 @@
 
 ZDOTDIR=~/.zsh
 
-#eval `dircolors ~/.zsh/dircolors/dircolors.ansi-light`
-
-export HISTTIMEFORMAT="%t%d.%m.%y %H:%M:%S%t"
-export HISTIGNORE="&:ls:[bf]g:exit"
-
 export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
 export BROWSER=chromium
-
-REPORTTIME=2
-
 export TERM='xterm-256color'
 [ -n "$TMUX" ] && export TERM=screen-256color
 
+REPORTTIME=2
+
+export HISTTIMEFORMAT="%t%d.%m.%y %H:%M:%S%t"
+export HISTIGNORE="&:ls:[bf]g:exit"
 HISTFILE=~/.zsh/.histfile
 HISTSIZE=1000
 SAVEHIST=$HISTSIZE
@@ -35,31 +31,15 @@ unsetopt correct_all
 compctl -/ cd
 
 bindkey -e
-#autoload -U edit-command-line
-#zle -N  edit-command-line
-#bindkey -M vicmd v edit-command-line
-
-#function zle-line-init zle-keymap-select {
-#    RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
-#    RPS2=$RPS1
-#    zle reset-prompt
-#}
-#zle -N zle-line-init
-#zle -N zle-keymap-select
 
 autoload -Uz compinit; compinit
 
 zstyle ':completion:*' completer _complete _match _ignored _files
-#zstyle ':completion:*' completer _complete _match _ignored _approximate _files
-#zstyle ':completion:*' group-name ''
-#zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' max-errors 1
 zstyle ':completion:*' menu select=long-list select=0
-#zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 #zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
-#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # tab completion for PID :D
 zstyle ':completion:*:*:kill:*' menu yes select
@@ -69,21 +49,6 @@ zstyle ':completion:*:processes' command 'ps -xuf'
 zstyle ':completion:*:processes' sort false
 
 zstyle ':completion:*:processes-names' command 'ps xho command'
-
-## Aliases ##
-if [ -f /usr/bin/grc ]; then
-    alias grc='grc --colour=auto'
-    alias ping='grc ping'
-    alias last='grc last'
-    alias netstat='grc netstat'
-    alias traceroute='grc traceroute'
-    alias make='grc make'
-    alias gcc='grc gcc'
-    alias configure='grc ./configure'
-    alias cat="grc cat"
-    alias tail="grc tail"
-    alias head="grc head"
-fi
 
 alias tmux='tmux -2'
 alias mc='mc -b'
