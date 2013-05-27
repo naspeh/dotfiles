@@ -71,8 +71,7 @@ alias nohup='nohup > /dev/null $1'
 
 alias x='startx'
 
-alias -s {avi,mpeg,mpg,mov,m2v}=vlc
-alias -s {odt,doc,sxw,rtf}=libreoffice
+alias -s {avi,mpeg,mpg,mov,m2v,m4v}=vlc
 alias -s {pdf,djvu}=evince
 alias -s {jpg,png,svg,xpm,bmp}=mirage
 alias -s {html,htm,xhtml}=chromium
@@ -132,7 +131,12 @@ venv() {
     fi
 }
 venv_cd() {
-    cd "$@" && venv_auto
+    if cd "$@"; then
+        venv_auto
+        return 0
+    else
+        return $?
+    fi
 }
 venv_info() {
     if [ $VIRTUAL_ENV ]; then
@@ -140,12 +144,12 @@ venv_info() {
     fi
 }
 _venv_complete () {
-    reply=( $( cd $WORKON_HOME && ls -d *) )
+    reply=( $(cd $WORKON_HOME && ls -d *) )
 }
 compctl -K _venv_complete venv
 
-alias ve="virtualenv --no-site-packages --distribute"
 alias cd="venv_cd"
+alias ve="virtualenv --no-site-packages --distribute"
 
 alias pip="nocorrect pip"
 alias pipi="pip install"
