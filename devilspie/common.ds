@@ -4,8 +4,8 @@
         (or
             (contains(application_name) "Vim")
             (is(window_name) "Terminal")
-            (contains(application_name) "x-terminal-emulator")
-            (contains(window_name) "LilyTerm")
+            (is(application_name) "lilyterm")
+            (is(window_name) "sakura")
             (contains(window_name) "New Tab - Google Chrome")
             (and
                 (contains(window_name) "Chromium")
@@ -13,29 +13,15 @@
             )
             (contains(window_name) "FatRat")
             (contains(window_name) "Document Viewer")
-            (contains(window_name) "Clementine")
-            (is(window_name) "DreamPie")
             (is(application_name) "gThumb")
-            (is(window_name) "sakura")
         )
         (maximize)
     )
-    (if
-        (or
-            (contains(application_name) "godesk")
-            (contains(application_name) "oDesk Team")
-        )
-        (focus)
-    )
     (if (is (application_name) "stardict")
         (begin
-            ;(debug)
             (focus)
             (geometry "800x425-0-0")
         )
-    )
-    (if (is (window_name) "oDesk Team")
-        (close)
     )
     (if
         (and
