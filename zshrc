@@ -3,16 +3,17 @@
 ZDOTDIR=~/.zsh
 
 export PATH="$PATH:$HOME/bin"
-export EDITOR="vim"
+export EDITOR=vim
 export BROWSER=chromium
-export TERM='xterm-256color'
+
+export TERM=xterm-256color
 [ -n "$TMUX" ] && export TERM=screen-256color
 
 REPORTTIME=2
 
 export HISTTIMEFORMAT="%t%d.%m.%y %H:%M:%S%t"
 export HISTIGNORE="&:ls:[bf]g:exit"
-HISTFILE=~/.zsh/.histfile
+HISTFILE=~/.zsh/history.log
 HISTSIZE=1000
 SAVEHIST=$HISTSIZE
 setopt hist_ignore_space
@@ -50,40 +51,6 @@ zstyle ':completion:*:processes' sort false
 
 zstyle ':completion:*:processes-names' command 'ps xho command'
 
-alias tmux='tmux -2'
-alias mc='mc -b'
-
-alias ls='ls --classify --color --human-readable --group-directories-first'
-alias ll='ls -l'
-
-alias cp='nocorrect cp --interactive --recursive --preserve=all'
-alias mv='nocorrect mv --interactive'
-
-alias rsync='nocorrect rsync'
-alias git="nocorrect git"
-
-alias grep='grep --color=auto'
-
-alias du='du --human-readable --total'
-alias df='df --human-readable'
-
-alias nohup='nohup > /dev/null $1'
-
-alias x='startx'
-
-alias -s {avi,mpeg,mpg,mov,m2v,m4v}=vlc
-alias -s {pdf,djvu}=evince
-alias -s {jpg,png,svg,xpm,bmp}=mirage
-alias -s {html,htm,xhtml}=chromium
-
-alias killall="killall --interactive --verbose"
-alias free="free -t -m"
-
-[ -f "$(which pacman)" ] && alias pacclear="pacman -Rs \`pacman -Qtdq\`"
-
-alias myip="curl ip.appspot.com"
-alias timesync='ntpdate ua.pool.ntp.org'
-
 monic() {
     mode='--auto'
     output='HDMI1'
@@ -99,43 +66,65 @@ monic() {
 }
 
 #export PYTHONSTARTUP=~/.pythonrc
-export WORKON_HOME=$HOME/.virtualenvs
-export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export VENV_HOME=$HOME/v
+export PIP_VIRTUALENV_BASE=$VENV_HOME
 export PIP_RESPECT_VIRTUALENV=true
 export VIRTUALENV_DISTRIBUTE=true
 
-venv_auto() {
-    if [ -e .venv ]; then
-        venv `cat .venv`
-    fi
-}
 venv() {
     if [ -z "$1" ]; then
-        echo "List of virtualenvs:"
-        ls $WORKON_HOME
+        echo "List of virtualenvs: `command ls -m $VENV_HOME`"
         return 1
     fi
+
     env_name=$1
+    if [ $1 = '--auto' ]; then
+        if [ -e .venv ]; then
+            $env_name=`cat .venv`
+        else
+            echo "Make './.venv' file for autoload virtualenv"
+            return 1
+        fi
+    fi
+
     activate="$env_name/bin/activate"
     if [ -e $activate ]; then
         env_path=env_name
     else
-        env_path="$WORKON_HOME/$env_name"
+        env_path="$VENV_HOME/$env_name"
         activate="$env_path/bin/activate"
     fi
 
-    if [ -e "$activate" ] && [ "$VIRTUAL_ENV" != "$env_path" ]; then
-        VIRTUAL_ENV_DISABLE_PROMPT=1
-        source $activate
-        which python
+    if [ -e "$activate" ]; then
+        if [ "$VIRTUAL_ENV" != "$env_path" ]; then
+            VIRTUAL_ENV_DISABLE_PROMPT=1
+            source $activate
+            which python
+            return 0
+        fi
+    else
+        echo "Virtualenv is not found: '$env_name'"
+        return 1
     fi
 }
 venv_cd() {
     if cd "$@"; then
-        venv_auto
+        if [ -e .venv ]; then
+            venv `cat .venv`
+        fi
         return 0
     else
         return $?
+    fi
+}
+venv_new() {
+    env_name=$1
+    if venv $env_name; then
+        echo "Virtualenv already exist: '$env_name'"
+        return 1
+    else
+        virtualenv ~/v/$env_name
+        venv $env_name
     fi
 }
 venv_info() {
@@ -149,7 +138,33 @@ _venv_complete () {
 compctl -K _venv_complete venv
 
 alias cd="venv_cd"
-alias ve="virtualenv --no-site-packages --distribute"
+alias ve="venv_new"
+
+alias ls='ls --classify --color --human-readable --group-directories-first'
+alias ll='ls -l'
+alias cp='nocorrect cp --interactive --recursive --preserve=all'
+alias mv='nocorrect mv --interactive'
+
+alias du='du --human-readable --total'
+alias df='df --human-readable'
+alias grep='grep --color=auto'
+alias rsync='nocorrect rsync'
+alias git="nocorrect git"
+alias killall="killall --interactive --verbose"
+alias tmux='tmux -2'
+alias mc='mc -b'
+alias nohup='nohup > /dev/null $1'
+alias free="free -t -m"
+
+alias -s {avi,mpeg,mpg,mov,m2v,m4v}=vlc
+alias -s {pdf,djvu}=evince
+alias -s {jpg,png,svg,xpm,bmp}=mirage
+alias -s {html,htm,xhtml}=chromium
+
+[ -f "$(which pacman)" ] && alias pacclear="pacman -Rs \`pacman -Qtdq\`"
+
+alias myip="curl ip.appspot.com"
+alias timesync='ntpdate ua.pool.ntp.org'
 
 alias pip="nocorrect pip"
 alias pipi="pip install"

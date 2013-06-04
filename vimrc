@@ -63,6 +63,9 @@ endfun
 call MapDo('<F9>', ':call TrimSpaces()<cr>')
 
 fun! TextMode()
+    setlocal textwidth=80
+    set formatoptions+=l
+    setlocal nonumber
     setlocal wrap
     setlocal nolist
     setlocal nocursorline
