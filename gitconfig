@@ -3,18 +3,9 @@
     email = naspeh@gmail.com
     #email = grisha@ostrovok.ru
 
-[giggle]
-    main-window-maximized = true
-    main-window-geometry = 0x0+0+0
-    history-view-vpane-position = 351
-    main-window-view = HistoryView
-    file-view-vpane-position = 502
-    show-graph = true
-
-[color]
-    ui = auto
 [color]
     ui = true
+
 [color "diff"]
     whitespace = red reverse
 
@@ -28,10 +19,8 @@
     br = branch
     co = checkout
     df = diff
-    lg = log -p
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-    ls = ls-files
 
 [merge]
     tool = meld
