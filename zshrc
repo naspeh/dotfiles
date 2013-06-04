@@ -65,7 +65,6 @@ monic() {
     eval $cmd
 }
 
-#export PYTHONSTARTUP=~/.pythonrc
 export VENV_HOME=$HOME/v
 export PIP_VIRTUALENV_BASE=$VENV_HOME
 export PIP_RESPECT_VIRTUALENV=true
