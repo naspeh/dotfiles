@@ -1,19 +1,20 @@
 [ui]
-verbose = True
-username = Grisha K. <naspeh@gmail.com>
-ignore = ~/.hgignore
+verbose=True
+username=Grisha K. <naspeh@gmail.com>
+ignore=~/.hgignore
 
 [pager]
-pager = more
-attend = log, glog, diff
+pager=more
+attend=log, glog, diff
 
 [extensions]
-churn =
-color =
-graphlog =
-fetch =
-purge =
-pager =
-rebase =
+churn=
+color=
+graphlog=
+fetch=
+purge=
+pager=
+rebase=
+record=
 hgshelve=/home/naspeh/.hgext/hgshelve.py
 #progress =

@@ -1,4 +1,4 @@
-# shelve.py
+# hgshelve.py
 #
 # Copyright 2007 Bryan O'Sullivan <bos@serpentine.com>
 # Copyright 2007 TK Soh <teekaysoh@gmailcom>
@@ -9,39 +9,11 @@
 '''interactive change selection to set aside that may be restored later'''
 
 from mercurial.i18n import _
-from mercurial import cmdutil, commands, cmdutil, hg, mdiff, patch, revlog
+from mercurial import cmdutil, commands, hg, mdiff, patch, scmutil
 from mercurial import util, fancyopts, extensions
-import copy, cStringIO, errno, operator, os, re, shutil, tempfile
+import copy, cStringIO, errno, operator, os, re, shutil, tempfile, sys
 
 lines_re = re.compile(r'@@ -(\d+),(\d+) \+(\d+),(\d+) @@\s*(.*)')
-
-def internalpatch(patchobj, ui, strip, cwd, reverse=False, files={}):
-    """use builtin patch to apply <patchobj> to the working directory.
-    returns whether patch was applied with fuzz factor.
-    
-    Adapted from patch.internalpatch() to support reverse patching.
-    """
-
-    eolmode = ui.config('patch', 'eol', 'strict')
-
-    if eolmode.lower() not in patch.eolmodes:
-        raise util.Abort(_('Unsupported line endings type: %s') % eolmode)
-    
-    try:
-        fp = file(patchobj, 'rb')
-    except TypeError:
-        fp = patchobj
-    if cwd:
-        curdir = os.getcwd()
-        os.chdir(cwd)
-    try:
-        ret = patch.applydiff(ui, fp, files, strip=strip, eolmode=eolmode)
-    finally:
-        if cwd:
-            os.chdir(curdir)
-    if ret < 0:
-        raise PatchError
-    return ret > 0
 
 def scanpatch(fp):
     lr = patch.linereader(fp)
@@ -166,9 +138,9 @@ class hunk(object):
         self.added, self.removed = countchanges(self.hunk)
 
     def __cmp__(self, rhs):
-        # since the hunk().toline needs to be adjusted when hunks are
+        # since the hunk().fromline needs to be adjusted when hunks are
         # removed/added, we can't take it into account when we cmp
-        attrs = ['header', 'fromline', 'proc', 'hunk', 'added', 'removed']
+        attrs = ['header', 'toline', 'proc', 'hunk', 'added', 'removed']
         for attr in attrs:
             selfattr = getattr(self, attr, None)
             rhsattr = getattr(rhs, attr, None)
@@ -180,7 +152,6 @@ class hunk(object):
             if rv != 0:
                 return rv
         return rv
-
 
     def write(self, fp):
         delta = len(self.before) + len(self.after)
@@ -286,14 +257,14 @@ def filterpatch(ui, chunks, shouldprompt=True):
             else:
                 consumed.append(chunks.pop())
         return consumed
-    
+
     resp_all = [None]
 
-    """ If we're not to prompt (i.e. they specified the --all flag) 
-        we pre-emptively set the 'all' flag """
-    if shouldprompt == False:
+    # If we're not to prompt (i.e. they specified the --all flag)
+    # we pre-emptively set the 'all' flag
+    if not shouldprompt:
         resp_all = ['y']
-    
+
     resp_file = [None]
     applied = {}
     def prompt(query):
@@ -303,19 +274,22 @@ def filterpatch(ui, chunks, shouldprompt=True):
             return resp_file[0]
         while True:
             resps = _('[Ynsfdaq?]')
-            choices = (_('&Yes, shelve this change'),
-                    _('&No, skip this change'),
-                    _('&Skip remaining changes to this file'),
-                    _('Shelve remaining changes to this &file'),
-                    _('&Done, skip remaining changes and files'),
-                    _('Shelve &all changes to all remaining files'),
-                    _('&Quit, shelving no changes'),
-                    _('&?'))
+            choices = (
+                _('&Yes, shelve this change'),
+                _('&No, skip this change'),
+                _('&Skip remaining changes to this file'),
+                _('Shelve remaining changes to this &file'),
+                _('&Done, skip remaining changes and files'),
+                _('Shelve &all changes to all remaining files'),
+                _('&Quit, shelving no changes'),
+                _('&?')
+            )
             r = ui.promptchoice("%s %s " % (query, resps), choices)
             if r == 7:
                 c = shelve.__doc__.find('y - shelve this change')
                 for l in shelve.__doc__[c:].splitlines():
-                    if l: ui.write(_(l.strip()) + '\n')
+                    if l:
+                        ui.write(_(l.strip()) + '\n')
                 continue
             elif r == 0: # yes
                 ret = 'y'
@@ -344,12 +318,12 @@ def filterpatch(ui, chunks, shouldprompt=True):
             seen[hdr] = True
             if resp_all[0] is None:
                 chunk.pretty(ui)
-            if shouldprompt == True:
+            if shouldprompt:
                 r = prompt(_('shelve changes to %s?') %
-                       _(' and ').join(map(repr, chunk.files())))
+                           _(' and ').join(map(repr, chunk.files())))
             else:
                 r = 'y'
-            
+
             if r == 'y':
                 applied[chunk.filename()] = [chunk]
                 if chunk.allhunks():
@@ -364,15 +338,16 @@ def filterpatch(ui, chunks, shouldprompt=True):
             if r == 'y':
                 if fixoffset:
                     chunk = copy.copy(chunk)
-                    chunk.toline += fixoffset
+                    chunk.fromline += fixoffset
                 applied[chunk.filename()].append(chunk)
             else:
-                fixoffset += chunk.removed - chunk.added
+                fixoffset += chunk.added - chunk.removed
     return reduce(operator.add, [h for h in applied.itervalues()
                                  if h[0].special() or len(h) > 1], [])
 
 def refilterpatch(allchunk, selected):
-    ''' return unshelved chunks of files to be shelved '''
+    """Return unshelved chunks of files to be shelved."""
+
     l = []
     fil = []
     for c in allchunk:
@@ -395,12 +370,13 @@ def makebackup(ui, repo, dir, files):
 
     backups = {}
     for f in files:
-        fd, tmpname = tempfile.mkstemp(prefix=f.replace('/', '_')+'.',
-                                       dir=dir)
-        os.close(fd)
-        ui.debug('backup %r as %r\n' % (f, tmpname))
-        util.copyfile(repo.wjoin(f), tmpname)
-        backups[f] = tmpname
+        if os.path.isfile(repo.wjoin(f)):
+            fd, tmpname = tempfile.mkstemp(prefix=f.replace('/', '_')+'.',
+                                           dir=dir)
+            os.close(fd)
+            ui.debug('backup %r as %r\n' % (f, tmpname))
+            util.copyfile(repo.wjoin(f), tmpname)
+            backups[f] = tmpname
 
     return backups
 
@@ -413,9 +389,9 @@ def getshelfpath(repo, name):
             shelfpath = 'shelve'
         else:
             shelfpath = "shelves/default"
-    
+
     return shelfpath
-    
+
 def shelve(ui, repo, *pats, **opts):
     '''interactively select changes to set aside
 
@@ -429,7 +405,7 @@ def shelve(ui, repo, *pats, **opts):
     The shelve command works with the Color extension to display
     diffs in color.
 
-    On each prompt, the following responses are possible:
+    On each prompt, the following responses are possible::
 
       y - shelve this change
       n - skip this change
@@ -441,106 +417,127 @@ def shelve(ui, repo, *pats, **opts):
       a - shelve all changes to all remaining files
       q - quit, shelving no changes
 
-      ? - display help'''
+      ? - display help
+    '''
 
     if not ui.interactive:
         raise util.Abort(_('shelve can only be run interactively'))
 
     # List all the active shelves by name and return '
     if opts['list']:
-        listshelves(ui,repo)
+        listshelves(ui, repo)
         return
 
     forced = opts['force'] or opts['append']
-    
+
     # Shelf name and path
     shelfname = opts.get('name')
     shelfpath = getshelfpath(repo, shelfname)
-    
+
     if os.path.exists(repo.join(shelfpath)) and not forced:
         raise util.Abort(_('shelve data already exists'))
-            
+
     def shelvefunc(ui, repo, message, match, opts):
+        parents = repo.dirstate.parents()
         changes = repo.status(match=match)[:5]
         modified, added, removed = changes[:3]
         files = modified + added + removed
         diffopts = mdiff.diffopts(git=True, nodates=True)
-        patch_diff = ''.join(patch.diff(repo, repo.dirstate.parents()[0],
-                           match=match, changes=changes, opts=diffopts))
-        
+        patch_diff = ''.join(patch.diff(repo, parents[0], match=match,
+                                        changes=changes, opts=diffopts))
+
         fp = cStringIO.StringIO(patch_diff)
         ac = parsepatch(fp)
         fp.close()
-        
+
         chunks = filterpatch(ui, ac, not opts['all'])
         rc = refilterpatch(ac, chunks)
 
+        # set of files to be processed
         contenders = {}
         for h in chunks:
-            try: contenders.update(dict.fromkeys(h.files()))
-            except AttributeError: pass
+            try:
+                contenders.update(dict.fromkeys(h.files()))
+            except AttributeError:
+                pass
 
-        newfiles = [f for f in files if f in contenders]
+        # exclude sources of copies that are otherwise untouched
+        newfiles = set(f for f in files if f in contenders)
 
         if not newfiles:
             ui.status(_('no changes to shelve\n'))
             return 0
 
-        modified = dict.fromkeys(changes[0])
-
         backupdir = repo.join('shelve-backups')
 
         try:
-            bkfiles = [f for f in newfiles if f in modified]
-            backups = makebackup(ui, repo, backupdir, bkfiles)
-            
+            backups = makebackup(ui, repo, backupdir, newfiles)
+
             # patch to shelve
             sp = cStringIO.StringIO()
             for c in chunks:
-                if c.filename() in backups:
-                    c.write(sp)
-            doshelve = sp.tell()
-            sp.seek(0)
+                c.write(sp)
 
             # patch to apply to shelved files
             fp = cStringIO.StringIO()
             for c in rc:
-                if c.filename() in backups:
+                # skip files not selected for shelving
+                if c.filename() in newfiles:
                     c.write(fp)
             dopatch = fp.tell()
             fp.seek(0)
 
             try:
                 # 3a. apply filtered patch to clean repo (clean)
-                if backups:
-                    hg.revert(repo, repo.dirstate.parents()[0], backups.has_key)
+                opts['no_backup'] = True
+                cmdutil.revert(
+                    ui, repo, repo['.'], parents,
+                    *[
+                        os.path.join(repo.root, f)
+                        for f in newfiles
+                    ], **opts
+                )
+                for f in added:
+                    if f in newfiles:
+                        util.unlinkpath(repo.wjoin(f))
 
                 # 3b. apply filtered patch to clean repo (apply)
                 if dopatch:
                     ui.debug('applying patch\n')
                     ui.debug(fp.getvalue())
-                    patch.internalpatch(fp, ui, 1, repo.root)
+                    patch.internalpatch(ui, repo, fp, 1)
                 del fp
 
                 # 3c. apply filtered patch to clean repo (shelve)
-                if doshelve:
-                    ui.debug("saving patch to shelve\n")
-                    if opts['append']:
-                        f = repo.opener(shelfpath, "a")
-                    else:
-                        f = repo.opener(shelfpath, "w")
-                    f.write(sp.getvalue())
-                    del f
-                del sp
+                ui.debug("saving patch to shelve\n")
+                if opts['append']:
+                    sp.write(repo.opener(shelfpath).read())
+                sp.seek(0)
+                f = repo.opener(shelfpath, "w")
+                f.write(sp.getvalue())
+                del f, sp
             except:
+                ui.warn("shelving failed: %s\n" % sys.exc_info()[1])
                 try:
+                    # re-schedule remove
+                    matchremoved = scmutil.matchfiles(repo, removed)
+                    cmdutil.forget(ui, repo, matchremoved, "", True)
+                    for f in removed:
+                        if f in newfiles and os.path.isfile(f):
+                            os.unlink(f)
+                    # copy back backups
                     for realname, tmpname in backups.iteritems():
                         ui.debug('restoring %r to %r\n' % (tmpname, realname))
                         util.copyfile(tmpname, repo.wjoin(realname))
+                    # re-schedule add
+                    matchadded = scmutil.matchfiles(repo, added)
+                    cmdutil.add(ui, repo, matchadded, False, False, "", True)
+
                     ui.debug('removing shelve file\n')
-                    os.unlink(repo.join(shelfpath))
-                except OSError:
-                    pass
+                    if os.path.isfile(repo.wjoin(shelfpath)):
+                        os.unlink(repo.join(shelfpath))
+                except OSError, err:
+                    ui.warn("restoring backup failed: %s\n" % err)
 
             return 0
         finally:
@@ -549,13 +546,15 @@ def shelve(ui, repo, *pats, **opts):
                     ui.debug('removing backup for %r : %r\n' % (realname, tmpname))
                     os.unlink(tmpname)
                 os.rmdir(backupdir)
-            except OSError:
-                pass
+            except OSError, err:
+                ui.warn("removing backup failed: %s\n" % err)
     fancyopts.fancyopts([], commands.commitopts, opts)
-    
+
     # wrap ui.write so diff output can be labeled/colorized
     def wrapwrite(orig, *args, **kw):
         label = kw.pop('label', '')
+        if label:
+            label += ' '
         for chunk, l in patch.difflabel(lambda: args):
             orig(chunk, label=label + l)
     oldwrite = ui.write
@@ -569,13 +568,13 @@ def listshelves(ui, repo):
     # Check for shelve file at old location first
     if os.path.isfile(repo.join('shelve')):
         ui.status('default\n')
-    
+
     # Now go through all the files in the shelves folder and list them out
     dirname = repo.join('shelves')
     if os.path.isdir(dirname):
-        for filename in os.listdir(repo.join('shelves')):
+        for filename in sorted(os.listdir(repo.join('shelves'))):
             ui.status(filename + '\n')
-    
+
 def unshelve(ui, repo, **opts):
     '''restore shelved changes'''
 
@@ -585,14 +584,26 @@ def unshelve(ui, repo, **opts):
 
     # List all the active shelves by name and return '
     if opts['list']:
-        listshelves(ui,repo)
+        listshelves(ui, repo)
         return
-        
+
     try:
         patch_diff = repo.opener(shelfpath).read()
         fp = cStringIO.StringIO(patch_diff)
         if opts['inspect']:
-            ui.status(fp.getvalue())
+            # wrap ui.write so diff output can be labeled/colorized
+            def wrapwrite(orig, *args, **kw):
+                label = kw.pop('label', '')
+                if label:
+                    label += ' '
+                for chunk, l in patch.difflabel(lambda: args):
+                    orig(chunk, label=label + l)
+            oldwrite = ui.write
+            extensions.wrapfunction(ui, 'write', wrapwrite)
+            try:
+                ui.status(fp.getvalue())
+            finally:
+                ui.write = oldwrite
         else:
             files = []
             ac = parsepatch(fp)
@@ -607,7 +618,7 @@ def unshelve(ui, repo, **opts):
             try:
                 try:
                     fp.seek(0)
-                    internalpatch(fp, ui, 1, repo.root)
+                    patch.internalpatch(ui, repo, fp, 1)
                     patchdone = 1
                 except:
                     if opts['force']:
@@ -615,7 +626,7 @@ def unshelve(ui, repo, **opts):
                     else:
                         ui.status('restoring backup files\n')
                         for realname, tmpname in backups.iteritems():
-                            ui.debug('restoring %r to %r\n' % 
+                            ui.debug('restoring %r to %r\n' %
                                      (tmpname, realname))
                             util.copyfile(tmpname, repo.wjoin(realname))
             finally:
@@ -637,25 +648,20 @@ cmdtable = {
         (shelve,
          [('A', 'addremove', None,
            _('mark new/missing files as added/removed before shelving')),
-          ('f', 'force', None,
-           _('overwrite existing shelve data')),
-          ('a', 'append', None,
-           _('append to existing shelve data')),
-          ('', 'all', None,
-           _('shelve all changes')),
-          ('n', 'name', '',
-           _('shelve changes to specified shelf name')),
-           ('l', 'list', None, _('list active shelves')),
+          ('f', 'force', None, _('overwrite existing shelve data')),
+          ('a', 'append', None, _('append to existing shelve data')),
+          ('', 'all', None, _('shelve all changes')),
+          ('n', 'name', '', _('shelve changes to specified shelf name')),
+          ('l', 'list', None, _('list active shelves')),
          ] + commands.walkopts,
          _('hg shelve [OPTION]... [FILE]...')),
     "unshelve":
         (unshelve,
          [('i', 'inspect', None, _('inspect shelved changes only')),
-          ('f', 'force', None, 
+          ('f', 'force', None,
            _('proceed even if patches do not unshelve cleanly')),
-           ('n', 'name', '',
-            _('unshelve changes from specified shelf name')),
-           ('l', 'list', None, _('list active shelves')),
+          ('n', 'name', '', _('unshelve changes from specified shelf name')),
+          ('l', 'list', None, _('list active shelves')),
          ],
          _('hg unshelve [OPTION]...')),
 }
