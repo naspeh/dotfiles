@@ -2,17 +2,15 @@
     ;(debug)
     (if
         (or
-            (contains(application_name) "Vim")
-            (is(window_name) "Terminal")
+            (contains(window_name) "Vim")
             (is(application_name) "lilyterm")
-            (is(window_name) "sakura")
-            (contains(window_name) "New Tab - Google Chrome")
+            (is(application_name) "sakura")
+            (is(application_name) "Xfce Terminal")
             (and
                 (contains(window_name) "Chromium")
                 (matches(window_role) "browser")
             )
-            (contains(window_name) "FatRat")
-            (contains(window_name) "Document Viewer")
+            (is(application_name) "Document Viewer")
             (is(application_name) "gThumb")
         )
         (maximize)
@@ -25,8 +23,17 @@
     )
     (if
         (and
-            (matches(application_name) "Pidgin")
+            (is(application_name) "Pidgin")
             (matches(window_role) "conversation")
+        )
+        (begin
+            (geometry "800x650+350-0")
+        )
+    )
+    (if
+        (and
+            (is(application_name) "gajim")
+            (matches(window_role) "messages")
         )
         (begin
             (geometry "800x650+350-0")
