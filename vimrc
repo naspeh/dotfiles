@@ -86,7 +86,7 @@ Bundle 'gmarik/vundle'
 
 Bundle 'tpope/vim-fugitive'
 Bundle 'powerman/vim-plugin-ruscmd'
-Bundle 'lambdalisue/vim-python-virtualenv'
+"Bundle 'lambdalisue/vim-python-virtualenv'
 Bundle 'jQuery'
 "Bundle 'hallettj/jslint.vim'
 Bundle 'Jinja'
@@ -158,6 +158,7 @@ let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#enable_fuzzy_completion = 1
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplete#enable_insert_char_pre = 1
 inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
 
 
@@ -394,18 +395,7 @@ nmap <leader>a ggVG<cr>
 nmap <leader>n :lnext<cr>
 nmap <leader>nn :lfirst<cr>
 
-set guioptions+=a
-function! MakePattern(text)
-  let pat=escape(a:text, '\')
-  let pat=substitute(pat, '\_s\+$', '\\s\\*', '')
-  let pat=substitute(pat, '^\_s\+', '\\s\\*', '')
-  let pat=substitute(pat, '\_s\+',  '\\_s\\+', 'g')
-  return '\\V' . escape(pat, '\"')
-endfunction
-nnoremap <F2> :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
-vnoremap <silent> <F2> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
-"nmap <leader><space> :set invhls<CR>:let @/="<C-r><C-w>"<CR>
-
+nnoremap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 
 " ------------------------------
 " Misc
@@ -415,14 +405,5 @@ iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
 iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
-
-"python << EOF
-"import os, sys
-"ve_dir = os.environ.get('VIRTUAL_ENV')
-"if ve_dir:
-"    ve_dir in sys.path or sys.path.insert(0, ve_dir)
-"    activate_this = os.path.join(os.path.join(ve_dir, 'bin'), 'activate_this.py')
-"    execfile(activate_this, dict(__file__=activate_this))
-"EOF
 
 set secure  " must be written at the last.  see :help 'secure'.
