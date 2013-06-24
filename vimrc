@@ -86,6 +86,7 @@ Bundle 'gmarik/vundle'
 
 Bundle 'tpope/vim-fugitive'
 Bundle 'powerman/vim-plugin-ruscmd'
+Bundle 'lambdalisue/vim-python-virtualenv'
 Bundle 'jQuery'
 "Bundle 'hallettj/jslint.vim'
 Bundle 'Jinja'
@@ -147,10 +148,17 @@ let g:tagbar_sort=1
 let g:tagbar_foldlevel=0
 
 
-Bundle 'AutoComplPop', 'L9'
+"Bundle 'AutoComplPop', 'L9'
+"let g:acp_enableAtStartup=1
 let g:acp_ignorecaseOption=0
-let g:acp_enableAtStartup=1
 
+
+Bundle 'Shougo/neocomplete.vim'
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 2
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
@@ -160,19 +168,10 @@ let Grep_Skip_Dirs=Grep_Skip_Dirs2
 let Grep_Skip_Files='*.bak *~ *.pyc _generated_media*'
 noremap <leader>gg :call VarToggle('g:Grep_Skip_Dirs', Grep_Skip_Dirs1, Grep_Skip_Dirs2)<cr>
 
-Bundle 'python.vim'
-"Bundle 'pyflakes'
-"Bundle 'pep8--Driessen'
-"Bundle 'https://github.com/jbking/vim-pep8/'
-"Bundle 'python_check_syntax.vim'
-"Bundle 'pythoncomplete'
 
-
-"if v:version >= 703
-"    Bundle 'Gundo'
-"    call MapDo('<F6>', ':GundoToggle<cr>')
-"    let g:gundo_width=35
-"endif
+"Bundle 'python.vim'
+Bundle 'hdima/python-syntax'
+let python_highlight_all=1
 
 
 Bundle 'kien/ctrlp.vim'
@@ -210,20 +209,6 @@ vnoremap <leader>c :call NERDComment('x', 'AlignLeft')<cr>gv
 nnoremap <leader>cc :call NERDComment('n', 'Uncomment')<cr>gv
 vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
 
-"Bundle 'tomtom/tcomment_vim'
-"Bundle 'comments.vim'
-"Bundle 'tpope/vim-commentary'
-"autocmd FileType python set commentstring=#%s
-
-
-"set foldenable
-"set foldcolumn=1
-"Bundle 'Python-Syntax-Folding'
-"Bundle 'Efficient-python-folding'
-"Bundle 'sunsol/vim_python_fold_compact'
-"noremap f zA
-"noremap F za
-
 
 Bundle 'davidhalter/jedi-vim'
 let g:jedi#use_tabs_not_buffers = 0
@@ -234,15 +219,9 @@ let g:jedi#show_function_definition = 0
 let g:jedi#autocompletion_command = "<C-Space>"
 
 
-"Bundle 'airblade/vim-gitgutter'
-
-
 " ------------------------------
 " Configure
 " ------------------------------
-
-" Load plugins
-"source ~/.vim/plugins.vim
 
 " set window title
 set title
@@ -256,11 +235,6 @@ set spelllang=en_us,ru_yo    " Языки для проверки правопи
 set encoding=utf-8
 set fileencodings=utf-8,cp1251,koi8-r,cp866
 set termencoding=utf-8
-
-"fun! SetUsLayout()
-"  silent !sh -c 'setxkbmap us && setxkbmap us,ru'
-"endfun
-"autocmd InsertLeave * call SetUsLayout()
 
 " Не создавать резервных копий файлов
 set nobackup
@@ -284,7 +258,6 @@ set incsearch
 
 syntax on
 set number
-let python_highlight_all=1
 
 set list
 set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
@@ -315,15 +288,12 @@ set statusline+=%*
 set laststatus=2
 " Показывать незавершенные команды в статусбаре
 set showcmd
-hi StatusLineBufferNumber guifg=fg guibg=bg gui=bold
+"hi StatusLineBufferNumber guifg=fg guibg=bg gui=bold
 set cmdheight=2
 " использовать диалоги вместо сообщений об ошибках
 set confirm
 " report all changes
 set report=0
-" Не перерисовывать окно при работе макросов
-set lazyredraw
-set ttyfast
 
 " Поддержка мыши
 set mouse=r
@@ -331,7 +301,6 @@ set mousemodel=popup
 set mousehide
 
 " share clipboard with system clipboard
-"set clipboard+=unnamed
 set clipboard=unnamedplus
 
 " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
@@ -392,18 +361,10 @@ autocmd FileChangedShell * echo "Warning: File changed on disk"
 
 " Заставляет комбинацию shift-insert работать как в Xterm
 imap <S-Insert> <MiddleMouse>
-"map! <S-Insert> <MiddleMouse>
-
-" CTRL-F для omni completion
-"imap <C-F> <C-X><C-O>
 
 " < & > - делаем отступы для блоков
 vmap < <gv
 vmap > >gv
-
-" Scrolling
-"noremap <C-k> 14j14<C-e>
-"noremap <C-l> 14k14<C-y>
 
 " Nice scrolling if line wrap
 noremap j gj
@@ -451,16 +412,16 @@ vnoremap <silent> <F2> :<C-U>let @/="<C-R>=MakePattern(@*)<CR>"<CR>:set hls<CR>
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pyutf8 # -*- coding: utf-8 -*-<esc>
-iab pdbt import pdb; pdb.set_trace()<esc>
-iab ipdbt import ipdb; ipdb.set_trace()<esc>
+iab pdb; import pdb; pdb.set_trace()<esc>
+iab ipdb; import ipdb; ipdb.set_trace()<esc>
 
-python << EOF
-import os, sys
-ve_dir = os.environ.get('VIRTUAL_ENV')
-if ve_dir:
-    ve_dir in sys.path or sys.path.insert(0, ve_dir)
-    activate_this = os.path.join(os.path.join(ve_dir, 'bin'), 'activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
+"python << EOF
+"import os, sys
+"ve_dir = os.environ.get('VIRTUAL_ENV')
+"if ve_dir:
+"    ve_dir in sys.path or sys.path.insert(0, ve_dir)
+"    activate_this = os.path.join(os.path.join(ve_dir, 'bin'), 'activate_this.py')
+"    execfile(activate_this, dict(__file__=activate_this))
+"EOF
 
 set secure  " must be written at the last.  see :help 'secure'.

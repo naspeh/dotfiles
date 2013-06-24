@@ -5,6 +5,7 @@ ZDOTDIR=~/.zsh
 export PATH="$PATH:$HOME/bin"
 export EDITOR=vim
 export BROWSER=chromium
+export PYTHONSTARTUP=~/.pythonrc
 
 export TERM=xterm-256color
 [ -n "$TMUX" ] && export TERM=screen-256color
@@ -50,20 +51,6 @@ zstyle ':completion:*:processes' command 'ps -xuf'
 zstyle ':completion:*:processes' sort false
 
 zstyle ':completion:*:processes-names' command 'ps xho command'
-
-monic() {
-    mode='--auto'
-    output='HDMI1'
-    if [ $1 ]; then
-        output=$1
-    fi
-    if [ $2 ]; then
-        mode="--mode $2"
-    fi
-    cmd="xrandr --output LVDS1 --auto --output $output --right-of LVDS1 $mode"
-    echo $cmd
-    eval $cmd
-}
 
 export VENV_HOME=$HOME/v
 export PIP_VIRTUALENV_BASE=$VENV_HOME
