@@ -156,9 +156,10 @@ let g:acp_ignorecaseOption=0
 Bundle 'Shougo/neocomplete.vim'
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 2
+let g:neocomplete#enable_fuzzy_completion = 1
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
+
 
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
