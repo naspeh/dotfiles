@@ -164,11 +164,11 @@ inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
 
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let Grep_Skip_Dirs1='.git .hg _generated_media'
-let Grep_Skip_Dirs2=Grep_Skip_Dirs1.' migrations'
-let Grep_Skip_Dirs=Grep_Skip_Dirs2
-let Grep_Skip_Files='*.bak *~ *.pyc _generated_media*'
-noremap <leader>gg :call VarToggle('g:Grep_Skip_Dirs', Grep_Skip_Dirs1, Grep_Skip_Dirs2)<cr>
+let GrepSkipDirs1='.git .hg __pycache__'
+let GrepSkipDirs2=GrepSkipDirs1.' migrations'
+let GrepSkipDirs=GrepSkipDirs2
+let Grep_Skip_Files='*.bak *~ *.pyc'
+noremap <leader>gg :call VarToggle('g:GrepSkipDirs', GrepSkipDirs1, GrepSkipDirs2)<cr>
 
 
 "Bundle 'python.vim'
@@ -181,13 +181,13 @@ call MapDo('<F3>', ':CtrlPBuffer<cr>')
 call MapDo('<F4>', ':CtrlPCurWD<cr>')
 call MapDo('<F5>', ':CtrlPBufTag<cr>')
 let g:ctrlp_custom_ignore={
-    \'dir':  '\.git$\|\.hg$\|\.svn$\|_generated_media$',
+    \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
 \}
 let g:ctrlp_extensions=['tag', 'quickfix', 'dir', 'line']
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_mruf_relative=1
 "let g:ctrlp_regexp=0
-let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^_generated_media'
+let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^__pycache__'
 let g:ctrlp_user_command={
     \'types': {
         \1: ['.git', 'cd %s && git ls-files' . g:ctrlp_ignore_],
@@ -195,7 +195,6 @@ let g:ctrlp_user_command={
     \},
     \'fallback': 'find %s -type f' . g:ctrlp_ignore_
 \}
-"let g:ctrlp_user_command='find %s -type f'
 
 
 Bundle 'xterm16.vim'
