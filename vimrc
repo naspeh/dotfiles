@@ -156,7 +156,7 @@ let g:acp_ignorecaseOption=0
 Bundle 'Shougo/neocomplete.vim'
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_fuzzy_completion = 1
+let g:neocomplete#enable_fuzzy_completion = 0
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#enable_insert_char_pre = 1
 inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
@@ -205,9 +205,9 @@ color xterm16
 
 Bundle 'scrooloose/nerdcommenter'
 let NERDCreateDefaultMappings=0
-nnoremap <leader>c :call NERDComment('n', 'AlignLeft')<cr>gv
+nnoremap <leader>c :call NERDComment('n', 'AlignLeft')<cr>
 vnoremap <leader>c :call NERDComment('x', 'AlignLeft')<cr>gv
-nnoremap <leader>cc :call NERDComment('n', 'Uncomment')<cr>gv
+nnoremap <leader>cc :call NERDComment('n', 'Uncomment')<cr>
 vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
 
 
