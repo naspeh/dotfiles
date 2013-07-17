@@ -110,7 +110,7 @@ Bundle "godlygeek/tabular"
 
 Bundle 'scrooloose/syntastic'
 "g:syntastic_less_use_less_lint=1
-let g:syntastic_check_on_open=1
+let g:syntastic_check_on_open=0
 let g:syntastic_enable_signs=0
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
