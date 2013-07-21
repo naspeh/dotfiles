@@ -159,6 +159,10 @@ let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#enable_fuzzy_completion = 0
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#enable_insert_char_pre = 1
+if !exists('g:neocomplete#same_filetypes')
+  let g:neocomplete#same_filetypes = {}
+endif
+let g:neocomplete#same_filetypes._ = '_'
 inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
 
 
@@ -166,9 +170,9 @@ inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
 Bundle 'grep.vim'
 let GrepSkipDirs1='.git .hg __pycache__'
 let GrepSkipDirs2=GrepSkipDirs1.' migrations'
-let GrepSkipDirs=GrepSkipDirs2
+let Grep_Skip_Dirs=GrepSkipDirs2
 let Grep_Skip_Files='*.bak *~ *.pyc'
-noremap <leader>gg :call VarToggle('g:GrepSkipDirs', GrepSkipDirs1, GrepSkipDirs2)<cr>
+noremap <leader>gg :call VarToggle('g:Grep_Skip_Dirs', GrepSkipDirs1, GrepSkipDirs2)<cr>
 
 
 "Bundle 'python.vim'
@@ -279,7 +283,7 @@ set tabstop=4
 " Формат строки состояния
 set wildmenu
 set wildmode=longest,full
-set wildignore=*.pyc
+set wildignore+=*.pyc,__pycache__
 "set wildcharm=<TAB>
 set statusline=%<%f%h%m%r%=%{fugitive#statusline()}\ (%{&ff}\ %{&ft}\ %{&encoding})
 set statusline+=\ %b\ 0x%B\ %l,%c%V\ %P

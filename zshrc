@@ -27,11 +27,10 @@ setopt extendedglob
 setopt nomatch
 setopt notify
 unsetopt correct_all
+bindkey -e
 
 # type a directory's name to cd to it
 compctl -/ cd
-
-bindkey -e
 
 autoload -Uz compinit; compinit
 
@@ -45,12 +44,32 @@ zstyle ':completion:*' verbose true
 # tab completion for PID :D
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*' force-list always
-
 zstyle ':completion:*:processes' command 'ps -xuf'
 zstyle ':completion:*:processes' sort false
-
 zstyle ':completion:*:processes-names' command 'ps xho command'
 
+
+### Pacman stuff
+# https://github.com/Dorvaryn/.zsh/blob/master/rc/archlinux.rc
+# https://bbs.archlinux.org/viewtopic.php?id=93683
+pkglist() {
+    list=`pacman -Qqei|awk '/^Name/{name=$3}/^Groups/{if($3 != "base" && $3 != "base-devel"){print name}}'`
+    if [ "$1" = '-v' ]; then
+        pacman -Qqei `echo $list`|awk 'BEGIN {FS=": "}/^Name/{printf("\033[36m%s\033[32m:\033[37m ", $2)}/^Description/{print $2}'
+    else
+        echo $list
+    fi
+}
+pkgclear() {
+    if [[ ! -n $(pacman -Qdt) ]]; then
+        echo "No orphans to remove."
+    else
+        sudo pacman -Rs $(pacman -Qdtq)
+    fi
+}
+
+
+### Virtualenv wrapper
 export VENV_HOME=$HOME/v
 export PIP_VIRTUALENV_BASE=$VENV_HOME
 export PIP_RESPECT_VIRTUALENV=true
@@ -122,6 +141,8 @@ _venv_complete () {
 }
 compctl -K _venv_complete venv
 
+
+### Aliases
 alias cd="venv_cd"
 alias ve="venv_new"
 
@@ -141,15 +162,7 @@ alias mc='mc -b'
 alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
 
-# use `xdg-open`
-#alias -s {avi,mpeg,mpg,mov,m2v,m4v}=vlc
-#alias -s {pdf,djvu}=evince
-#alias -s {jpg,png,svg,xpm,bmp}=mirage
-#alias -s {html,htm,xhtml}=chromium
 alias o=xdg-open
-
-[ -f "$(which pacman)" ] && alias pacclear="pacman -Rs \`pacman -Qtdq\`"
-
 alias myip="curl ip.appspot.com"
 alias timesync='ntpdate ua.pool.ntp.org'
 
@@ -160,7 +173,8 @@ alias pipf="pip install --src=/arch/naspeh/libs"
 alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
 alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
-## Prompt ##
+
+### Prompt
 autoload colors; colors
 setopt prompt_subst
 
@@ -229,6 +243,8 @@ p_end='%f%b'
 PS1="$p_time$p_user_host$p_pwd$p_venv_info$p_vcs_info$p_jobs$p_exit_code
 $p_sigil$p_end%f"
 
+
+### Line navigation
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
 typeset -A key
