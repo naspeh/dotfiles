@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+export DISPLAY=:0
+if [ "$1" = "up" ]; then
+    su -c 'dropboxd & gajim & skype &' naspeh
+else
+    killall dropbox gajim skype
+fi

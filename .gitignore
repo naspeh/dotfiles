@@ -1,6 +1,5 @@
 *.pyc
 
-vim/.netrwhist
-
-vim/bundle/*
-!vim/bundle/vundle/
+dotsh/vim/.netrwhist
+dotsh/vim/bundle/*
+!dotsh/vim/bundle/vundle/

@@ -1,0 +1,2 @@
+#!/bin/bash
+pdftops $1 - | psbook | psnup -m 0 -b 1 -2 | ps2pdf - `echo $1 | sed -e "s/\.\(\w*\)/_book.\1/g"`;

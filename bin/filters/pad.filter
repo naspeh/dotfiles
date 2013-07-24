@@ -1,0 +1,17 @@
++ /etc/
++ /home/
++ /home/naspeh/
+- /home/naspeh/v.bak/
+- /home/naspeh/v/
+- /home/**/.mozilla/**/Cache*
+- /home/**/.cache/
+- /home/**/.thumbnails/
+- /home/lost+found/
++ /root/
++ /arch/
++ /arch/naspeh/
++ /arch/nayavu/
+- /arch/*
+- /**/*.pyc
+- /**/__pycache__
+- /*

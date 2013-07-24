@@ -1,0 +1,89 @@
+#!/bin/bash
+SCRIPT=$0
+DSCRIPT=`dirname $0`
+TARGET=$1
+FFILTERS=$DSCRIPT/filters/$TARGET.filter
+
+if [ ! -f $FFILTERS ]; then
+    echo "File not found with filters: $FFILTERS"
+    exit
+fi
+
+DTRANS=/media/trans
+DTRANS_RSYNC=$DTRANS/backup/rsync
+DTRANS_MOUNT=$DTRANS_RSYNC
+
+DTARGET=/
+DRSYNC=/arch/backup/rsync
+if [ $TARGET == 'trans' ]; then
+    DTARGET=$DTRANS/
+    DRSYNC=$DTRANS_RSYNC
+    if [ ! -d $DTRANS_RSYNC ]; then
+        echo "Trans not attached: $DTRANS"
+        exit
+    fi
+fi
+
+DMOUNT=$DRSYNC
+DROOT=$DMOUNT/$TARGET
+DLATEST=$DROOT/latest/
+DDATE=$DROOT/`date +%F`
+LABEL=`date +%H-%M`
+DASHES="------------------>>>"
+
+
+started=$(date +%s)
+echo "$DASHES `date +%F\ %T` {{{ BEGIN }}}"
+
+if [ ! -d $DROOT ]; then
+    echo "Create $DROOT"
+    install -d $DROOT
+fi
+if [ $2 ]; then
+    LABEL=$2
+fi
+DDATE="$DDATE--$LABEL"
+FDATE=$DDATE.tar
+
+rsync --archive --delete --verbose --delete-excluded --hard-links \
+    --backup --backup-dir=$DDATE \
+    --filter="merge $FFILTERS" \
+    $DTARGET $DLATEST
+
+if [ -d $DDATE ]; then
+    tar ch --directory=$DDATE --file=$FDATE .
+    rm -rf $DDATE
+fi
+
+echo "$DASHES `date +%F\ %T` >>> Elapsed:    $(( $(date +%s) - started )) sec"
+
+rsync="rsync -avzH --delete"
+mate="pad"
+if [ $TARGET == "pad" ]; then
+    mate="free"
+fi
+
+if [ -d $DTRANS_RSYNC ]; then
+    if [ $TARGET == 'trans' ]; then
+        exit
+    fi
+
+    echo "$DASHES Running trans target..."
+    $SCRIPT trans
+
+    cmd="$rsync $DROOT/ $DTRANS_MOUNT/$TARGET/"
+    echo "$DASHES $cmd"; $cmd
+
+    cmd="$rsync mate:$DRSYNC/$mate/ $DTRANS_RSYNC/$mate"
+    echo "$DASHES $cmd"; $cmd
+
+    cmd="$rsync --exclude="/$TARGET/" $DTRANS_MOUNT/ $DMOUNT/"
+    echo "$DASHES $cmd"; $cmd
+
+    echo "$DASHES `date +%F\ %T` >>> Elapsed:    $(( $(date +%s) - started )) sec"
+else
+    #cmd="$rsync mate:$DRSYNC/$mate/ $DRSYNC/$mate/"
+    #echo "$DASHES $cmd"; $cmd
+    echo "$DASHES `date +%F\ %T` >>> Elapsed:    $(( $(date +%s) - started )) sec"
+fi
+echo "$DASHES {{{ END }}}"
