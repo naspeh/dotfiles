@@ -1,3 +1,4 @@
+" vim:ft=vim
 set nocompatible
 let mapleader=","
 
@@ -124,6 +125,10 @@ nmap <leader>s :SyntasticToggleMode<cr>
 call MapDo('<F8>', ':Errors<cr>')
 nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
+
+" Uses system
+"Bundle 'Lokaltog/powerline'
+Bundle 'zhaocai/linepower.vim'
 
 Bundle 'milkypostman/vim-togglelist'
 "The default mappings are:
