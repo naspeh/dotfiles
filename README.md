@@ -4,15 +4,15 @@ Notes:
 
     vim +BundleInstall +qall
 
-    ln -s dotfiles/dotsh/vimrc .vimrc
-    ln -s dotfiles/dotsh/vim .vim
-    ln -s dotfiles/dotsh/zshrc .zshrc
+    ln -s dotfiles/vim/rc .vimrc
+    ln -s dotfiles/vim/extra .vim
+    ln -s dotfiles/zsh/rc .zshrc
 
-    ln -s dotfiles/dotsh/hgrc .hgrc
-    ln -s dotfiles/dotsh/hgignore .hgignore
-    ln -s dotfiles/dotsh/hgext .hgext
-    ln -s dotfiles/dotsh/gitconfig .gitconfig
-    ln -s dotfiles/dotsh/gitignore .gitignore
+    ln -s dotfiles/vcs/hgrc .hgrc
+    ln -s dotfiles/vcs/hgignore .hgignore
+    ln -s dotfiles/vcs/hgext .hgext
+    ln -s dotfiles/vcs/gitconfig .gitconfig
+    ln -s dotfiles/vcs/gitignore .gitignore
 
-    ln -s dotfiles/dotx/devilspie .devilspie
-    ln -s dotfiles/dotx/xinitrc .xinitrc
+    ln -s dotfiles/x11/devilspie .devilspie
+    ln -s dotfiles/x11/xinitrc .xinitrc
