@@ -6,6 +6,8 @@ Notes:
 
     ln -s dotfiles/vim/rc .vimrc
     ln -s dotfiles/vim/extra .vim
+    ln -s dotfiles/vim/extra/bundle/linepower.vim/config ~/.config/powerline
+
     ln -s dotfiles/zsh/rc .zshrc
 
     ln -s dotfiles/vcs/hgrc .hgrc
