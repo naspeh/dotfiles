@@ -151,7 +151,7 @@ alias ll='ls -l'
 alias cp='nocorrect cp --interactive --recursive --preserve=all'
 alias mv='nocorrect mv --interactive'
 
-alias du='du --human-readable --total'
+alias du='du --human-readable --total -d0'
 alias df='df --human-readable'
 alias grep='grep --color=auto'
 alias rsync='nocorrect rsync'

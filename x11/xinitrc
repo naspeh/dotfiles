@@ -17,6 +17,7 @@ setxkbmap -layout "us,ru(winkeys)" -option "grp:caps_toggle,grp_led:scrol"
 
 devilspie &
 
+(sleep 1; conky) &
 volumeicon &
 batti &
 (sleep 1; sbxkb) &
