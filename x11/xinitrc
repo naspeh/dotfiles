@@ -20,7 +20,8 @@ devilspie &
 (sleep 1; conky) &
 volumeicon &
 batti &
-(sleep 1; sbxkb) &
+#(sleep 1; sbxkb) &
+fbxkb &
 
 clipit &
 stardict &
