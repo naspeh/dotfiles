@@ -48,7 +48,6 @@ color9 ff0000
 
 
 TEXT
-
 #System
 ${color2}Battery:$color${battery_percent BAT0}% ${alignr}${battery_time BAT0}
 ${voffset -4}${battery_bar 3,250}
@@ -57,15 +56,15 @@ ${voffset -4}${fs_bar 3,250 /}
 ${color2}RAM:$color $mem/$memmax  ${alignr}$memperc%
 ${voffset -4}${membar 3,250}
 
-${color1}${font Monospace:style=bold:size=10}Processor$font${color3}${voffset 1}${hr 0}$color
-${color2}Temp:$color${goto 50}${acpitemp}ºC${goto 131}${color2}Fan: $color${goto 180}${ibm_fan}RPM
+${color1}${font :style=bold:size=10}Processor$font${color3}${voffset 1}${hr 0}$color
+${color2}Temp:$color${goto 50}${acpitemp}ºC${goto 131}${color2}Fan: $color${goto 180}${ibm_fan} RPM
 ${color2}Core 0: ${cpu cpu0}%${goto 131}${color2}Core 1: ${cpu cpu1}%$color
 ${cpugraph cpu1 15,123 000033 00cc00}${alignr}${cpugraph cpu2 15,123 000033 00cc00}$font
 ${color2}Core 2: ${cpu cpu2}%${goto 131}${color2}Core 3: ${cpu cpu3}%$color
 ${cpugraph cpu3 15,123 000033 00cc00}${alignr}${cpugraph cpu4 15,123 000033 00cc00}$font
 
 # Top
-${color1}${font Monospace:style=bold:size=10}Top Processes$font${color3}${voffset 1}${hr 0}$color
+${color1}${font :style=bold:size=10}Top Processes$font${color3}${voffset 1}${hr 0}$color
 ${voffset 3}${color2}${hr 0}
 ${voffset -14}${color2}Name${goto 127}PID${goto 177}CPU%${goto 227}RAM%$color
 ${top name 1}${goto 115}${top pid 1}${goto 165}${top cpu 1}${goto 215}${top mem 1}
@@ -75,22 +74,33 @@ ${top name 4}${goto 115}${top pid 4}${goto 165}${top cpu 4}${goto 215}${top mem 
 ${top name 5}${goto 115}${top pid 5}${goto 165}${top cpu 5}${goto 215}${top mem 5}
 
 # Network
-${if_up wlp3s0}${color1}${font Monospace:style=bold:size=10}Wireless Network$font${color3}${voffset 1}${hr 0}$color
-${color2}SSID:$color${goto 50}${wireless_essid wlp3s0} ${goto 131}${color2}Signal: $color${goto 180}${wireless_link_qual wlp3s0}/${wireless_link_qual_max wlp3s0}
+${if_up wlp3s0}\
+${color1}${font :style=bold:size=10}Wireless Network$font${color3}${voffset 1}${hr 0}$color
+${color2}SSID:$color${goto 50}${wireless_essid wlp3s0} ${goto 131}\
+${color2}Signal: $color${goto 180}${wireless_link_qual wlp3s0}/${wireless_link_qual_max wlp3s0}
 ${voffset -4}${wireless_link_bar 3,250 wlp3s0}
-${color2}Local:$color${goto 50}${addr wlp3s0}    ${color2}${goto 131}Public:$color${goto 180}${execi 300 curl ip.appspot.com}
-${downspeedgraph wlp3s0 15,123 003300 6ddd00}${alignr}${upspeedgraph wlp3s0 15,123 330000 e3170d}$color
-${color2}Down: $color${goto 50}${downspeedf wlp3s0} k/s${goto 131}${color2}Up: $color${goto 180}${upspeedf wlp3s0} k/s
-${color2}Total:$color${goto 50}${totaldown wlp3s0} ${goto 131}${color2}Total:$color${goto 180}${totalup wlp3s0}
-${else}${color1}${font Monospace:style=bold:size=10}Ethernet$font${color3}${voffset 1}${hr 0}$color
-${downspeedgraph eth0 75,123 003300 6ddd00}${alignr}${upspeedgraph eth0 75,123 330000 e3170d}$color
-${color2}Local:$color${goto 50}${addr eth0}    ${color2}${goto 131}Public:$color${goto 180}${execi 300 curl ip.appspot.com}
-${color2}Down: $color${goto 50}${downspeedf eth0} k/s${goto 131}${color2}Up: $color${goto 180}${upspeedf eth0} k/s
-${color2}Total:$color${goto 50}${totaldown eth0} ${goto 131}${color2}Total:$color${goto 180}${totalup eth0}
+${color2}Local:$color${goto 50}${addr wlp3s0}${goto 131}\
+${color2}Public:$color${goto 180}${execi 300 curl ip.appspot.com}
+${downspeedgraph wlp3s0 15,123 003300 6ddd00}${alignr}\
+${upspeedgraph wlp3s0 15,123 330000 e3170d}$color
+${color2}Down: $color${goto 50}${downspeedf wlp3s0} k/s${goto 131}\
+${color2}Up: $color${goto 180}${upspeedf wlp3s0} k/s
+${color2}Total:$color${goto 50}${totaldown wlp3s0} ${goto 131}\
+${color2}Total:$color${goto 180}${totalup wlp3s0}\
+${else}\
+${color1}${font :style=bold:size=10}Ethernet$font${color3}${voffset 1}${hr 0}$color
+${downspeedgraph eth0 75,123 003300 6ddd00}${alignr}\
+${upspeedgraph eth0 75,123 330000 e3170d}$color
+${color2}Local:$color${goto 50}${addr eth0}${goto 131}\
+${color2}Public:$color${goto 180}${execi 300 curl ip.appspot.com}
+${color2}Down: $color${goto 50}${downspeedf eth0} k/s${goto 131}\
+${color2}Up: $color${goto 180}${upspeedf eth0} k/s
+${color2}Total:$color${goto 50}${totaldown eth0}${goto 131}\
+${color2}Total:$color${goto 180}${totalup eth0}\
 $endif
 
 #Shortcuts
-${color1}${font Monospace:style=bold:size=10}Shortcuts$font${color3}${voffset 1}${hr 0}$color
+${color1}${font :style=bold:size=10}Shortcuts$font${color3}${voffset 1}${hr 0}$color
 Super+1$alignr Main Menu
 Super+2$alignr Run Dialog
 Super+s$alignr Show Desktop
@@ -101,6 +111,6 @@ Super+l$alignr Lock Screen
 Super+q$alignr Logout
 
 #Tider
-${color1}${font Monospace:style=bold:size=10}Tider$font${color3}${voffset 1}${hr 0}$color
+${color1}${font :style=bold:size=10}Tider$font${color3}${voffset 1}${hr 0}$color
 ${exec cat ~/.config/tider/stats.txt| sed -e 's|<[^>]*>||g'}
 ${color3}${voffset 1}${hr 0}

@@ -36,7 +36,7 @@ fun! VarToggle(name, ...)
     else
         execute 'let '.a:name.'="'.v1.'"'
     endif
-    echo a:name.'='.eval(a:name)
+    echo a:name.'="'.eval(a:name).'"'
 endfun
 
 fun! TextWidth()
@@ -71,7 +71,6 @@ fun! TextMode()
     setlocal nolist
     setlocal nocursorline
     setlocal spell
-    " Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
     set whichwrap+=<,>,[,]
 endfun
 nmap <leader>tt :call TextMode()<cr>
@@ -173,11 +172,12 @@ endif
 
 "Bundle 'EasyGrep'
 Bundle 'grep.vim'
-let GrepSkipDirs1='.git .hg __pycache__'
-let GrepSkipDirs2=GrepSkipDirs1.' migrations'
-let Grep_Skip_Dirs=GrepSkipDirs2
-let Grep_Skip_Files='*.bak *~ *.pyc'
-noremap <leader>gg :call VarToggle('g:Grep_Skip_Dirs', GrepSkipDirs1, GrepSkipDirs2)<cr>
+let Grep_Skip_Dirs_='.git .hg __pycache__'
+let Grep_Skip_Dirs=Grep_Skip_Dirs_
+let Grep_Skip_Files='*.pyc'
+noremap <leader>gg :call VarToggle(
+    \'g:Grep_Skip_Dirs', Grep_Skip_Dirs_, Grep_Skip_Dirs_.' migrations'
+\)<cr>
 
 
 "Bundle 'python.vim'
@@ -235,113 +235,107 @@ let g:jedi#autocompletion_command = "<C-Space>"
 
 " set window title
 set title
-
-" Localization
-set langmenu=none            " Always use english menu
-set keymap=russian-jcukenwin " Переключение раскладок клавиатуры по <C-^>
-set iminsert=0               " Раскладка по умолчанию - английская
-set imsearch=0               " Раскладка по умолчанию при поиске - английская
-set spelllang=en_us,ru_yo    " Языки для проверки правописания
-set encoding=utf-8
-set fileencodings=utf-8,cp1251,koi8-r,cp866
-set termencoding=utf-8
-
-" Не создавать резервных копий файлов
 set nobackup
 set noswapfile
 
 set hidden
 set undolevels=500
 set history=500
-" Включение отображения позиции курсора (всё время)
-set ruler
 
-" Включить автоотступы
-set autoindent
-"set smartindent
-set smarttab
+" Localization
+set langmenu=none " Always use english menu
+set spelllang=en_us,ru_yo
+set encoding=utf-8
+set fileencodings=utf-8,cp1251,koi8-r,cp866
+set termencoding=utf-8
 
-" Поиск
-"set ignorecase
+if v:version >= 703
+    "undo settings
+    set undodir=~/.vim/undofiles
+    set undofile
+
+    set colorcolumn=+1 "mark the ideal max text width
+endif
+
+set smartcase
 set hlsearch
 set incsearch
 
 syntax on
 set number
+set ruler
 
 set list
 set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 set linebreak
 
-" Don't make chaos on my display
-set nowrap
-set backspace=indent,eol,start
-set nojoinspaces
-set nofoldenable
-
-" Преобразовать Табы в пробелы
 set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
-" Формат строки состояния
+set autoindent
+set smarttab
+
 set wildmenu
 set wildmode=longest,full
 set wildignore+=*.pyc,__pycache__
-"set wildcharm=<TAB>
-set statusline=%<%f%h%m%r%=%{fugitive#statusline()}\ (%{&ff}\ %{&ft}\ %{&encoding})
-set statusline+=\ %b\ 0x%B\ %l,%c%V\ %P
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+
+" Base from https://github.com/scrooloose/vimfiles
+set statusline =%#identifier#[%f]%* "filename
+set statusline+=%#warningmsg#%{&ff!='unix'?'['.&ff.']':''}%* "warn not unix
+set statusline+=%#warningmsg#%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}%* "warn not utf8
+set statusline+=%h                  "help file flag
+set statusline+=%y                  "filetype
+set statusline+=%#identifier#%r%*   "read only flag
+set statusline+=%#warningmsg#%m%*   "modified flag
+set statusline+=%{fugitive#statusline()}
+set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
+set statusline+=%#error#%{&paste?'[paste]':''}%* " warn paste
+set statusline+=%=                  "left/right separator
+set statusline+=%c,                 "cursor column
+set statusline+=%l/%L               "cursor line/total lines
+set statusline+=\ %P                "percent through file
 set laststatus=2
-" Показывать незавершенные команды в статусбаре
+
 set showcmd
-"hi StatusLineBufferNumber guifg=fg guibg=bg gui=bold
+set showmode
 set cmdheight=2
-" использовать диалоги вместо сообщений об ошибках
 set confirm
-" report all changes
 set report=0
 
-" Поддержка мыши
 set mouse=r
 set mousemodel=popup
 set mousehide
+imap <S-Insert> <MiddleMouse>
 
 " share clipboard with system clipboard
 set clipboard=unnamedplus
 
-" Перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
-"set whichwrap+=<,>,[,]
-
 "GVIM
 if has('gui')
-    " Скрыть панель в gui версии
-    set guioptions-=T
-    " Отключаем графические диалоги
-    set guioptions+=c
-    " Отключаем графические табы (текстовые занимают меньше места)
-    "set guioptions-=e
+    set guioptions-=T   "disable panel
+    set guioptions+=c   "disable dailogs
+    "set guioptions-=e   "disable tabs
+    "set guioptions-=m   "remove menubar
 
     " Disable scrollbars
     set guioptions+=LlRrb
     set guioptions-=LlRrb
 
     set guifont=monospace\ 8
-
-    " Filename
-    :amenu 20.351 &Edit.Copy\ FileName :let @*=expand("%:t")<CR>
-    :amenu 20.353 &Edit.Copy\ FullPath :let @*=expand("%:p")<CR>
-
-    "set go-=m "remove menubar
 endif
 
 " http://blog.sanctum.geek.nz/vim-annoyances/
 nnoremap <F1> <nop>
 nnoremap Q <nop>
 set shortmess+=I
+
+" Don't make chaos on my display
+set nowrap
+set backspace=indent,eol,start
+set nojoinspaces
+set nofoldenable
 
 filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
@@ -359,8 +353,6 @@ autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 "autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
-"autocmd FileType js,css,html setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
@@ -369,8 +361,9 @@ set autoread
 autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
 autocmd FileChangedShell * echo "Warning: File changed on disk"
 
-" Заставляет комбинацию shift-insert работать как в Xterm
-imap <S-Insert> <MiddleMouse>
+" :W sudo saves the file
+" (useful for handling the permission-denied error)
+command! W w !sudo tee % > /dev/null
 
 " < & > - делаем отступы для блоков
 vmap < <gv
@@ -397,13 +390,12 @@ call LeaderToggle('m', 'modifiable')
 
 nmap <leader>2t :setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2<cr>
 nmap <leader>r :source ~/.vimrc<cr>
-"nmap <leader>cc :cclose<cr>
-"nmap <leader>c :copen<cr>
 nmap <leader>a ggVG<cr>
 nmap <leader>n :lnext<cr>
 nmap <leader>nn :lfirst<cr>
 
 nnoremap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
+
 
 " ------------------------------
 " Misc
