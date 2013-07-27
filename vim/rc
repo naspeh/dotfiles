@@ -125,10 +125,6 @@ call MapDo('<F8>', ':Errors<cr>')
 nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
 
-" Uses system
-"Bundle 'Lokaltog/powerline'
-Bundle 'zhaocai/linepower.vim'
-
 Bundle 'milkypostman/vim-togglelist'
 "The default mappings are:
 "nmap <leader>l :call ToggleLocationList()<CR>
@@ -152,7 +148,11 @@ let g:tagbar_sort=1
 let g:tagbar_foldlevel=0
 
 
+Bundle 'AutoComplPop', 'L9'
 if !has('lua')
+    let g:acp_enableAtStartup=1
+    let g:acp_ignorecaseOption=0
+else
     Bundle 'Shougo/neocomplete.vim'
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_smart_case = 1
@@ -163,10 +163,6 @@ if !has('lua')
     endif
     let g:neocomplete#same_filetypes._ = '_'
     inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
-else
-    Bundle 'AutoComplPop', 'L9'
-    let g:acp_enableAtStartup=1
-    let g:acp_ignorecaseOption=0
 endif
 
 
