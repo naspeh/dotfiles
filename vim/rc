@@ -154,6 +154,7 @@ if !has('lua')
     let g:acp_ignorecaseOption=0
 else
     Bundle 'Shougo/neocomplete.vim'
+    let g:acp_enableAtStartup=0
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#enable_fuzzy_completion = 0
