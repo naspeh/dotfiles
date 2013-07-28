@@ -48,7 +48,14 @@ color9 ff0000
 
 
 TEXT
+#Weather
+${color1}${font :style=bold:size=10}Weather$font${color3}${voffset 1}${hr 0}$color
+$color${font :bold:size=12}\
+${color2}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD icon} \
+${color2}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD cloud_cover} \
+${color}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD temperature} °C
 #System
+${color1}${font :style=bold:size=10}System$font${color3}${voffset 1}${hr 0}$color
 ${color2}Battery:$color${battery_percent BAT0}% ${alignr}${battery_time BAT0}
 ${voffset -4}${battery_bar 3,250}
 ${color2}Root:$color ${fs_used /}/${fs_size /} ${alignr}${fs_free_perc /}% Free
@@ -101,14 +108,14 @@ $endif
 
 #Shortcuts
 ${color1}${font :style=bold:size=10}Shortcuts$font${color3}${voffset 1}${hr 0}$color
-Super+1$alignr Main Menu
-Super+2$alignr Run Dialog
-Super+s$alignr Show Desktop
-Super+t$alignr Terminal
-Super+b$alignr Browser
-PrtSc$alignr Screenshot
-Super+l$alignr Lock Screen
-Super+q$alignr Logout
+${color}Super+1${color2} Main Menu${goto 131}\
+${color}Super+2${color2} Run Dialog
+${color}Super+s${color2} Show Desktop${goto 131}\
+${color}PrtSc${color2} Screenshot
+${color}Super+t${color2} Terminal${goto 131}\
+${color}Super+b${color2} Browser
+${color}Super+l${color2} Lock Screen${goto 131}\
+${color}Super+q${color2} Logout
 
 #Tider
 ${color1}${font :style=bold:size=10}Tider$font${color3}${voffset 1}${hr 0}$color

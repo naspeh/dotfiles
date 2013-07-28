@@ -19,7 +19,7 @@ devilspie &
 
 (sleep 1; conky) &
 volumeicon &
-batti &
+#batti &
 #(sleep 1; sbxkb) &
 fbxkb &
 
