@@ -9,29 +9,31 @@ fi
 
 export EDITOR=vim
 export BROWSER=chromium
+export TERMINAL=sakura
 export PATH="$PATH:$HOME/bin"
 
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru(winkeys)" -option "grp:caps_toggle,grp_led:scrol"
 
-devilspie &
-
-(sleep 1; conky) &
-volumeicon &
-#batti &
-#(sleep 1; sbxkb) &
-fbxkb &
-
-clipit &
-stardict &
-tider &
-
-
 DEFAULT_SESSION=startxfce4
 case $1 in
-  startxfce4|i3|awesome|wmfs) SESSION=$1 ;;
+  startxfce4|i3|awesome|wmii|wmfs) SESSION=$1 ;;
   *) SESSION=$DEFAULT_SESSION ;;
 esac
+$SESSION &
+PID=$!
 
-$SESSION
+devilspie &
+(sleep 1; conky) &
+volumeicon &
+batti &
+#(sleep 1; sbxkb) &
+fbxkb &
+dunst &
+clipit &
+#stardict &
+goldendict &
+tider &
+
+wait $PID

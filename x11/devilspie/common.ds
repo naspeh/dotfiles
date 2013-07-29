@@ -15,7 +15,13 @@
         )
         (maximize)
     )
-    (if (is (application_name) "stardict")
+    (if (is(application_name) "stardict")
+        (begin
+            (focus)
+            (geometry "800x425-0-0")
+        )
+    )
+    (if (is(application_name) "goldendict")
         (begin
             (focus)
             (geometry "800x425-0-0")
@@ -36,11 +42,9 @@
         (geometry "800x650+350-0")
     )
     (if
-        (or
-            (and
-                (contains(window_name) "Skype")
-                (matches(window_role) "ConversationsWindow")
-            )
+        (and
+            (contains(window_name) "Skype")
+            (matches(window_role) "ConversationsWindow")
         )
         (geometry "950x650+350-0")
     )
