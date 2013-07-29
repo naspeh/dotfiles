@@ -106,20 +106,20 @@ Total:${color2}${goto 180}${totalup eth0}$color\
 $endif
 
 #Shortcuts
-${color1}${font :style=bold:size=10}Shortcuts$font${color3}${voffset 1}${hr 0}$color
-${color2}Super+1$color Main Menu\
-${goto 130}\
-${color2}Super+t$color Terminal
-${color2}Super+2$color Run Dialog\
-${goto 130}\
-${color2}Super+b$color Browser
-${color2}Super+s$color Show Desktop\
-${goto 130}\
-${color2}Super+l$color Lock Screen
-${color2}PrtSc$color Screenshot\
-${goto 130}\
-${color2}Super+q$color Logout
-
+#${color1}${font :style=bold:size=10}Shortcuts$font${color3}${voffset 1}${hr 0}$color
+#${color2}Super+1$color Main Menu\
+#${goto 130}\
+#${color2}Super+t$color Terminal
+#${color2}Super+2$color Run Dialog\
+#${goto 130}\
+#${color2}Super+b$color Browser
+#${color2}Super+s$color Show Desktop\
+#${goto 130}\
+#${color2}Super+l$color Lock Screen
+#${color2}PrtSc$color Screenshot\
+#${goto 130}\
+#${color2}Super+q$color Logout
+#
 #Tider
 ${color1}${font :style=bold:size=10}Tider$font${color3}${voffset 1}${hr 0}$color
 ${exec cat ~/.config/tider/stats.txt| sed -e 's|<[^>]*>||g'}
