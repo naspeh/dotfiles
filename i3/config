@@ -27,7 +27,7 @@ for_window [class="Xfrun4"] floating enable
 for_window [class="Stardict"] floating enable
 for_window [class="Deadbeef"] floating enable
 for_window [class="Transmission"] floating enable
-for_window [class="Xfce4-notifyd"] floating enable
+for_window [class="Xfce4-notifyd"] floating enable; border none
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -126,8 +126,8 @@ bindsym $mod+b workspace back_and_forth
 
 set $w1 1: web
 set $w2 2: misc
-set $w3 3: root
-set $w4 4: misc
+set $w3 3: misc
+set $w4 4: root
 set $w5 5: jabber
 set $w6 6: skype
 set $w7 7

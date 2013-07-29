@@ -27,11 +27,10 @@ PID=$!
 
 #devilspie &
 (sleep 1; conky) &
+volumeicon &
 fbxkb &
 #(sleep 1; sbxkb) &
-volumeicon &
 batti &
-dunst &
 clipit &
 #stardict &
 goldendict &
