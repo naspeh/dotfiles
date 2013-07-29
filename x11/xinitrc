@@ -15,8 +15,9 @@ export PATH="$PATH:$HOME/bin"
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru(winkeys)" -option "grp:caps_toggle,grp_led:scrol"
+#xrdb ~/.Xresources &
 
-DEFAULT_SESSION=startxfce4
+DEFAULT_SESSION=i3
 case $1 in
   startxfce4|i3|awesome|wmii|wmfs) SESSION=$1 ;;
   *) SESSION=$DEFAULT_SESSION ;;
@@ -24,12 +25,12 @@ esac
 $SESSION &
 PID=$!
 
-devilspie &
+#devilspie &
 (sleep 1; conky) &
+fbxkb &
+#(sleep 1; sbxkb) &
 volumeicon &
 batti &
-#(sleep 1; sbxkb) &
-fbxkb &
 dunst &
 clipit &
 #stardict &

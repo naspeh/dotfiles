@@ -12,18 +12,9 @@
 # Startup
 #exec --no-startup-id feh --bg-scale /home/naspeh/lock-s.png
 exec --no-startup-id xsetroot -solid "#333333"
-#exec xfce4-power-manager
-#exec volumeicon
-#exec stardict
-#exec clipit
-#exec nm-applet
-#exec skype
-#exec gajim
-#exec dropboxd
-#exec pidgin
 
 set $mod Mod1
-#set $mod Mod4
+set $mod2 Mod4
 
 workspace_layout tabbed
 new_window 1pixel
@@ -64,6 +55,17 @@ bindsym $mod+F4 kill
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
 bindsym $mod+F2 exec xfrun4
+bindsym $mod2+2 exec xfrun4
+
+bindsym $mod2+w exec "tider call menu"
+bindsym $mod2+a exec "tider call target"
+
+bindsym Print exec xfce4-screenshooter
+bindsym $mod2+b exec chromium
+bindsym $mod2+Ctrl+q exec "systemctl poweroff"
+bindsym $mod2+Ctrl+s exec "systemctl suspend"
+bindsym $mod2+Ctrl+r exec "systemctl reboot"
+bindsym $mod2+Ctrl+l exec "i3lock -i ~/lock-s.png"
 
 # change focus
 bindsym $mod+j focus left
@@ -165,10 +167,6 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Ctrl+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+Ctrl+Delete exec shutdown now
-bindsym $mod+Ctrl+l exec "i3lock -i /home/naspeh/lock-s.png"
-
-bindsym $mod+Print exec xfce4-screenshooter
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -207,8 +205,5 @@ bar {
     }
 
     position top
-    #status_command ~/.i3/status.sh
-
-    # https://github.com/ivyl/i3-config/
-    status_command ~/.i3/conky
+    status_command i3status --config=~/.i3/status
 }

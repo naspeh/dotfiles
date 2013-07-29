@@ -19,3 +19,4 @@ Notes:
     ln -s dotfiles/x11/devilspie .devilspie
     ln -s dotfiles/x11/xinitrc .xinitrc
     ln -s dotfiles/x11/conkyrc .conkyrc
+    ln -s dotfiles/i3 .i3
