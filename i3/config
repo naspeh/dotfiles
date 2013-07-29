@@ -65,7 +65,7 @@ bindsym $mod2+b exec chromium
 bindsym $mod2+f exec monitor
 bindsym $mod2+t exec $terminal
 bindsym $mod2+Ctrl+q exec systemctl poweroff
-bindsym $mod2+Ctrl+s exec systemctl suspend
+#bindsym $mod2+Ctrl+s exec systemctl suspend
 bindsym $mod2+Ctrl+r exec systemctl reboot
 bindsym $mod2+Ctrl+l exec i3lock -i ~/lock-s.png
 bindsym $mod2+l exec slock
@@ -114,6 +114,10 @@ bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
+
+# Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
 
 # focus the parent container
 bindsym $mod+a focus parent
