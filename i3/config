@@ -210,7 +210,7 @@ bar {
     colors {
         background #ffffff
         statusline #000000
-        separator #666666
+        separator #cccccc
     }
 
     position top

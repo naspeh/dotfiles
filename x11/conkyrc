@@ -50,15 +50,14 @@ color9 ff0000
 
 
 TEXT
-#Weather
-${if_up wlp3s0}\
+### Weather
+${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
 ${color1}${font :style=bold:size=10}Weather$font${color3}${voffset 1}${hr 0}$color
 ${font :style=bold:size=12}\
 ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD cloud_cover} \
-${color2}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD temperature} °C$color\
-$endif
-
-#System
+${color2}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD temperature} °C$color
+$endif\
+### System
 ${color1}${font :style=bold:size=10}System$font${color3}${voffset 1}${hr 0}$color
 Battery:${color2}${battery_percent BAT0}% ${alignr}${battery_time BAT0}$color
 ${voffset -4}${battery_bar 3,250}
@@ -74,7 +73,7 @@ Core 2: ${color2}${cpu cpu2}%$color${goto 130}Core 3: ${color2}${cpu cpu3}%$colo
 ${cpugraph cpu3 15,123 000033 00cc00}${alignr}${cpugraph cpu4 15,123 000033 00cc00}$font
 Temp: ${color2}${acpitemp}ºC$color${goto 130}Fan: ${color2}${ibm_fan} RPM$color
 
-# Top
+### Top
 ${color1}${font :style=bold:size=10}Top Processes$font${color3}${voffset 1}${hr 0}$color
 ${voffset 3}${color2}${hr 0}
 ${voffset -14}${color2}Name${goto 127}PID${goto 177}CPU%${goto 227}RAM%$color
@@ -84,7 +83,7 @@ ${top name 3}${goto 115}${top pid 3}${goto 165}${top cpu 3}${goto 215}${top mem 
 ${top name 4}${goto 115}${top pid 4}${goto 165}${top cpu 4}${goto 215}${top mem 4}
 ${top name 5}${goto 115}${top pid 5}${goto 165}${top cpu 5}${goto 215}${top mem 5}
 
-# Network
+### Network
 ${if_up wlp3s0}\
 ${color1}${font :style=bold:size=10}Wireless Network$font${color3}${voffset 1}${hr 0}$color
 SSID:${color2}${goto 50}${wireless_essid wlp3s0}$color${goto 130}\
@@ -97,8 +96,10 @@ ${upspeedgraph wlp3s0 15,123 330000 e3170d}
 Down: ${color2}${goto 50}${downspeedf wlp3s0} k/s$color${goto 130}\
 Up: ${color2}${goto 180}${upspeedf wlp3s0} k/s$color
 Total:${color2}${goto 50}${totaldown wlp3s0}$color${goto 130}\
-Total:${color2}${goto 180}${totalup wlp3s0}$color\
-${else}\
+Total:${color2}${goto 180}${totalup wlp3s0}$color
+
+$endif\
+${if_up eth0}\
 ${color1}${font :style=bold:size=10}Ethernet$font${color3}${voffset 1}${hr 0}$color
 ${downspeedgraph eth0 75,123 003300 6ddd00}${alignr}\
 ${upspeedgraph eth0 75,123 330000 e3170d}
@@ -107,10 +108,10 @@ Public:${color2}${goto 180}${execi 60 curl ip.appspot.com}$color
 Down: ${color2}${goto 50}${downspeedf eth0} k/s$color${goto 130}\
 Up: ${color2}${goto 180}${upspeedf eth0} k/s$color
 Total:${color2}${goto 50}${totaldown eth0}$color${goto 130}\
-Total:${color2}${goto 180}${totalup eth0}$color\
-$endif
+Total:${color2}${goto 180}${totalup eth0}$color
 
-#Shortcuts
+$endif\
+###Shortcuts
 #${color1}${font :style=bold:size=10}Shortcuts$font${color3}${voffset 1}${hr 0}$color
 #${color2}Super+1$color Main Menu\
 #${goto 130}\
@@ -125,7 +126,7 @@ $endif
 #${goto 130}\
 #${color2}Super+q$color Logout
 #
-#Tider
+###Tider
 ${color1}${font :style=bold:size=10}Tider$font${color3}${voffset 1}${hr 0}$color
 ${exec cat ~/.config/tider/stats.txt| sed -e 's|<[^>]*>||g'}
 ${color3}${voffset 1}${hr 0}

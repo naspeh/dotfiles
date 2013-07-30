@@ -24,13 +24,14 @@ case $1 in
 esac
 $SESSION &
 PID=$!
+sleep 1
 
 if [ $SESSION == 'startxfce4']; then
     devilspie &
 fi
 
-(sleep 1; conky) &
-(sleep 1; sbxkb) &
+conky &
+sbxkb &
 #fbxkb &
 orage &
 volumeicon &

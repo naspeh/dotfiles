@@ -9,6 +9,7 @@ override_utf8_locale yes
 TEXT
 ,[
     ${exec cat ~/.config/tider/i3bar.txt},
+    #${exec cat /arch/naspeh/free/tider/var/i3bar.txt},
     {"full_text": "${time %a %b %d, %H:%M}"},
     {"full_text": ""}
 ]
