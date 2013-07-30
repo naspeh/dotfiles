@@ -214,5 +214,6 @@ bar {
     }
 
     position top
-    status_command i3status --config=~/.i3/status
+    #status_command ~/.i3/status.sh
+    status_command ~/.i3/conky
 }

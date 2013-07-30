@@ -1,0 +1,14 @@
+background no
+out_to_console yes
+out_to_x no
+update_interval 1
+total_run_times 0
+short_units yes
+override_utf8_locale yes
+
+TEXT
+,[
+    ${exec cat ~/.config/tider/i3bar.txt},
+    {"full_text": "${time %a %b %d, %H:%M}"},
+    {"full_text": ""}
+]

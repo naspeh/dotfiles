@@ -25,12 +25,15 @@ esac
 $SESSION &
 PID=$!
 
-#devilspie &
+if [ $SESSION == 'startxfce4']; then
+    devilspie &
+fi
+
 (sleep 1; conky) &
+(sleep 1; sbxkb) &
+#fbxkb &
 orage &
 volumeicon &
-fbxkb &
-#(sleep 1; sbxkb) &
 batti &
 clipit &
 #stardict &

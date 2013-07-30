@@ -1,6 +1,6 @@
 general {
     colors = true
-    interval = 2
+    interval = 1
 }
 
 order += "time"
