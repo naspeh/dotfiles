@@ -38,8 +38,10 @@ minimum_size 1000
 # Colors
 default_shade_color 000000
 default_outline_color 000000
-default_color b2b2b2
-color1 008F11
+#default_color b2b2b2
+default_color dddddd
+#color1 008F11
+color1 00ff00
 color2 ffffff
 color7 0000ff
 color3 00ff00
@@ -49,10 +51,13 @@ color9 ff0000
 
 TEXT
 #Weather
+${if_up wlp3s0}\
 ${color1}${font :style=bold:size=10}Weather$font${color3}${voffset 1}${hr 0}$color
 ${font :style=bold:size=12}\
-${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD cloud_cover 5} \
-${color2}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD temperature 5} °C
+${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD cloud_cover} \
+${color2}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD temperature} °C$color\
+$endif
+
 #System
 ${color1}${font :style=bold:size=10}System$font${color3}${voffset 1}${hr 0}$color
 Battery:${color2}${battery_percent BAT0}% ${alignr}${battery_time BAT0}$color
@@ -86,7 +91,7 @@ SSID:${color2}${goto 50}${wireless_essid wlp3s0}$color${goto 130}\
 Signal:${color2}${goto 180}${wireless_link_qual wlp3s0}/${wireless_link_qual_max wlp3s0}$color
 ${voffset -4}${wireless_link_bar 3,250 wlp3s0}
 Local:${color2}${goto 50}${addr wlp3s0}$color${goto 130}\
-Public:${color2}${goto 180}${execi 300 curl ip.appspot.com}$color
+Public:${color2}${goto 180}${execi 60 curl ip.appspot.com}$color
 ${downspeedgraph wlp3s0 15,123 003300 6ddd00}${alignr}\
 ${upspeedgraph wlp3s0 15,123 330000 e3170d}
 Down: ${color2}${goto 50}${downspeedf wlp3s0} k/s$color${goto 130}\
@@ -98,7 +103,7 @@ ${color1}${font :style=bold:size=10}Ethernet$font${color3}${voffset 1}${hr 0}$co
 ${downspeedgraph eth0 75,123 003300 6ddd00}${alignr}\
 ${upspeedgraph eth0 75,123 330000 e3170d}
 Local:${color2}${goto 50}${addr eth0}$color${goto 130}\
-Public:${color2}${goto 180}${execi 300 curl ip.appspot.com}$color
+Public:${color2}${goto 180}${execi 60 curl ip.appspot.com}$color
 Down: ${color2}${goto 50}${downspeedf eth0} k/s$color${goto 130}\
 Up: ${color2}${goto 180}${upspeedf eth0} k/s$color
 Total:${color2}${goto 50}${totaldown eth0}$color${goto 130}\

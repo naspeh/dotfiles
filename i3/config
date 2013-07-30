@@ -11,7 +11,7 @@
 
 # Startup
 #exec --no-startup-id feh --bg-scale /home/naspeh/lock-s.png
-exec --no-startup-id xsetroot -solid "#333333"
+exec --no-startup-id xsetroot -solid "#285577"
 
 set $mod Mod1
 set $mod2 Mod4
@@ -28,6 +28,7 @@ for_window [class="Stardict"] floating enable
 for_window [class="Deadbeef"] floating enable
 for_window [class="Transmission"] floating enable
 for_window [class="Xfce4-notifyd"] floating enable; border none
+for_window [class="Orage"] floating enable
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode

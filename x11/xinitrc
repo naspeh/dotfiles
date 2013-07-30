@@ -27,6 +27,7 @@ PID=$!
 
 #devilspie &
 (sleep 1; conky) &
+orage &
 volumeicon &
 fbxkb &
 #(sleep 1; sbxkb) &
