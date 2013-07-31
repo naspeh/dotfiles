@@ -59,13 +59,13 @@ ${color2}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/
 $endif\
 ### System
 ${color1}${font :style=bold:size=10}System$font${color3}${voffset 1}${hr 0}$color
-Battery:${color2}${battery_percent BAT0}% ${alignr}${battery_time BAT0}$color
+Battery${goto 90}${color2}${battery_percent BAT0}% ${alignr}${battery_time BAT0}$color
 ${voffset -4}${battery_bar 3,250}
-RAM: ${color2}$mem/$memmax  ${alignr}$memperc%$color
+RAM${goto 90}${color2}$mem/$memmax  ${alignr}$memperc%$color
 ${voffset -4}${membar 3,250}
-Disk /: ${color2}${fs_used /}/${fs_size /} ${alignr}${fs_free_perc /}% Free$color
+Disk /${goto 90}${color2}${fs_used /}/${fs_size /} ${alignr}${fs_free_perc /}% Free$color
 ${voffset -4}${fs_bar 3,250 /}
-Disk /arch: ${color2}${fs_used /arch}/${fs_size /arch} ${alignr}${fs_free_perc /arch}% Free$color
+Disk /arch${goto 90}${color2}${fs_used /arch}/${fs_size /arch} ${alignr}${fs_free_perc /arch}% Free$color
 ${voffset -4}${fs_bar 3,250 /arch}
 
 ${color1}${font :style=bold:size=10}Processor$font${color3}${voffset 1}${hr 0}$color
