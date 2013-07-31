@@ -205,6 +205,5 @@ bar {
     }
 
     position top
-    #status_command ~/.i3/status.sh
     status_command ~/.i3/conky
 }
