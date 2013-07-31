@@ -19,16 +19,19 @@ set $mod2 Mod4
 workspace_layout tabbed
 new_window 1pixel
 
-for_window [class="Goldendict"] floating enable
-for_window [class="Pidgin"] floating enable
-for_window [class="Gajim"] floating enable
-for_window [class="Skype"] floating enable
-for_window [class="Xfrun4"] floating enable
-for_window [class="Stardict"] floating enable
-for_window [class="Deadbeef"] floating enable
-for_window [class="Transmission"] floating enable
-for_window [class="Xfce4-notifyd"] floating enable; border none
-for_window [class="Orage"] floating enable
+for_window [class="(?i)goldendict"] floating enable
+for_window [class="(?i)stardict"] floating enable
+for_window [class="(?i)pidgin"] floating enable
+for_window [class="(?i)gajim"] floating enable
+for_window [class="(?i)skype"] floating enable
+for_window [class="(?i)deadbeef"] floating enable
+for_window [class="(?i)transmission"] floating enable
+for_window [class="(?i)orage"] floating enable
+#for_window [class="(?i)thunar"] floating enable
+for_window [class="(?i)lxappearance"] floating enable
+for_window [class="(?i)gmrun"] floating enable
+for_window [class="(?i)xfrun4"] floating enable
+for_window [class="(?i)xfce4-notifyd"] floating enable; border none
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -55,22 +58,21 @@ bindsym $mod+F4 kill
 # start dmenu (a program launcher)
 bindsym $mod+d exec i3-dmenu-desktop
 bindsym $mod+F2 exec xfrun4
-bindsym $mod2+2 exec xfrun4
 
 bindsym Print exec xfce4-screenshooter
 bindsym --release $mod2+v exec xdotool key --clearmodifiers "Shift+Insert"
 bindsym --release $mod2+c exec xdotool key --clearmodifiers "Ctrl+Insert"
-bindsym $mod2+a exec tider call menu
-bindsym $mod2+Ctrl+a exec tider call target
+bindsym $mod2+t exec tider call menu
+bindsym $mod2+a exec tider call target
 bindsym $mod2+b exec chromium
+bindsym $mod2+h exec sakura -x htop -t htop
 bindsym $mod2+f exec monitor
-bindsym $mod2+t exec $terminal
 bindsym $mod2+Ctrl+q exec systemctl poweroff
-#bindsym $mod2+Ctrl+s exec systemctl suspend
+bindsym $mod2+Ctrl+s exec systemctl suspend
 bindsym $mod2+Ctrl+r exec systemctl reboot
 bindsym $mod2+Ctrl+l exec i3lock -i ~/lock-s.png
 bindsym $mod2+l exec slock
-bindsym $mod2+w exec i3-input -F 'rename workspace to %s' -P 'New name: '
+bindsym $mod2+r exec i3-input -F 'rename workspace to %s' -P 'New name: '
 
 # change focus
 bindsym $mod+j focus left
