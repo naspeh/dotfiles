@@ -115,15 +115,15 @@ Total:${color2}${goto 180}${totalup eth0}$color
 $endif\
 ###Shortcuts
 ${color1}${font :style=bold:size=10}Shortcuts$font${color3}${voffset 1}${hr 0}$color
-${color2}Super+r$color Run Dialog\
-${goto 125}\
+${color2}Alt+F2$color Programs\
+${goto 120}\
 ${color2}Super+l$color Lock Screen
 ${color2}Super+t$color Terminal\
-${goto 125}\
-${color2}Super+Ctrl+q$color Poweroff
+${goto 120}\
+${color2}Super+Shift+q$color Poweroff
 ${color2}Super+b$color Browser\
-${goto 125}\
-${color2}Super+Ctrl+r$color Reboot
+${goto 120}\
+${color2}Super+Shift+r$color Reboot
 ${color2}PrtSc$color Screenshot
 
 ###Tider
