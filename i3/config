@@ -17,8 +17,22 @@ set $mod Mod1
 set $mod2 Mod4
 
 workspace_layout tabbed
-new_window 1pixel
 focus_follows_mouse no
+new_window 1pixel
+new_float 1pixel
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below. ISO 10646 = Unicode
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+# The font above is very space-efficient, that is, it looks good, sharp and
+# clear in small sizes. However, if you need a lot of unicode glyphs or
+# right-to-left text rendering, you should instead use pango for rendering and
+# chose an xft font, such as:
+#font xft:DejaVu Sans Mono 8
+font xft:DejaVu Sans 8
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
 
 for_window [class="(?i)goldendict"] floating enable
 for_window [class="(?i)stardict"] floating enable
@@ -34,21 +48,10 @@ for_window [class="(?i)gmrun"] floating enable
 for_window [class="(?i)xfrun4"] floating enable
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
 
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below. ISO 10646 = Unicode
-font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, if you need a lot of unicode glyphs or
-# right-to-left text rendering, you should instead use pango for rendering and
-# chose an xft font, such as:
-#font xft:DejaVu Sans Mono 8
-font xft:DejaVu Sans 8
-
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+assign [class="(?i)(pidgin|gajim)"] 5: jabber
+assign [class="(?i)skype"] 6: skype
 
 # start a terminal
-#bindsym $mod+Return exec i3-sensible-terminal
 set $terminal sakura
 bindsym $mod+Return exec $terminal
 bindsym $mod2+t exec $terminal
@@ -58,7 +61,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+F4 kill
 
 # start a program launcher
-bindsym $mod+F2 exec xfrun4
+bindsym $mod+F2 exec xfce4-appfinder
 bindsym $mod2+r exec xfrun4
 bindsym $mod2+g exec gmrun
 
@@ -74,6 +77,14 @@ bindsym $mod2+l exec i3lock -i ~/lock-s.png -p win
 bindsym $mod2+Ctrl+q exec systemctl poweroff
 bindsym $mod2+Ctrl+s exec systemctl suspend
 bindsym $mod2+Ctrl+r exec systemctl reboot
+
+# Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+bindsym $mod+c move absolute position center
+bindsym $mod+u [urgent="oldest"] focus
+bindsym $mod+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 
 # change focus
 bindsym $mod+j focus left
@@ -117,24 +128,12 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-bindsym $mod+c move absolute position center
-bindsym $mod+u [urgent="oldest"] focus
-bindsym $mod+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
-
-# Scratchpad
-bindsym $mod+Shift+minus move scratchpad
-bindsym $mod+minus scratchpad show
-
 # focus the parent/child container
 bindsym $mod+a focus parent
 bindsym $mod+Shift+a focus child
 
 # switch between the current and the previously focused one
 bindsym $mod+b workspace back_and_forth
-
-assign [class="Pidgin"] 5: jabber
-assign [class="Gajim"] 5: jabber
-assign [class="Skype"] 6: skype
 
 # switch to workspace
 bindsym $mod+1 workspace number 1
