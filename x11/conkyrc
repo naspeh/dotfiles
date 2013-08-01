@@ -53,7 +53,7 @@ TEXT
 ### Weather
 ${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
 ${color1}${font :style=bold:size=10}Weather$font${color3}${voffset 1}${hr 0}$color
-${font :style=bold:size=12}${execi 60 ~/bin/weather}
+${font :style=bold:size=12}☀ ${execi 60 ~/bin/weather}
 $endif\
 ### System
 ${color1}${font :style=bold:size=10}System$font${color3}${voffset 1}${hr 0}$color
