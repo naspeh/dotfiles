@@ -1,6 +1,7 @@
 #!/bin/bash
 weather=$(curl -s "http://weather.yahooapis.com/forecastrss?p=UPXX0010&u=c" | grep "Current Conditions" -A1 | tail -n1 | cut -d"<" -f1)
 
+symbol='☼'
 case "$weather" in
     *Cloudy*)
         symbol='☁'
@@ -8,13 +9,7 @@ case "$weather" in
     *Rain*)
         symbol='☂'
     ;;
-    *Mist*)
-        symbol='☼'
-    ;;
-    *Sunny*)
-        symbol='☀'
-    ;;
-    *Clear*)
+    *Sunny*|*Fair*|*Clear*|*Mist*)
         symbol='☀'
     ;;
     *Snow*)
