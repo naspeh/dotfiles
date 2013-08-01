@@ -15,9 +15,10 @@ exec --no-startup-id xsetroot -solid "#285577"
 
 set $mod Mod1
 set $mod2 Mod4
+set $terminal sakura
 
 workspace_layout tabbed
-focus_follows_mouse no
+focus_follows_mouse yes
 new_window 1pixel
 new_float 1pixel
 
@@ -45,15 +46,19 @@ for_window [class="(?i)orage"] floating enable
 #for_window [class="(?i)thunar"] floating enable
 for_window [class="(?i)lxappearance"] floating enable
 for_window [class="(?i)gmrun"] floating enable
-for_window [class="(?i)xfrun4"] floating enable
+for_window [class="(?i)xfce4-appfinder"] floating enable
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
+#for_window [class=".*"] floating enable
+#for_window [class="(?i)sakura"] floating disable
+#for_window [class="(?i)chromium"][window_role="browser"] floating disable
+#for_window [class="(?i)thunar"][window_role="(?i)thunar"] floating disable
+#for_window [class="(?i)gthumb"] floating disable
+#for_window [title="(?i)mirage -"] floating disable
 
 assign [class="(?i)(pidgin|gajim)"] 5: jabber
 assign [class="(?i)skype"] 6: skype
 
 # start a terminal
-set $terminal sakura
-bindsym $mod+Return exec $terminal
 bindsym $mod2+t exec $terminal
 
 # kill focused window
@@ -61,9 +66,9 @@ bindsym $mod+Shift+q kill
 bindsym $mod+F4 kill
 
 # start a program launcher
-bindsym $mod+F2 exec xfce4-appfinder
-bindsym $mod2+r exec xfrun4
-bindsym $mod2+g exec gmrun
+bindsym $mod+Return exec xfce4-appfinder
+bindsym $mod2+Return exec xfce4-appfinder -c
+bindsym $mod2+r exec gmrun
 
 bindsym Print exec xfce4-screenshooter
 bindsym --release $mod2+v exec xdotool key --clearmodifiers "Shift+Insert"
@@ -74,9 +79,9 @@ bindsym $mod2+b exec chromium
 bindsym $mod2+h exec sakura -x htop -t htop
 bindsym $mod2+f exec monitor
 bindsym $mod2+l exec i3lock -i ~/lock-s.png -p win
-bindsym $mod2+Shift+q exec systemctl poweroff
 bindsym $mod2+Shift+s exec systemctl suspend
 bindsym $mod2+Shift+r exec systemctl reboot
+bindsym $mod2+Shift+q exec systemctl poweroff
 
 # Scratchpad
 bindsym $mod+Shift+minus move scratchpad
