@@ -14,10 +14,8 @@ ${exec cat ~/.config/tider/i3bar.txt},
 
 ### Weather
 ${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
-{"full_text": "\
-${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD cloud_cover} \
-${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ UKDD temperature} °C\
-", "color": "\#8888cc"},$endif
+{"full_text": "${execi 60 ~/bin/weather}", "color": "\#8888cc"},\
+$endif
 
 ### Time
 {"full_text": "${time %a %b %d, %H:%M}"},

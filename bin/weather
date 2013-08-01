@@ -1,0 +1,3 @@
+#!/bin/sh
+
+curl -s "http://weather.yahooapis.com/forecastrss?p=UPXX0010&u=c" | grep "Current Conditions" -A1 | tail -n1 | cut -d"<" -f1
