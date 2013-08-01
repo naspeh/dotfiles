@@ -14,7 +14,7 @@ ${exec cat ~/.config/tider/i3bar.txt},
 
 ### Weather
 ${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
-{"full_text": "☀ ${execi 60 ~/bin/weather}", "color": "\#8888cc"},\
+{"full_text": "${execi 60 ~/bin/weather}", "color": "\#8888cc"},\
 $endif
 
 ### Time

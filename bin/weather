@@ -1,3 +1,28 @@
-#!/bin/sh
+#!/bin/bash
+weather=$(curl -s "http://weather.yahooapis.com/forecastrss?p=UPXX0010&u=c" | grep "Current Conditions" -A1 | tail -n1 | cut -d"<" -f1)
 
-curl -s "http://weather.yahooapis.com/forecastrss?p=UPXX0010&u=c" | grep "Current Conditions" -A1 | tail -n1 | cut -d"<" -f1
+case "$weather" in
+    *Cloudy*)
+        symbol='☁'
+    ;;
+    *Rain*)
+        symbol='☂'
+    ;;
+    *Mist*)
+        symbol='☼'
+    ;;
+    *Sunny*)
+        symbol='☀'
+    ;;
+    *Clear*)
+        symbol='☀'
+    ;;
+    *Snow*)
+        symbol='❄'
+    ;;
+esac
+
+if [ $symbol ]; then
+    weather=$symbol' '$weather
+fi
+echo $weather
