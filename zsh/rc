@@ -158,7 +158,6 @@ alias rsync='nocorrect rsync'
 alias git="nocorrect git"
 alias killall="killall --interactive --verbose"
 alias tmux='tmux -2'
-alias mc='mc -b'
 alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
 

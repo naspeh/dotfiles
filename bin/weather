@@ -1,19 +1,20 @@
 #!/bin/bash
-weather=$(curl -s "http://weather.yahooapis.com/forecastrss?p=UPXX0010&u=c" | grep "Current Conditions" -A1 | tail -n1 | cut -d"<" -f1)
+city=UPXX0010
+if [ $1 ]; then
+    city=$1
+fi
 
-symbol='☼'
+weather=$(curl -s "http://weather.yahooapis.com/forecastrss?p=$city&u=c" | grep "Current Conditions" -A1 | tail -n1 | cut -d"<" -f1)
+
 case "$weather" in
-    *Cloudy*)
-        symbol='☁'
-    ;;
     *Rain*)
         symbol='☂'
     ;;
-    *Sunny*|*Fair*|*Clear*|*Mist*)
-        symbol='☀'
-    ;;
     *Snow*)
         symbol='❄'
+    ;;
+    *)
+        symbol='☀'
     ;;
 esac
 
