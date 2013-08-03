@@ -90,7 +90,7 @@ SSID:${color2}${goto 50}${wireless_essid wlp3s0}$color${goto 130}\
 Signal:${color2}${goto 180}${wireless_link_qual wlp3s0}/${wireless_link_qual_max wlp3s0}$color
 ${voffset -4}${wireless_link_bar 3,250 wlp3s0}
 Local:${color2}${goto 50}${addr wlp3s0}$color${goto 130}\
-Public:${color2}${goto 180}${execi 60 curl ip.appspot.com}$color
+Public:${color2}${goto 180}${execi 30 curl ip.appspot.com}$color
 ${downspeedgraph wlp3s0 15,123 003300 6ddd00}${alignr}\
 ${upspeedgraph wlp3s0 15,123 330000 e3170d}
 Down: ${color2}${goto 50}${downspeedf wlp3s0} k/s$color${goto 130}\
@@ -104,7 +104,7 @@ ${color1}${font :style=bold:size=10}Ethernet$font${color3}${voffset 1}${hr 0}$co
 ${downspeedgraph eth0 75,123 003300 6ddd00}${alignr}\
 ${upspeedgraph eth0 75,123 330000 e3170d}
 Local:${color2}${goto 50}${addr eth0}$color${goto 130}\
-Public:${color2}${goto 180}${execi 60 curl ip.appspot.com}$color
+Public:${color2}${goto 180}${execi 30 curl ip.appspot.com}$color
 Down: ${color2}${goto 50}${downspeedf eth0} k/s$color${goto 130}\
 Up: ${color2}${goto 180}${upspeedf eth0} k/s$color
 Total:${color2}${goto 50}${totaldown eth0}$color${goto 130}\

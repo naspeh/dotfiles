@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+from subprocess import call
+
+
+def sh(cmd):
+    print(cmd)
+    call(cmd, shell=True)
+
+
+bup_dir = '/arch/temp/bup'
+mnt_dir = '/arch/temp/mnt'
+dirs = '/etc /home /root /arch/naspeh'
+excludes = ' '.join(['--exclude-rx=' + v for v in [
+    '.pyc$', '__pycache__',
+    '/home/naspeh/v/.*',
+    '/home/.*/\.thumbnails/',
+    '/home/.*/\.cache/',
+    '.*/lost+found/'
+]])
+
+sh(
+    'export BUP_DIR={};\n'.format(bup_dir) +
+    'bup index -ux {} {};\n'.format(dirs, excludes) +
+    'bup save -n pad {};\n'.format(dirs) +
+    'fusermount -u {};\n'.format(mnt_dir) +
+    'bup fuse {};\n'.format(mnt_dir)
+)
