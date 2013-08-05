@@ -19,7 +19,7 @@ set $terminal evilvte
 set $htop evilvte -T htop -e htop
 
 workspace_layout tabbed
-focus_follows_mouse yes
+focus_follows_mouse no
 new_window 1pixel
 new_float 1pixel
 
@@ -44,11 +44,11 @@ for_window [class="(?i)skype"] floating enable
 for_window [class="(?i)deadbeef"] floating enable
 for_window [class="(?i)transmission"] floating enable
 for_window [class="(?i)orage"] floating enable
-#for_window [class="(?i)thunar"] floating enable
 for_window [class="(?i)lxappearance"] floating enable
 for_window [class="(?i)gmrun"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
+for_window [class="(?i)chromium"][window_role="pop-up"] floating enable
 #for_window [class=".*"] floating enable
 #for_window [class="(?i)sakura"] floating disable
 #for_window [class="(?i)chromium"][window_role="browser"] floating disable

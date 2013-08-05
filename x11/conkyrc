@@ -72,9 +72,9 @@ ${voffset -4}\
 ${color1}${font :style=bold:size=9}Processor$font${color3}${voffset 1}${hr 0}$color
 Temp: ${color2}${acpitemp}ºC$color${goto 130}Fan: ${color2}${ibm_fan} RPM$color
 Core 0: ${color2}${cpu cpu0}%$color${goto 130}Core 1: ${color2}${cpu cpu1}%$color
-${voffset -4}${cpugraph cpu1 15,123 000033 00cc00}${alignr}${cpugraph cpu2 15,123 000033 00cc00}$font
+${voffset -4}${cpugraph cpu0 15,123 000033 00cc00}${alignr}${cpugraph cpu1 15,123 000033 00cc00}$font
 Core 2: ${color2}${cpu cpu2}%$color${goto 130}Core 3: ${color2}${cpu cpu3}%$color
-${voffset -4}${cpugraph cpu3 15,123 000033 00cc00}${alignr}${cpugraph cpu4 15,123 000033 00cc00}$font
+${voffset -4}${cpugraph cpu2 15,123 000033 00cc00}${alignr}${cpugraph cpu3 15,123 000033 00cc00}$font
 
 ### Top
 ${voffset -8}\

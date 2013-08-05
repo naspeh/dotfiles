@@ -9,12 +9,13 @@ override_utf8_locale yes
 TEXT
 ,[
 ### Tider
+#${exec cat ~/f/tider/var/i3bar.txt},
 ${exec cat ~/.config/tider/i3bar.txt},
-#${exec cat /arch/naspeh/free/tider/var/i3bar.txt},
 
 ### Weather
 ${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
 {"full_text": "${execi 60 ~/bin/weather}", "color": "\#8888cc"},\
+{"full_text": "Ushuaia: ${execi 60 ~/bin/weather ARTF0105}", "color": "\#888888"},\
 $endif
 
 ### Time
