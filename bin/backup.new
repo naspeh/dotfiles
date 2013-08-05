@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import datetime as dt
 import subprocess
 
@@ -8,7 +9,7 @@ def sh(cmd, **kw):
     subprocess.call(cmd, shell=True, **kw)
 
 
-def pad():
+def pad(args):
     filters = ' '.join(['--filter="%s"' % v for v in [
         '+ /etc/',
         '+ /root/',
@@ -32,15 +33,23 @@ def pad():
     sh(
         'rsync -aAXHvh --stats'
         ' --delete --delete-excluded'
-        ' --backup --backup-dir={dest}delta'
+        ' --backup --backup-dir={dest}delta/'
         ' {filters}'
         ' / {dest}latest/'
         .format(dest=dest, filters=filters)
     )
+
+    name = dt.date.today().isoformat()
+    if args.label:
+        name += '-' + args.label
     sh(
-        'cd {dest} && tar -czf {date:%Y-%m-%d}.tar.gz delta'
-        .format(dest=dest, date=dt.date.today())
+        'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
+        .format(dest=dest, name=name)
     )
 
 if __name__ == '__main__':
-    pad()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-l', '--label', help='label for archive')
+    args = parser.parse_args()
+
+    pad(args)
