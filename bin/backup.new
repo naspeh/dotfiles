@@ -3,6 +3,8 @@ import argparse
 import datetime as dt
 import subprocess
 
+RSYNC = 'rsync -aAXHvh --stats'
+
 
 def sh(cmd, **kw):
     try:
@@ -12,7 +14,7 @@ def sh(cmd, **kw):
         exit('Closed.')
 
 
-def pad(args):
+def main(args):
     if args.sub == 'tar':
         name = dt.date.today().isoformat()
         if args.label:
@@ -22,15 +24,25 @@ def pad(args):
             .format(dest=args.dest, name=name)
         )
         return
+    elif args.sub == 'copy':
+        sh(
+            RSYNC + ' --delete {src} {dest}/'
+            .format(src=args.dest, dest=args.path.rstrip('/'))
+        )
+        return
+    else:
+        backup(args)
 
+
+def backup(args):
     filters = ' '.join(['--filter="%s"' % v for v in [
         '+ /etc/',
         '+ /root/',
         '+ /home/',
         '+ /home/naspeh/',
         '- /home/naspeh/v/',
-        '- /home/**/.mozilla/**/Cache*',
-        '- /home/**/.cache/',
+        '- /home/**/*Cache*/',
+        '- /home/**/*cache*/',
         '- /home/**/.thumbnails/',
         '- /home/*',
         '+ /arch/',
@@ -43,7 +55,7 @@ def pad(args):
     ]])
 
     sh(
-        'rsync -aAXHvh --stats'
+        RSYNC +
         ' --delete --delete-excluded'
         ' --backup --backup-dir={dest}delta/'
         ' {filters}'
@@ -63,5 +75,8 @@ if __name__ == '__main__':
     sub_tar = subs.add_parser('tar', help='archive delta directory')
     sub_tar.add_argument('-l', '--label', help='label for archive')
 
+    sub_copy = subs.add_parser('copy', help='copy backup directory')
+    sub_copy.add_argument('path', help='destination path')
+
     args = parser.parse_args()
-    pad(args)
+    main(args)
