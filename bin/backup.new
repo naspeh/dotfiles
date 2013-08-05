@@ -68,7 +68,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-d', '--dest', default='/arch/backup/pad/',
-        help='destination directory'
+        help='backup directory'
     )
     subs = parser.add_subparsers(dest='sub')
 
