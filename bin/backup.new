@@ -5,11 +5,24 @@ import subprocess
 
 
 def sh(cmd, **kw):
-    print(cmd)
-    subprocess.call(cmd, shell=True, **kw)
+    try:
+        print(cmd)
+        subprocess.call(cmd, shell=True, **kw)
+    except KeyboardInterrupt:
+        exit('Closed.')
 
 
 def pad(args):
+    if args.sub == 'tar':
+        name = dt.date.today().isoformat()
+        if args.label:
+            name += '-' + args.label
+        sh(
+            'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
+            .format(dest=args.dest, name=name)
+        )
+        return
+
     filters = ' '.join(['--filter="%s"' % v for v in [
         '+ /etc/',
         '+ /root/',
@@ -29,27 +42,26 @@ def pad(args):
         '- /*'
     ]])
 
-    dest = '/arch/backup/pad/'
     sh(
         'rsync -aAXHvh --stats'
         ' --delete --delete-excluded'
         ' --backup --backup-dir={dest}delta/'
         ' {filters}'
         ' / {dest}latest/'
-        .format(dest=dest, filters=filters)
+        .format(dest=args.dest, filters=filters)
     )
 
-    name = dt.date.today().isoformat()
-    if args.label:
-        name += '-' + args.label
-    sh(
-        'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
-        .format(dest=dest, name=name)
-    )
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-l', '--label', help='label for archive')
-    args = parser.parse_args()
+    parser.add_argument(
+        '-d', '--dest', default='/arch/backup/pad/',
+        help='destination directory'
+    )
+    subs = parser.add_subparsers(dest='sub')
 
+    sub_tar = subs.add_parser('tar', help='archive delta directory')
+    sub_tar.add_argument('-l', '--label', help='label for archive')
+
+    args = parser.parse_args()
     pad(args)
