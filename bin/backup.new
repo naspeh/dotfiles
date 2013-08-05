@@ -18,7 +18,7 @@ def pad():
         '- /home/**/.mozilla/**/Cache*',
         '- /home/**/.cache/',
         '- /home/**/.thumbnails/',
-        '- /home/*'
+        '- /home/*',
         '+ /arch/',
         '+ /arch/naspeh/',
         '+ /arch/nayavu/',
@@ -30,7 +30,7 @@ def pad():
 
     dest = '/arch/backup/pad/'
     sh(
-        'rsync -aAXHxv --stats'
+        'rsync -aAXHvh --stats'
         ' --delete --delete-excluded'
         ' --backup --backup-dir={dest}delta'
         ' {filters}'
@@ -38,9 +38,7 @@ def pad():
         .format(dest=dest, filters=filters)
     )
     sh(
-        'file={dest}{date:%Y-%m-%d}.tar.gz'
-        ' && rm -f $file'
-        ' && tar -czf $file {dest}delta'
+        'cd {dest} && tar -czf {date:%Y-%m-%d}.tar.gz delta'
         .format(dest=dest, date=dt.date.today())
     )
 
