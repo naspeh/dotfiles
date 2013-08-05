@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+import datetime as dt
+import subprocess
+
+
+def sh(cmd, **kw):
+    print(cmd)
+    subprocess.call(cmd, shell=True, **kw)
+
+
+def pad():
+    filters = ' '.join(['--filter="%s"' % v for v in [
+        '+ /etc/',
+        '+ /root/',
+        '+ /home/',
+        '+ /home/naspeh/',
+        '- /home/naspeh/v/',
+        '- /home/**/.mozilla/**/Cache*',
+        '- /home/**/.cache/',
+        '- /home/**/.thumbnails/',
+        '- /home/*'
+        '+ /arch/',
+        '+ /arch/naspeh/',
+        '+ /arch/nayavu/',
+        '- /arch/*',
+        '- /**/__pycache__/',
+        '- /**/*.pyc',
+        '- /*'
+    ]])
+
+    dest = '/arch/backup/pad/'
+    sh(
+        'rsync -aAXHxv --stats'
+        ' --delete --delete-excluded'
+        ' --backup --backup-dir={dest}delta'
+        ' {filters}'
+        ' / {dest}latest/'
+        .format(dest=dest, filters=filters)
+    )
+    sh(
+        'file={dest}{date:%Y-%m-%d}.tar.gz'
+        ' && rm -f $file'
+        ' && tar -czf $file {dest}delta'
+        .format(dest=dest, date=dt.date.today())
+    )
+
+if __name__ == '__main__':
+    pad()
