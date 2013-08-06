@@ -15,6 +15,8 @@ def sh(cmd, **kw):
 
 
 def main(args):
+    rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
+
     if args.sub == 'tar':
         name = dt.date.today().isoformat()
         if args.label:
@@ -26,18 +28,21 @@ def main(args):
         return
     elif args.sub == 'copy':
         sh(
-            RSYNC + ' --delete {src} {dest}/'
+            rsync + ' --delete {src} {dest}/'
             .format(src=args.dest, dest=args.path.rstrip('/'))
         )
         return
-    else:
-        backup(args)
 
-
-def backup(args):
     filters = ' '.join(['--filter="%s"' % v for v in [
         '+ /etc/',
         '+ /root/',
+        '+ /var/',
+        '+ /var/lib/',
+        '+ /var/lib/pacman/',
+        '+ /var/lib/pacman/local/',
+        '- /var/lib/pacman/*',
+        '- /var/lib/*',
+        '- /var/*',
         '+ /home/',
         '+ /home/naspeh/',
         '- /home/naspeh/v/',
@@ -55,7 +60,7 @@ def backup(args):
     ]])
 
     sh(
-        RSYNC +
+        rsync +
         ' --delete --delete-excluded'
         ' --backup --backup-dir={dest}delta/'
         ' {filters}'
@@ -66,6 +71,7 @@ def backup(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--fake', action='store_true', help='dry run')
     parser.add_argument(
         '-d', '--dest', default='/arch/backup/pad/',
         help='backup directory'
