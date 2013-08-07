@@ -16,9 +16,9 @@ def sh(cmd, **kw):
 
 def main(args):
     rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
-
+    today = dt.date.today().isoformat()
     if args.sub == 'tar':
-        name = dt.date.today().isoformat()
+        name = today
         if args.label:
             name += '-' + args.label
         sh(
@@ -32,8 +32,17 @@ def main(args):
             .format(src=args.dest, dest=args.path.rstrip('/'))
         )
         return
+    elif args.sub == 'dd':
+        sh(
+            'lvcreate --size 10G --snapshot --name snap /dev/pad/root'
+            ' && dd if=/dev/pad/snap | gzip -c > {dest}dd-{today}-root.img.gz'
+            ' && lvremove -f /dev/pad/snap'
+            .format(dest=args.dest, today=today)
+        )
+        return
 
     filters = ' '.join(['--filter="%s"' % v for v in [
+        '+ /boot/',
         '+ /etc/',
         '+ /root/',
         '+ /var/',
@@ -45,15 +54,17 @@ def main(args):
         '- /var/*',
         '+ /home/',
         '+ /home/naspeh/',
-        '- /home/naspeh/v/',
+        '+ /home/naspeh/v/',
+        '- /home/naspeh/v/*',
         '- /home/**/.thumbnails/',
+        '- /home/**/Cache*/',
+        '- /home/**/*Cache/',
         '- /home/*',
         '+ /arch/',
         '+ /arch/naspeh/',
         '+ /arch/nayavu/',
         '- /arch/*',
-        '- /**/[Cc]ache*/',
-        '- /**/*[Cc]ache/',
+        '- /**/.cache/',
         '- /**/__pycache__/',
         '- /**/*.pyc',
         '- /*'
@@ -73,7 +84,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--fake', action='store_true', help='dry run')
     parser.add_argument(
-        '-d', '--dest', default='/arch/backup/pad/',
+        '-d', '--dest', default='/arch/backup/',
         help='backup directory'
     )
     subs = parser.add_subparsers(dest='sub')
@@ -83,6 +94,8 @@ if __name__ == '__main__':
 
     sub_copy = subs.add_parser('copy', help='copy backup directory')
     sub_copy.add_argument('path', help='destination path')
+
+    sub_dd = subs.add_parser('dd', help='archive whole disk')
 
     args = parser.parse_args()
     main(args)

@@ -38,6 +38,7 @@ floating_modifier $mod
 
 for_window [class="(?i)goldendict"] floating enable
 for_window [class="(?i)stardict"] floating enable
+for_window [class="(?i)dropbox"] floating enable
 for_window [class="(?i)pidgin"] floating enable
 for_window [class="(?i)gajim"] floating enable
 for_window [class="(?i)skype"] floating enable
