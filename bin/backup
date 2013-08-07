@@ -4,20 +4,79 @@ import datetime as dt
 import subprocess
 
 RSYNC = 'rsync -aAXHvh --stats'
+FILTERS = [
+    '+ /boot/',
+    '+ /etc/',
+    '+ /root/',
+    '+ /var/',
+    '+ /var/lib/',
+    '+ /var/lib/pacman/',
+    '+ /var/lib/pacman/local/',
+    '- /var/lib/pacman/*',
+    '- /var/lib/*',
+    '- /var/*',
+    '+ /home/',
+    '+ /home/naspeh/',
+    '+ /home/naspeh/v/',
+    '- /home/naspeh/v/*',
+    '- /home/**/.thumbnails/',
+    '- /home/**/Cache*/',
+    '- /home/**/*Cache/',
+    '- /home/*',
+    '+ /arch/',
+    '+ /arch/naspeh/',
+    '+ /arch/nayavu/',
+    '- /arch/*',
+    '- /**/.cache/',
+    '- /**/__pycache__/',
+    '- /**/*.pyc',
+    '- /*'
+]
 
 
 def sh(cmd, **kw):
-    try:
-        print(cmd)
-        subprocess.call(cmd, shell=True, **kw)
-    except KeyboardInterrupt:
-        exit('Closed.')
+    print(cmd)
+    subprocess.call(cmd, shell=True, **kw)
 
 
-def main(args):
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--fake', action='store_true', help='dry run')
+    parser.add_argument(
+        '-d', '--dest', default='/arch/backup/',
+        help='backup directory'
+    )
+    parser.set_defaults(sub=None)
+    subs = parser.add_subparsers()
+
+    def sub(name, **kw):
+        sub = subs.add_parser(name, **kw)
+        sub.set_defaults(sub=name)
+        sub.arg = lambda *a, **kw: sub.add_argument(*a, **kw) and sub
+        return sub
+
+    sub('tar', help='archive delta directory')\
+        .arg('-l', '--label', help='label for archive')
+
+    sub('copy', help='copy backup directory')\
+        .arg('path', help='destination path')
+
+    sub('dd', help='archive whole disk')
+
+    args = parser.parse_args()
     rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     today = dt.date.today().isoformat()
-    if args.sub == 'tar':
+    if not args.sub:
+        filters = ' '.join(['--filter="%s"' % v for v in FILTERS])
+        sh(
+            rsync +
+            ' --delete --delete-excluded'
+            ' --backup --backup-dir={dest}delta/'
+            ' {filters}'
+            ' / {dest}latest/'
+            .format(dest=args.dest, filters=filters)
+        )
+    elif args.sub == 'tar':
         name = today
         if args.label:
             name += '-' + args.label
@@ -25,13 +84,11 @@ def main(args):
             'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
             .format(dest=args.dest, name=name)
         )
-        return
     elif args.sub == 'copy':
         sh(
             rsync + ' --delete {src} {dest}/'
             .format(src=args.dest, dest=args.path.rstrip('/'))
         )
-        return
     elif args.sub == 'dd':
         sh(
             'lvcreate --size 10G --snapshot --name snap /dev/pad/root'
@@ -39,63 +96,10 @@ def main(args):
             ' && lvremove -f /dev/pad/snap'
             .format(dest=args.dest, today=today)
         )
-        return
-
-    filters = ' '.join(['--filter="%s"' % v for v in [
-        '+ /boot/',
-        '+ /etc/',
-        '+ /root/',
-        '+ /var/',
-        '+ /var/lib/',
-        '+ /var/lib/pacman/',
-        '+ /var/lib/pacman/local/',
-        '- /var/lib/pacman/*',
-        '- /var/lib/*',
-        '- /var/*',
-        '+ /home/',
-        '+ /home/naspeh/',
-        '+ /home/naspeh/v/',
-        '- /home/naspeh/v/*',
-        '- /home/**/.thumbnails/',
-        '- /home/**/Cache*/',
-        '- /home/**/*Cache/',
-        '- /home/*',
-        '+ /arch/',
-        '+ /arch/naspeh/',
-        '+ /arch/nayavu/',
-        '- /arch/*',
-        '- /**/.cache/',
-        '- /**/__pycache__/',
-        '- /**/*.pyc',
-        '- /*'
-    ]])
-
-    sh(
-        rsync +
-        ' --delete --delete-excluded'
-        ' --backup --backup-dir={dest}delta/'
-        ' {filters}'
-        ' / {dest}latest/'
-        .format(dest=args.dest, filters=filters)
-    )
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--fake', action='store_true', help='dry run')
-    parser.add_argument(
-        '-d', '--dest', default='/arch/backup/',
-        help='backup directory'
-    )
-    subs = parser.add_subparsers(dest='sub')
-
-    sub_tar = subs.add_parser('tar', help='archive delta directory')
-    sub_tar.add_argument('-l', '--label', help='label for archive')
-
-    sub_copy = subs.add_parser('copy', help='copy backup directory')
-    sub_copy.add_argument('path', help='destination path')
-
-    sub_dd = subs.add_parser('dd', help='archive whole disk')
-
-    args = parser.parse_args()
-    main(args)
+    try:
+        main()
+    except KeyboardInterrupt:
+        exit('Closed.')
