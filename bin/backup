@@ -1,89 +1,101 @@
-#!/bin/bash
-SCRIPT=$0
-DSCRIPT=`dirname $0`
-TARGET=$1
-FFILTERS=$DSCRIPT/filters/$TARGET.filter
+#!/usr/bin/env python
+import argparse
+import datetime as dt
+import subprocess
 
-if [ ! -f $FFILTERS ]; then
-    echo "File not found with filters: $FFILTERS"
-    exit
-fi
-
-DTRANS=/media/trans
-DTRANS_RSYNC=$DTRANS/backup/rsync
-DTRANS_MOUNT=$DTRANS_RSYNC
-
-DTARGET=/
-DRSYNC=/arch/backup/rsync
-if [ $TARGET == 'trans' ]; then
-    DTARGET=$DTRANS/
-    DRSYNC=$DTRANS_RSYNC
-    if [ ! -d $DTRANS_RSYNC ]; then
-        echo "Trans not attached: $DTRANS"
-        exit
-    fi
-fi
-
-DMOUNT=$DRSYNC
-DROOT=$DMOUNT/$TARGET
-DLATEST=$DROOT/latest/
-DDATE=$DROOT/`date +%F`
-LABEL=`date +%H-%M`
-DASHES="------------------>>>"
+RSYNC = 'rsync -aAXHvh --stats'
 
 
-started=$(date +%s)
-echo "$DASHES `date +%F\ %T` {{{ BEGIN }}}"
+def sh(cmd, **kw):
+    try:
+        print(cmd)
+        subprocess.call(cmd, shell=True, **kw)
+    except KeyboardInterrupt:
+        exit('Closed.')
 
-if [ ! -d $DROOT ]; then
-    echo "Create $DROOT"
-    install -d $DROOT
-fi
-if [ $2 ]; then
-    LABEL=$2
-fi
-DDATE="$DDATE--$LABEL"
-FDATE=$DDATE.tar
 
-rsync --archive --delete --verbose --delete-excluded --hard-links \
-    --backup --backup-dir=$DDATE \
-    --filter="merge $FFILTERS" \
-    $DTARGET $DLATEST
+def main(args):
+    rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
+    today = dt.date.today().isoformat()
+    if args.sub == 'tar':
+        name = today
+        if args.label:
+            name += '-' + args.label
+        sh(
+            'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
+            .format(dest=args.dest, name=name)
+        )
+        return
+    elif args.sub == 'copy':
+        sh(
+            rsync + ' --delete {src} {dest}/'
+            .format(src=args.dest, dest=args.path.rstrip('/'))
+        )
+        return
+    elif args.sub == 'dd':
+        sh(
+            'lvcreate --size 10G --snapshot --name snap /dev/pad/root'
+            ' && dd if=/dev/pad/snap | gzip -c > {dest}dd-{today}-root.img.gz'
+            ' && lvremove -f /dev/pad/snap'
+            .format(dest=args.dest, today=today)
+        )
+        return
 
-if [ -d $DDATE ]; then
-    tar ch --directory=$DDATE --file=$FDATE .
-    rm -rf $DDATE
-fi
+    filters = ' '.join(['--filter="%s"' % v for v in [
+        '+ /boot/',
+        '+ /etc/',
+        '+ /root/',
+        '+ /var/',
+        '+ /var/lib/',
+        '+ /var/lib/pacman/',
+        '+ /var/lib/pacman/local/',
+        '- /var/lib/pacman/*',
+        '- /var/lib/*',
+        '- /var/*',
+        '+ /home/',
+        '+ /home/naspeh/',
+        '+ /home/naspeh/v/',
+        '- /home/naspeh/v/*',
+        '- /home/**/.thumbnails/',
+        '- /home/**/Cache*/',
+        '- /home/**/*Cache/',
+        '- /home/*',
+        '+ /arch/',
+        '+ /arch/naspeh/',
+        '+ /arch/nayavu/',
+        '- /arch/*',
+        '- /**/.cache/',
+        '- /**/__pycache__/',
+        '- /**/*.pyc',
+        '- /*'
+    ]])
 
-echo "$DASHES `date +%F\ %T` >>> Elapsed:    $(( $(date +%s) - started )) sec"
+    sh(
+        rsync +
+        ' --delete --delete-excluded'
+        ' --backup --backup-dir={dest}delta/'
+        ' {filters}'
+        ' / {dest}latest/'
+        .format(dest=args.dest, filters=filters)
+    )
 
-rsync="rsync -avzH --delete"
-mate="pad"
-if [ $TARGET == "pad" ]; then
-    mate="free"
-fi
 
-if [ -d $DTRANS_RSYNC ]; then
-    if [ $TARGET == 'trans' ]; then
-        exit
-    fi
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--fake', action='store_true', help='dry run')
+    parser.add_argument(
+        '-d', '--dest', default='/arch/backup/',
+        help='backup directory'
+    )
+    subs = parser.add_subparsers(dest='sub')
 
-    echo "$DASHES Running trans target..."
-    $SCRIPT trans
+    sub_tar = subs.add_parser('tar', help='archive delta directory')
+    sub_tar.add_argument('-l', '--label', help='label for archive')
 
-    cmd="$rsync $DROOT/ $DTRANS_MOUNT/$TARGET/"
-    echo "$DASHES $cmd"; $cmd
+    sub_copy = subs.add_parser('copy', help='copy backup directory')
+    sub_copy.add_argument('path', help='destination path')
 
-    cmd="$rsync mate:$DRSYNC/$mate/ $DTRANS_RSYNC/$mate"
-    echo "$DASHES $cmd"; $cmd
+    sub_dd = subs.add_parser('dd', help='archive whole disk')
 
-    cmd="$rsync --exclude="/$TARGET/" $DTRANS_MOUNT/ $DMOUNT/"
-    echo "$DASHES $cmd"; $cmd
-
-    echo "$DASHES `date +%F\ %T` >>> Elapsed:    $(( $(date +%s) - started )) sec"
-else
-    #cmd="$rsync mate:$DRSYNC/$mate/ $DRSYNC/$mate/"
-    #echo "$DASHES $cmd"; $cmd
-    echo "$DASHES `date +%F\ %T` >>> Elapsed:    $(( $(date +%s) - started )) sec"
-fi
-echo "$DASHES {{{ END }}}"
+    args = parser.parse_args()
+    main(args)
