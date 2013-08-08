@@ -21,9 +21,9 @@ setopt appendhistory
 setopt sharehistory
 
 setopt autocd
-setopt beep
 setopt notify
-#setopt extendedglob
+setopt extendedglob
+unsetopt beep
 unsetopt nomatch
 unsetopt correct_all
 bindkey -e
