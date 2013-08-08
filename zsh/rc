@@ -1,5 +1,4 @@
 #!/bin/zsh
-
 ZDOTDIR=~/.zsh
 
 export EDITOR=vim

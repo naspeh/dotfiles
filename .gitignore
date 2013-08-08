@@ -1,5 +1,5 @@
 *.pyc
-
+/var
 /vim/dir/.netrwhist
 /vim/dir/bundle/*
 !/vim/dir/bundle/vundle/
