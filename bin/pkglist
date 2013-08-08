@@ -20,7 +20,7 @@ if [ $clean ]; then
         sudo pacman -Rs $(pacman -Qdtq)
     fi
 else
-    list=`pacman -Qeq | grep -v "$(pacman -Qqg base base-devel)"`
+    list=$(pacman -Qeq | grep -v "$(pacman -Qqg base base-devel)")
     if [ $verbose ]; then
         expac -Q "$fg[blue]%n$reset_color: %d" $(echo $list)
     else
