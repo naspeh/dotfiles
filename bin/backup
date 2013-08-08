@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import datetime as dt
-import os
+import os.path as op
 import subprocess
 import sys
 
@@ -64,12 +64,17 @@ def main():
 
     sub('dd', help='archive whole disk')
 
-    sub('pkgs', help='update package list files')
-
     args = parser.parse_args(sys.argv[1:])
     rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     today = dt.date.today().isoformat()
     if not hasattr(args, 'sub'):
+        var = op.abspath(op.realpath(op.dirname(__file__)) + '/../var')
+        sh(
+            'pkglist -n > {0}/pkglist.txt'
+            ' && pkglist -m > {0}/pkgaur.txt'
+            .format(var)
+        )
+
         filters = ' '.join(['--filter="%s"' % v for v in FILTERS])
         sh(
             rsync +
@@ -98,13 +103,6 @@ def main():
             ' && dd if=/dev/pad/snap | gzip -c > {dest}dd-{today}-root.img.gz'
             ' && lvremove -f /dev/pad/snap'
             .format(dest=args.dest, today=today)
-        )
-    elif args.sub == 'pkgs':
-        var = os.path.realpath(os.path.dirname(__file__)) + '/../var/'
-        sh(
-            'pkglist -n > {0}pkglist.txt'
-            ' && pkglist -m > {0}pkgaur.txt'
-            .format(var)
         )
 
 
