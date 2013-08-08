@@ -55,7 +55,6 @@ assign [class="(?i)skype"] 6: skype
 bindsym $mod+t exec $terminal
 bindsym $mod+p exec xfce4-appfinder
 bindsym $mod+r exec xfce4-appfinder -c
-bindsym $mod+e exec gmrun
 
 bindsym Print exec xfce4-screenshooter
 bindsym --release $mod+v exec xdotool key --clearmodifiers "Shift+Insert"
