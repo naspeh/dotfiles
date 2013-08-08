@@ -34,12 +34,12 @@ compctl -/ cd
 
 autoload -Uz compinit; compinit
 
-zstyle ':completion:*' completer _complete _match _ignored _files
+zstyle ':completion:*' completer _expand _complete _match _ignored _files
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*' max-errors 1
 zstyle ':completion:*' menu select=long-list select=0
-#zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
+zstyle ':completion:*' group-name ''
 
 # tab completion for PID :D
 zstyle ':completion:*:*:kill:*' menu yes select
@@ -47,26 +47,6 @@ zstyle ':completion:*:kill:*' force-list always
 zstyle ':completion:*:processes' command 'ps -xuf'
 zstyle ':completion:*:processes' sort false
 zstyle ':completion:*:processes-names' command 'ps xho command'
-
-
-### Pacman stuff
-# https://github.com/Dorvaryn/.zsh/blob/master/rc/archlinux.rc
-# https://bbs.archlinux.org/viewtopic.php?id=93683
-pkglist() {
-    list=`pacman -Qqei|awk '/^Name/{name=$3}/^Groups/{if($3 != "base" && $3 != "base-devel"){print name}}'`
-    if [ "$1" = '-v' ]; then
-        pacman -Qqei `echo $list`|awk 'BEGIN {FS=": "}/^Name/{printf("\033[36m%s\033[32m:\033[37m ", $2)}/^Description/{print $2}'
-    else
-        echo $list
-    fi
-}
-pkgclear() {
-    if [[ ! -n $(pacman -Qdt) ]]; then
-        echo "No orphans to remove."
-    else
-        sudo pacman -Rs $(pacman -Qdtq)
-    fi
-}
 
 
 ### Virtualenv wrapper

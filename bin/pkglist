@@ -1,0 +1,29 @@
+#!/bin/zsh
+autoload colors; colors
+
+while getopts "cv" opt; do
+case $opt in
+    v)
+        verbose=1;;
+    c)
+        clean=1;;
+    ?)
+        printf "Usage: %s: [-v] [-c]\n" $0
+        exit 2;;
+esac
+done
+
+if [ $clean ]; then
+    if [[ ! -n $(pacman -Qdt) ]]; then
+        echo "No orphans to remove."
+    else
+        sudo pacman -Rs $(pacman -Qdtq)
+    fi
+else
+    list=`pacman -Qeq | grep -v "$(pacman -Qqg base base-devel)"`
+    if [ $verbose ]; then
+        expac -Q "$fg[blue]%n$reset_color: %d" $(echo $list)
+    else
+        echo $list
+    fi
+fi
