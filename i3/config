@@ -100,7 +100,10 @@ mode "tider" {
     bindsym a exec tider call target; mode "default"
     bindsym Tab exec tider call toggle-active; mode "default"
     bindsym w exec tider call menu; mode "default"
-    bindsym q exec tider call disable; mode "default"
+    bindsym s exec tider call report; mode "default"
+    bindsym d exec tider call disable; mode "default"
+    bindsym r exec tider call reload; mode "default"
+    bindsym q exec tider call quit; mode "default"
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
