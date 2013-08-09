@@ -2,30 +2,30 @@
 city=UPXX0010
 
 function usage {
-    echo "Usage: $0: [-v] [-c CITY]"
+    echo "Usage: $0: [-v] [-c CITY] [-i INDENT]"
     exit 2
 }
 
-while getopts "c:v" opt; do
+while getopts "vc:i:" opt; do
 case $opt in
     c) city=$OPTARG;;
     v) verbose=1;;
+    i) indent=$OPTARG;;
     ?) usage;;
 esac
 done
 
 response=$(curl -s "http://weather.yahooapis.com/forecastrss?u=c&p=$city")
 if [ $verbose ]; then
-    weather=$(echo "$response" | grep -A5 "C<BR" | sed "s/<[^>]*>//g" | sed "2d")
+    weather=$(echo "$response" | grep -A3 "Forecast:" | sed "s/<[^>]*>//g" | sed "1d")
 else
     weather=$(echo "$response" | grep "C<BR" | cut -d"<" -f1)
 fi
-
-case $(echo "$weather" | head -n1) in
-    *Rain*) symbol="☂";;
-    *Snow*) symbol="❄";;
-    *) symbol='☀';;
-esac
-[[ $symbol ]] && weather=$symbol" "$weather
-
-echo "$weather"
+while read -r line; do
+    case $line in
+        *Snow*) symbol="❄";;
+        *Rain*) symbol="☂";;
+        *) symbol="☀";;
+    esac
+    echo "$indent$symbol $line"
+done <<< "$weather"
