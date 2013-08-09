@@ -1,24 +1,31 @@
 #!/bin/bash
 city=UPXX0010
-if [ $1 ]; then
-    city=$1
-fi
 
-weather=$(curl -s "http://weather.yahooapis.com/forecastrss?p=$city&u=c" | grep "Current Conditions" -A1 | tail -n1 | cut -d"<" -f1)
+function usage {
+    echo "Usage: $0: [-v] [-c CITY]"
+    exit 2
+}
 
-case "$weather" in
-    *Rain*)
-        symbol='☂'
-    ;;
-    *Snow*)
-        symbol='❄'
-    ;;
-    *)
-        symbol='☀'
-    ;;
+while getopts "c:v" opt; do
+case $opt in
+    c) city=$OPTARG;;
+    v) verbose=1;;
+    ?) usage;;
 esac
+done
 
-if [ $symbol ]; then
-    weather=$symbol' '$weather
+response=$(curl -s "http://weather.yahooapis.com/forecastrss?u=c&p=$city")
+if [ $verbose ]; then
+    weather=$(echo "$response" | grep -A5 "C<BR" | sed "s/<[^>]*>//g" | sed "2d")
+else
+    weather=$(echo "$response" | grep "C<BR" | cut -d"<" -f1)
 fi
-echo $weather
+
+case $(echo "$weather" | head -n1) in
+    *Rain*) symbol="☂";;
+    *Snow*) symbol="❄";;
+    *) symbol='☀';;
+esac
+[[ $symbol ]] && weather=$symbol" "$weather
+
+echo "$weather"

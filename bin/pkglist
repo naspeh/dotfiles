@@ -1,21 +1,20 @@
 #!/bin/zsh
 autoload colors; colors
 
+function usage {
+    echo "Usage: $0: [-v] [-c] [-n] [-m] "
+    echo "       (c: clean; v: verbose; n: only native; m: only foreign)"
+    exit 2
+}
+
 while getopts "cvmn" opt; do
-case $opt in
-    c)
-        clean=1;;
-    v)
-        verbose=1;;
-    n)
-        normal="n";;
-    m)
-        aur="m";;
-    ?)
-        echo "Usage: $0: [-v] [-c] [-n] [-m] "
-        echo "       (c: clean; v: verbose; n: only native; m: only foreign)"
-        exit 2;;
-esac
+    case $opt in
+        c) clean=1;;
+        v) verbose=1;;
+        n) filter="n";;
+        m) filter="m";;
+        ?) usage;;
+    esac
 done
 
 if [ $clean ]; then
@@ -25,7 +24,7 @@ if [ $clean ]; then
         sudo pacman -Rs $(pacman -Qdtq)
     fi
 else
-    list=$(pacman -Qeq$normal$aur | grep -v "$(pacman -Qqg base base-devel)")
+    list=$(pacman -Qeq$filter | grep -v "$(pacman -Qqg base base-devel)")
     if [ $verbose ]; then
         expac -Q "$fg[blue]%n$reset_color: %d" $(echo $list)
     else
