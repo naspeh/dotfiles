@@ -118,21 +118,21 @@ Total:${color2}${goto 180}${totalup eth0}$color
 
 $endif\
 ###Shortcuts
-#${voffset -4}\
-#${color1}${font :style=bold:size=9}Shortcuts$font${color3}${voffset 1}${hr 0}$color
-#${color2}Win+r$color${goto 40}Run...\
-#${goto 115}\
-#${color2}Alt+Enter$color${goto 185}Programs
-#${color2}Win+t$color${goto 40}Terminal\
-#${goto 115}\
-#${color2}Win+Shift+l$color${goto 185}Lock Screen
-#${color2}Win+b$color${goto 40}Browser\
-#${goto 115}\
-#${color2}Win+Shift+r$color${goto 185}Reboot
-#${color2}PrtSc$color${goto 40}Screenshot\
-#${goto 115}\
-#${color2}Win+Shift+q$color${goto 185}Poweroff
-#
+${voffset -4}\
+${color1}${font :style=bold:size=9}Shortcuts$font${color3}${voffset 1}${hr 0}$color
+${color2}Alt+r$color${goto 40}Run...\
+${goto 115}\
+${color2}Alt+Ctrl+b$color${goto 180}Browser
+${color2}Alt+p$color${goto 40}Programs\
+${goto 115}\
+${color2}Alt+Ctrl+l$color${goto 180}Lock Screen
+${color2}Alt+t$color${goto 40}Terminal\
+${goto 115}\
+${color2}Alt+q+r$color${goto 180}Reboot
+${color2}PrtSc$color${goto 40}Screenshot\
+${goto 115}\
+${color2}Alt+q+q$color${goto 180}Poweroff
+
 ###Tider
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Tider$font${color3}${voffset 1}${hr 0}$color
