@@ -98,8 +98,8 @@ bindsym $mod+q mode "system"
 
 mode "tider" {
     bindsym a exec tider call target; mode "default"
-    bindsym w exec tider call toggle-active; mode "default"
-    bindsym s exec tider call menu; mode "default"
+    bindsym Tab exec tider call toggle-active; mode "default"
+    bindsym w exec tider call menu; mode "default"
     bindsym q exec tider call disable; mode "default"
 
     bindsym Return mode "default"
