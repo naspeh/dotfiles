@@ -15,7 +15,7 @@ export TERMINAL=evilvte
 
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"
-setxkbmap -layout "us,ru(winkeys)" -option "grp:caps_toggle,grp_led:scrol"
+setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:scrol"
 #xrdb ~/.Xresources &
 
 DEFAULT_SESSION=i3
@@ -25,15 +25,15 @@ case $1 in
 esac
 $SESSION &
 PID=$!
-sleep 1
+sleep 2
 
 if [ "$SESSION" == "startxfce4" ]; then
     devilspie &
 fi
 
 conky &
-sbxkb &
-#fbxkb &
+#sbxkb &
+fbxkb &
 orage &
 volumeicon &
 batti &

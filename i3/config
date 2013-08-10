@@ -48,7 +48,7 @@ for_window [class="(?i)xfce4-appfinder"] floating enable; move position 200px 10
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
 for_window [class="(?i)chromium" window_role="pop-up"] floating enable
 
-assign [class="(?i)chromium" window_role="browser"] 1: web
+#assign [class="(?i)chromium" window_role="browser"] 1: web
 assign [class="(?i)(pidgin|gajim)"] 5: jabber
 assign [class="(?i)skype"] 6: skype
 
@@ -87,7 +87,7 @@ bindsym $mod+Shift+r restart
 
 mode "system" {
     bindsym e exit
-    bindsym s exec systemctl suspend
+    bindsym s exec systemctl suspend; mode "default"
     bindsym r exec systemctl reboot
     bindsym q exec systemctl poweroff
 

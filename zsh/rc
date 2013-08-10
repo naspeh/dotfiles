@@ -5,8 +5,10 @@ export EDITOR=vim
 export PATH="$PATH:$HOME/bin"
 export PYTHONSTARTUP=~/.pythonrc
 
-export TERM=xterm-256color
-[ -n "$TMUX" ] && export TERM=screen-256color
+if [ -n "$DISPLAY" ]; then
+    export TERM=xterm-256color
+    [ -n "$TMUX" ] && export TERM=screen-256color
+fi
 
 REPORTTIME=2
 
@@ -133,12 +135,16 @@ alias mv='nocorrect mv --interactive'
 alias du='du --human-readable --total -d0'
 alias df='df --human-readable'
 alias grep='grep --color=auto'
-alias rsync='nocorrect rsync'
-alias git="nocorrect git"
 alias killall="killall --interactive --verbose"
 alias tmux='tmux -2'
 alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
+
+if [[ "$TERM" == *256* ]]; then
+    alias mc="mc -S modarin256"
+else
+    alias mc="mc -S default"
+fi
 
 alias o=xdg-open
 alias myip="curl ip.appspot.com"
