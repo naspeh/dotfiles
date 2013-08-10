@@ -60,26 +60,27 @@ $endif\
 ### System
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}System$font${color3}${voffset 1}${hr 0}$color
-Battery${goto 90}${color2}${battery_percent BAT0}% ${alignr}${battery_time BAT0}$color
+Battery${goto 90}${color2}${battery_time BAT0}${alignr}${battery_percent BAT0}%$color
 ${voffset -4}${battery_bar 3,250}
-RAM${goto 90}${color2}$mem/$memmax  ${alignr}$memperc%$color
+RAM${goto 90}${color2}$mem/$memmax${alignr}$memperc%$color
 ${voffset -4}${membar 3,250}
-Disk /${goto 90}${color2}${fs_used /}/${fs_size /} ${alignr}${fs_free_perc /}% Free$color
+Disk /${goto 90}${color2}${fs_used /}/${fs_size /}${alignr}${fs_used_perc /}%$color
 ${voffset -4}${fs_bar 3,250 /}
-Disk /arch${goto 90}${color2}${fs_used /arch}/${fs_size /arch} ${alignr}${fs_free_perc /arch}% Free$color
+Disk /arch${goto 90}${color2}${fs_used /arch}/${fs_size /arch}${alignr}\
+${fs_used_perc /arch}%$color
 ${voffset -4}${fs_bar 3,250 /arch}
 
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Processor$font${color3}${voffset 1}${hr 0}$color
-Core 0: ${color2}${cpu cpu0}%$color${goto 90}\
-Temp: ${color2}${acpitemp}ºC$color${goto 170}\
+Load: ${color2}${cpu cpu0}%$color${goto 90}\
+Temp: ${color2}${acpitemp}ºC$color${alignr}\
 Fan: ${color2}${ibm_fan} RPM$color
 ${voffset -4}${cpubar 3,250}
 #${voffset -4}${cpugraph cpu0 15,250 000033 00cc00}
-Core 4: ${color2}${cpu cpu4}%$color${goto 130}Core 1: ${color2}${cpu cpu1}%$color
-${voffset -4}${cpugraph cpu4 15,123 000033 00cc00}${alignr}${cpugraph cpu1 15,123 000033 00cc00}
-Core 2: ${color2}${cpu cpu2}%$color${goto 130}Core 3: ${color2}${cpu cpu3}%$color
-${voffset -4}${cpugraph cpu2 15,123 000033 00cc00}${alignr}${cpugraph cpu3 15,123 000033 00cc00}
+Core 1: ${color2}${cpu cpu1}%$color${goto 130}Core 2: ${color2}${cpu cpu2}%$color
+${voffset -4}${cpugraph cpu1 15,123 000033 00cc00}${alignr}${cpugraph cpu2 15,123 000033 00cc00}
+Core 3: ${color2}${cpu cpu3}%$color${goto 130}Core 4: ${color2}${cpu cpu4}%$color
+${voffset -4}${cpugraph cpu3 15,123 000033 00cc00}${alignr}${cpugraph cpu4 15,123 000033 00cc00}
 
 ### Top
 ${voffset -8}\
