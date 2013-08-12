@@ -12,6 +12,7 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR=vim
 export BROWSER=chromium
 export TERMINAL=evilvte
+export DE=xfce
 
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"
@@ -38,8 +39,9 @@ orage &
 volumeicon &
 batti &
 clipit &
-#stardict &
-goldendict &
+stardict &
+#goldendict &
 tider &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 wait $PID

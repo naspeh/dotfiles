@@ -60,7 +60,7 @@ $endif\
 ### System
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}System$font${color3}${voffset 1}${hr 0}$color
-Battery${goto 90}${color2}${battery_time BAT0}${alignr}${battery_percent BAT0}%$color
+Battery${goto 90}${color2}${battery_time BAT0}${alignr}${battery BAT0}$color
 ${voffset -4}${battery_bar 3,250}
 RAM${goto 90}${color2}$mem/$memmax${alignr}$memperc%$color
 ${voffset -4}${membar 3,250}
