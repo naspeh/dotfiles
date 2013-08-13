@@ -16,7 +16,7 @@ export DE=xfce
 
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"
-setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:scrol"
+setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 #xrdb ~/.Xresources &
 
 DEFAULT_SESSION=i3

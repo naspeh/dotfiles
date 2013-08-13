@@ -15,7 +15,7 @@ REPORTTIME=2
 export HISTTIMEFORMAT="%t%d.%m.%y %H:%M:%S%t"
 export HISTIGNORE="&:ls:[bf]g:exit"
 HISTFILE=~/.zsh/history.log
-HISTSIZE=1000
+HISTSIZE=2000
 SAVEHIST=$HISTSIZE
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
@@ -149,11 +149,9 @@ fi
 alias o=xdg-open
 alias myip="curl ip.appspot.com"
 alias timesync='ntpdate ua.pool.ntp.org'
+alias rsyncc='rsync -aAXHvh --stats'
 
-alias pip="nocorrect pip"
 alias pipi="pip install"
-alias pipf="pip install --src=/arch/naspeh/libs"
-
 alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
 alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
