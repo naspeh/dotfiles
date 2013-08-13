@@ -18,6 +18,7 @@ set $htop evilvte -T htop -e htop
 
 workspace_layout tabbed
 focus_follows_mouse no
+force_display_urgency_hint 1000 ms
 new_window 1pixel
 new_float 1pixel
 
@@ -47,8 +48,8 @@ for_window [class="(?i)gmrun"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable; move position 200px 100px
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
 for_window [class="(?i)chromium" window_role="pop-up"] floating enable
+for_window [class="(?i)solaar"] floating enable
 for_window [title="Event Tester"] floating enable
-for_window [title="(?i)solaar"] floating enable
 
 #assign [class="(?i)chromium" window_role="browser"] 1: web
 assign [class="(?i)(pidgin|gajim)"] 5: jabber
@@ -113,6 +114,9 @@ mode "window" {
     bindsym f fullscreen; mode "default"
     bindsym t layout tabbed; mode "default"
     bindsym s layout toggle split; mode "default"
+    bindsym v split vertical; mode "default"
+    bindsym h split horizontal; mode "default"
+    bindsym space layout toggle all
 
     # focus the parent/child container
     bindsym p focus parent
