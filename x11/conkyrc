@@ -62,8 +62,8 @@ ${voffset -4}\
 ${color1}${font :style=bold:size=9}System$font${color3}${voffset 1}${hr 0}$color
 ${if_existing /proc/acpi/ibm}\
 Battery${goto 90}${color2}${battery_time BAT0}${alignr}${battery BAT0}$color
-${voffset -4}${battery_bar 3,250}\
-$endif
+${voffset -4}${battery_bar 3,250}
+${endif}\
 RAM${goto 90}${color2}$mem/$memmax${alignr}$memperc%$color
 ${voffset -4}${membar 3,250}
 Disk /${goto 90}${color2}${fs_used /}/${fs_size /}${alignr}${fs_used_perc /}%$color
@@ -75,8 +75,8 @@ ${voffset -4}${fs_bar 3,250 /arch}
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Processor$font${color3}${voffset 1}${hr 0}$color
 Load: ${color2}${cpu cpu0}%$color${goto 90}\
-Temp: ${color2}${acpitemp}ºC$color${alignr}\
 ${if_existing /proc/acpi/ibm}\
+Temp: ${color2}${acpitemp}ºC$color${alignr}\
 Fan: ${color2}${ibm_fan} RPM$color\
 $endif
 ${voffset -4}${cpubar 3,250}
