@@ -28,7 +28,7 @@ $SESSION &
 PID=$!
 sleep 2
 
-if [ "$SESSION" == "startxfce4" ]; then
+if [ "$SESSION" = "startxfce4" ]; then
     devilspie &
 fi
 

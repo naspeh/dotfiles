@@ -48,6 +48,7 @@ for_window [class="(?i)xfce4-appfinder"] floating enable; move position 200px 10
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
 for_window [class="(?i)chromium" window_role="pop-up"] floating enable
 for_window [title="Event Tester"] floating enable
+for_window [title="(?i)solaar"] floating enable
 
 #assign [class="(?i)chromium" window_role="browser"] 1: web
 assign [class="(?i)(pidgin|gajim)"] 5: jabber
