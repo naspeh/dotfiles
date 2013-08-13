@@ -60,8 +60,7 @@ $endif\
 ### System
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}System$font${color3}${voffset 1}${hr 0}$color
-${if_smapi_bat_installed 0}\
-#${if_match ${exec acpi -b} != ""}\
+${if_existing /proc/acpi/ibm}\
 Battery${goto 90}${color2}${battery_time BAT0}${alignr}${battery BAT0}$color
 ${voffset -4}${battery_bar 3,250}\
 $endif
@@ -77,7 +76,9 @@ ${voffset -4}\
 ${color1}${font :style=bold:size=9}Processor$font${color3}${voffset 1}${hr 0}$color
 Load: ${color2}${cpu cpu0}%$color${goto 90}\
 Temp: ${color2}${acpitemp}ºC$color${alignr}\
-Fan: ${color2}${acpifan} RPM$color
+${if_existing /proc/acpi/ibm}\
+Fan: ${color2}${ibm_fan} RPM$color\
+$endif
 ${voffset -4}${cpubar 3,250}
 #${voffset -4}${cpugraph cpu0 15,250 000033 00cc00}
 Core 1: ${color2}${cpu cpu1}%$color${goto 130}Core 2: ${color2}${cpu cpu2}%$color
