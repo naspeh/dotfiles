@@ -5,25 +5,23 @@ import os.path as op
 import subprocess
 import sys
 
-RSYNC = 'sudo rsync -aAXHvh --stats'
+RSYNC = 'sudo rsync -aAXHvh --delete --stats'
 FILTERS = [
     '+ /boot/',
     '+ /etc/',
     '+ /root/',
-    '+ /var/',
-    '+ /var/lib/',
-    '+ /var/lib/pacman/',
-    '+ /var/lib/pacman/local/',
-    '- /var/lib/pacman/*',
-    '- /var/lib/*',
-    '- /var/*',
+    #'+ /var/',
+    #'+ /var/lib/',
+    #'+ /var/lib/pacman/',
+    #'+ /var/lib/pacman/local/',
+    #'- /var/lib/pacman/*',
+    #'- /var/lib/*',
+    #'- /var/*',
     '+ /home/',
     '+ /home/naspeh/',
     '+ /home/naspeh/v/',
     '- /home/naspeh/v/*',
     '- /home/**/.thumbnails/',
-    '- /home/**/Cache*/',
-    '- /home/**/*Cache/',
     '- /home/*',
     '+ /arch/',
     '+ /arch/naspeh/',
@@ -57,12 +55,13 @@ def main():
         return s
 
     sub('tar', help='archive delta directory')\
-        .arg('-l', '--label', help='label for archive')
+        .arg('-l', '--label', help='label for archive')\
+        .arg('-d', '--delete', help='delete delta directory')
 
     sub('copy', help='copy backup directory')\
         .arg('path', help='destination path')
 
-    sub('dd', help='archive whole disk')
+    sub('full', help='archive whole disk')
 
     args = parser.parse_args(sys.argv[1:])
     rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
@@ -75,14 +74,14 @@ def main():
             .format(var)
         )
 
-        filters = ' '.join(['--filter="%s"' % v for v in FILTERS])
+        rsync += ' --delete-excluded ' + (
+            ' '.join(['--filter="%s"' % v for v in FILTERS])
+        )
         sh(
             rsync +
-            ' --delete --delete-excluded'
             ' --backup --backup-dir={dest}delta/'
-            ' {filters}'
             ' / {dest}latest/'
-            .format(dest=args.dest, filters=filters)
+            .format(dest=args.dest)
         )
     elif args.sub == 'tar':
         name = today
@@ -92,18 +91,29 @@ def main():
             'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
             .format(dest=args.dest, name=name)
         )
+        if args.delete:
+            sh('rm -r {}delta'.format(args.dest))
     elif args.sub == 'copy':
         sh(
             rsync + ' --delete {src} {dest}/'
             .format(src=args.dest, dest=args.path.rstrip('/'))
         )
-    elif args.sub == 'dd':
-        sh(
-            'lvcreate --size 10G --snapshot --name snap /dev/pad/root'
-            ' && dd if=/dev/pad/snap | gzip -c > {dest}dd-{today}-root.img.gz'
-            ' && lvremove -f /dev/pad/snap'
-            .format(dest=args.dest, today=today)
+    elif args.sub == 'full':
+        rsync += ' -x --exclude=' + (
+            '{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found}'
         )
+        try:
+            sh(
+                'lvcreate --size 10G --snapshot --name snap /dev/pad/root'
+                ' && mount /dev/pad/snap {dest}mnt'
+                ' && {rsync} {dest}mnt/ {dest}full/'
+                .format(dest=args.dest, rsync=rsync)
+            )
+        finally:
+            sh(
+                'umount {dest}mnt; lvremove -f /dev/pad/snap'
+                .format(dest=args.dest)
+            )
 
 
 if __name__ == '__main__':
