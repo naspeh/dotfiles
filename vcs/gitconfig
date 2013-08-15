@@ -1,7 +1,6 @@
 [user]
     name = Grisha K.
     email = naspeh@gmail.com
-    #email = grisha@ostrovok.ru
 
 [color]
     ui = true
@@ -22,5 +21,5 @@
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 
-[merge]
-    tool = meld
+[push]
+    default = current
