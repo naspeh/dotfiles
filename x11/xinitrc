@@ -30,6 +30,8 @@ sleep 2
 
 if [ "$SESSION" = "startxfce4" ]; then
     devilspie &
+else
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 fi
 
 conky &
@@ -42,6 +44,5 @@ clipit &
 stardict &
 #goldendict &
 tider &
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 wait $PID
