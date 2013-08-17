@@ -5,7 +5,7 @@ import os.path as op
 import subprocess
 import sys
 
-RSYNC = 'sudo rsync -aAXHvh --delete --stats'
+RSYNC = 'sudo rsync -aAXHvhy --stats --delete --delete-after'
 FILTERS = [
     '+ /boot/',
     '+ /etc/',
@@ -19,6 +19,7 @@ FILTERS = [
     '+ /arch/',
     '+ /arch/naspeh/',
     '+ /arch/nayavu/',
+    '+ /arch/photo/',
     '- /arch/*',
     '- /**/.cache/',
     '- /**/__pycache__/',
