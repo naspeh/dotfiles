@@ -2,9 +2,11 @@
 import argparse
 import datetime as dt
 import os.path as op
+import socket
 import subprocess
 import sys
 
+BDIR = '/arch/backup/'
 RSYNC = 'sudo rsync -aAXHvhy --stats --delete'
 FILTERS = [
     '+ /boot/',
@@ -26,7 +28,15 @@ FILTERS = [
     '- /**/*.pyc',
     '- /*'
 ]
-BDIR = '/arch/backup/'
+TARGETS = {
+    'pad_to_box': 'backup copy box:/arch/backups/pad/',
+    'box_to_sea': (
+        'backup copy /arch/ /media/sea/ --extra="'
+        '   --exclude={/lost+found,/.delta}'
+        '   --backup --backup-dir=/media/sea/.delta/'
+        '"'
+    )
+}
 
 
 def sh(cmd, **kw):
@@ -56,6 +66,9 @@ def main():
         .arg('-e', '--extra', default='', help='extra options for rsync')
 
     sub('full', help='archive whole disk')
+
+    sub('call', help='call fixed action')\
+        .arg('target', choices=TARGETS.keys(), help='choice fixed action')
 
     args = parser.parse_args(sys.argv[1:])
     rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
@@ -93,21 +106,29 @@ def main():
             .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
         )
     elif args.sub == 'full':
+        snap = '/dev/%s/snap' % socket.gethostname()
+        root = '/dev/%s/root' % socket.gethostname()
         rsync += ' -x --exclude=' + (
             '{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found}'
         )
         try:
             sh(
-                'lvcreate --size 10G --snapshot --name snap /dev/pad/root'
-                ' && mount /dev/pad/snap {dest}mnt'
+                'lvcreate --size 10G --snapshot --name snap {root}'
+                ' && mount {snap} {dest}mnt'
                 ' && {rsync} {dest}mnt/ {dest}full/'
-                .format(dest=args.dest, rsync=rsync)
+                .format(
+                    dest=args.dest, rsync=rsync,
+                    root=root, snap=snap
+                )
             )
         finally:
             sh(
-                'umount {dest}mnt; lvremove -f /dev/pad/snap'
-                .format(dest=args.dest)
+                'umount {dest}mnt; lvremove -f {snap}'
+                .format(dest=args.dest, snap=snap)
             )
+    elif args.sub == 'call':
+        cmd = TARGETS.get(args.target)
+        sh(cmd)
 
 
 if __name__ == '__main__':
