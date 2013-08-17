@@ -89,7 +89,7 @@ def main():
             sh('rm -r {}delta'.format(args.dest))
     elif args.sub == 'copy':
         sh(
-            rsync + ' -x --delete {extra} {src} {dest}/'
+            rsync + ' -x {extra} {src} {dest}/'
             .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
         )
     elif args.sub == 'full':
