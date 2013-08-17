@@ -26,6 +26,7 @@ FILTERS = [
     '- /**/*.pyc',
     '- /*'
 ]
+BDIR = '/arch/backup/'
 
 
 def sh(cmd, **kw):
@@ -36,10 +37,7 @@ def sh(cmd, **kw):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--fake', action='store_true', help='dry run')
-    parser.add_argument(
-        '-d', '--dest', default='/arch/backup/',
-        help='backup directory'
-    )
+    parser.add_argument('-d', '--dest', default=BDIR, help='backup directory')
     subs = parser.add_subparsers()
 
     def sub(name, **kw):
@@ -53,7 +51,9 @@ def main():
         .arg('-d', '--delete', help='delete delta directory')
 
     sub('copy', help='copy backup directory')\
-        .arg('path', help='destination path')
+        .arg('src', default=BDIR, nargs='?', help='source path')\
+        .arg('dest', help='destination path')\
+        .arg('-e', '--extra', default='', help='extra options for rsync')
 
     sub('full', help='archive whole disk')
 
@@ -89,8 +89,8 @@ def main():
             sh('rm -r {}delta'.format(args.dest))
     elif args.sub == 'copy':
         sh(
-            rsync + ' --delete {src} {dest}/'
-            .format(src=args.dest, dest=args.path.rstrip('/'))
+            rsync + ' -x --delete {extra} {src} {dest}/'
+            .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
         )
     elif args.sub == 'full':
         rsync += ' -x --exclude=' + (
