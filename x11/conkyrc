@@ -114,6 +114,22 @@ Total:${color2}${goto 50}${totaldown wlp3s0}$color${goto 130}\
 Total:${color2}${goto 180}${totalup wlp3s0}$color
 
 $endif\
+${if_up wlp2s0}\
+${voffset -4}\
+${color1}${font :style=bold:size=9}Wireless Network$font${color3}${voffset 1}${hr 0}$color
+SSID:${color2}${goto 50}${wireless_essid wlp2s0}$color${goto 130}\
+Signal:${color2}${goto 180}${wireless_link_qual wlp2s0}/${wireless_link_qual_max wlp2s0}$color
+${voffset -4}${wireless_link_bar 3,250 wlp2s0}
+Local:${color2}${goto 50}${addr wlp2s0}$color${goto 130}\
+Public:${color2}${goto 180}${execi 30 curl ip.appspot.com}$color
+${downspeedgraph wlp2s0 15,123 003300 6ddd00}${alignr}\
+${upspeedgraph wlp2s0 15,123 330000 e3170d}
+Down: ${color2}${goto 50}${downspeedf wlp2s0} k/s$color${goto 130}\
+Up: ${color2}${goto 180}${upspeedf wlp2s0} k/s$color
+Total:${color2}${goto 50}${totaldown wlp2s0}$color${goto 130}\
+Total:${color2}${goto 180}${totalup wlp2s0}$color
+
+$endif\
 ${if_up eth0}\
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Ethernet$font${color3}${voffset 1}${hr 0}$color
