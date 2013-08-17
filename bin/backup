@@ -5,7 +5,7 @@ import os.path as op
 import subprocess
 import sys
 
-RSYNC = 'sudo rsync -aAXHvhy --stats --delete --delete-after'
+RSYNC = 'sudo rsync -aAXHvhy --stats --delete'
 FILTERS = [
     '+ /boot/',
     '+ /etc/',
