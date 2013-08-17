@@ -23,6 +23,7 @@ case $1 in
   startxfce4|i3|awesome|wmii|wmfs) SESSION=$1;;
   *) SESSION=i3;;
 esac
+export SESSION
 $SESSION &
 PID=$!
 sleep 2

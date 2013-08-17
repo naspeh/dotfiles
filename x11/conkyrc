@@ -144,6 +144,7 @@ Total:${color2}${goto 180}${totalup eth0}$color
 
 $endif\
 ###Shortcuts
+${if_match ${exec echo $SESSION} == "i3"}
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Shortcuts$font${color3}${voffset 1}${hr 0}$color
 ${color2}Alt+r$color${goto 40}Run...\
@@ -159,6 +160,7 @@ ${color2}PrtSc$color${goto 40}Screenshot\
 ${goto 115}\
 ${color2}Alt+q+q$color${goto 180}Poweroff
 
+$endif\
 ###Tider
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Tider$font${color3}${voffset 1}${hr 0}$color
