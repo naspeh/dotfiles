@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+if [ "$1" = "kill" ]; then
+    killall dropbox gajim skype chromium
+else
+    if [ ! "$DISPLAY" ]; then
+        export DISPLAY=:0
+    fi
+
+    chromium &
+    (sleep 1; i3-msg '[class="(?i)chromium" window_role="browser"] move workspace 1: web') &
+
+    xdg-open .local/share/applications/gmail-naspeh.desktop &
+    (sleep 1; i3-msg '[class="(?i)chromium" title="Gmail"] move workspace 4: mail') &
+
+    dropboxd &
+    gajim &
+    skype &
+fi
