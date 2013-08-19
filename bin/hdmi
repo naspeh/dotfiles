@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 MON=HDMI1
 ASOUNDRC=/home/naspeh/.asoundrc
 

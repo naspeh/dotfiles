@@ -61,7 +61,7 @@ bindsym $mod+Ctrl+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 bindsym $mod+Ctrl+b exec chromium
 bindsym $mod+Ctrl+i exec internet
 bindsym $mod+Ctrl+h exec $htop
-bindsym $mod+Ctrl+m exec monitor
+bindsym $mod+Ctrl+m exec hdmi
 
 bindsym $mod+b workspace back_and_forth
 bindsym $mod+n [urgent="oldest"] focus
