@@ -32,7 +32,7 @@ TARGETS = {
     'pad_to_box': 'backup copy box:/arch/backups/pad/',
     'box_to_sea': (
         'backup copy /arch/ /media/sea/ --extra="'
-        '   --exclude={/lost+found,/.delta}'
+        '   --exclude={/lost+found,/.delta,/backup}'
         '   --backup --backup-dir=/media/sea/.delta/'
         '"'
     )
