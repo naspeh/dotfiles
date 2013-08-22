@@ -95,7 +95,7 @@ def main():
         if args.label:
             name += '-' + args.label
         sh(
-            'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
+            'cd {dest} && tar -cf {name}.tar --directory=delta .'
             .format(dest=args.dest, name=name)
         )
         if args.delete:
