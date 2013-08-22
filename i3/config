@@ -71,10 +71,10 @@ bindsym $mod+Shift+q kill
 bindsym $mod+F4 kill
 
 # toggle tiling / floating
-bindsym $mod+space floating toggle
+bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+Tab focus mode_toggle
+bindsym $mod+space focus mode_toggle
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -166,6 +166,9 @@ bindsym $mod+7 workspace number 7
 bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 0
+
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number 1

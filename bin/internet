@@ -7,6 +7,8 @@ else
         export DISPLAY=:0
     fi
 
+    i3-msg 'rename workspace 1 to "2: term"' &
+
     chromium &
     (sleep 2; i3-msg '[class="(?i)chromium" window_role="browser"] move workspace 1: web') &
 
