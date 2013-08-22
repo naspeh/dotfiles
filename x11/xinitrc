@@ -30,9 +30,9 @@ if [ "$SESSION" = "startxfce4" ]; then
     devilspie &
 else
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+    xcompmgr -a &
 fi
 
-xcompmgr -a &
 conky &
 fbxkb &
 orage &
