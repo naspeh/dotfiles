@@ -8,7 +8,7 @@ else
     fi
 
     chromium &
-    (sleep 1; i3-msg '[class="(?i)chromium" window_role="browser"] move workspace 1: web') &
+    (sleep 2; i3-msg '[class="(?i)chromium" window_role="browser"] move workspace 1: web') &
 
     xdg-open ~/.local/share/applications/gmail-naspeh.desktop
     (sleep 2; i3-msg '[class="(?i)chromium" window_role="pop-up"] move workspace 7: mail') &
