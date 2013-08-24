@@ -158,14 +158,14 @@ if !has('lua')
 else
     Bundle 'Shougo/neocomplete.vim'
     let g:acp_enableAtStartup=0
-    let g:neocomplete#enable_at_startup = 1
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#enable_fuzzy_completion = 0
-    let g:neocomplete#enable_insert_char_pre = 1
+    let g:neocomplete#enable_at_startup=1
+    let g:neocomplete#enable_smart_case=1
+    let g:neocomplete#enable_fuzzy_completion=0
+    let g:neocomplete#enable_insert_char_pre=1
     if !exists('g:neocomplete#same_filetypes')
-      let g:neocomplete#same_filetypes = {}
+      let g:neocomplete#same_filetypes={}
     endif
-    let g:neocomplete#same_filetypes._ = '_'
+    let g:neocomplete#same_filetypes._='_'
     inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
 endif
 
@@ -189,13 +189,12 @@ vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
 
 
 Bundle 'davidhalter/jedi-vim'
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#rename_command = 0
-let g:jedi#related_names_command = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_function_definition = 0
-let g:jedi#autocompletion_command = "<C-Space>"
-
+let g:jedi#use_tabs_not_buffers=0
+let g:jedi#rename_command=0
+let g:jedi#popup_on_dot=0
+let g:jedi#show_call_signatures=0
+let g:jedi#completions_command="<C-Space>"
+let g:jedi#usages_command="<leader>u"
 
 "Bundle 'python.vim'
 Bundle 'hdima/python-syntax'
