@@ -61,7 +61,7 @@ def main():
         .arg('dest', help='destination path')\
         .arg('-e', '--extra', default='', help='extra options for rsync')
 
-    sub('full', help='archive whole disk')
+    sub('full', help='archive whole root partition')
 
     sub('call', help='call fixed action')\
         .arg('target', choices=TARGETS.keys(), help='choice fixed action')
