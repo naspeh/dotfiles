@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import datetime as dt
-import os.path as op
+import os
 import socket
 import subprocess
 import sys
@@ -39,13 +39,9 @@ TARGETS = {
 }
 
 
-def sh(cmd, **kw):
-    print(cmd)
-    subprocess.call(cmd, shell=True, **kw)
-
-
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--log', action='store_true', help='log to file')
     parser.add_argument('-f', '--fake', action='store_true', help='dry run')
     parser.add_argument('-d', '--dest', default=BDIR, help='backup directory')
     subs = parser.add_subparsers()
@@ -73,11 +69,24 @@ def main():
     args = parser.parse_args(sys.argv[1:])
     rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     today = dt.date.today().isoformat()
+    now = dt.datetime.now().isoformat()
+    dest = args.dest.rstrip('/') + '/'
+    var, log, mnt = dest + 'var/', dest + 'log/', dest + 'mnt/'
+    for f in [log, var, mnt]:
+        if not os.path.exists(f):
+            os.mkdir(f)
+
+    def sh(cmd, **kw):
+        cmd = 'echo "{}" && {}'.format(cmd.replace('"', '\"'), cmd)
+        if args.log or os.environ.get('BACKUP_LOG', False):
+            logfile = '%s%s.log' % (log, now)
+            cmd = '({}; echo "\n\n") &>> {}'.format(cmd, logfile)
+        subprocess.call(cmd, shell=True, **kw)
+
     if not hasattr(args, 'sub'):
-        var = op.abspath(op.realpath(op.dirname(__file__)) + '/../var')
         sh(
-            'pkglist -n > {0}/pkglist.txt'
-            ' && pkglist -m > {0}/pkgaur.txt'
+            'pkglist -n > {0}pkglist.txt'
+            ' && pkglist -m > {0}pkgaur.txt'
             .format(var)
         )
 
@@ -88,7 +97,7 @@ def main():
             rsync +
             ' --backup --backup-dir={dest}delta/'
             ' / {dest}latest/'
-            .format(dest=args.dest)
+            .format(dest=dest)
         )
     elif args.sub == 'tar':
         name = today
@@ -96,14 +105,14 @@ def main():
             name += '-' + args.label
         sh(
             'cd {dest} && tar -cf {name}.tar --directory=delta .'
-            .format(dest=args.dest, name=name)
+            .format(dest=dest, name=name)
         )
         if args.delete:
-            sh('rm -r {}delta'.format(args.dest))
+            sh('rm -r {}delta'.format(dest))
     elif args.sub == 'copy':
         sh(
             rsync + ' -x {extra} {src} {dest}/'
-            .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
+            .format(src=args.src, dest=dest, extra=args.extra)
         )
     elif args.sub == 'full':
         snap = '/dev/%s/snap' % socket.gethostname()
@@ -114,17 +123,17 @@ def main():
         try:
             sh(
                 'lvcreate --size 10G --snapshot --name snap {root}'
-                ' && mount {snap} {dest}mnt'
-                ' && {rsync} {dest}mnt/ {dest}full/'
+                ' && mount {snap} {mnt}'
+                ' && {rsync} {mnt} {dest}full/'
                 .format(
-                    dest=args.dest, rsync=rsync,
-                    root=root, snap=snap
+                    dest=dest, rsync=rsync,
+                    root=root, snap=snap, mnt=mnt
                 )
             )
         finally:
             sh(
-                'umount {dest}mnt; lvremove -f {snap}'
-                .format(dest=args.dest, snap=snap)
+                'umount {mnt}; lvremove -f {snap}'
+                .format(mnt=mnt, snap=snap)
             )
     elif args.sub == 'call':
         cmd = TARGETS.get(args.target)

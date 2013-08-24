@@ -193,8 +193,12 @@ let g:jedi#use_tabs_not_buffers=0
 let g:jedi#rename_command=0
 let g:jedi#popup_on_dot=0
 let g:jedi#show_call_signatures=0
-let g:jedi#completions_command="<C-Space>"
+let g:jedi#goto_definitions_command="<leader>d"
+let g:jedi#goto_assignments_command="<leader>g"
+let g:jedi#documentation_command="<leader>o"
 let g:jedi#usages_command="<leader>u"
+let g:jedi#completions_command="<C-Space>"
+
 
 "Bundle 'python.vim'
 Bundle 'hdima/python-syntax'
