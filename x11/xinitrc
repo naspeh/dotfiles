@@ -24,11 +24,12 @@ esac
 export SESSION
 $SESSION &
 PID=$!
-sleep 2
 
 if [ "$SESSION" = "startxfce4" ]; then
+    sleep 4
     devilspie &
 else
+    sleep 2
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
     xcompmgr -a &
 fi
