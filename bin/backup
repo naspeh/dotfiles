@@ -71,23 +71,23 @@ def main():
     today = dt.date.today().isoformat()
     now = dt.datetime.now().isoformat()
     dest = args.dest.rstrip('/') + '/'
-    var, log, mnt = dest + 'var/', dest + 'log/', dest + 'mnt/'
-    for f in [log, var, mnt]:
+    pkg, log, mnt = dest + 'pkg/', dest + 'log/', dest + 'mnt/'
+    for f in [log, pkg, mnt]:
         if not os.path.exists(f):
             os.mkdir(f)
 
     def sh(cmd, **kw):
-        cmd = 'echo "{}" && {}'.format(cmd.replace('"', '\"'), cmd)
+        cmd = 'echo "{}" && time {}'.format(cmd.replace('"', '\"'), cmd)
         if args.log or os.environ.get('BACKUP_LOG', False):
             logfile = '%s%s.log' % (log, now)
-            cmd = '({}; echo "\n\n") &>> {}'.format(cmd, logfile)
+            cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, logfile)
         subprocess.call(cmd, shell=True, **kw)
 
     if not hasattr(args, 'sub'):
         sh(
             'pkglist -n > {0}pkglist.txt'
             ' && pkglist -m > {0}pkgaur.txt'
-            .format(var)
+            .format(pkg)
         )
 
         rsync += ' --delete-excluded ' + (
