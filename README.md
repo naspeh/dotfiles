@@ -6,15 +6,15 @@ Notes:
 
     ln -s dotfiles/vim/rc .vimrc
     ln -s dotfiles/vim/extra .vim
-    ln -s dotfiles/vim/extra/bundle/linepower.vim/config ~/.config/powerline
 
     ln -s dotfiles/zsh/rc .zshrc
 
-    ln -s dotfiles/vcs/hgrc .hgrc
-    ln -s dotfiles/vcs/hgignore .hgignore
-    ln -s dotfiles/vcs/hgext .hgext
-    ln -s dotfiles/vcs/gitconfig .gitconfig
-    ln -s dotfiles/vcs/gitignore .gitignore
+    ln -s dotfiles/dev/hgrc .hgrc
+    ln -s dotfiles/dev/hgignore .hgignore
+    ln -s dotfiles/dev/hgext .hgext
+    ln -s dotfiles/dev/gitconfig .gitconfig
+    ln -s dotfiles/dev/gitignore .gitignore
+    ln -s dotfiles/pip .pip
 
     ln -s dotfiles/x11/devilspie .devilspie
     ln -s dotfiles/x11/xinitrc .xinitrc

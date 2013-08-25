@@ -1,6 +1,6 @@
 *.pyc
-/pip/*
-!/pip/pip.conf
+/dev/pip/*
+!/dev/pip/pip.conf
 /vim/dir/
 !/vim/dir/syntax
 !/vim/dir/bundle
