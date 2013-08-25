@@ -153,6 +153,10 @@ alias timesync='ntpdate ua.pool.ntp.org'
 alias rsyncc='rsync -aAXHvhy --stats'
 
 alias pipi="pip install"
+alias pipu="pip uninstall"
+alias pipw="pip wheel"
+alias pips="pip search"
+
 alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
 alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
