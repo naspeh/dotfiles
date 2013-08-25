@@ -1,4 +1,8 @@
 *.pyc
-/vim/dir/.netrwhist
+/pip/*
+!/pip/pip.conf
+/vim/dir/
+!/vim/dir/syntax
+!/vim/dir/bundle
 /vim/dir/bundle/*
 !/vim/dir/bundle/vundle/
