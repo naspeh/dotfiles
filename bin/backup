@@ -29,7 +29,7 @@ FILTERS = [
     '- /*'
 ]
 TARGETS = {
-    'pad_to_box': 'backup copy box:/arch/backups/pad/',
+    'pad_to_box': 'backup copy box:/arch/backups/pad/ --extra="-z"',
     'box_to_sea': (
         'backup copy /arch/ /media/sea/ --extra="'
         '   --exclude={/lost+found,/.delta,/backup}'
@@ -42,8 +42,8 @@ TARGETS = {
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--log', action='store_true', help='log to file')
-    parser.add_argument('-f', '--fake', action='store_true', help='dry run')
-    parser.add_argument('-d', '--dest', default=BDIR, help='backup directory')
+    parser.add_argument('--fake', action='store_true', help='dry run')
+    parser.add_argument('--bdir', default=BDIR, help='backup directory')
     subs = parser.add_subparsers()
 
     def sub(name, **kw):
@@ -70,8 +70,8 @@ def main():
     rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     today = dt.date.today().isoformat()
     now = dt.datetime.now().isoformat()
-    dest = args.dest.rstrip('/') + '/'
-    pkg, log, mnt = dest + 'pkg/', dest + 'log/', dest + 'mnt/'
+    bdir = args.bdir.rstrip('/') + '/'
+    pkg, log, mnt = bdir + 'pkg/', bdir + 'log/', bdir + 'mnt/'
     for f in [log, pkg, mnt]:
         if not os.path.exists(f):
             os.mkdir(f)
@@ -97,7 +97,7 @@ def main():
             rsync +
             ' --backup --backup-dir={dest}delta/'
             ' / {dest}latest/'
-            .format(dest=dest)
+            .format(dest=bdir)
         )
     elif args.sub == 'tar':
         name = today
@@ -105,14 +105,14 @@ def main():
             name += '-' + args.label
         sh(
             'cd {dest} && tar -cvf {name}.tar --directory=delta .'
-            .format(dest=dest, name=name)
+            .format(dest=bdir, name=name)
         )
         if args.delete:
-            sh('rm -r {}delta'.format(dest))
+            sh('rm -r {}delta'.format(bdir))
     elif args.sub == 'copy':
         sh(
             rsync + ' -x {extra} {src} {dest}/'
-            .format(src=args.src, dest=dest, extra=args.extra)
+            .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
         )
     elif args.sub == 'full':
         snap = '/dev/%s/snap' % socket.gethostname()
@@ -126,7 +126,7 @@ def main():
                 ' && mount {snap} {mnt}'
                 ' && {rsync} {mnt} {dest}full/'
                 .format(
-                    dest=dest, rsync=rsync,
+                    dest=bdir, rsync=rsync,
                     root=root, snap=snap, mnt=mnt
                 )
             )
