@@ -139,7 +139,6 @@ alias killall="killall --interactive --verbose"
 alias tmux='tmux -2'
 alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
-alias muttr="sudo mutt -f /var/spool/mail/root"
 
 if [[ "$TERM" == *256* ]]; then
     alias mc="mc -S modarin256"

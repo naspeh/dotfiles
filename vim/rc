@@ -91,7 +91,6 @@ color xterm16
 
 
 Bundle 'scrooloose/nerdtree'
-"call MapDo('<F4>', ':NERDTreeToggle<cr>')
 call MapDo('<leader>f', ':NERDTreeToggle<cr>')
 let NERDTreeWinSize=35
 let NERDTreeChDirMode=2
@@ -109,7 +108,6 @@ let g:ctrlp_custom_ignore={
 let g:ctrlp_extensions=['tag', 'quickfix', 'dir', 'line']
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_mruf_relative=1
-"let g:ctrlp_regexp=0
 let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^__pycache__'
 let g:ctrlp_user_command={
     \'types': {
@@ -121,7 +119,6 @@ let g:ctrlp_user_command={
 
 
 Bundle 'scrooloose/syntastic'
-"g:syntastic_less_use_less_lint=1
 let g:syntastic_check_on_open=0
 let g:syntastic_enable_signs=0
 let g:syntastic_error_symbol='✗'
@@ -144,7 +141,6 @@ Bundle 'milkypostman/vim-togglelist'
 
 
 Bundle 'majutsushi/tagbar'
-"call MapDo('<F5>', ':TagbarToggle<cr>')
 call MapDo('<leader>t', ':TagbarToggle<cr>')
 let g:tagbar_autofocus=1
 let g:tagbar_sort=1
@@ -170,7 +166,6 @@ else
 endif
 
 
-"Bundle 'EasyGrep'
 Bundle 'grep.vim'
 let Grep_Skip_Dirs_='.git .hg __pycache__'
 let Grep_Skip_Dirs=Grep_Skip_Dirs_
@@ -200,7 +195,6 @@ let g:jedi#usages_command="<leader>u"
 let g:jedi#completions_command="<C-Space>"
 
 
-"Bundle 'python.vim'
 Bundle 'hdima/python-syntax'
 let python_highlight_all=1
 
@@ -327,16 +321,15 @@ filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
 "filetype plugin indent on
 
-"autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
-autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
+autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
 autocmd BufNewFile,BufRead *.t2t setlocal ft=txt2tags
 autocmd BufNewFile,BufRead *.tpl setlocal ft=html
 
-set completeopt-=preview
+"set completeopt-=preview
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 "autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
@@ -352,7 +345,7 @@ autocmd FileChangedShell * echo "Warning: File changed on disk"
 " (useful for handling the permission-denied error)
 command! W w !sudo tee % > /dev/null
 
-" < & > - делаем отступы для блоков
+" Indent blocks
 vmap < <gv
 vmap > >gv
 
@@ -368,7 +361,6 @@ noremap <C-h>  <C-w>h
 noremap <C-j>  <C-w>j
 noremap <C-k>  <C-w>k
 
-" Leader
 call LeaderToggle('h', 'hlsearch')
 call LeaderToggle('p', 'paste')
 call LeaderToggle('w', 'wrap')
@@ -389,7 +381,6 @@ nnoremap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
-iab pyutf8 # -*- coding: utf-8 -*-<esc>
 iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
 
