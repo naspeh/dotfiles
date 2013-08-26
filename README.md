@@ -14,7 +14,7 @@ Notes:
     ln -s dotfiles/dev/hgext .hgext
     ln -s dotfiles/dev/gitconfig .gitconfig
     ln -s dotfiles/dev/gitignore .gitignore
-    ln -s dotfiles/pip .pip
+    mkdir .pip; cd .pip && ln -s ../dotfiles/dev/pip.conf && cd ..
 
     ln -s dotfiles/x11/devilspie .devilspie
     ln -s dotfiles/x11/xinitrc .xinitrc
