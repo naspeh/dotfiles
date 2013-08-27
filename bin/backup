@@ -41,35 +41,45 @@ TARGETS = {
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--log', action='store_true', help='log to file')
-    parser.add_argument('--fake', action='store_true', help='dry run')
-    parser.add_argument('--bdir', default=BDIR, help='backup directory')
     subs = parser.add_subparsers()
 
     def sub(name, **kw):
         s = subs.add_parser(name, **kw)
         s.set_defaults(sub=name)
         s.arg = lambda *a, **kw: s.add_argument(*a, **kw) and s
+
+        s.arg('--log', action='store_true', help='log to file')
+        s.arg('--bdir', default=BDIR, help='backup directory')
+        s.add_fake = lambda: (
+            s.arg('-f', '--fake', action='store_true', help='dry run')
+        )
         return s
+
+    sub('run', help='backup important data').add_fake()
 
     sub('tar', help='archive delta directory')\
         .arg('-l', '--label', help='label for archive')\
         .arg('-d', '--delete', help='delete delta directory')
 
-    sub('copy', help='copy backup directory')\
+    sub('copy', help='copy backup directory').add_fake()\
         .arg('src', default=BDIR, nargs='?', help='source path')\
         .arg('dest', help='destination path')\
         .arg('-e', '--extra', default='', help='extra options for rsync')
 
-    sub('full', help='archive whole root partition')
+    sub('full', help='backup whole root partition').add_fake()
 
     sub('call', help='call fixed action')\
         .arg('target', choices=TARGETS.keys(), help='choice fixed action')
 
     args = parser.parse_args(sys.argv[1:])
-    rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
+    if not hasattr(args, 'sub'):
+        parser.print_usage()
+        exit(2)
+
     today = dt.date.today().isoformat()
     now = dt.datetime.now().isoformat()
+    if hasattr(args, 'fake'):
+        rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     bdir = args.bdir.rstrip('/') + '/'
     pkg, log, mnt = bdir + 'pkg/', bdir + 'log/', bdir + 'mnt/'
     for f in [log, pkg, mnt]:
@@ -83,7 +93,7 @@ def main():
             cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, logfile)
         subprocess.call(cmd, shell=True, **kw)
 
-    if not hasattr(args, 'sub'):
+    if args.sub == 'run':
         sh(
             'pkglist -n > {0}pkglist.txt'
             ' && pkglist -m > {0}pkgaur.txt'
@@ -99,6 +109,7 @@ def main():
             ' / {dest}latest/'
             .format(dest=bdir)
         )
+
     elif args.sub == 'tar':
         name = today
         if args.label:
@@ -109,11 +120,13 @@ def main():
         )
         if args.delete:
             sh('rm -r {}delta'.format(bdir))
+
     elif args.sub == 'copy':
         sh(
             rsync + ' -x {extra} {src} {dest}/'
             .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
         )
+
     elif args.sub == 'full':
         snap = '/dev/%s/snap' % socket.gethostname()
         root = '/dev/%s/root' % socket.gethostname()
@@ -135,6 +148,7 @@ def main():
                 'umount {mnt}; lvremove -f {snap}'
                 .format(mnt=mnt, snap=snap)
             )
+
     elif args.sub == 'call':
         cmd = TARGETS.get(args.target)
         if args.target.startswith(socket.gethostname()):
