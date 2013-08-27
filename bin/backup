@@ -51,23 +51,23 @@ def main():
         s.arg('--log', action='store_true', help='log to file')
         s.arg('--nolog', action='store_true', help='don\'t log to file')
         s.arg('--bdir', default=BDIR, help='backup directory')
-        s.add_fake = lambda: (
+        s.arg_fake = lambda: (
             s.arg('-f', '--fake', action='store_true', help='dry run')
         )
         return s
 
-    sub('run', help='backup important data').add_fake()
+    sub('run', help='backup important data').arg_fake()
 
     sub('tar', help='archive delta directory')\
         .arg('-l', '--label', help='label for archive')\
         .arg('-d', '--delete', help='delete delta directory')
 
-    sub('copy', help='copy backup directory').add_fake()\
+    sub('copy', help='copy backup directory').arg_fake()\
         .arg('src', default=BDIR, nargs='?', help='source path')\
         .arg('dest', help='destination path')\
         .arg('-e', '--extra', default='', help='extra options for rsync')
 
-    sub('full', help='backup whole root partition').add_fake()
+    sub('full', help='backup whole root partition').arg_fake()
 
     sub('call', help='call fixed action')\
         .arg('target', choices=TARGETS.keys(), help='choice fixed action')
