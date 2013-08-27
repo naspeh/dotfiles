@@ -29,9 +29,9 @@ FILTERS = [
     '- /*'
 ]
 TARGETS = {
-    'pad_to_box': 'backup copy box:/arch/backups/pad/ --extra="-z"',
+    'pad_to_box': 'backup copy box:/arch/backups/pad/ --nolog --extra="-z"',
     'box_to_sea': (
-        'backup copy /arch/ /media/sea/ --extra="'
+        'backup copy /arch/ /media/sea/ --nolog --extra="'
         '   --exclude={/lost+found,/.delta,/backup}'
         '   --backup --backup-dir=/media/sea/.delta/'
         '"'
@@ -49,6 +49,7 @@ def main():
         s.arg = lambda *a, **kw: s.add_argument(*a, **kw) and s
 
         s.arg('--log', action='store_true', help='log to file')
+        s.arg('--nolog', action='store_true', help='don\'t log to file')
         s.arg('--bdir', default=BDIR, help='backup directory')
         s.add_fake = lambda: (
             s.arg('-f', '--fake', action='store_true', help='dry run')
@@ -88,9 +89,10 @@ def main():
 
     def sh(cmd, **kw):
         cmd = 'echo "{}" && time {}'.format(cmd.replace('"', '\"'), cmd)
-        if args.log or os.environ.get('BACKUP_LOG', False):
-            logfile = '%s%s.log' % (log, now)
-            cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, logfile)
+        use_log = args.log or os.environ.get('BACKUP_LOG', False)
+        if not args.nolog and use_log:
+            file = '%s%s.log' % (log, now)
+            cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, file)
         subprocess.call(cmd, shell=True, **kw)
 
     if args.sub == 'run':
