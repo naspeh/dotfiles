@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ "$SESSION" = "startxfce4" ]; then
+    sleep 1
+    devilspie &
+    (sleep 2; conky) &
+else
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+    xcompmgr -a &
+    conky &
+fi
+
+fbxkb &
+orage &
+volumeicon &
+batti &
+clipit &
+stardict &
+tider &
