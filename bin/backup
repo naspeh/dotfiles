@@ -89,8 +89,7 @@ def main():
 
     def sh(cmd, **kw):
         cmd = 'echo "{}" && time {}'.format(cmd.replace('"', '\"'), cmd)
-        use_log = args.log or os.environ.get('BACKUP_LOG', False)
-        if not args.nolog and use_log:
+        if args.log or os.environ.get('BACKUP_LOG', False) and not args.nolog:
             file = '%s%s.log' % (log, now)
             cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, file)
         subprocess.call(cmd, shell=True, **kw)
