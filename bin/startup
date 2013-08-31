@@ -10,7 +10,7 @@ else
     conky &
 fi
 
-fbxkb &
+sbxkb &
 orage &
 volumeicon &
 batti &

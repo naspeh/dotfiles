@@ -79,6 +79,8 @@ def main():
         exit(2)
 
     today = dt.date.today().isoformat()
+    now = dt.datetime.now().strftime("%Y-%m-%d--%X")
+    base_cmd = re.sub('[^\w]+', '-', ' '.join(sys.argv[1:]))
     if hasattr(args, 'fake'):
         rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     bdir = args.bdir.rstrip('/') + '/'
@@ -88,13 +90,11 @@ def main():
             os.mkdir(f)
 
     def sh(cmd, **kw):
-        cmd_ = 'echo "{}" && time {}'.format(cmd.replace('"', '\"'), cmd)
+        cmd = 'echo "{}" && time ({})'.format(cmd.replace('"', '\"'), cmd)
         if args.log or os.environ.get('BACKUP_LOG', False) and not args.nolog:
-            now = dt.datetime.now().strftime("%Y-%m-%d--%X")
-            base_cmd = re.sub('[^\w]+', '-', ' '.join(sys.argv[1:]))
             file = '%s%s--%s.log' % (log, now, base_cmd)
-            cmd_ = '({}; echo "{}") &>> {}'.format(cmd_, '-' * 20, file)
-        subprocess.call(cmd_, shell=True, **kw)
+            cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, file)
+        subprocess.call(cmd, shell=True, **kw)
 
     if args.sub == 'run':
         sh(
