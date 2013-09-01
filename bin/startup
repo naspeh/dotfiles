@@ -1,15 +1,18 @@
 #!/bin/sh
-
-if [ "$SESSION" = "startxfce4" ]; then
-    sleep 1
-    devilspie &
-    (sleep 2; conky) &
-else
+if [ "$SESSION" = "i3" ]; then
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-    xcompmgr -a &
-    conky &
+    hsetroot -solid "#333343"
+    xcompmgr &
+else
+    if [ "$(hostname)" = "pad" ]; then
+        sleep 1
+    else
+        sleep 2
+    fi
+    devilspie &
 fi
 
+conky &
 sbxkb &
 orage &
 volumeicon &
