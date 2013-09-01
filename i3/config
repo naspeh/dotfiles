@@ -113,12 +113,12 @@ mode "window" {
     bindsym t layout tabbed; mode "default"
     bindsym s layout toggle split; mode "default"
 
+    bindsym v split vertical
+    bindsym h split horizontal
+
     # focus the parent/child container
     bindsym p focus parent
     bindsym Shift+p focus child
-
-    bindsym x move scratchpad
-    bindsym v scratchpad show
 
     bindsym c move position center
 
@@ -131,6 +131,10 @@ mode "window" {
     bindsym Escape mode "default"
 }
 bindsym $mod+w mode "window"
+
+# Scratchpad
+bindsym $mod+z move scratchpad
+bindsym $mod+x scratchpad show
 
 # change focus
 bindsym $mod+j focus left
