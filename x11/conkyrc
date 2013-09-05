@@ -152,10 +152,10 @@ ${goto 115}\
 ${color2}Alt+Ctrl+l$color${goto 180}Lock Screen
 ${color2}Alt+t$color${goto 40}Terminal\
 ${goto 115}\
-${color2}Alt+q+r$color${goto 180}Reboot
+${color2}Alt+s+r$color${goto 180}Reboot
 ${color2}PrtSc$color${goto 40}Screenshot\
 ${goto 115}\
-${color2}Alt+q+q$color${goto 180}Poweroff
+${color2}Alt+s+q$color${goto 180}Poweroff
 
 ###Tider
 ${voffset -4}\

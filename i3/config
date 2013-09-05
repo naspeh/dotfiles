@@ -67,8 +67,7 @@ bindsym $mod+b workspace back_and_forth
 bindsym $mod+n [urgent="oldest"] focus
 
 # kill focused window
-bindsym $mod+Shift+q kill
-bindsym $mod+F4 kill
+bindsym $mod+q kill
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -91,7 +90,7 @@ mode "system" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+q mode "system"
+bindsym $mod+s mode "system"
 
 mode "tider" {
     bindsym a exec tider call target; mode "default"

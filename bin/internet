@@ -13,6 +13,6 @@ else
     (sleep 1; i3-msg '[class="(?i)chromium"] move workspace 1: web') &
 
     dropboxd &
-    gajim &
     skype &
+    (sleep 1; gajim) &
 fi
