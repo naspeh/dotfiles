@@ -1,12 +1,14 @@
 Dot and bin files for shell and X11.
 
 Notes:
-
+    git submodule init
+    git submodule update
     vim +BundleInstall +qall
 
     ln -s dotfiles/vim/rc .vimrc
     ln -s dotfiles/vim/dir .vim
 
+    mkdir .zsh
     ln -s dotfiles/zsh/rc .zshrc
 
     ln -s dotfiles/dev/hgrc .hgrc
