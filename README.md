@@ -5,7 +5,7 @@ Notes:
     vim +BundleInstall +qall
 
     ln -s dotfiles/vim/rc .vimrc
-    ln -s dotfiles/vim/extra .vim
+    ln -s dotfiles/vim/dir .vim
 
     ln -s dotfiles/zsh/rc .zshrc
 
