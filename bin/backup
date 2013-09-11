@@ -30,7 +30,7 @@ FILTERS = [
     '- /*'
 ]
 TARGETS = {
-    'pad_to_box': 'backup copy box:/arch/backups/pad/ --nolog --extra="-z"',
+    'pad_to_box': 'backup copy box:/arch/backups/pad/ --nolog',
     'box_to_sea': (
         'backup copy /arch/ /media/sea/ --nolog --extra="'
         '   --exclude={/lost+found,/.delta,/backup}'
