@@ -206,7 +206,8 @@ noremap <leader>j :call JsBeautify()<cr>
 Bundle 'tpope/vim-fugitive'
 Bundle 'powerman/vim-plugin-ruscmd'
 Bundle 'gregsexton/MatchTag'
-Bundle 'Jinja'
+Bundle 'mitsuhiko/vim-jinja'
+Bundle 'mitsuhiko/vim-rst'
 
 
 " ------------------------------
