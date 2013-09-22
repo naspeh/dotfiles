@@ -367,6 +367,8 @@ call LeaderToggle('p', 'paste')
 call LeaderToggle('w', 'wrap')
 call LeaderToggle('s', 'spell')
 call LeaderToggle('m', 'modifiable')
+nmap <leader>z :set winwidth=9999<cr>
+nmap <leader>zz :set winwidth=1<cr><C-W>=
 
 nmap <leader>2t :setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2<cr>
 nmap <leader>r :source ~/.vimrc<cr>
