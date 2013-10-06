@@ -40,11 +40,10 @@ fun! VarToggle(name, ...)
 endfun
 
 fun! TextWidth()
+    " highlight column 80
     if v:version >= 703
-        " highlight column 80
         setlocal colorcolumn=80
     else
-        " Подсветка больше 80 символов
         highlight OverLength ctermbg=grey ctermfg=black guibg=#eeeeff
         match OverLength /\%80v.\+/
     endif
@@ -74,7 +73,7 @@ fun! TextMode()
     setlocal whichwrap+=<,>,[,]
 endfun
 nmap <leader>tt :call TextMode()<cr>
-
+nmap <leader>tn :call TextMode()<cr>:setlocal formatoptions+=a<cr>
 
 " ------------------------------
 " Plugins activate
