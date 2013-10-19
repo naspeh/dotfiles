@@ -42,11 +42,11 @@ TARGETS = {
 
 def main():
     parser = argparse.ArgumentParser()
-    subs = parser.add_subparsers()
+    cmds = parser.add_subparsers(title='commands')
 
-    def sub(name, **kw):
-        s = subs.add_parser(name, **kw)
-        s.set_defaults(sub=name)
+    def cmd(name, **kw):
+        s = cmds.add_parser(name, **kw)
+        s.set_defaults(cmd=name)
         s.arg = lambda *a, **kw: s.add_argument(*a, **kw) and s
 
         s.arg('--log', action='store_true', help='log to file')
@@ -57,24 +57,24 @@ def main():
         )
         return s
 
-    sub('run', help='backup important data').arg_fake()
+    cmd('run', help='backup important data').arg_fake()
 
-    sub('tar', help='archive delta directory')\
+    cmd('tar', help='archive delta directory')\
         .arg('-l', '--label', help='label for archive')\
         .arg('-d', '--delete', help='delete delta directory')
 
-    sub('copy', help='copy backup directory').arg_fake()\
+    cmd('copy', help='copy backup directory').arg_fake()\
         .arg('src', default=BDIR, nargs='?', help='source path')\
         .arg('dest', help='destination path')\
         .arg('-e', '--extra', default='', help='extra options for rsync')
 
-    sub('full', help='backup whole root partition').arg_fake()
+    cmd('full', help='backup whole root partition').arg_fake()
 
-    sub('call', help='call fixed action')\
+    cmd('call', help='call fixed action')\
         .arg('target', choices=TARGETS.keys(), help='choice fixed action')
 
     args = parser.parse_args(sys.argv[1:])
-    if not hasattr(args, 'sub'):
+    if not hasattr(args, 'cmd'):
         parser.print_usage()
         exit(2)
 
@@ -96,7 +96,7 @@ def main():
             cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, file)
         subprocess.call(cmd, shell=True, **kw)
 
-    if args.sub == 'run':
+    if args.cmd == 'run':
         sh(
             'pkglist -n > {0}pkglist.txt'
             ' && pkglist -m > {0}pkgaur.txt'
@@ -113,7 +113,7 @@ def main():
             .format(dest=bdir)
         )
 
-    elif args.sub == 'tar':
+    elif args.cmd == 'tar':
         name = today
         if args.label:
             name += '-' + args.label
@@ -124,13 +124,13 @@ def main():
         if args.delete:
             sh('rm -r {}delta'.format(bdir))
 
-    elif args.sub == 'copy':
+    elif args.cmd == 'copy':
         sh(
             rsync + ' -x {extra} {src} {dest}/'
             .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
         )
 
-    elif args.sub == 'full':
+    elif args.cmd == 'full':
         snap = '/dev/%s/snap' % socket.gethostname()
         root = '/dev/%s/root' % socket.gethostname()
         rsync += ' -x --exclude=' + (
@@ -152,12 +152,12 @@ def main():
                 .format(mnt=mnt, snap=snap)
             )
 
-    elif args.sub == 'call':
-        cmd = TARGETS.get(args.target)
+    elif args.cmd == 'call':
+        cmd_ = TARGETS.get(args.target)
         if args.target.startswith(socket.gethostname()):
-            sh(cmd)
+            sh(cmd_)
         else:
-            print(cmd)
+            print(cmd_)
             raise SystemExit('...Wrong hostname for this target.')
 
 
