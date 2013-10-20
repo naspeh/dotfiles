@@ -1,5 +1,4 @@
 #!/bin/zsh
-
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
     [ -x "$f" ] && . "$f"
@@ -17,31 +16,10 @@ export DE=xfce
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
-#xrdb ~/.Xresources &
 
-DEFAULT_SESSION=i3
 case $1 in
-  startxfce4|i3|awesome|wmii|wmfs) SESSION=$1 ;;
-  *) SESSION=$DEFAULT_SESSION ;;
+  startxfce4|i3|awesome|wmii|wmfs) SESSION=$1;;
+  *) SESSION=i3;;
 esac
-$SESSION &
-PID=$!
-sleep 2
-
-if [ "$SESSION" = "startxfce4" ]; then
-    devilspie &
-fi
-
-conky &
-#sbxkb &
-fbxkb &
-orage &
-volumeicon &
-batti &
-clipit &
-stardict &
-#goldendict &
-tider &
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-
-wait $PID
+export SESSION
+$SESSION

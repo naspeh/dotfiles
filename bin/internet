@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+if [ "$1" = "kill" ]; then
+    killall dropbox gajim skype chromium
+else
+    if [ ! "$DISPLAY" ]; then
+        export DISPLAY=:0
+    fi
+
+    i3-msg 'rename workspace 1 to "2: term"'
+
+    chromium &
+    (sleep 1; i3-msg '[class="(?i)chromium"] move workspace 1: web') &
+
+    dropboxd &
+    skype &
+    (sleep 1; gajim) &
+fi

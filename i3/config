@@ -10,7 +10,7 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # Startup
-exec --no-startup-id xsetroot -solid "#333343"
+exec --no-startup-id startup
 
 set $mod Mod1
 set $terminal evilvte
@@ -37,9 +37,8 @@ floating_modifier $mod
 for_window [class="(?i)goldendict"] floating enable
 for_window [class="(?i)stardict"] floating enable
 for_window [class="(?i)dropbox"] floating enable
-for_window [class="(?i)pidgin"] floating enable
-for_window [class="(?i)gajim"] floating enable
-for_window [class="(?i)skype"] floating enable
+for_window [class="(?i)(gajim|pidgin)"] floating enable; move workspace 8: jabber
+for_window [class="(?i)skype"] floating enable; move workspace 9: skype
 for_window [class="(?i)deadbeef"] floating enable
 for_window [class="(?i)transmission"] floating enable
 for_window [class="(?i)orage"] floating enable
@@ -47,13 +46,11 @@ for_window [class="(?i)lxappearance"] floating enable
 for_window [class="(?i)gmrun"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable; move position 200px 100px
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
-for_window [class="(?i)chromium" window_role="pop-up"] floating enable
 for_window [class="(?i)solaar"] floating enable
 for_window [title="Event Tester"] floating enable
-
-#assign [class="(?i)chromium" window_role="browser"] 1: web
-assign [class="(?i)(pidgin|gajim)"] 5: jabber
-assign [class="(?i)skype"] 6: skype
+for_window [class="(?i)thunar" title="File Operation Progress"] floating enable
+for_window [class="(?i)chromium" window_role="pop-up"] floating enable
+for_window [class="(?i)chromium" window_role="pop-up" title="Gmail"] floating disable
 
 bindsym $mod+t exec $terminal
 bindsym $mod+p exec xfce4-appfinder
@@ -63,21 +60,21 @@ bindsym Print exec xfce4-screenshooter
 bindsym $mod+Ctrl+l exec i3lock -i ~/lock-s.png
 bindsym $mod+Ctrl+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 bindsym $mod+Ctrl+b exec chromium
+bindsym $mod+Ctrl+i exec internet
 bindsym $mod+Ctrl+h exec $htop
-bindsym $mod+Ctrl+m exec monitor
+bindsym $mod+Ctrl+m exec hdmi
 
 bindsym $mod+b workspace back_and_forth
 bindsym $mod+n [urgent="oldest"] focus
 
 # kill focused window
-bindsym $mod+Shift+q kill
-bindsym $mod+F4 kill
+bindsym $mod+q kill
 
 # toggle tiling / floating
-bindsym $mod+space floating toggle
+bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+Tab focus mode_toggle
+bindsym $mod+space focus mode_toggle
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -94,7 +91,7 @@ mode "system" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+q mode "system"
+bindsym $mod+s mode "system"
 
 mode "tider" {
     bindsym a exec tider call target; mode "default"
@@ -122,9 +119,6 @@ mode "window" {
     bindsym p focus parent
     bindsym Shift+p focus child
 
-    bindsym x move scratchpad
-    bindsym v scratchpad show
-
     bindsym c move position center
 
     bindsym Left resize shrink width 10 px or 5 ppt
@@ -136,6 +130,10 @@ mode "window" {
     bindsym Escape mode "default"
 }
 bindsym $mod+w mode "window"
+
+# Scratchpad
+bindsym $mod+z move scratchpad
+bindsym $mod+x scratchpad show
 
 # change focus
 bindsym $mod+j focus left
@@ -172,6 +170,9 @@ bindsym $mod+7 workspace number 7
 bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 0
+
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number 1

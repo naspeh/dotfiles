@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 import argparse
 import datetime as dt
-import os.path as op
+import os
+import re
+import socket
 import subprocess
 import sys
 
-RSYNC = 'sudo rsync -aAXHvh --delete --stats'
+BDIR = '/arch/backup/'
+RSYNC = 'sudo rsync -aAXHvhy --stats --delete'
 FILTERS = [
     '+ /boot/',
     '+ /etc/',
@@ -19,52 +22,85 @@ FILTERS = [
     '+ /arch/',
     '+ /arch/naspeh/',
     '+ /arch/nayavu/',
+    '+ /arch/photo/',
     '- /arch/*',
     '- /**/.cache/',
     '- /**/__pycache__/',
     '- /**/*.pyc',
     '- /*'
 ]
-
-
-def sh(cmd, **kw):
-    print(cmd)
-    subprocess.call(cmd, shell=True, **kw)
+TARGETS = {
+    'pad_to_box': 'backup copy box:/arch/backups/pad/ --nolog',
+    'box_to_sea': (
+        'backup copy /arch/ /media/sea/ --nolog --extra="'
+        '   --exclude={/lost+found,/.delta,/backup}'
+        '   --backup --backup-dir=/media/sea/.delta/'
+        '"'
+    )
+}
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--fake', action='store_true', help='dry run')
-    parser.add_argument(
-        '-d', '--dest', default='/arch/backup/',
-        help='backup directory'
-    )
-    subs = parser.add_subparsers()
+    cmds = parser.add_subparsers(title='commands')
 
-    def sub(name, **kw):
-        s = subs.add_parser(name, **kw)
-        s.set_defaults(sub=name)
+    def cmd(name, **kw):
+        s = cmds.add_parser(name, **kw)
+        s.set_defaults(cmd=name)
         s.arg = lambda *a, **kw: s.add_argument(*a, **kw) and s
+
+        s.arg('--log', action='store_true', help='log to file')
+        s.arg('--nolog', action='store_true', help='don\'t log to file')
+        s.arg('--bdir', default=BDIR, help='backup directory')
+        s.arg_fake = lambda: (
+            s.arg('-f', '--fake', action='store_true', help='dry run')
+        )
         return s
 
-    sub('tar', help='archive delta directory')\
+    cmd('run', help='backup important data').arg_fake()
+
+    cmd('tar', help='archive delta directory')\
         .arg('-l', '--label', help='label for archive')\
         .arg('-d', '--delete', help='delete delta directory')
 
-    sub('copy', help='copy backup directory')\
-        .arg('path', help='destination path')
+    cmd('copy', help='copy backup directory').arg_fake()\
+        .arg('src', default=BDIR, nargs='?', help='source path')\
+        .arg('dest', help='destination path')\
+        .arg('-e', '--extra', default='', help='extra options for rsync')
 
-    sub('full', help='archive whole disk')
+    cmd('full', help='backup whole root partition').arg_fake()
+
+    cmd('call', help='call fixed action')\
+        .arg('target', choices=TARGETS.keys(), help='choice fixed action')
 
     args = parser.parse_args(sys.argv[1:])
-    rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
+    if not hasattr(args, 'cmd'):
+        parser.print_usage()
+        exit(2)
+
     today = dt.date.today().isoformat()
-    if not hasattr(args, 'sub'):
-        var = op.abspath(op.realpath(op.dirname(__file__)) + '/../var')
+    now = dt.datetime.now().strftime("%Y-%m-%d--%X")
+    base_cmd = re.sub('[^\w]+', '-', ' '.join(sys.argv[1:]))
+    if hasattr(args, 'fake'):
+        rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
+    bdir = args.bdir.rstrip('/') + '/'
+    pkg, log, mnt = bdir + 'pkg/', bdir + 'log/', bdir + 'mnt/'
+    for f in [log, pkg, mnt]:
+        if not os.path.exists(f):
+            os.mkdir(f)
+
+    def sh(cmd, **kw):
+        cmd = 'echo "{}" && time ({})'.format(cmd.replace('"', '\"'), cmd)
+        if args.log or os.environ.get('BACKUP_LOG', False) and not args.nolog:
+            file = '%s%s--%s.log' % (log, now, base_cmd)
+            cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, file)
+        subprocess.call(cmd, shell=True, **kw)
+
+    if args.cmd == 'run':
         sh(
-            'pkglist -n > {0}/pkglist.txt'
-            ' && pkglist -m > {0}/pkgaur.txt'
-            .format(var)
+            'pkglist -n > {0}pkglist.txt'
+            ' && pkglist -m > {0}pkgaur.txt'
+            .format(pkg)
         )
 
         rsync += ' --delete-excluded ' + (
@@ -74,39 +110,55 @@ def main():
             rsync +
             ' --backup --backup-dir={dest}delta/'
             ' / {dest}latest/'
-            .format(dest=args.dest)
+            .format(dest=bdir)
         )
-    elif args.sub == 'tar':
+
+    elif args.cmd == 'tar':
         name = today
         if args.label:
             name += '-' + args.label
         sh(
-            'cd {dest} && tar -czf {name}.tar.gz --directory=delta .'
-            .format(dest=args.dest, name=name)
+            'cd {dest} && tar -cvf {name}.tar --directory=delta .'
+            .format(dest=bdir, name=name)
         )
         if args.delete:
-            sh('rm -r {}delta'.format(args.dest))
-    elif args.sub == 'copy':
+            sh('rm -r {}delta'.format(bdir))
+
+    elif args.cmd == 'copy':
         sh(
-            rsync + ' --delete {src} {dest}/'
-            .format(src=args.dest, dest=args.path.rstrip('/'))
+            rsync + ' -x {extra} {src} {dest}/'
+            .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
         )
-    elif args.sub == 'full':
+
+    elif args.cmd == 'full':
+        snap = '/dev/%s/snap' % socket.gethostname()
+        root = '/dev/%s/root' % socket.gethostname()
         rsync += ' -x --exclude=' + (
             '{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found}'
         )
         try:
             sh(
-                'lvcreate --size 10G --snapshot --name snap /dev/pad/root'
-                ' && mount /dev/pad/snap {dest}mnt'
-                ' && {rsync} {dest}mnt/ {dest}full/'
-                .format(dest=args.dest, rsync=rsync)
+                'lvcreate --size 10G --snapshot --name snap {root}'
+                ' && mount {snap} {mnt}'
+                ' && {rsync} {mnt} {dest}full/'
+                .format(
+                    dest=bdir, rsync=rsync,
+                    root=root, snap=snap, mnt=mnt
+                )
             )
         finally:
             sh(
-                'umount {dest}mnt; lvremove -f /dev/pad/snap'
-                .format(dest=args.dest)
+                'umount {mnt}; lvremove -f {snap}'
+                .format(mnt=mnt, snap=snap)
             )
+
+    elif args.cmd == 'call':
+        cmd_ = TARGETS.get(args.target)
+        if args.target.startswith(socket.gethostname()):
+            sh(cmd_)
+        else:
+            print(cmd_)
+            raise SystemExit('...Wrong hostname for this target.')
 
 
 if __name__ == '__main__':

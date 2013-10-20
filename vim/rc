@@ -40,11 +40,10 @@ fun! VarToggle(name, ...)
 endfun
 
 fun! TextWidth()
+    " highlight column 80
     if v:version >= 703
-        " highlight column 80
         setlocal colorcolumn=80
     else
-        " Подсветка больше 80 символов
         highlight OverLength ctermbg=grey ctermfg=black guibg=#eeeeff
         match OverLength /\%80v.\+/
     endif
@@ -64,17 +63,17 @@ endfun
 call MapDo('<F9>', ':call TrimSpaces()<cr>')
 
 fun! TextMode()
-    setlocal textwidth=80
-    set formatoptions+=l
+    setlocal textwidth=90
+    setlocal formatoptions+=lwn
     setlocal nonumber
-    setlocal wrap
     setlocal nolist
-    setlocal nocursorline
+    "setlocal wrap
+    "setlocal nocursorline
     setlocal spell
-    set whichwrap+=<,>,[,]
+    setlocal whichwrap+=<,>,[,]
 endfun
 nmap <leader>tt :call TextMode()<cr>
-
+nmap <leader>tn :call TextMode()<cr>:setlocal formatoptions+=a<cr>
 
 " ------------------------------
 " Plugins activate
@@ -84,32 +83,41 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 
-Bundle 'tpope/vim-fugitive'
-Bundle 'powerman/vim-plugin-ruscmd'
-"Bundle 'lambdalisue/vim-python-virtualenv'
-Bundle 'jQuery'
-"Bundle 'hallettj/jslint.vim'
-Bundle 'Jinja'
-"Bundle 'othree/html5.vim'
-Bundle 'othree/html5-syntax.vim'
-Bundle 'gregsexton/MatchTag'
-Bundle 'lepture/vim-css'
-"Bundle 'hail2u/vim-css3-syntax'
-"Bundle 'cakebaker/scss-syntax.vim'
-"Bundle 'groenewege/vim-less'
-"Bundle 'KohPoll/vim-less'
-"Bundle 'Markdown'
-"Bundle 'plasticboy/vim-markdown'
+Bundle 'xterm16.vim'
+let xterm16_colormap='softlight'
+let xterm16_brightness='high'
+color xterm16
 
-Bundle 'maksimr/vim-jsbeautify'
-noremap <leader>j :call JsBeautify()<cr>
 
-"http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
-Bundle "godlygeek/tabular"
+Bundle 'scrooloose/nerdtree'
+call MapDo('<leader>f', ':NERDTreeToggle<cr>')
+let NERDTreeWinSize=35
+let NERDTreeChDirMode=2
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.pyc$']
+
+
+Bundle 'kien/ctrlp.vim'
+call MapDo('<F3>', ':CtrlPBuffer<cr>')
+call MapDo('<F4>', ':CtrlPCurWD<cr>')
+call MapDo('<F5>', ':CtrlPBufTag<cr>')
+let g:ctrlp_custom_ignore={
+    \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
+\}
+let g:ctrlp_extensions=['tag', 'quickfix', 'dir', 'line']
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_mruf_relative=1
+let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^__pycache__'
+let g:ctrlp_user_command={
+    \'types': {
+        \1: ['.git', 'cd %s && git ls-files' . g:ctrlp_ignore_],
+        \2: ['.hg', 'hg --cwd %s locate -I .' . g:ctrlp_ignore_],
+    \},
+    \'fallback': 'find %s -type f' . g:ctrlp_ignore_
+\}
 
 
 Bundle 'scrooloose/syntastic'
-"g:syntastic_less_use_less_lint=1
 let g:syntastic_check_on_open=0
 let g:syntastic_enable_signs=0
 let g:syntastic_error_symbol='✗'
@@ -131,17 +139,7 @@ Bundle 'milkypostman/vim-togglelist'
 "nmap <leader>q :call ToggleQuickfixList()<CR>
 
 
-Bundle 'scrooloose/nerdtree'
-"call MapDo('<F4>', ':NERDTreeToggle<cr>')
-call MapDo('<leader>f', ':NERDTreeToggle<cr>')
-let NERDTreeWinSize=35
-let NERDTreeChDirMode=2
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc$']
-
-
 Bundle 'majutsushi/tagbar'
-"call MapDo('<F5>', ':TagbarToggle<cr>')
 call MapDo('<leader>t', ':TagbarToggle<cr>')
 let g:tagbar_autofocus=1
 let g:tagbar_sort=1
@@ -155,19 +153,18 @@ if !has('lua')
 else
     Bundle 'Shougo/neocomplete.vim'
     let g:acp_enableAtStartup=0
-    let g:neocomplete#enable_at_startup = 1
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#enable_fuzzy_completion = 0
-    let g:neocomplete#enable_insert_char_pre = 1
+    let g:neocomplete#enable_at_startup=1
+    let g:neocomplete#enable_smart_case=1
+    let g:neocomplete#enable_fuzzy_completion=0
+    let g:neocomplete#enable_insert_char_pre=1
     if !exists('g:neocomplete#same_filetypes')
-      let g:neocomplete#same_filetypes = {}
+      let g:neocomplete#same_filetypes={}
     endif
-    let g:neocomplete#same_filetypes._ = '_'
+    let g:neocomplete#same_filetypes._='_'
     inoremap <expr><C-h> pumvisible() ? neocomplete#close_popup() : "\<C-h>"
 endif
 
 
-"Bundle 'EasyGrep'
 Bundle 'grep.vim'
 let Grep_Skip_Dirs_='.git .hg __pycache__'
 let Grep_Skip_Dirs=Grep_Skip_Dirs_
@@ -175,38 +172,6 @@ let Grep_Skip_Files='*.pyc'
 noremap <leader>gg :call VarToggle(
     \'g:Grep_Skip_Dirs', Grep_Skip_Dirs_, Grep_Skip_Dirs_.' migrations'
 \)<cr>
-
-
-"Bundle 'python.vim'
-Bundle 'hdima/python-syntax'
-let python_highlight_all=1
-
-
-Bundle 'kien/ctrlp.vim'
-call MapDo('<F3>', ':CtrlPBuffer<cr>')
-call MapDo('<F4>', ':CtrlPCurWD<cr>')
-call MapDo('<F5>', ':CtrlPBufTag<cr>')
-let g:ctrlp_custom_ignore={
-    \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
-\}
-let g:ctrlp_extensions=['tag', 'quickfix', 'dir', 'line']
-let g:ctrlp_working_path_mode=0
-let g:ctrlp_mruf_relative=1
-"let g:ctrlp_regexp=0
-let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^__pycache__'
-let g:ctrlp_user_command={
-    \'types': {
-        \1: ['.git', 'cd %s && git ls-files' . g:ctrlp_ignore_],
-        \2: ['.hg', 'hg --cwd %s locate -I .' . g:ctrlp_ignore_],
-    \},
-    \'fallback': 'find %s -type f' . g:ctrlp_ignore_
-\}
-
-
-Bundle 'xterm16.vim'
-let xterm16_colormap='softlight'
-let xterm16_brightness='high'
-color xterm16
 
 
 Bundle 'scrooloose/nerdcommenter'
@@ -218,12 +183,30 @@ vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
 
 
 Bundle 'davidhalter/jedi-vim'
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#rename_command = 0
-let g:jedi#related_names_command = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_function_definition = 0
-let g:jedi#autocompletion_command = "<C-Space>"
+let g:jedi#use_tabs_not_buffers=0
+let g:jedi#rename_command=0
+let g:jedi#popup_on_dot=0
+let g:jedi#show_call_signatures=0
+let g:jedi#goto_definitions_command="<leader>d"
+let g:jedi#goto_assignments_command="<leader>g"
+let g:jedi#documentation_command="<leader>o"
+let g:jedi#usages_command="<leader>u"
+let g:jedi#completions_command="<C-Space>"
+
+
+Bundle 'hdima/python-syntax'
+let python_highlight_all=1
+
+
+Bundle 'maksimr/vim-jsbeautify'
+noremap <leader>j :call JsBeautify()<cr>
+
+
+Bundle 'tpope/vim-fugitive'
+Bundle 'powerman/vim-plugin-ruscmd'
+Bundle 'gregsexton/MatchTag'
+Bundle 'mitsuhiko/vim-jinja'
+Bundle 'mitsuhiko/vim-rst'
 
 
 " ------------------------------
@@ -338,15 +321,15 @@ filetype on            " enables filetype detection
 filetype plugin on     " enables filetype specific plugins
 "filetype plugin indent on
 
-"autocmd BufNewFile,BufRead *.{html,htm} setlocal ft=html
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
-autocmd BufNewFile,BufRead *.{md,mkd,mdt} setlocal ft=markdown
+autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
 autocmd BufNewFile,BufRead *.t2t setlocal ft=txt2tags
+autocmd BufNewFile,BufRead *.tpl setlocal ft=html
 
-set completeopt-=preview
+"set completeopt-=preview
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 "autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
@@ -362,7 +345,7 @@ autocmd FileChangedShell * echo "Warning: File changed on disk"
 " (useful for handling the permission-denied error)
 command! W w !sudo tee % > /dev/null
 
-" < & > - делаем отступы для блоков
+" Indent blocks
 vmap < <gv
 vmap > >gv
 
@@ -378,12 +361,13 @@ noremap <C-h>  <C-w>h
 noremap <C-j>  <C-w>j
 noremap <C-k>  <C-w>k
 
-" Leader
 call LeaderToggle('h', 'hlsearch')
 call LeaderToggle('p', 'paste')
 call LeaderToggle('w', 'wrap')
 call LeaderToggle('s', 'spell')
 call LeaderToggle('m', 'modifiable')
+nmap <leader>z :set winwidth=9999<cr>
+nmap <leader>zz :set winwidth=1<cr><C-W>=
 
 nmap <leader>2t :setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2<cr>
 nmap <leader>r :source ~/.vimrc<cr>
@@ -399,7 +383,6 @@ nnoremap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
-iab pyutf8 # -*- coding: utf-8 -*-<esc>
 iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
 
