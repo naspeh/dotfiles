@@ -18,6 +18,7 @@ set $htop evilvte -T htop -e htop
 
 workspace_layout tabbed
 focus_follows_mouse no
+force_display_urgency_hint 1000 ms
 new_window 1pixel
 new_float 1pixel
 
@@ -110,9 +111,9 @@ mode "window" {
     bindsym f fullscreen; mode "default"
     bindsym t layout tabbed; mode "default"
     bindsym s layout toggle split; mode "default"
-
-    bindsym v split vertical
-    bindsym h split horizontal
+    bindsym v split vertical; mode "default"
+    bindsym h split horizontal; mode "default"
+    bindsym space layout toggle all
 
     # focus the parent/child container
     bindsym p focus parent
