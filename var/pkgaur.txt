@@ -1,7 +1,0 @@
-clearlooks-phenix-gtk-theme-git
-dkms-acpi_call-git
-fbxkb
-flake8
-python-ipdb
-tlp
-zsh-yaourt-hg
