@@ -64,16 +64,17 @@ call MapDo('<F9>', ':call TrimSpaces()<cr>')
 
 fun! TextMode()
     setlocal textwidth=90
-    setlocal formatoptions+=lwn
+    setlocal formatoptions+=lw
     setlocal nonumber
     setlocal nolist
     "setlocal wrap
     "setlocal nocursorline
     setlocal spell
     setlocal whichwrap+=<,>,[,]
+    NeoCompleteDisable
 endfun
 nmap <leader>tt :call TextMode()<cr>
-nmap <leader>tn :call TextMode()<cr>:setlocal formatoptions+=a<cr>
+nmap <leader>ta :call TextMode()<cr>:setlocal formatoptions+=a<cr>
 
 " ------------------------------
 " Plugins activate
@@ -206,8 +207,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'powerman/vim-plugin-ruscmd'
 Bundle 'gregsexton/MatchTag'
 Bundle 'mitsuhiko/vim-jinja'
-Bundle 'mitsuhiko/vim-rst'
-
+"Bundle 'mitsuhiko/vim-rst'
 
 " ------------------------------
 " Configure
