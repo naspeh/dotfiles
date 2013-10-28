@@ -1,6 +1,7 @@
 Dot and bin files for shell and X11.
 
 Notes:
+
     git submodule init
     git submodule update
     vim +BundleInstall +qall
@@ -13,7 +14,6 @@ Notes:
 
     ln -s dotfiles/dev/hgrc .hgrc
     ln -s dotfiles/dev/hgignore .hgignore
-    ln -s dotfiles/dev/hgext .hgext
     ln -s dotfiles/dev/gitconfig .gitconfig
     ln -s dotfiles/dev/gitignore .gitignore
     mkdir .pip; cd .pip && ln -s ../dotfiles/dev/pip.conf && cd ..
