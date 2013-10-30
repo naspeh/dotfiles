@@ -74,7 +74,7 @@ fun! TextMode()
     NeoCompleteDisable
 endfun
 nmap <leader>tt :call TextMode()<cr>
-nmap <leader>ta :call TextMode()<cr>:setlocal formatoptions+=a<cr>
+nmap <leader>ta :setlocal formatoptions+=a<cr>:call TextMode()<cr>
 
 " ------------------------------
 " Plugins activate

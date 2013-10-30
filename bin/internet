@@ -12,6 +12,7 @@ else
     chromium &
     (sleep 1; i3-msg '[class="(?i)chromium"] move workspace 1: web') &
 
+    yandex-disk start
     dropboxd &
     skype &
     (sleep 1; gajim) &
