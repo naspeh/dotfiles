@@ -68,7 +68,13 @@ bindsym $mod+b workspace back_and_forth
 bindsym $mod+n [urgent="oldest"] focus
 
 # kill focused window
-bindsym $mod+q kill
+mode "kill window" {
+    bindsym q kill; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+q mode "kill window"
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle

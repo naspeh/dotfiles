@@ -133,7 +133,7 @@ def main():
     elif args.cmd == 'full':
         snap = '/dev/%s/snap' % socket.gethostname()
         root = '/dev/%s/root' % socket.gethostname()
-        rsync += ' -x --exclude=' + (
+        rsync += ' -x --exclude=/var/lib/docker/devicemapper --exclude=' + (
             '{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found}'
         )
         try:
