@@ -100,14 +100,13 @@ def main():
         sh(
             'pkglist -n > {0}pkglist.txt'
             ' && pkglist -m > {0}pkgaur.txt'
+            ' && pacman -Q > {0}pkgall.txt'
             .format(pkg)
         )
 
-        rsync += ' --delete-excluded ' + (
-            ' '.join(['--filter="%s"' % v for v in FILTERS])
-        )
+        filters = ' '.join(['--filter="%s"' % v for v in FILTERS])
         sh(
-            rsync +
+            ' '.join([rsync, filters, '--delete-excluded']) +
             ' --backup --backup-dir={dest}delta/'
             ' / {dest}latest/'
             .format(dest=bdir)
