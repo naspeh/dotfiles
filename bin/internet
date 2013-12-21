@@ -2,6 +2,7 @@
 
 if [ "$1" = "kill" ]; then
     killall dropbox gajim skype chromium
+    yandex-disk stop
 else
     if [ ! "$DISPLAY" ]; then
         export DISPLAY=:0

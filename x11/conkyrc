@@ -141,22 +141,6 @@ Total:${color2}${goto 50}${totaldown eth0}$color${goto 130}\
 Total:${color2}${goto 180}${totalup eth0}$color
 
 $endif\
-###Shortcuts
-${voffset -4}\
-${color1}${font :style=bold:size=9}Shortcuts$font${color3}${voffset 1}${hr 0}$color
-${color2}Alt+r$color${goto 40}Run...\
-${goto 115}\
-${color2}Alt+Ctrl+b$color${goto 180}Browser
-${color2}Alt+p$color${goto 40}Programs\
-${goto 115}\
-${color2}Alt+Ctrl+l$color${goto 180}Lock Screen
-${color2}Alt+t$color${goto 40}Terminal\
-${goto 115}\
-${color2}Alt+s+r$color${goto 180}Reboot
-${color2}PrtSc$color${goto 40}Screenshot\
-${goto 115}\
-${color2}Alt+s+q$color${goto 180}Poweroff
-
 ###Tider
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Tider$font${color3}${voffset 1}${hr 0}$color
