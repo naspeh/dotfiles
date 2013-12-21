@@ -325,7 +325,6 @@ filetype plugin on     " enables filetype specific plugins
 
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
-autocmd BufNewFile,BufRead *.t2t setlocal ft=txt2tags
 autocmd BufNewFile,BufRead *.tpl setlocal ft=htmljinja
 
 set completeopt-=preview
