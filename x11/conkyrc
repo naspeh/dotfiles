@@ -160,5 +160,5 @@ ${color2}Alt+s+q$color${goto 180}Poweroff
 ###Tider
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Tider$font${color3}${voffset 1}${hr 0}$color
-${exec cat ~/.config/tider/stats.txt| sed -e 's|<[^>]*>||g'}
+${exec cat ~/.config/tider/stats.txt}
 ${color3}${voffset 1}${hr 0}

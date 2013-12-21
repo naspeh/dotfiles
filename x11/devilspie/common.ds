@@ -6,6 +6,7 @@
             (is(application_name) "lilyterm")
             (is(window_name) "sakura")
             (is(application_name) "Xfce Terminal")
+            (is(application_name) "evilvte")
             (and
                 (contains(window_name) "Chromium")
                 (matches(window_role) "browser")
