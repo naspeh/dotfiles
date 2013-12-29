@@ -24,7 +24,7 @@ if [ $clean ]; then
         sudo pacman -Rs $(pacman -Qdtq)
     fi
 else
-    list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel|sort))
+    list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel | sort))
     if [ $verbose ]; then
         expac -Q "$fg[blue]%n$reset_color: %d" $(echo $list)
     else
