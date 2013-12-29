@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 BDIR = '/arch/backup/'
-RSYNC = 'sudo rsync -aAXHvhy --stats --delete'
+RSYNC = 'sudo rsync -aAXHvh --stats --delete'
 FILTERS = [
     '+ /boot/',
     '+ /etc/',

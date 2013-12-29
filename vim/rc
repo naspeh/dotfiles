@@ -64,9 +64,9 @@ call MapDo('<F9>', ':call TrimSpaces()<cr>')
 
 fun! TextMode()
     setlocal textwidth=90
-    setlocal formatoptions+=lw
+    setlocal formatoptions=aw2tql
     setlocal nonumber
-    setlocal nolist
+    "setlocal nolist
     "setlocal wrap
     "setlocal nocursorline
     setlocal spell
@@ -74,7 +74,7 @@ fun! TextMode()
     "NeoCompleteDisable
 endfun
 nmap <leader>tt :call TextMode()<cr>
-nmap <leader>ta :setlocal formatoptions+=a<cr>:call TextMode()<cr>
+nmap <leader>ta :setlocal formatoptions-=l<cr>:call TextMode()<cr>
 
 " ------------------------------
 " Plugins activate
