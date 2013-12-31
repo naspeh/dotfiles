@@ -148,7 +148,7 @@ fi
 
 alias o=xdg-open
 alias myip="curl ip.appspot.com"
-alias timesync='ntpdate ua.pool.ntp.org'
+alias timesync='sudo ntpdate ua.pool.ntp.org'
 alias rsyncc='rsync -aAXHvh --stats'
 
 alias pipi="pip install"
