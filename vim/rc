@@ -36,7 +36,7 @@ fun! VarToggle(name, ...)
     else
         execute 'let '.a:name.'="'.v1.'"'
     endif
-    echo a:name.'="'.eval(a:name).'"'
+    echo 'let '.a:name.'="'.eval(a:name).'"'
 endfun
 
 fun! TextWidth()
@@ -186,14 +186,16 @@ vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
 Bundle 'davidhalter/jedi-vim'
 let g:jedi#use_tabs_not_buffers=0
 let g:jedi#rename_command=0
-let g:jedi#popup_on_dot=1
+let g:jedi#popup_on_dot=0
 let g:jedi#popup_select_first = 0
-let g:jedi#show_call_signatures=1
+let g:jedi#show_call_signatures=0
 let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
 let g:jedi#documentation_command="<leader>o"
 let g:jedi#usages_command="<leader>u"
 let g:jedi#completions_command="<C-Space>"
+let g:jedi#force_py_version=3
+nmap <leader>pp :call VarToggle('g:jedi#force_py_version', 2, 3)<cr>
 
 
 Bundle 'hdima/python-syntax'
@@ -326,13 +328,15 @@ filetype plugin on     " enables filetype specific plugins
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
 autocmd BufNewFile,BufRead *.tpl setlocal ft=htmljinja
+autocmd BufNewFile,BufRead *.js.inc setlocal ft=javascript
+autocmd BufNewFile,BufRead *.css.inc setlocal ft=css
 
-set completeopt-=preview
+"set completeopt-=preview
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
-"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
-"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-"autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
