@@ -16,10 +16,6 @@ fun! MapToggle(key, opt)
     call MapDo(a:key, "set ".a:opt."! ".a:opt."?")
 endfun
 
-fun! LeaderToggle(key, opt)
-    execute "nmap <leader>".a:key." :setlocal ".a:opt."! ".a:opt."?<cr>"
-endfun
-
 fun! VarToggle(name, ...)
     if a:0 >= 1
         let v1=a:1
@@ -140,7 +136,7 @@ Bundle 'milkypostman/vim-togglelist'
 
 
 Bundle 'majutsushi/tagbar'
-call MapDo('<leader>t', ':TagbarToggle<cr>')
+call MapDo('<leader>b', ':TagbarToggle<cr>')
 let g:tagbar_autofocus=1
 let g:tagbar_sort=1
 let g:tagbar_foldlevel=0
@@ -193,7 +189,7 @@ let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
 let g:jedi#documentation_command="<leader>o"
 let g:jedi#usages_command="<leader>u"
-let g:jedi#completions_command="<C-Space>"
+let g:jedi#completions_command=0
 let g:jedi#force_py_version=3
 nmap <leader>pp :call VarToggle('g:jedi#force_py_version', 2, 3)<cr>
 
@@ -210,10 +206,18 @@ Bundle 'mitsuhiko/vim-jinja'
 let g:htmljinja_disable_detection=0
 
 
+Bundle 'ervandew/supertab'
+let g:SuperTabMappingForward='<c-space>'
+let g:SuperTabMappingBackward='<s-c-space>'
+let g:SuperTabDefaultCompletionType="context"
+let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
+let g:SuperTabNoCompleteBefore=[]
+let g:SuperTabNoCompleteAfter=[]
+
+
 Bundle 'tpope/vim-fugitive'
 Bundle 'powerman/vim-plugin-ruscmd'
 Bundle 'gregsexton/MatchTag'
-Bundle 'ervandew/supertab'
 
 
 " ------------------------------
@@ -333,10 +337,10 @@ autocmd BufNewFile,BufRead *.css.inc setlocal ft=css
 
 "set completeopt-=preview
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType css,less set omnifunc=csscomplete#CompleteCSS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd Syntax javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd Syntax css set omnifunc=csscomplete#CompleteCSS
+autocmd Syntax html set omnifunc=htmlcomplete#CompleteTags
+autocmd Syntax xml set omnifunc=xmlcomplete#CompleteTags
 
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
@@ -366,11 +370,12 @@ noremap <C-h>  <C-w>h
 noremap <C-j>  <C-w>j
 noremap <C-k>  <C-w>k
 
-call LeaderToggle('h', 'hlsearch')
-call LeaderToggle('p', 'paste')
-call LeaderToggle('w', 'wrap')
-call LeaderToggle('s', 'spell')
-call LeaderToggle('m', 'modifiable')
+nmap <leader>h :setlocal hlsearch! hlsearch?<cr>
+nmap <leader>m :setlocal modifiable! modifiable?<cr>
+nmap <leader>p :setlocal paste! paste?<cr>
+nmap <leader>w :setlocal wrap! wrap?<cr>
+nmap <leader>s :setlocal spell! spell?<cr>
+
 nmap <leader>z :set winwidth=9999<cr>
 nmap <leader>zz :set winwidth=1<cr><C-W>=
 
