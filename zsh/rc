@@ -102,16 +102,6 @@ venv_cd() {
         return $?
     fi
 }
-venv_new() {
-    env_name=$1
-    if venv $env_name; then
-        echo "Virtualenv already exist: '$env_name'"
-        return 1
-    else
-        virtualenv ~/v/$env_name
-        venv $env_name
-    fi
-}
 venv_info() {
     if [ $VIRTUAL_ENV ]; then
         echo "%F{blue}[%F{cyan}env: %B`basename $VIRTUAL_ENV`%b%F{blue}] "
@@ -125,7 +115,6 @@ compctl -K _venv_complete venv
 
 ### Aliases
 alias cd="venv_cd"
-alias ve="venv_new"
 
 alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'
