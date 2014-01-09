@@ -1,0 +1,7 @@
+#!/bin/sh
+cd /arch/aur/pkg
+paccache -rc . -k1
+repo-add local.db.tar.gz *.pkg.tar.xz
+
+# Sync pacman local db
+sudo pacman --config=/arch/aur/pacman.conf -Sy
