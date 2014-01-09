@@ -96,7 +96,7 @@ def main():
         subprocess.call(cmd, shell=True, **kw)
 
     if args.cmd == 'run':
-        sh('paclocal')
+        sh('pkglist -p')
 
         filters = ' '.join(['--filter="%s"' % v for v in FILTERS])
         sh(
