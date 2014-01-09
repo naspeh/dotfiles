@@ -190,8 +190,23 @@ let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
 let g:jedi#documentation_command="<leader>o"
 let g:jedi#usages_command="<leader>u"
-let g:jedi#completions_command=0
+let g:jedi#completions_command="<C-Space>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
+
+
+Bundle 'ervandew/supertab'
+"let g:SuperTabMappingForward='<c-space>'
+"let g:SuperTabMappingBackward='<s-c-space>'
+let g:SuperTabMappingForward = '<nul>'
+let g:SuperTabMappingBackward = '<s-nul>'
+let g:SuperTabDefaultCompletionType="context"
+let g:SuperTabContextDefaultCompletionType="<c-p>"
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery =
+    \["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+let g:SuperTabNoCompleteBefore=[]
+let g:SuperTabNoCompleteAfter=[]
 
 
 Bundle 'hdima/python-syntax'
@@ -204,17 +219,6 @@ noremap <leader>j :call JsBeautify()<cr>
 
 Bundle 'mitsuhiko/vim-jinja'
 let g:htmljinja_disable_detection=0
-
-
-Bundle 'ervandew/supertab'
-"let g:SuperTabMappingForward='<c-space>'
-"let g:SuperTabMappingBackward='<s-c-space>'
-let g:SuperTabMappingForward = '<nul>'
-let g:SuperTabMappingBackward = '<s-nul>'
-let g:SuperTabDefaultCompletionType="context"
-let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
-let g:SuperTabNoCompleteBefore=[]
-let g:SuperTabNoCompleteAfter=[]
 
 
 Bundle 'tpope/vim-fugitive'
@@ -337,8 +341,6 @@ autocmd BufNewFile,BufRead *.tpl setlocal ft=htmljinja
 autocmd BufNewFile,BufRead *.js.inc setlocal ft=javascript
 autocmd BufNewFile,BufRead *.css.inc setlocal ft=css
 
-"set completeopt-=preview
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd Syntax javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd Syntax css set omnifunc=csscomplete#CompleteCSS
 autocmd Syntax html set omnifunc=htmlcomplete#CompleteTags
@@ -352,9 +354,8 @@ set autoread
 autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
 autocmd FileChangedShell * echo "Warning: File changed on disk"
 
-" :W sudo saves the file
-" (useful for handling the permission-denied error)
-command! W w !sudo tee % > /dev/null
+" Sudo saves the file
+command! Sw w !sudo tee % > /dev/null
 
 " Indent blocks
 vmap < <gv
@@ -365,12 +366,6 @@ noremap j gj
 noremap k gk
 noremap <Down> gj
 noremap <Up> gk
-
-" Easy buffer navigation
-noremap <C-l>  <C-w>l
-noremap <C-h>  <C-w>h
-noremap <C-j>  <C-w>j
-noremap <C-k>  <C-w>k
 
 nmap <leader>h :setlocal hlsearch! hlsearch?<cr>
 nmap <leader>m :setlocal modifiable! modifiable?<cr>
