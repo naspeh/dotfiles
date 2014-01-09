@@ -25,7 +25,7 @@ FILTERS = [
     '+ /home/naspeh/',
     '+ /home/naspeh/v/',
     '- /home/naspeh/v/*',
-    '- /home/**/.thumbnails/',
+    '- /home/*/.thumbnails/',
     '- /home/*',
     '+ /arch/',
     '+ /arch/naspeh/',
@@ -34,8 +34,6 @@ FILTERS = [
     '+ /arch/aur/',
     '- /arch/*',
     '- /**/.cache/',
-    '- /**/__pycache__/',
-    '- /**/*.pyc',
     '- /*'
 ]
 TARGETS = {
