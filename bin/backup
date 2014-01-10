@@ -23,7 +23,6 @@ FILTERS = [
     '+ /arch/naspeh/',
     '+ /arch/nayavu/',
     '+ /arch/photo/',
-    '+ /arch/pacman/',
     '- /arch/*',
     '- /**/.cache/',
     '- /*'
