@@ -47,10 +47,9 @@ function save_packages {
 }
 
 function list_packages {
-    autoload colors; colors
-
     list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel | sort))
     if [ $verbose ]; then
+        autoload colors; colors
         expac -Q "$fg[blue]%n$reset_color: %d" $(echo $list)
     else
         echo $list
