@@ -28,7 +28,7 @@ function build_repo {
 }
 
 function save_packages {
-    DIR=/arch/pacman
+    DIR=/home/pacman
     pkglist -n > $DIR/main.txt
     pkglist -m > $DIR/abs.txt
     pacman -Q > $DIR/all.txt
