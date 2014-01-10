@@ -190,21 +190,18 @@ let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
 let g:jedi#documentation_command="<leader>o"
 let g:jedi#usages_command="<leader>u"
-let g:jedi#completions_command="<C-Space>"
+let g:jedi#completions_command="<C-f>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
 
 Bundle 'ervandew/supertab'
-"let g:SuperTabMappingForward='<c-space>'
-"let g:SuperTabMappingBackward='<s-c-space>'
-let g:SuperTabMappingForward = '<nul>'
-let g:SuperTabMappingBackward = '<s-nul>'
+let g:SuperTabMappingForward = '<nul>' " '<c-space>'
+let g:SuperTabMappingBackward = '<s-nul>' " '<s-c-space>'
 let g:SuperTabDefaultCompletionType="context"
-let g:SuperTabContextDefaultCompletionType="<c-p>"
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextTextOmniPrecedence =['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery =
-    \["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+    \["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "1:<c-p>"]
 let g:SuperTabNoCompleteBefore=[]
 let g:SuperTabNoCompleteAfter=[]
 
