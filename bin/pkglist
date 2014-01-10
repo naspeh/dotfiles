@@ -15,15 +15,15 @@ function clean {
 }
 
 function build_repo {
-    NAME=$1
+    dbfile="local-$1.db.tar.gz"
     paccache -rvc . -k1
     ls *.pkg.tar.xz > current.txt
-    if [ -f last.txt ]; then
+    if [ -f last.txt -a -f $dbfile ]; then
         files=$(comm -23 current.txt last.txt)
     else
         files=$(cat current.txt)
     fi
-    repo-add "local-$NAME.db.tar.gz" $files
+    repo-add $dbfile $(echo $files | tr '\n' ' ')
     mv -f current.txt last.txt
 }
 
