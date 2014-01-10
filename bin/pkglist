@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 function usage {
     echo "Usage: pkglist: [-c] [-p] [-v] [-n] [-m] "
     echo "  (c: clean; p: save packages v: verbose; n: only native; m: only foreign)"
@@ -49,8 +49,9 @@ function save_packages {
 function list_packages {
     list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel | sort))
     if [ $verbose ]; then
-        autoload colors; colors
-        expac -Q "$fg[blue]%n$reset_color: %d" $(echo $list)
+        reset="\e[0m"
+        colorM="\e[1;35m"
+        expac -Q "$colorM%n$reset: %d" $(echo $list)
     else
         echo $list
     fi

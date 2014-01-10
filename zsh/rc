@@ -128,8 +128,11 @@ alias killall="killall --interactive --verbose"
 alias tmux='tmux -2'
 alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
+
 alias pacman="sudo pacman"
 alias pacmanc="sudo pacman --config=/arch/pacman/pacman.conf"
+alias pacaur="pacaur --votes"
+alias cower="cower --color=auto --rsort=votes"
 
 if [[ "$TERM" == *256* ]]; then
     alias mc="mc -S modarin256"
