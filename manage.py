@@ -56,7 +56,7 @@ def create(target, files=None, quiet=False):
 
     def clean(dest):
         bak_dir = './bak'
-        bak = os.path.join(bak_dir, dest.lstrip(os.path.pathsep))
+        bak = os.path.join(bak_dir, dest.lstrip(os.path.sep))
         if os.path.exists(bak):
             if os.path.islink(bak) or os.path.isfile(bak):
                 os.unlink(bak)

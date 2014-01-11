@@ -14,7 +14,7 @@ FILTERS = [
     '+ /etc/',
     '+ /root/',
     '+ /home/',
-    '+ /home/naspeh/',
+    '+ /home/*',
     '+ /home/naspeh/v/',
     '- /home/naspeh/v/*',
     '- /home/*/.thumbnails/',
