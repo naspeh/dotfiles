@@ -1,7 +1,12 @@
 #!/bin/bash
+PACDIR=/home/pacman
+
 function usage {
-    echo "Usage: pkglist: [-c] [-p] [-v] [-n] [-m] "
-    echo "  (c: clean; p: save packages v: verbose; n: only native; m: only foreign)"
+    echo "Usage: pkglist: [-c] [-p] [-u] [-l] [-v] [-n] [-m]"
+    echo "  -c: clean global pacman;"
+    echo "  -p: save local packages;"
+    echo "  -u: update local pacman;"
+    echo "  -l: list packages (v: verbose; n: only native; m: only foreign)"
     exit 2
 }
 
@@ -11,39 +16,35 @@ function clean {
     else
         sudo pacman -Rs $(pacman -Qdtq)
     fi
-    exit 2
 }
 
-function build_repo {
-    dbfile="local-$1.db.tar.gz"
-    paccache -rvc . -k1
-    ls *.pkg.tar.xz > current.txt
-    if [ -f last.txt -a -f $dbfile ]; then
-        files=$(comm -23 current.txt last.txt)
-    else
-        files=$(cat current.txt)
+function update_repo {
+    clean_repo main 1
+    clean_repo abs 1
+
+    # Sync pacman local db
+    sudo pacman --config=$PACDIR/pacman.conf -Sy
+}
+
+function clean_repo {
+    cd $PACDIR/$1
+    dbfile="local-$1.db"
+    sudo rm -f $dbfile*
+    sudo paccache -rvc . -k1
+    if [ $2 ]; then
+        sudo repo-add "local-$1.db.tar.gz" *.pkg.tar.xz
     fi
-    repo-add $dbfile $(echo $files | tr '\n' ' ')
-    mv -f current.txt last.txt
 }
 
 function save_packages {
-    DIR=/home/pacman
-    pkglist -n > $DIR/main.txt
-    pkglist -m > $DIR/abs.txt
-    pacman -Q > $DIR/all.txt
+    pkglist -n > $PACDIR/main.txt
+    pkglist -m > $PACDIR/abs.txt
+    pacman -Q > $PACDIR/all.txt
 
-    # Update cached repositories
-    cd $DIR/abs
-    build_repo abs
+    clean_repo abs
 
-    cd $DIR/main
-    rsync -av /var/cache/pacman/pkg/ ./
-    build_repo main
-
-    # Sync pacman local db
-    sudo pacman --config=$DIR/pacman.conf -Sy
-    exit 2
+    sudo rsync -av /var/cache/pacman/pkg/ $PACDIR/main/
+    clean_repo main
 }
 
 function list_packages {
@@ -53,19 +54,25 @@ function list_packages {
         colorM="\e[1;35m"
         expac -Q "$colorM%n$reset: %d" $(echo $list)
     else
-        echo $list
+        echo "$list"
     fi
 }
 
-while getopts "cpvmn" opt; do
+while getopts "cpulvmnh" opt; do
     case $opt in
-        p) save_packages;;
-        c) clean;;
+        p) operation=save_packages;;
+        c) operation=clean;;
+        u) operation=update_repo;;
         v) verbose=1;;
         n) filter="n";;
         m) filter="m";;
-        ?) usage;;
+        l) operation=list_packages;;
+        h) operation=usage;;
     esac
 done
 
-list_packages
+if [ $operation ]; then
+    $operation
+else
+    usage
+fi
