@@ -6,16 +6,10 @@ import subprocess
 
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 FILES = {
-    'vim': [
+    'vim': (
         ('.vimrc', 'env/vim/rc'),
         ('.vim', 'env/vim'),
-        lambda: sh(
-            'git submodule init'
-            '&& git submodule update'
-            '&& vim +BundleInstall +qall',
-            cwd=SRC_DIR
-        )
-    ],
+    ),
     'zsh': (
         ('.zshrc', 'env/zsh/rc'),
         ('.zsh', 'env/zsh'),
@@ -38,6 +32,14 @@ FILES = {
         ('.i3', 'x11/i3'),
     ),
     'all': ('dev', 'bin', 'x11'),
+}
+BOOT = {
+    'vim': lambda: sh(
+        'git submodule init'
+        '&& git submodule update'
+        '&& vim +BundleInstall +qall',
+        cwd=SRC_DIR
+    )
 }
 
 
@@ -105,6 +107,7 @@ def process_args(args=None):
     cmd('init', help='init configs')\
         .arg('-H', '--home', default='.')\
         .arg('target', choices=FILES.keys(), nargs='+')\
+        .arg('-b', '--boot', action='store_true')
 
     cmd('pacman', help='init pacman')\
         .arg('-r', '--root', default='/home/pacman')\
@@ -122,6 +125,10 @@ def process_args(args=None):
         targets = args.target if args.target else FILES.keys()
         for target in targets:
             create(target)
+        if args.boot:
+            for target in targets:
+                print('Boot process for "%s" target' % target)
+                BOOT.get(target, lambda: None)()
     else:
         raise ValueError('Wrong subcommand')
 

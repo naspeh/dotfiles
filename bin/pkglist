@@ -37,8 +37,8 @@ function clean_repo {
 }
 
 function save_packages {
-    pkglist -n > $PACDIR/main.txt
-    pkglist -m > $PACDIR/abs.txt
+    pkglist -ln > $PACDIR/main.txt
+    pkglist -lm > $PACDIR/abs.txt
     pacman -Q > $PACDIR/all.txt
 
     clean_repo abs
