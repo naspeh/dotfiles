@@ -18,7 +18,6 @@ FILES = {
         ('bin', 'bin'),
     ),
     'dev': (
-        'vim', 'zsh',
         ('.gitconfig', 'env/gitconfig'),
         ('.gitignore', 'env/gitignore'),
         ('.hgrc', 'env/hgrc'),
@@ -31,7 +30,7 @@ FILES = {
         ('.config/dunst', 'x11/dunst'),
         ('.i3', 'x11/i3'),
     ),
-    'all': ('dev', 'bin', 'x11'),
+    'all': ('vim', 'zsh', 'dev', 'bin', 'x11'),
 }
 BOOT = {
     'vim': lambda: sh(

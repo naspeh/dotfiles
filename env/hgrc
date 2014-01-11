@@ -1,7 +1,7 @@
 [ui]
 verbose=True
 username=Grisha K. <naspeh@gmail.com>
-ignore=~/.hgignore
+ignore=/home/dotfiles/env/hgignore
 
 [pager]
 pager=more
