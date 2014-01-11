@@ -69,7 +69,8 @@ def main():
     cmd('full', help='backup whole root partition').arg_fake()
 
     cmd('call', help='call fixed action')\
-        .arg('target', choices=TARGETS.keys(), help='choice fixed action')
+        .arg('target', choices=TARGETS.keys(), help='choice fixed action')\
+        .arg('-s', '--show', action='store_true', help='only print command')
 
     args = parser.parse_args(sys.argv[1:])
     if not hasattr(args, 'cmd'):
@@ -146,7 +147,9 @@ def main():
 
     elif args.cmd == 'call':
         cmd_ = TARGETS.get(args.target)
-        if args.target.startswith(socket.gethostname()):
+        if args.show:
+            print(cmd_)
+        elif args.target.startswith(socket.gethostname()):
             sh(cmd_)
         else:
             print(cmd_)
