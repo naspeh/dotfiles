@@ -4,7 +4,7 @@ import os
 import shutil
 import subprocess
 
-SRC_DIR = os.path.dirname(os.path.abspath(__file__))
+SRC_DIR = os.path.realpath(os.path.dirname(__file__))
 FILES = {
     'vim': (
         ('.vimrc', 'env/vim/rc'),
@@ -81,7 +81,7 @@ def create(target, files=None, quiet=False):
         dest, src = item
         if os.path.lexists(dest):
             cleaned.append(clean(dest))
-        src, dest = os.path.join(SRC_DIR, src), dest
+        src = os.path.join(SRC_DIR, src)
         created.append((dest, src))
         mkdir(dest)
         os.symlink(src, dest)
@@ -104,7 +104,7 @@ def process_args(args=None):
         p.exe = lambda f: p.set_defaults(exe=f) and p
         return p
 
-    cmd('init', help='init configs')\
+    cmd('init', help='init home directory')\
         .arg('-H', '--home', default='.')\
         .arg('target', choices=FILES.keys(), nargs='+')\
         .arg('-b', '--boot', action='store_true')
