@@ -1,4 +1,6 @@
 *.pyc
+var
+
 /env/vim/.netrwhist
 /env/vim/bundle/*
 !/env/vim/bundle/vundle/
