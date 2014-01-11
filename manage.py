@@ -9,6 +9,12 @@ FILES = {
     'vim': [
         ('.vimrc', 'env/vim/rc'),
         ('.vim', 'env/vim'),
+        lambda: sh(
+            'git submodule init'
+            '&& git submodule update'
+            '&& vim +BundleInstall +qall',
+            cwd=SRC_DIR
+        )
     ],
     'zsh': (
         ('.zshrc', 'env/zsh/rc'),
@@ -18,11 +24,12 @@ FILES = {
         ('bin', 'bin'),
     ),
     'dev': (
+        'vim', 'zsh',
         ('.gitconfig', 'env/gitconfig'),
         ('.gitignore', 'env/gitignore'),
         ('.hgrc', 'env/hgrc'),
         ('.hgignore', 'env/hgignore'),
-        ('.pip', 'env/pip')
+        ('.pip', 'env/pip'),
     ),
     'x11': (
         ('.xinitrc', 'x11/xinitrc'),
@@ -30,6 +37,7 @@ FILES = {
         ('.config/dunst', 'x11/dunst'),
         ('.i3', 'x11/i3'),
     ),
+    'all': ('dev', 'bin', 'x11'),
 }
 
 
@@ -38,7 +46,7 @@ def sh(cmd, **kwargs):
     return subprocess.call(cmd, shell=True, **kwargs)
 
 
-def create(files):
+def create(target, files=None, quiet=False):
     def mkdir(dest):
         dir_ = os.path.dirname(dest)
         if dir_ and not os.path.exists(dir_):
@@ -46,7 +54,7 @@ def create(files):
 
     def clean(dest):
         bak_dir = './bak'
-        bak = os.path.join(bak_dir, dest)
+        bak = os.path.join(bak_dir, dest.lstrip(os.path.pathsep))
         if os.path.exists(bak):
             if os.path.islink(bak) or os.path.isfile(bak):
                 os.unlink(bak)
@@ -54,20 +62,33 @@ def create(files):
                 shutil.rmtree(bak)
         elif not os.path.exists(bak_dir):
             os.mkdir(bak_dir)
-        mkdir(dest)
+        mkdir(bak)
         os.rename(dest, bak)
         return (dest, bak)
 
+    msg = ['Process "%s" target' % target]
+    files = files if files else FILES[target]
     cleaned, created = [], []
-    for dest, src in files:
+    for item in files:
+        if isinstance(item, str):
+            msg += ['|   ' + m for m in create(item, quiet=True)]
+            continue
+        if callable(item):
+            item()
+            continue
+        dest, src = item
         if os.path.lexists(dest):
             cleaned.append(clean(dest))
         src, dest = os.path.join(SRC_DIR, src), dest
         created.append((dest, src))
         mkdir(dest)
         os.symlink(src, dest)
-    print('\n'.join([' * backup %s to %s' % i for i in cleaned]))
-    print('\n'.join([' + create %s to %s' % i for i in created]))
+    msg += ['| * backup %s to %s' % i for i in cleaned]
+    msg += ['| + create %s to %s' % i for i in created]
+    if quiet:
+        return msg
+    else:
+        print('\n'.join(msg))
 
 
 def process_args(args=None):
@@ -83,12 +104,13 @@ def process_args(args=None):
 
     cmd('init', help='init configs')\
         .arg('-H', '--home', default='.')\
-        .arg('-t', '--target', choices=FILES.keys(), nargs='+')\
-        .arg('--all', action='store_true')
+        .arg('target', choices=FILES.keys(), nargs='+')\
 
     cmd('pacman', help='init pacman')\
         .arg('-r', '--root', default='/home/pacman')\
-        .exe(lambda args: create((args.root, 'etc/pacman')))
+        .exe(lambda args: create('pacman', files=(
+            (args.root, 'env/pacman'),
+        )))
 
     args = parser.parse_args(args)
     if hasattr(args, 'exe'):
@@ -99,8 +121,7 @@ def process_args(args=None):
         os.chdir(args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
-            print('Process "%s" target' % target)
-            create(FILES[target])
+            create(target)
     else:
         raise ValueError('Wrong subcommand')
 
