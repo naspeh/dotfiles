@@ -38,17 +38,22 @@ BOOT = {
         'git submodule init'
         '&& git submodule update'
         '&& vim +BundleInstall +qall',
-        cwd=SRC_DIR
-    )
+        quiet=True, cwd=SRC_DIR
+    ),
+    'pacman': lambda: sh('pkglist -p', quiet=True)
 }
 
 
-def sh(cmd, **kwargs):
-    print(cmd)
-    return subprocess.call(cmd, shell=True, **kwargs)
+def sh(cmd, quiet=False, **kwargs):
+    code = subprocess.call(cmd, shell=True, **kwargs)
+    msg = '"%s"(%s)' % (cmd, code)
+    if quiet:
+        return msg
+    else:
+        print(msg)
 
 
-def create(target, files=None, quiet=False):
+def create(target, files=None, boot=False, quiet=False):
     def mkdir(dest):
         dir_ = os.path.dirname(dest)
         if dir_ and not os.path.exists(dir_):
@@ -73,7 +78,7 @@ def create(target, files=None, quiet=False):
     cleaned, created = [], []
     for item in files:
         if isinstance(item, str):
-            msg += ['|   ' + m for m in create(item, quiet=True)]
+            msg += ['|   ' + m for m in create(item, boot=boot, quiet=True)]
             continue
         dest, src = item
         src = os.path.join(SRC_DIR, src)
@@ -86,6 +91,10 @@ def create(target, files=None, quiet=False):
         os.symlink(src, dest)
     msg += ['| * backup %s to %s' % i for i in cleaned]
     msg += ['| + create %s to %s' % i for i in created]
+    boot = boot and BOOT.get(target)
+    if boot:
+        msg += ['Boot process for "%s" target' % target]
+        msg += ['| * ' + boot()]
     if quiet:
         return msg
     else:
@@ -110,9 +119,9 @@ def process_args(args=None):
 
     cmd('pacman', help='init pacman')\
         .arg('-r', '--root', default='/home/pacman')\
-        .exe(lambda args: create('pacman', files=(
-            (args.root, 'env/pacman'),
-        )))
+        .exe(lambda args: (
+            create('pacman', boot=True, files=[(args.root, 'env/pacman')])
+        ))
 
     args = parser.parse_args(args)
     if hasattr(args, 'exe'):
@@ -123,11 +132,7 @@ def process_args(args=None):
         os.chdir(args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
-            create(target)
-        if args.boot:
-            for target in targets:
-                print('Boot process for "%s" target' % target)
-                BOOT.get(target, lambda: None)()
+            create(target, boot=args.boot)
     else:
         raise ValueError('Wrong subcommand')
 
