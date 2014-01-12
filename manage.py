@@ -30,7 +30,8 @@ FILES = {
         ('.config/dunst', 'x11/dunst'),
         ('.i3', 'x11/i3'),
     ),
-    'all': ('vim', 'zsh', 'dev', 'bin', 'x11'),
+    'all-shell': ('vim', 'zsh', 'bin'),
+    'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
     'vim': lambda: sh(
@@ -74,13 +75,12 @@ def create(target, files=None, quiet=False):
         if isinstance(item, str):
             msg += ['|   ' + m for m in create(item, quiet=True)]
             continue
-        if callable(item):
-            item()
-            continue
         dest, src = item
+        src = os.path.join(SRC_DIR, src)
+        if os.path.realpath(dest) == src:
+            continue
         if os.path.lexists(dest):
             cleaned.append(clean(dest))
-        src = os.path.join(SRC_DIR, src)
         created.append((dest, src))
         mkdir(dest)
         os.symlink(src, dest)
