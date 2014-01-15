@@ -170,7 +170,7 @@ let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
 let g:jedi#documentation_command="<leader>o"
 let g:jedi#usages_command="<leader>u"
-let g:jedi#completions_command="<C-Space>"
+let g:jedi#completions_command="<C-g>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
 
@@ -345,7 +345,9 @@ nmap <leader>n :lnext<cr>
 nmap <leader>nn :lfirst<cr>
 
 nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
-imap <C-Space> <C-x><C-o>
+
+" <Nul> is <C-Space> in terminal
+imap <Nul> <C-x><C-o>
 imap <C-f> <C-x><C-f>
 
 " ------------------------------

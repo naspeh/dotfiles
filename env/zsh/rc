@@ -129,8 +129,7 @@ alias tmux='tmux -2'
 alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
 
-alias pacman="sudo pacman"
-alias pacmanc="sudo pacman --config=/home/pacman/pacman.conf"
+alias pacmanc="pacman --config=/home/pacman/pacman.conf"
 alias pacaur="pacaur --rebuild --votes"
 alias cower="cower --color=auto --rsort=votes"
 
