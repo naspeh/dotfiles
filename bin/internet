@@ -3,18 +3,18 @@
 if [ "$1" = "kill" ]; then
     killall dropbox gajim skype chromium
     yandex-disk stop
-else
-    if [ ! "$DISPLAY" ]; then
-        export DISPLAY=:0
-    fi
-
-    i3-msg 'rename workspace 1 to "2: term"'
-
-    chromium &
-    (sleep 1; i3-msg '[class="(?i)chromium"] move workspace 1: web') &
-
-    yandex-disk start
-    dropboxd &
-    skype &
-    (sleep 1; gajim) &
+    exit
 fi
+
+if [ ! "$DISPLAY" ]; then
+    export DISPLAY=:0
+fi
+
+i3-msg 'workspace "1: web"; exec chromium; workspace back_and_forth'
+
+[ "$1" = "light" ] && exit
+
+yandex-disk start
+dropboxd &
+skype &
+(sleep 1; gajim) &
