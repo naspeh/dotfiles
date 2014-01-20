@@ -17,7 +17,6 @@ pager=
 rebase=
 record=
 progress=
-hggit=
 hgext.bookmarks=
 hgext.convert=
 hgext.hgshelve=
