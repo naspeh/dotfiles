@@ -2,4 +2,4 @@
 
 For install::
 
-    $ ./manage.py init -b --home=/home/naspeh/ all-shell
+    $ ./manage.py init --home=/home/naspeh/ --boot vim zsh
