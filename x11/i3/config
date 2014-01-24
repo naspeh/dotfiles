@@ -61,7 +61,6 @@ bindsym $mod+f exec perevod call fetch
 bindsym $mod+Ctrl+l exec i3lock -i ~/lock-s.png
 bindsym $mod+Ctrl+n exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 bindsym $mod+Ctrl+b exec chromium
-bindsym $mod+Ctrl+i exec internet
 bindsym $mod+Ctrl+h exec $htop
 bindsym $mod+Ctrl+m exec hdmi
 
@@ -86,10 +85,20 @@ mode "system" {
     bindsym r exec systemctl reboot
     bindsym q exec systemctl poweroff
 
-    bindsym Return mode "fault"
+    bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+s mode "system"
+
+mode "internet" {
+    bindsym i exec internet; mode "default"
+    bindsym l exec internet light; mode "default"
+    bindsym k exec internet kill; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+i mode "internet"
 
 mode "tider" {
     bindsym a exec tider call target; mode "default"
