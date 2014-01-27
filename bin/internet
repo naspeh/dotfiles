@@ -6,6 +6,11 @@ if [ "$1" = "kill" ]; then
     exit
 fi
 
+Q="0"
+while [ $Q = "0" ]; do
+   Q=$(ping -c1 www.google.com 2> /dev/null | grep -c google);
+done
+
 if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
 fi
