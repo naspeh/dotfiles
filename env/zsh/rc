@@ -19,6 +19,7 @@ HISTSIZE=2000
 SAVEHIST=$HISTSIZE
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
+setopt hist_find_no_dups
 setopt appendhistory
 setopt sharehistory
 
@@ -93,7 +94,7 @@ venv() {
     fi
 }
 venv_cd() {
-    if cd "$@"; then
+    if builtin cd "$@"; then
         if [ -e .venv ]; then
             venv `cat .venv`
         fi

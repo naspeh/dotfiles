@@ -101,17 +101,9 @@ call MapDo('<F5>', ':CtrlPBufTag<cr>')
 let g:ctrlp_custom_ignore={
     \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
 \}
-let g:ctrlp_extensions=['tag', 'quickfix', 'dir', 'line']
+let g:ctrlp_extensions=['tag', 'quickfix', 'dir']
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_mruf_relative=1
-let g:ctrlp_ignore_=' | grep -v -e /migrations/ -e ^__pycache__'
-let g:ctrlp_user_command={
-    \'types': {
-        \1: ['.git', 'cd %s && git ls-files' . g:ctrlp_ignore_],
-        \2: ['.hg', 'hg --cwd %s locate -I .' . g:ctrlp_ignore_],
-    \},
-    \'fallback': 'find %s -type f' . g:ctrlp_ignore_
-\}
 
 
 Bundle 'scrooloose/syntastic'
@@ -357,5 +349,6 @@ iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
+iab pprint; import pprint as _; _.pprint(
 
 set secure  " must be written at the last.  see :help 'secure'.
