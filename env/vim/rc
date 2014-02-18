@@ -101,7 +101,7 @@ call MapDo('<F5>', ':CtrlPBufTag<cr>')
 let g:ctrlp_custom_ignore={
     \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
 \}
-let g:ctrlp_extensions=['tag', 'quickfix', 'dir']
+"let g:ctrlp_extensions=['tag', 'quickfix', 'dir']
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_mruf_relative=1
 
@@ -153,6 +153,8 @@ vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
 
 let g:jedi#force_py_version=3
 Bundle 'davidhalter/jedi-vim'
+let g:jedi#auto_initialization=1
+let g:jedi#auto_vim_configuration=1
 let g:jedi#use_tabs_not_buffers=0
 let g:jedi#rename_command=0
 let g:jedi#popup_on_dot=1
@@ -349,6 +351,7 @@ iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
+iab bpdb; import bpdb; bpdb.set_trace()<esc>
 iab pprint; import pprint as _; _.pprint(
 
 set secure  " must be written at the last.  see :help 'secure'.
