@@ -29,6 +29,10 @@ FILTERS = [
 ]
 TARGETS = {
     'pad_to_box': 'backup copy box:/arch/backups/pad/ --nolog',
+    'pad_to_trans': (
+        'mount /dev/disk/by-label/t-arch /media/trans;'
+        'backup copy /media/trans/backups/pad/ --nolog'
+    ),
     'box_to_sea': (
         'backup copy /arch/ /media/sea/ --nolog --extra="'
         '   --exclude={/lost+found,/.delta,/backup}'

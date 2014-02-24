@@ -44,6 +44,7 @@ for_window [class="(?i)transmission"] floating enable
 for_window [class="(?i)orage"] floating enable
 for_window [class="(?i)globaltime"] floating enable
 for_window [class="(?i)lxappearance"] floating enable
+for_window [class="(?i)lxpolkit"] floating enable
 for_window [class="(?i)gmrun"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable; move position 200px 100px
 for_window [class="(?i)xfce4-notifyd"] floating enable; border none
