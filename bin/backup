@@ -28,12 +28,19 @@ FILTERS = [
     '- /*'
 ]
 TARGETS = {
-    'pad_to_box': 'backup copy box:/arch/backups/pad/ --nolog',
+    'pad_to_box': (
+        'ping -c1 box | grep "1 received"',
+        'backup copy box:/arch/backups/pad/ --nolog'
+    ),
     'pad_to_trans': (
-        'mount /dev/disk/by-label/t-arch /media/trans;'
+        (
+            '[ -d /media/trans/backups ] || '
+            'mount /dev/disk/by-label/t-arch /media/trans'
+        ),
         'backup copy /media/trans/backups/pad/ --nolog'
     ),
     'box_to_sea': (
+        None,
         'backup copy /arch/ /media/sea/ --nolog --extra="'
         '   --exclude={/lost+found,/.delta,/backup}'
         '   --backup --backup-dir=/media/sea/.delta/'
@@ -150,10 +157,13 @@ def main():
             )
 
     elif args.cmd == 'call':
-        cmd_ = TARGETS.get(args.target)
+        check, cmd_ = TARGETS.get(args.target)
         if args.show:
-            print(cmd_)
+            print(' && '.join([c for c in [check, cmd_] if c]))
         elif args.target.startswith(socket.gethostname()):
+            if check and 0 != subprocess.call(check, shell=True):
+                raise SystemExit('Check failed: %s' % check)
+
             sh(cmd_)
         else:
             print(cmd_)
