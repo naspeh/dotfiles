@@ -6,10 +6,8 @@ if [ "$1" = "kill" ]; then
     exit
 fi
 
-Q="0"
-while [ $Q = "0" ]; do
-   Q=$(ping -c1 www.google.com 2> /dev/null | grep -c google);
-done
+# Wait for the internet
+while [ '0' = $(ping -c1 google.com | grep -c "1 received") ]; do done
 
 if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
