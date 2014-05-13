@@ -106,7 +106,7 @@ venv() {
 }
 venv_cd() {
     if builtin cd "$@"; then
-        venv -a
+        [ -e .venv ] && venv -a
         return 0
     else
         return $?
