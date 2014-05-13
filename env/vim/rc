@@ -117,6 +117,7 @@ let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_loc_list_height=2
 let g:syntastic_stl_format = '[%E{Err: #%e}%B{, }%W{Warn: #%w}]'
+let g:syntastic_python_flake8_args='--ignore=W601,E711'
 call MapDo('<F8>', ':SyntasticCheck<cr>:Errors<cr>')
 nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
@@ -168,8 +169,15 @@ let g:jedi#completions_command="<C-g>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
 
-Bundle 'hdima/python-syntax'
-let python_highlight_all=1
+Bundle 'ervandew/supertab'
+let g:SuperTabMappingForward = '<nul>' " '<c-space>'
+let g:SuperTabMappingBackward = '<s-nul>' " '<s-c-space>'
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+"let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
+
+
+"Bundle 'hdima/python-syntax'
+"let python_highlight_all=1
 
 
 Bundle 'mitsuhiko/vim-jinja'
@@ -341,7 +349,7 @@ nmap <leader>nn :lfirst<cr>
 nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 
 " <Nul> is <C-Space> in terminal
-imap <Nul> <C-x><C-o>
+"imap <Nul> <C-x><C-o>
 imap <C-f> <C-x><C-f>
 
 " ------------------------------
