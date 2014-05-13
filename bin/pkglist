@@ -2,11 +2,11 @@
 PACDIR=/home/pacman
 
 function usage {
-    echo "Usage: pkglist: [-c] [-p] [-u] [-l] [-v] [-n] [-m]"
-    echo "  -c: clean global pacman;"
-    echo "  -p: save local packages;"
-    echo "  -u: update local pacman;"
-    echo "  -l: list packages (v: verbose; n: only native; m: only foreign)"
+    echo "Usage: pkglist [OPTIONS]"
+    echo "  -l[vnm] list packages (v: verbose; n: only native; m: only foreign)"
+    echo "  -c      clean global pacman;"
+    echo "  -p      save local packages;"
+    echo "  -u      update local pacman;"
     exit 2
 }
 
