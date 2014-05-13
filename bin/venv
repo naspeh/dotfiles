@@ -1,0 +1,50 @@
+#!/bin/bash
+
+venv() {
+    if [ -z "$1" ] || [ $1 = '-h' ]; then
+        echo "Usage: venv [NAME or OPTION] "
+        echo "  NAME is one of virtualenvs: $(command ls -m $VENV_HOME)"
+        echo ""
+        echo "Options:"
+        echo "  -s  fill .venv file with current virtualenv"
+        echo "  -a  auto activate virtualenv by .venv file"
+        return 1
+    fi
+
+    env_name=$1
+    if [ $1 = '-s' ] && [ $VIRTUAL_ENV ]; then
+        echo $VIRTUAL_ENV > .venv
+        return 0
+    fi
+
+    if [ $1 = '-a' ]; then
+        if [ -e .venv ]; then
+            env_name=`cat .venv`
+        else
+            echo "Make './.venv' file for autoload virtualenv"
+            return 1
+        fi
+    fi
+
+    activate="$env_name/bin/activate"
+    if [ -e $activate ]; then
+        env_path=env_name
+    else
+        env_path="$VENV_HOME/$env_name"
+        activate="$env_path/bin/activate"
+    fi
+
+    if [ -e "$activate" ]; then
+        if [ "$VIRTUAL_ENV" != "$env_path" ]; then
+            VIRTUAL_ENV_DISABLE_PROMPT=1
+            source $activate
+            which python
+            return 0
+        fi
+    else
+        echo "Virtualenv is not found: '$env_name'"
+        venv
+        return 1
+    fi
+}
+venv $@
