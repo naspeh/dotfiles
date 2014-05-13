@@ -13,11 +13,11 @@ else
     devilspie &
 fi
 
+(sleep 1 && cbatticon) &
 conky &
 sbxkb &
 orage &
 volumeicon &
-batti &
 #clipit &
 parcellite &
 stardict &

@@ -13,7 +13,9 @@ if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
 fi
 
-i3-msg 'workspace "1: web"; exec chromium; workspace back_and_forth'
+
+chromium &
+(sleep 1; i3-msg '[class="(?i)chromium"] move workspace 1: web') &
 
 [ "$1" = "light" ] && exit
 
