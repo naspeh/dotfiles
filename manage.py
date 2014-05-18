@@ -29,6 +29,7 @@ FILES = {
         ('.conkyrc', 'x11/conkyrc'),
         ('.config/dunst', 'x11/dunst'),
         ('.i3', 'x11/i3'),
+        ('.devilspie', 'x11/devilspie')
     ),
     'all-shell': ('vim', 'zsh', 'bin'),
     'all': ('all-shell', 'dev', 'x11'),

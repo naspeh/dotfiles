@@ -22,4 +22,4 @@ chromium &
 yandex-disk start
 dropboxd &
 skype &
-(sleep 1; gajim) &
+#(sleep 1; gajim) &

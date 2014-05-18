@@ -16,6 +16,8 @@ while getopts "vc:i:" opt; do
 done
 
 response=$(curl -s "http://weather.yahooapis.com/forecastrss?u=c&p=$city")
+[ $? != 0 ] && exit 1
+
 if [ $verbose ]; then
     weather=$(echo "$response" | grep -A3 "Forecast:" | sed "s/<[^>]*>//g" | sed "1d")
 else
