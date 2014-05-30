@@ -80,10 +80,15 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 
-"Bundle 'xterm16.vim'
-"let xterm16_colormap='softlight'
-"let xterm16_brightness='high'
-"color xterm16
+Bundle 'xterm16.vim'
+let xterm16_colormap='softlight'
+let xterm16_brightness='high'
+"colorscheme xterm16
+
+
+Bundle 'altercation/vim-colors-solarized'
+set background=dark
+colorscheme solarized
 
 
 Bundle 'scrooloose/nerdtree'
@@ -189,9 +194,6 @@ let g:htmljinja_disable_detection=0
 "let g:airline_theme='light'
 "let g:airline_powerline_fonts=1
 
-Bundle 'altercation/vim-colors-solarized'
-set background=dark
-colorscheme solarized
 
 Bundle 'mbbill/undotree'
 nnoremap <leader>u :UndotreeToggle<cr>
