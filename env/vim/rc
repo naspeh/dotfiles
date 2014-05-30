@@ -81,14 +81,9 @@ Bundle 'gmarik/vundle'
 
 
 Bundle 'xterm16.vim'
-let xterm16_colormap='softlight'
-let xterm16_brightness='high'
-"colorscheme xterm16
-
-
-Bundle 'altercation/vim-colors-solarized'
-set background=dark
-colorscheme solarized
+let xterm16_colormap='soft'
+let xterm16_brightness='default'
+colorscheme xterm16
 
 
 Bundle 'scrooloose/nerdtree'
@@ -189,14 +184,9 @@ Bundle 'mitsuhiko/vim-jinja'
 let g:htmljinja_disable_detection=0
 
 
-"Bundle 'bling/vim-airline'
-"let g:airline#extensions#tabline#enabled=0
-"let g:airline_theme='light'
-"let g:airline_powerline_fonts=1
-
-
 Bundle 'mbbill/undotree'
 nnoremap <leader>u :UndotreeToggle<cr>
+
 
 Bundle 'maksimr/vim-jsbeautify'
 Bundle 'tpope/vim-fugitive'
