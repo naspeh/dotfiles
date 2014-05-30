@@ -80,10 +80,10 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 
-Bundle 'xterm16.vim'
-let xterm16_colormap='softlight'
-let xterm16_brightness='high'
-color xterm16
+"Bundle 'xterm16.vim'
+"let xterm16_colormap='softlight'
+"let xterm16_brightness='high'
+"color xterm16
 
 
 Bundle 'scrooloose/nerdtree'
@@ -184,6 +184,18 @@ Bundle 'mitsuhiko/vim-jinja'
 let g:htmljinja_disable_detection=0
 
 
+"Bundle 'bling/vim-airline'
+"let g:airline#extensions#tabline#enabled=0
+"let g:airline_theme='light'
+"let g:airline_powerline_fonts=1
+
+Bundle 'altercation/vim-colors-solarized'
+set background=dark
+colorscheme solarized
+
+Bundle 'mbbill/undotree'
+nnoremap <leader>u :UndotreeToggle<cr>
+
 Bundle 'maksimr/vim-jsbeautify'
 Bundle 'tpope/vim-fugitive'
 Bundle 'powerman/vim-plugin-ruscmd'
@@ -194,7 +206,6 @@ Bundle 'gregsexton/MatchTag'
 " Configure
 " ------------------------------
 
-" set window title
 set title
 set nobackup
 set noswapfile
