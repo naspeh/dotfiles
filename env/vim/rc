@@ -81,8 +81,8 @@ Bundle 'gmarik/vundle'
 
 
 Bundle 'xterm16.vim'
-let xterm16_colormap='soft'
-let xterm16_brightness='default'
+let xterm16_colormap='softlight'
+let xterm16_brightness='high'
 colorscheme xterm16
 
 
