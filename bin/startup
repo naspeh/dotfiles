@@ -2,7 +2,6 @@
 if [ "$SESSION" = "i3" ]; then
     /usr/lib/lxpolkit/lxpolkit &
     hsetroot -solid "#333343"
-    #xcompmgr &
     i3-msg 'workspace "2: term"; exec evilvte'
 else
     if [ "$(hostname)" = "pad" ]; then
@@ -16,9 +15,9 @@ fi
 cbatticon &
 conky &
 sbxkb &
+unclutter -grab &
 orage &
 volumeicon &
-#clipit &
 parcellite &
 stardict &
 tider &
