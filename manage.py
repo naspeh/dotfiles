@@ -133,7 +133,7 @@ def process_args(args=None):
         os.chdir(args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
-            create(target, boot=args.boot, home=args.home)
+            create(target, boot=args.boot, home=args.home.rstrip('/') + '/')
     else:
         raise ValueError('Wrong subcommand')
 
