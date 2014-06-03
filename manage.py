@@ -38,7 +38,7 @@ BOOT = {
     'vim': lambda h: sh(
         'git submodule init'
         '&& git submodule update'
-        '&& vim -u {home}.vimrc +BundleInstall +qall'.format(home=h),
+        '&& vim -u {home}.vimrc -c BundleInstall -c qall'.format(home=h),
         quiet=True, cwd=SRC_DIR
     ),
     'pacman': lambda h: sh('pkglist -p', quiet=True)
