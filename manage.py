@@ -35,13 +35,18 @@ FILES = {
     'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
-    'vim': lambda h: sh(
-        'git submodule init'
+    'vim': lambda: sh(
+        # Update submodules with Vundle
+        'cd %s' % SRC_DIR +
+        '&& git submodule init'
         '&& git submodule update'
-        '&& vim -u {home}.vimrc -c BundleInstall -c qall'.format(home=h),
-        quiet=True, cwd=SRC_DIR
+
+        # Install and update plugins
+        '&& cd -'
+        '&& vim -u .vimrc +BundleInstall! +qall',
+        quiet=True
     ),
-    'pacman': lambda h: sh('pkglist -p', quiet=True)
+    'pacman': lambda: sh('pkglist -p', quiet=True)
 }
 
 
@@ -95,7 +100,7 @@ def create(target, files=None, boot=False, quiet=False, home='./'):
     boot = boot and BOOT.get(target)
     if boot:
         msg += ['Boot process for "%s" target' % target]
-        msg += ['| * ' + boot(home)]
+        msg += ['| * ' + boot()]
     if quiet:
         return msg
     else:
