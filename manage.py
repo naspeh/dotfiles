@@ -35,13 +35,13 @@ FILES = {
     'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
-    'vim': lambda: sh(
+    'vim': lambda h: sh(
         'git submodule init'
         '&& git submodule update'
-        '&& vim +BundleInstall +qall',
+        '&& vim -u {home}.vimrc +BundleInstall +qall'.format(home=h),
         quiet=True, cwd=SRC_DIR
     ),
-    'pacman': lambda: sh('pkglist -p', quiet=True)
+    'pacman': lambda h: sh('pkglist -p', quiet=True)
 }
 
 
@@ -54,7 +54,7 @@ def sh(cmd, quiet=False, **kwargs):
         print(msg)
 
 
-def create(target, files=None, boot=False, quiet=False):
+def create(target, files=None, boot=False, quiet=False, home='./'):
     def mkdir(dest):
         dir_ = os.path.dirname(dest)
         if dir_ and not os.path.exists(dir_):
@@ -95,7 +95,7 @@ def create(target, files=None, boot=False, quiet=False):
     boot = boot and BOOT.get(target)
     if boot:
         msg += ['Boot process for "%s" target' % target]
-        msg += ['| * ' + boot()]
+        msg += ['| * ' + boot(home)]
     if quiet:
         return msg
     else:
@@ -133,7 +133,7 @@ def process_args(args=None):
         os.chdir(args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
-            create(target, boot=args.boot)
+            create(target, boot=args.boot, home=args.home)
     else:
         raise ValueError('Wrong subcommand')
 
