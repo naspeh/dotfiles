@@ -1,0 +1,119 @@
+#!/usr/bin/env python
+import argparse
+import imaplib
+import json
+import subprocess
+from pathlib import Path
+
+OAUTH_URL_TOKEN = 'https://accounts.google.com/o/oauth2/token'
+
+
+class _Conf:
+    def __init__(self):
+        self.path = (Path(__file__).parent / 'gmail.json').resolve()
+
+        with self.path.open('br') as f:
+            self.data = json.loads(f.read().decode())
+
+    def update(self, *args, **kwargs):
+        self.data.update(*args, **kwargs)
+        content = json.dumps(
+            self.data, sort_keys=True, indent=4, separators=(',', ': ')
+        )
+        with self.path.open('bw') as f:
+            f.write(content.encode())
+
+    def __call__(self, key, default=None):
+        return self.data.get(key, default)
+
+conf = _Conf()
+
+
+class AuthError(Exception):
+    pass
+
+
+def post(url, data):
+    from http.client import HTTPSConnection
+    from urllib.parse import urlencode
+
+    url = url.replace('https://', '')
+    host, url = url.split('/', 1)
+    url = '/' + url
+
+    conn = HTTPSConnection(host)
+    conn.request('POST', url, urlencode(data), headers={
+        "Content-type": "application/x-www-form-urlencoded",
+        "Accept": "text/plain"
+    })
+    response = conn.getresponse()
+    response.ok = response.getcode() == 200
+    response.text = response.read().decode()
+    return response
+
+
+def auth_refresh():
+    refresh_token = conf('google_response', {}).get('refresh_token')
+    if not refresh_token:
+        raise AuthError('refresh_token is empty')
+
+    res = post(OAUTH_URL_TOKEN, data={
+        'client_id': conf('google_id'),
+        'client_secret': conf('google_secret'),
+        'refresh_token': refresh_token,
+        'grant_type': 'refresh_token',
+    })
+    if res.ok:
+        new = dict(conf('google_response'), **json.loads(res.text))
+        conf.update(google_response=new)
+        return
+    raise AuthError('%s: %s' % (res.reason, res.text))
+
+
+def login(im, retry=False):
+    access_token = conf('google_response', {}).get('access_token')
+    try:
+        im.authenticate('XOAUTH2', lambda x: (
+            'user=%s\1auth=Bearer %s\1\1'
+            % (conf('email'), access_token)
+        ))
+    except im.error as e:
+        if retry:
+            raise AuthError(e)
+
+        auth_refresh()
+        login(im, True)
+
+
+def client():
+    if not conf('google_response', {}).get('access_token'):
+        raise AuthError('Fill access_token in config')
+
+    client = imaplib.IMAP4_SSL
+    im = client('imap.gmail.com')
+    # im.debug = 4
+    login(im)
+    return im
+
+
+def check():
+    im = client()
+    im.select('INBOX', readonly=True)
+    res = im.uid('SEARCH', None, 'UNSEEN')
+    if res[0] == 'OK':
+        uids = [int(i) for i in res[1][0].split()]
+        unread = conf('unread', [])
+        if uids != unread:
+            conf.update(unread=uids)
+        if any(uid not in unread for uid in uids):
+            subprocess.call(conf('cmd'), shell=True)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser('gmail')
+    parser.add_argument('-i', action='store_true', help='just info wo update')
+    args = parser.parse_args()
+    if args.i:
+        print(len(conf('unread')))
+    else:
+        check()
