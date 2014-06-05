@@ -192,6 +192,7 @@ Bundle 'maksimr/vim-jsbeautify'
 Bundle 'tpope/vim-fugitive'
 Bundle 'powerman/vim-plugin-ruscmd'
 Bundle 'gregsexton/MatchTag'
+Bundle 'terryma/vim-multiple-cursors'
 
 
 " ------------------------------

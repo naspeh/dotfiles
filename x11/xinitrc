@@ -11,20 +11,15 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR=vim
 export BROWSER=chromium
 export TERMINAL=evilvte
-
 export DE=xfce
+
+export GDK_USE_XFT=1
+export QT_XFT=1
 
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 xrdb ~/.Xresources
-
-# Start GNOME Keyring
-eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
-export SSH_AUTH_SOCK
-export GPG_AGENT_INFO
-export GNOME_KEYRING_CONTROL
-export GNOME_KEYRING_PID
 
 case $1 in
   startxfce4|i3|awesome|wmii|wmfs) SESSION=$1;;
