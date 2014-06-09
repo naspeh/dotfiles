@@ -21,6 +21,11 @@ setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 xrdb ~/.Xresources
 
+# Start Gnome Keyring
+#killall gnome-keyring-daemon
+eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
+export GPG_AGENT_INFO SSH_AUTH_SOCK
+
 case $1 in
   startxfce4|i3|awesome|wmii|wmfs) SESSION=$1;;
   *) SESSION=i3;;
