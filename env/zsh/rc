@@ -140,7 +140,7 @@ alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
 
 alias pacmanc="sudo pacman --config=/home/pacman/pacman.conf"
-alias pacaur="pacaur --rebuild --votes"
+alias pacaur="pacaur --rebuild"
 alias cower="cower --color=auto --rsort=votes"
 
 if [[ "$TERM" == *256* ]]; then
