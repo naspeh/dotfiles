@@ -25,6 +25,9 @@ class _Conf:
         with self.path.open('bw') as f:
             f.write(content.encode())
 
+    def error(self, msg):
+        self.update(error_message=msg)
+
     def __call__(self, key, default=None):
         return self.data.get(key, default)
 
@@ -35,7 +38,7 @@ def check():
     access_token = conf('google_response', {}).get('access_token')
     if not access_token:
         msg = 'Fill access_token in config'
-        conf.update(error_message=msg)
+        conf.error(msg)
         raise SystemExit('Fill access_token in config')
 
     cli = OAuth2Session(
@@ -52,7 +55,7 @@ def check():
     )
     res = cli.get(API_URL_BASE + 'messages', params={'q': 'is:unread'})
     if res.ok:
-        conf.update(error_message=None)
+        conf.error(None)
         uids = [i['id'] for i in res.json().get('messages', [])]
         unread = conf('unread', [])
         if uids != unread:
@@ -60,17 +63,17 @@ def check():
         if any(uid not in unread for uid in uids):
             subprocess.call(conf('cmd'), shell=True)
     else:
-        conf.update(error_message='%r %r' % (res, res.reason))
+        conf.error('%r %r' % (res, res.reason))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('gmail')
     parser.add_argument('-i', action='store_true', help='just info wo update')
-    parser.add_argument('-d', action='store_true', help='debug')
+    parser.add_argument('-e', action='store_true', help='last error message')
     args = parser.parse_args()
     if args.i:
         print(len(conf('unread')))
-    elif args.d:
-        pass
+    elif args.e:
+        print(conf('error_message'))
     else:
         check()
