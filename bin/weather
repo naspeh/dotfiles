@@ -1,5 +1,5 @@
 #!/bin/sh
-city=UPXX0010
+city=UPXX0040
 
 function usage {
     echo "Usage: $0: [-v] [-c CITY] [-i INDENT]"
