@@ -1,6 +1,7 @@
 *.pyc
 var
 /bin/gmail.json
+/bin/env/*
 
 /env/vim/.netrwhist
 /env/vim/bundle/*

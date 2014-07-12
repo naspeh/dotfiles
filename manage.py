@@ -38,12 +38,18 @@ BOOT = {
     'vim': lambda: sh(
         # Update submodules with Vundle
         'cd %s' % SRC_DIR +
-        '&& git submodule init'
-        '&& git submodule update'
+        ' && git submodule init'
+        ' && git submodule update'
 
         # Install and update plugins
-        '&& cd -'
-        '&& vim -u .vimrc +BundleInstall! +qall',
+        ' && cd -'
+        ' && vim -u .vimrc +BundleInstall! +qall',
+        quiet=True
+    ),
+    'bin': lambda: sh(
+        'virtualenv bin/env'
+        ' && source bin/env/bin/activate'
+        ' && pip install -r bin/requirements.txt',
         quiet=True
     ),
     'pacman': lambda: sh('pkglist -p', quiet=True)
