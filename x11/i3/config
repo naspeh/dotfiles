@@ -19,7 +19,7 @@ set $htop evilvte -T htop -e htop
 workspace_layout tabbed
 focus_follows_mouse no
 force_display_urgency_hint 1000 ms
-new_float none
+new_float 1pixel
 new_window 1pixel
 hide_edge_borders both
 
@@ -56,6 +56,7 @@ for_window [class="(?i)chromium" window_role="pop-up"] floating enable
 for_window [class="(?i)pavucontrol"] floating enable
 
 bindsym $mod+t exec $terminal
+bindsym $mod+d exec dmenu_run
 bindsym $mod+p exec xfce4-appfinder
 bindsym $mod+r exec xfce4-appfinder -c
 bindsym $mod+Print exec xfce4-screenshooter
