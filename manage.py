@@ -127,8 +127,6 @@ def process_args(args=None):
     if hasattr(args, 'exe'):
         args.exe(args)
     elif args.cmd == 'init':
-        if not args.target and not args.all:
-            raise SystemExit('Error. Set TARGET or ALL')
         os.chdir(args.home)
         print('Working directory: %s' % args.home)
         targets = args.target if args.target else FILES.keys()
