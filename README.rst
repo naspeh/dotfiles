@@ -1,9 +1,10 @@
 Shell and X11 files
 -------------------
 
-Installation:
-    .. code-block:: sh
 
-        $ ./manage.py init --boot vim zsh
-        # Or dev and shell targets
-        $ ./manage.py init --boot all-shell dev
+.. code-block:: bash
+
+    # Installation
+    $ ./manage.py init --boot vim zsh
+
+    # All targets: bin,x11,vim,all-shell,dev,zsh,all
