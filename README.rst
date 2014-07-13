@@ -1,5 +1,10 @@
-**Dot and bin files for shell and X11.**
+Shell and X11 files
+-------------------
 
-For install::
 
-    $ ./manage.py init --home=/home/naspeh/ --boot vim zsh
+.. code-block:: bash
+
+    # Installation
+    $ ./manage.py init --boot vim zsh
+
+    # All targets: bin,x11,vim,all-shell,dev,zsh,all
