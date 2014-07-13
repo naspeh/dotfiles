@@ -46,24 +46,17 @@ BOOT = {
         ' && vim -u .vimrc +BundleInstall! +qall'
     ),
     'bin': (
-        'virtualenv bin/env'
-        ' && source bin/env/bin/activate'
-        ' && pip install -r bin/requirements.txt'
+        '[ -d {0} ] || virtualenv {0}'
+        ' && source {0}bin/activate'
+        ' && pip install -Ur bin/requirements.txt'
+        ' && pip freeze'
+        .format('bin/env/')
     ),
     'pacman': 'pkglist -p'
 }
 
 
-def sh(cmd, quiet=False, **kwargs):
-    code = subprocess.call(cmd, shell=True, **kwargs)
-    msg = '"%s"(%s)' % (cmd, code)
-    if quiet:
-        return msg
-    else:
-        print(msg)
-
-
-def create(target, files=None, boot=False, quiet=False, home='./'):
+def create(target, files=None, boot=False, indent='', home='./'):
     def mkdir(dest):
         dir_ = os.path.dirname(dest)
         if dir_ and not os.path.exists(dir_):
@@ -83,32 +76,29 @@ def create(target, files=None, boot=False, quiet=False, home='./'):
         os.rename(dest, bak)
         return (dest, bak)
 
-    msg = ['Process "%s" target' % target]
+    info = lambda msg: print('%s%s' % (indent, msg))
+    info('Process "%s" target' % target)
     files = files if files else FILES[target]
-    cleaned, created = [], []
     for item in files:
         if isinstance(item, str):
-            msg += ['|   ' + m for m in create(item, boot=boot, quiet=True)]
+            create(item, boot=boot, indent='|   ')
             continue
         dest, src = item
         src = os.path.join(SRC_DIR, src)
         if os.path.realpath(dest) == src:
             continue
         if os.path.lexists(dest):
-            cleaned.append(clean(dest))
-        created.append((dest, src))
+            info('| * backup %s to %s' % clean(dest))
+        info('| + create %s to %s' % (dest, src))
         mkdir(dest)
         os.symlink(src, dest)
-    msg += ['| * backup %s to %s' % i for i in cleaned]
-    msg += ['| + create %s to %s' % i for i in created]
     boot = boot and BOOT.get(target)
     if boot:
-        msg += ['Boot process for "%s" target' % target]
-        msg += ['| * ' + sh(boot, quiet=True)]
-    if quiet:
-        return msg
-    else:
-        print('\n'.join(msg))
+        info('Boot process for "%s" target' % target)
+        info('| * %r' % boot)
+        print('----- OUTPUT -----')
+        subprocess.check_call(boot, shell=True)
+        print('------------------')
 
 
 def process_args(args=None):
@@ -140,7 +130,7 @@ def process_args(args=None):
         if not args.target and not args.all:
             raise SystemExit('Error. Set TARGET or ALL')
         os.chdir(args.home)
-        print('Home directory: %s' % args.home)
+        print('Working directory: %s' % args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
             create(target, boot=args.boot, home=args.home.rstrip('/') + '/')
