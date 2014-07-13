@@ -36,14 +36,10 @@ FILES = {
 }
 BOOT = {
     'vim': (
-        # Update submodules with Vundle
-        'cd %s' % SRC_DIR +
-        ' && git submodule init'
-        ' && git submodule update'
-
         # Install and update plugins
-        ' && cd -'
-        ' && vim -u .vimrc +BundleInstall! +qall'
+        '[ -d {0} ] || git clone https://github.com/gmarik/vundle.git {0}'
+        ' && vim -u .vimrc +BundleInstall! +qa!'
+        .format('.vim/bundle/vundle')
     ),
     'bin': (
         '[ -d {0} ] || virtualenv {0}'
