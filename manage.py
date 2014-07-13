@@ -35,7 +35,7 @@ FILES = {
     'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
-    'vim': 'bin/vimup rc',
+    'vim': '%s/bin/vimup rc' % SRC_DIR,
     'bin': (
         '[ -d {0} ] || virtualenv {0}'
         ' && source {0}bin/activate'
@@ -43,11 +43,11 @@ BOOT = {
         ' && pip freeze'
         .format('bin/env/')
     ),
-    'pacman': 'bin/pkglist -p'
+    'pacman': '%s/bin/pkglist -p' % SRC_DIR
 }
 
 
-def create(target, files=None, boot=False, indent='', home='./'):
+def create(target, files=None, boot=False, indent=''):
     def mkdir(dest):
         dir_ = os.path.dirname(dest)
         if dir_ and not os.path.exists(dir_):
@@ -101,28 +101,30 @@ def process_args(args=None):
         p.set_defaults(cmd=name)
         p.arg = lambda *a, **kw: p.add_argument(*a, **kw) and p
         p.exe = lambda f: p.set_defaults(exe=f) and p
+
+        p.arg('-H', '--home', default=os.path.expanduser('~'))
         return p
 
     cmd('init', help='init home directory')\
-        .arg('-H', '--home', default=os.path.expanduser('~'))\
         .arg('target', choices=FILES.keys(), nargs='+')\
         .arg('-b', '--boot', action='store_true')
 
     cmd('pacman', help='init pacman')\
         .arg('-r', '--root', default='/home/pacman')\
-        .exe(lambda args: (
-            create('pacman', boot=True, files=[(args.root, 'env/pacman')])
+        .exe(lambda a: (
+            create('pacman', boot=True, files=[(a.root, 'env/pacman')])
         ))
 
     args = parser.parse_args(args)
+    os.chdir(args.home)
+
     if hasattr(args, 'exe'):
         args.exe(args)
     elif args.cmd == 'init':
-        os.chdir(args.home)
         print('Working directory: %s' % args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
-            create(target, boot=args.boot, home=args.home.rstrip('/') + '/')
+            create(target, boot=args.boot)
     else:
         raise ValueError('Wrong subcommand')
 
