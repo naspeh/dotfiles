@@ -144,12 +144,8 @@ noremap <leader>gg :call VarToggle(
 \)<cr>
 
 
-Bundle 'scrooloose/nerdcommenter'
-let NERDCreateDefaultMappings=0
-nnoremap <leader>c :call NERDComment('n', 'AlignLeft')<cr>
-vnoremap <leader>c :call NERDComment('x', 'AlignLeft')<cr>gv
-nnoremap <leader>cc :call NERDComment('n', 'Uncomment')<cr>
-vnoremap <leader>cc :call NERDComment('x', 'Uncomment')<cr>gv
+Bundle 'tpope/vim-commentary'
+vnoremap <leader>c :Commentary<cr>gv
 
 
 let g:jedi#force_py_version=3
