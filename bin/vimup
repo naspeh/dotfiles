@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+import argparse
+import os
+import re
+import subprocess
+
+
+def install(filename, dirbase):
+    with open(filename, 'br') as f:
+        text = f.read().decode()
+    bundles_re = r'" ?Bundle ({0})(?: ({0}))?'.format('[^ \n]*')
+    bundles = re.findall(bundles_re, text)
+    print('\n - '.join(
+        ['Found %i bundles:' % len(bundles)] +
+        [i[0] for i in bundles]
+    ))
+    urls = []
+    for bundle, dirname in bundles:
+        bundle, dirname = (s.strip('"\'') for s in (bundle, dirname))
+        print(' * Process %r' % bundle)
+        if '/' not in bundle:
+            bundle = 'vim-scripts/%s' % bundle
+        if not dirname:
+            dirname = bundle.replace('/', '--')
+        dirname = os.path.join(dirbase, dirname)
+        url = 'https://github.com/%s' % bundle
+        urls.append(url)
+        if os.path.exists(dirname):
+            subprocess.call('git pull', cwd=dirname, shell=True)
+        else:
+            cmd = 'git clone --depth=1 %s.git %s' % (url, dirname)
+            subprocess.call(cmd, shell=True)
+
+    with open(os.path.join(dirbase, 'bundles.txt'), 'bw') as f:
+        f.write(('\n'.join(urls)).encode())
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser('mail')
+    cmds = parser.add_subparsers(help='commands')
+
+    def cmd(name, **kw):
+        p = cmds.add_parser(name, **kw)
+        p.set_defaults(cmd=name)
+        p.arg = lambda *a, **kw: p.add_argument(*a, **kw) and p
+        p.exe = lambda f: p.set_defaults(exe=f) and p
+        return p
+
+    cmd('install', aliases=['i'])\
+        .arg('-f', default=os.path.expanduser('~/.vimrc'))\
+        .arg('-d', default=os.path.expanduser('~/.vim/bundle'))\
+        .exe(lambda a: install(a.f, a.d.rstrip('/')))
+
+    args = parser.parse_args(argv)
+    if not hasattr(args, 'exe'):
+        parser.print_usage()
+    else:
+        args.exe(args)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        raise SystemExit(1)

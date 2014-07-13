@@ -75,18 +75,18 @@ nmap <leader>ta :setlocal formatoptions-=l<cr>:call TextMode()<cr>
 " ------------------------------
 " Plugins activate
 " ------------------------------
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
+" Bundle 'tpope/vim-pathogen'
+runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
 
 
-Bundle 'xterm16.vim'
+" Bundle 'xterm16.vim'
 let xterm16_colormap='softlight'
 let xterm16_brightness='high'
-silent! colorscheme xterm16  " silent for first run
+colorscheme xterm16  " silent for first run
 
 
-Bundle 'scrooloose/nerdtree'
+" Bundle 'scrooloose/nerdtree'
 call MapDo('<leader>f', ':NERDTreeToggle<cr>')
 let NERDTreeWinSize=35
 let NERDTreeChDirMode=2
@@ -94,7 +94,7 @@ let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.pyc$']
 
 
-Bundle 'kien/ctrlp.vim'
+" Bundle 'kien/ctrlp.vim'
 call MapDo('<F3>', ':CtrlPBuffer<cr>')
 call MapDo('<F4>', ':CtrlPCurWD<cr>')
 call MapDo('<F5>', ':CtrlPBufTag<cr>')
@@ -106,7 +106,7 @@ let g:ctrlp_working_path_mode=0
 let g:ctrlp_mruf_relative=1
 
 
-Bundle 'scrooloose/syntastic'
+" Bundle 'scrooloose/syntastic'
 let g:syntastic_check_on_open=0
 let g:syntastic_enable_signs=0
 let g:syntastic_error_symbol='✗'
@@ -122,20 +122,20 @@ call MapDo('<F8>', ':SyntasticCheck<cr>:Errors<cr>')
 nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
 
-Bundle 'milkypostman/vim-togglelist'
+" Bundle 'milkypostman/vim-togglelist'
 "The default mappings are:
 "nmap <leader>l :call ToggleLocationList()<CR>
 "nmap <leader>q :call ToggleQuickfixList()<CR>
 
 
-Bundle 'majutsushi/tagbar'
+" Bundle 'majutsushi/tagbar'
 call MapDo('<leader>b', ':TagbarToggle<cr>')
 let g:tagbar_autofocus=1
 let g:tagbar_sort=1
 let g:tagbar_foldlevel=0
 
 
-Bundle 'grep.vim'
+" Bundle 'grep.vim'
 let Grep_Skip_Dirs_='.git .hg __pycache__'
 let Grep_Skip_Dirs=Grep_Skip_Dirs_
 let Grep_Skip_Files='*.pyc'
@@ -144,17 +144,18 @@ noremap <leader>gg :call VarToggle(
 \)<cr>
 
 
-Bundle 'tpope/vim-commentary'
+" Bundle 'tpope/vim-commentary'
 vnoremap <leader>c :Commentary<cr>gv
 
 
 let g:jedi#force_py_version=3
-Bundle 'davidhalter/jedi-vim'
+" Bundle 'davidhalter/jedi-vim'
+" Bundle 'davidhalter/jedi' davidhalter--jedi-vim/jedi
 let g:jedi#auto_initialization=1
 let g:jedi#auto_vim_configuration=1
 let g:jedi#use_tabs_not_buffers=0
 let g:jedi#rename_command=0
-let g:jedi#popup_on_dot=1
+let g:jedi#popup_on_dot=0
 let g:jedi#popup_select_first=0
 let g:jedi#show_call_signatures=0
 let g:jedi#goto_definitions_command="<leader>d"
@@ -165,30 +166,30 @@ let g:jedi#completions_command="<C-g>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
 
-Bundle 'ervandew/supertab'
+" Bundle 'ervandew/supertab'
 let g:SuperTabMappingForward = '<nul>' " '<c-space>'
 let g:SuperTabMappingBackward = '<s-nul>' " '<s-c-space>'
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 
 
-"Bundle 'hdima/python-syntax'
+"- Bundle 'hdima/python-syntax'
 "let python_highlight_all=1
 
 
-Bundle 'mitsuhiko/vim-jinja'
+" Bundle 'mitsuhiko/vim-jinja'
 let g:htmljinja_disable_detection=0
 
 
-Bundle 'mbbill/undotree'
+" Bundle 'mbbill/undotree'
 nnoremap <leader>u :UndotreeToggle<cr>
 
 
-Bundle 'maksimr/vim-jsbeautify'
-Bundle 'tpope/vim-fugitive'
-Bundle 'powerman/vim-plugin-ruscmd'
-Bundle 'gregsexton/MatchTag'
-Bundle 'terryma/vim-multiple-cursors'
+" Bundle 'maksimr/vim-jsbeautify'
+" Bundle 'tpope/vim-fugitive'
+" Bundle 'powerman/vim-plugin-ruscmd'
+" Bundle 'gregsexton/MatchTag'
+" Bundle 'terryma/vim-multiple-cursors'
 
 
 " ------------------------------
