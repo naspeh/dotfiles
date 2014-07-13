@@ -1,3 +1,2 @@
-oauthlib
-requests
+# 'gmail' script
 requests-oauthlib

@@ -35,7 +35,7 @@ FILES = {
     'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
-    'vim': lambda: sh(
+    'vim': (
         # Update submodules with Vundle
         'cd %s' % SRC_DIR +
         ' && git submodule init'
@@ -43,16 +43,14 @@ BOOT = {
 
         # Install and update plugins
         ' && cd -'
-        ' && vim -u .vimrc +BundleInstall! +qall',
-        quiet=True
+        ' && vim -u .vimrc +BundleInstall! +qall'
     ),
-    'bin': lambda: sh(
+    'bin': (
         'virtualenv bin/env'
         ' && source bin/env/bin/activate'
-        ' && pip install -r bin/requirements.txt',
-        quiet=True
+        ' && pip install -r bin/requirements.txt'
     ),
-    'pacman': lambda: sh('pkglist -p', quiet=True)
+    'pacman': 'pkglist -p'
 }
 
 
@@ -106,7 +104,7 @@ def create(target, files=None, boot=False, quiet=False, home='./'):
     boot = boot and BOOT.get(target)
     if boot:
         msg += ['Boot process for "%s" target' % target]
-        msg += ['| * ' + boot()]
+        msg += ['| * ' + sh(boot, quiet=True)]
     if quiet:
         return msg
     else:
@@ -125,7 +123,7 @@ def process_args(args=None):
         return p
 
     cmd('init', help='init home directory')\
-        .arg('-H', '--home', default='.')\
+        .arg('-H', '--home', default=os.path.expanduser('~'))\
         .arg('target', choices=FILES.keys(), nargs='+')\
         .arg('-b', '--boot', action='store_true')
 
@@ -142,6 +140,7 @@ def process_args(args=None):
         if not args.target and not args.all:
             raise SystemExit('Error. Set TARGET or ALL')
         os.chdir(args.home)
+        print('Home directory: %s' % args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
             create(target, boot=args.boot, home=args.home.rstrip('/') + '/')
