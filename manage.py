@@ -35,12 +35,7 @@ FILES = {
     'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
-    'vim': (
-        # Install and update plugins
-        '[ -d {0} ] || git clone https://github.com/gmarik/vundle.git {0}'
-        ' && vim -u .vimrc +BundleInstall! +qa!'
-        .format('.vim/bundle/vundle')
-    ),
+    'vim': 'bin/vimup rc',
     'bin': (
         '[ -d {0} ] || virtualenv {0}'
         ' && source {0}bin/activate'
@@ -48,7 +43,7 @@ BOOT = {
         ' && pip freeze'
         .format('bin/env/')
     ),
-    'pacman': 'pkglist -p'
+    'pacman': 'bin/pkglist -p'
 }
 
 
