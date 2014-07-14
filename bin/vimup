@@ -10,41 +10,65 @@ import subprocess
 import requests
 
 
+dirbase = rcfile = None
+get_url = lambda n: 'https://github.com/%s' % n
+pretty_json = functools.partial(
+    json.dumps, sort_keys=True, indent=4, separators=(',', ': ')
+)
+
+
 def get_bundle(bundle, dirname):
     bundle, dirname = (s.strip('"\'') for s in (bundle, dirname))
     if '/' not in bundle:
         bundle = 'vim-scripts/%s' % bundle
     if not dirname:
         dirname = bundle.replace('/', '--')
-    return bundle, dirname, 'https://github.com/%s' % bundle
+    return bundle, dirname
 
 
-def rc(filename, dirbase, no_install=False, clean=False):
-    with open(filename, 'br') as f:
+def parse_rc():
+    global rcfile
+
+    with open(rcfile, 'br') as f:
         text = f.read().decode()
     bundles_re = r'" ?Bundle ({0})(?: ({0}))?'.format('[^ \n]*')
-    bundles = sorted(get_bundle(*i) for i in re.findall(bundles_re, text))
-    print('Found %i bundles:' % len(bundles))
+    bundles = [get_bundle(*i) for i in re.findall(bundles_re, text)]
+    print('Found %i bundles in %s' % (len(bundles), rcfile))
+    return bundles
 
-    if clean:
-        dirs = [i[1] for i in bundles]
-        for name in os.listdir(dirbase):
-            path = os.path.join(dirbase, name)
-            if name not in dirs and os.path.isdir(path):
-                print('Remove %r' % path)
-                shutil.rmtree(path)
 
-    if not no_install:
-        for i in bundles:
-            install(i[0], i[1], dirbase=dirbase)
-        return
+def clean():
+    global dirbase
+    dirs = [i[1] for i in parse_rc()]
+    for name in os.listdir(dirbase):
+        path = os.path.join(dirbase, name)
+        if name not in dirs and os.path.isdir(path):
+            print('Remove %r' % path)
+            shutil.rmtree(path)
 
-    pretty_info = functools.partial(
-        json.dumps, sort_keys=True, indent=4, separators=(',', ': ')
-    )
+
+def install(bundle, dirname):
+    global dirbase
+    bundles = [(bundle, dirname)] if bundle else parse_rc()
+    for bundle, dirname in bundles:
+        bundle, dirname = get_bundle(bundle, dirname)
+
+        print('Process %r' % bundle)
+        dirname = os.path.join(dirbase, dirname)
+        if os.path.exists(os.path.join(dirname, '.git')):
+            subprocess.call('git pull', cwd=dirname, shell=True)
+        else:
+            cmd = 'git clone --depth=1 %s.git %s' % (get_url(bundle), dirname)
+            subprocess.call(cmd, shell=True)
+        print('---')
+
+
+def get_info(bundles):
+    save = False if bundles else True
+    bundles = [get_bundle(i, '') for i in bundles] if bundles else parse_rc()
+
     forbidden, info = False, {}
-    for name, _, url in bundles:
-        info[name] = url
+    for name, _ in sorted(bundles):
         if not forbidden:
             res = requests.get('https://api.github.com/repos/' + name)
             if res.ok:
@@ -56,26 +80,16 @@ def rc(filename, dirbase, no_install=False, clean=False):
                 forbidden = True
                 print('Can\'t get info from github: %r %r' % (res, res.reason))
 
-        print('%s: %s' % (name, pretty_info(info[name])))
+        print('%s: %s' % (name, pretty_json(info.get(name, get_url(name)))))
 
-    with open(os.path.join(dirbase, 'bundles.txt'), 'bw') as f:
-        f.write(pretty_info(info).encode())
-
-
-def install(bundle, dirname, dirbase):
-    dirbase = dirbase.rstrip('/')
-    bundle, dirname, url = get_bundle(bundle, dirname)
-
-    print('---\nProcess %r' % bundle)
-    dirname = os.path.join(dirbase, dirname)
-    if os.path.exists(dirname):
-        subprocess.call('git pull origin master', cwd=dirname, shell=True)
-    else:
-        cmd = 'git clone --depth=1 %s.git %s' % (url, dirname)
-        subprocess.call(cmd, shell=True)
+    if save and info:
+        with open(os.path.join(dirbase, 'bundles.txt'), 'bw') as f:
+            f.write(pretty_json(info).encode())
 
 
 def main(argv=None):
+    global dirbase, rcfile
+
     parser = argparse.ArgumentParser('mail')
     cmds = parser.add_subparsers(help='commands')
 
@@ -86,20 +100,23 @@ def main(argv=None):
         p.exe = lambda f: p.set_defaults(exe=f) and p
 
         p.arg('-d', '--dirbase', default=os.path.expanduser('~/.vim/bundle'))
+        p.arg('-r', '--rcfile', default=os.path.expanduser('~/.vimrc'))
         return p
 
     cmd('install', aliases=['i'])\
-        .arg('bundle')\
+        .arg('bundle', nargs='?', default='')\
         .arg('dirname', nargs='?', default='')\
-        .exe(lambda a: install(a.bundle, a.dirname, a.dirbase))
+        .exe(lambda a: install(a.bundle, a.dirname))
 
-    cmd('rc', aliases=['r'])\
-        .arg('-f', default=os.path.expanduser('~/.vimrc'))\
-        .arg('-n', '--no-install', action='store_true')\
-        .arg('-c', '--clean', action='store_true')\
-        .exe(lambda a: rc(a.f, a.dirbase, a.no_install, a.clean))
+    cmd('clean', aliases=['c'])\
+        .exe(lambda a: clean())
+
+    cmd('show', aliases=['s'])\
+        .arg('bundles', nargs='*', default=[])\
+        .exe(lambda a: get_info(a.bundles))
 
     args = parser.parse_args(argv)
+    dirbase, rcfile = args.dirbase.rstrip('/'), args.rcfile
     if not hasattr(args, 'exe'):
         parser.print_usage()
     else:
