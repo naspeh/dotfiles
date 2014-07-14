@@ -1,9 +1,13 @@
-#!/usr/bin/env python
+#!/home/dotfiles/bin/env/bin/python
 import argparse
+import functools
+import json
 import os
 import re
 import shutil
 import subprocess
+
+import requests
 
 
 def get_bundle(bundle, dirname):
@@ -19,8 +23,9 @@ def rc(filename, dirbase, no_install=False, clean=False):
     with open(filename, 'br') as f:
         text = f.read().decode()
     bundles_re = r'" ?Bundle ({0})(?: ({0}))?'.format('[^ \n]*')
-    bundles = [get_bundle(*i) for i in re.findall(bundles_re, text)]
+    bundles = sorted(get_bundle(*i) for i in re.findall(bundles_re, text))
     print('Found %i bundles:' % len(bundles))
+
     if clean:
         dirs = [i[1] for i in bundles]
         for name in os.listdir(dirbase):
@@ -29,27 +34,46 @@ def rc(filename, dirbase, no_install=False, clean=False):
                 print('Remove %r' % path)
                 shutil.rmtree(path)
 
-    if no_install:
-        print('\n'.join(sorted(' * {2}'.format(*i) for i in bundles)))
+    if not no_install:
+        for i in bundles:
+            install(i[0], i[1], dirbase=dirbase)
         return
 
-    info = sorted(install(*i, dirbase=dirbase) for i in bundles)
-    with open(os.path.join(dirbase, 'bundles.txt'), 'bw') as f:
-        f.write(('\n'.join(i[0] for i in info)).encode())
+    pretty_info = functools.partial(
+        json.dumps, sort_keys=True, indent=4, separators=(',', ': ')
+    )
+    forbidden, info = False, {}
+    for name, _, url in bundles:
+        info[name] = url
+        if not forbidden:
+            res = requests.get('https://api.github.com/repos/' + name)
+            if res.ok:
+                info[name] = {
+                    k: v for k, v in res.json().items()
+                    if k in ('description', 'html_url', 'homepage', 'watchers')
+                }
+            else:
+                forbidden = True
+                print('Can\'t get info from github: %r %r' % (res, res.reason))
+
+        print('%s: %s' % (name, pretty_info(info[name])))
+
+    if info:
+        with open(os.path.join(dirbase, 'bundles.txt'), 'bw') as f:
+            f.write(pretty_info(info).encode())
 
 
 def install(bundle, dirname, dirbase):
     dirbase = dirbase.rstrip('/')
     bundle, dirname, url = get_bundle(bundle, dirname)
 
-    print('### Process %r' % bundle)
+    print('---\nProcess %r' % bundle)
     dirname = os.path.join(dirbase, dirname)
     if os.path.exists(dirname):
         subprocess.call('git pull origin master', cwd=dirname, shell=True)
     else:
         cmd = 'git clone --depth=1 %s.git %s' % (url, dirname)
         subprocess.call(cmd, shell=True)
-    return url, dirname
 
 
 def main(argv=None):
