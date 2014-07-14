@@ -35,7 +35,7 @@ FILES = {
     'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
-    'vim': '%s/bin/vimup rc -c' % SRC_DIR,
+    'vim': '{0}/bin/vimup i && {0}/bin/vimup c'.format(SRC_DIR),
     'bin': (
         '[ -d {0} ] || virtualenv {0}'
         ' && source {0}bin/activate'
@@ -43,7 +43,7 @@ BOOT = {
         ' && pip freeze'
         .format('bin/env/')
     ),
-    'pacman': '%s/bin/pkglist -p' % SRC_DIR
+    'pacman': '{}/bin/pkglist -p'.format(SRC_DIR)
 }
 
 
