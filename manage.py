@@ -35,7 +35,7 @@ FILES = {
     'all': ('all-shell', 'dev', 'x11'),
 }
 BOOT = {
-    'vim': '%s/bin/vimup rc' % SRC_DIR,
+    'vim': '%s/bin/vimup rc -c' % SRC_DIR,
     'bin': (
         '[ -d {0} ] || virtualenv {0}'
         ' && source {0}bin/activate'
