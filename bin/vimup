@@ -58,9 +58,8 @@ def rc(filename, dirbase, no_install=False, clean=False):
 
         print('%s: %s' % (name, pretty_info(info[name])))
 
-    if not forbidden:
-        with open(os.path.join(dirbase, 'bundles.txt'), 'bw') as f:
-            f.write(pretty_info(info).encode())
+    with open(os.path.join(dirbase, 'bundles.txt'), 'bw') as f:
+        f.write(pretty_info(info).encode())
 
 
 def install(bundle, dirname, dirbase):
