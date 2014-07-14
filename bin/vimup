@@ -12,25 +12,25 @@ def get_bundle(bundle, dirname):
         bundle = 'vim-scripts/%s' % bundle
     if not dirname:
         dirname = bundle.replace('/', '--')
-    return bundle, dirname
+    return bundle, dirname, 'https://github.com/%s' % bundle
 
 
-def rc(filename, dirbase, echo=False, clean=False):
+def rc(filename, dirbase, no_install=False, clean=False):
     with open(filename, 'br') as f:
         text = f.read().decode()
     bundles_re = r'" ?Bundle ({0})(?: ({0}))?'.format('[^ \n]*')
-    bundles = re.findall(bundles_re, text)
+    bundles = [get_bundle(*i) for i in re.findall(bundles_re, text)]
     print('Found %i bundles:' % len(bundles))
     if clean:
-        dirs = [get_bundle(*i)[1] for i in bundles]
+        dirs = [i[1] for i in bundles]
         for name in os.listdir(dirbase):
             path = os.path.join(dirbase, name)
             if name not in dirs and os.path.isdir(path):
                 print('Remove %r' % path)
                 shutil.rmtree(path)
 
-    if echo:
-        print('\n'.join([' * ' + i[0] for i in bundles]))
+    if no_install:
+        print('\n'.join(sorted(' * {2}'.format(*i) for i in bundles)))
         return
 
     info = sorted(install(*i, dirbase=dirbase) for i in bundles)
@@ -40,11 +40,10 @@ def rc(filename, dirbase, echo=False, clean=False):
 
 def install(bundle, dirname, dirbase):
     dirbase = dirbase.rstrip('/')
-    bundle, dirname = get_bundle(bundle, dirname)
+    bundle, dirname, url = get_bundle(bundle, dirname)
 
     print('### Process %r' % bundle)
     dirname = os.path.join(dirbase, dirname)
-    url = 'https://github.com/%s' % bundle
     if os.path.exists(dirname):
         subprocess.call('git pull origin master', cwd=dirname, shell=True)
     else:
@@ -73,9 +72,9 @@ def main(argv=None):
 
     cmd('rc', aliases=['r'])\
         .arg('-f', default=os.path.expanduser('~/.vimrc'))\
-        .arg('-e', '--echo', action='store_true')\
+        .arg('-n', '--no-install', action='store_true')\
         .arg('-c', '--clean', action='store_true')\
-        .exe(lambda a: rc(a.f, a.dirbase, echo=a.echo, clean=a.clean))
+        .exe(lambda a: rc(a.f, a.dirbase, a.no_install, a.clean))
 
     args = parser.parse_args(argv)
     if not hasattr(args, 'exe'):
