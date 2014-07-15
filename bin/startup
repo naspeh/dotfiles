@@ -15,10 +15,10 @@ else
     devilspie &
 fi
 
+wicd-client --tray &
 #cbatticon &
 conky &
 sbxkb &
-#unclutter -grab &
 orage &
 volumeicon &
 parcellite &

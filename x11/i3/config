@@ -54,9 +54,10 @@ for_window [title="Event Tester"] floating enable
 for_window [class="(?i)thunar" title="File Operation Progress"] floating enable
 for_window [class="(?i)chromium" window_role="pop-up"] floating enable
 for_window [class="(?i)pavucontrol"] floating enable
+for_window [class="(?i)wicd-client\.py"] floating enable
 
 bindsym $mod+t exec $terminal
-bindsym $mod+d exec dmenu_run
+bindsym $mod+e exec dmenu_run
 bindsym $mod+p exec xfce4-appfinder
 bindsym $mod+r exec xfce4-appfinder -c
 bindsym $mod+Print exec xfce4-screenshooter
