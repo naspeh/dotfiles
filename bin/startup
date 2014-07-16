@@ -1,11 +1,10 @@
 #!/bin/sh
 if [ "$SESSION" = "i3" ]; then
     /usr/lib/lxpolkit/lxpolkit &
+    xfsettingsd &
+
     hsetroot -solid "#333343"
     i3-msg 'workspace "2: term"; exec evilvte'
-    xcompmgr &
-    xfce4-power-manager &
-    xfsettingsd &
 else
     if [ "$(hostname)" = "pad" ]; then
         sleep 1
@@ -15,8 +14,8 @@ else
     devilspie &
 fi
 
-wicd-client --tray &
-#cbatticon &
+xcompmgr &
+cbatticon &
 conky &
 sbxkb &
 orage &
