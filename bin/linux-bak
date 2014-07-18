@@ -1,21 +1,38 @@
 #!/usr/bin/env python
+import contextlib
+import re
 import subprocess
 
-name = subprocess.check_output('expac -Q "%n %v" linux', shell=True)
-name = name.decode().strip()
+_conf = None
 
-with open('/boot/loader/entries/arch.conf', 'br') as f:
-    conf = f.read().decode()
 
-conf = conf.replace('/vmlinuz-linux', '/vmlinuz-linux-bak')
-conf = conf.replace('/initramfs-linux.img', '/initramfs-linux-bak.img')
-conf = '# {}\n{}'.format(name,  conf)
+@contextlib.contextmanager
+def entry(label):
+    global _conf
+    if not _conf:
+        with open('/boot/loader/entries/arch.conf', 'br') as f:
+            _conf = f.read().decode()
+    with open('/boot/loader/entries/arch-%s.conf' % label, 'bw') as f:
+        yield _conf, lambda c: f.write(c.encode())
 
-with open('/boot/loader/entries/arch-bak.conf', 'bw') as f:
-    f.write(conf.encode())
+with entry('bak') as (conf, save):
+    name = subprocess.check_output('expac -Q "%n %v" linux', shell=True)
+    name = name.decode().strip()
+    conf = conf.replace('/vmlinuz-linux', '/vmlinuz-linux-bak')
+    conf = conf.replace('/initramfs-linux.img', '/initramfs-linux-bak.img')
+    conf = '# {}\n{}'.format(name, conf)
+    save(conf)
 
-subprocess.call(
-    'cp /boot/vmlinuz-linux /boot/vmlinuz-linux-bak'
-    '&& cp /boot/initramfs-linux.img /boot/initramfs-linux-bak.img',
-    shell=True
-)
+    subprocess.call(
+        'cp /boot/vmlinuz-linux /boot/vmlinuz-linux-bak'
+        '&& cp /boot/initramfs-linux.img /boot/initramfs-linux-bak.img',
+        shell=True
+    )
+
+with entry('console') as (c, save):
+    c = re.sub(r'(?m)^options.*$', r'\g<0> systemd.unit=multi-user.target', c)
+    save(c)
+
+with entry('test') as (c, save):
+    c = c.replace('root=/dev/pad/root', 'root=/dev/pad/test')
+    save(c)
