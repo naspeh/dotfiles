@@ -18,11 +18,8 @@ ${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
 $endif
 
 ### WiFi
-${if_up wlp3s0}\
-{"full_text": "⚡ ${wireless_essid wlp3s0} [${wireless_link_qual_perc wlp3s0}%]", "color": "\#88cc88"},
-$endif\
-${if_up wlp2s0}\
-{"full_text": "⚡ ${wireless_essid wlp2s0} [${wireless_link_qual_perc wlp2s0}%]", "color": "\#88cc88"},
+${if_up wlan0}\
+{"full_text": "⚡ ${wireless_essid wlan0} [${wireless_link_qual_perc wlan0}%]", "color": "\#88cc88"},
 $endif\
 
 ### Time
