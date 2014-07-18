@@ -60,14 +60,15 @@ def create(target, files=None, boot=False, indent=''):
 
     def clean(dest):
         bak_dir = './bak'
+        if not os.path.exists(bak_dir):
+            os.mkdir(bak_dir)
         bak = os.path.join(bak_dir, dest.lstrip(os.path.sep))
         if os.path.exists(bak) or os.path.lexists(bak):
             if os.path.islink(bak) or os.path.isfile(bak):
                 os.unlink(bak)
             else:
                 shutil.rmtree(bak)
-        if not os.path.exists(bak_dir):
-            os.mkdir(bak_dir)
+        mkdir(bak)
         os.rename(dest, bak)
         return (dest, bak)
 
