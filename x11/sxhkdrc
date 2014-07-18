@@ -1,0 +1,32 @@
+XF86Audio{Raise,Lower}Volume
+    amixer sset Master {2%+, 2%-} unmute
+XF86AudioMute
+    amixer sset Master toggle
+
+alt+t
+    $TERMINAL
+alt+e
+    dmenu_run
+alt+{p,r}
+    xfce4-appfinder { ,-c}
+alt+Print
+    xfce4-screenshooter
+alt+f
+    perevod call fetch
+alt+c
+    xcmenuctrl
+alt+ctrl+l
+    i3lock -i ~/lock-s.png
+alt+ctrl+b
+    chromium
+alt+ctrl+h
+    $TERMINAL evilvte -T htop -e htop
+
+alt+s; {r,q}
+    systemctl {reboot,poweroff}
+
+alt+i; {i,l,k}
+    internet { ,light,kill}
+
+alt+a; {a,Tab,w,s,d,r,q}
+    tider call {target,toggle_active,menu,report,disable,reload,quit}

@@ -17,6 +17,14 @@ ${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
 {"full_text": "${execi 60 ~/bin/weather}", "color": "\#8888cc"},\
 $endif
 
+### WiFi
+${if_up wlp3s0}\
+{"full_text": "⚡ ${wireless_essid wlp3s0} [${wireless_link_qual_perc wlp3s0}%]", "color": "\#88cc88"},
+$endif\
+${if_up wlp2s0}\
+{"full_text": "⚡ ${wireless_essid wlp2s0} [${wireless_link_qual_perc wlp2s0}%]", "color": "\#88cc88"},
+$endif\
+
 ### Time
 {"full_text": "${time %a %b %d, %H:%M}"},
 

@@ -16,12 +16,12 @@
         )
         (maximize)
     )
-    ;(if (is(application_name) "stardict")
-    ;    (begin
-    ;        (focus)
-    ;        (geometry "800x425-0-0")
-    ;    )
-    ;)
+    (if (is(application_name) "stardict")
+        (begin
+            (focus)
+            (geometry "700x425-0-0")
+        )
+    )
     (if (is(application_name) "goldendict")
         (begin
             (focus)

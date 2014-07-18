@@ -11,16 +11,18 @@ else
     else
         sleep 2
     fi
-    devilspie &
 fi
 
+sxhkd &
+xcmenu &
+devilspie &
 xcompmgr &
 cbatticon &
 conky &
 sbxkb &
 orage &
 volumeicon &
-parcellite &
+#parcellite &
 stardict &
 tider &
 perevod &

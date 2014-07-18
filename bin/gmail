@@ -1,10 +1,14 @@
 #!/home/dotfiles/bin/env/bin/python
 import argparse
 import json
+import logging
 import subprocess
 from pathlib import Path
 
 from requests_oauthlib import OAuth2Session
+
+logging.basicConfig()
+logging.getLogger('').setLevel(logging.DEBUG)
 
 OAUTH_URL_TOKEN = 'https://accounts.google.com/o/oauth2/token'
 API_URL_BASE = 'https://www.googleapis.com/gmail/v1/users/me/'
@@ -39,20 +43,23 @@ def check():
     if not access_token:
         msg = 'Fill access_token in config'
         conf.error(msg)
-        raise SystemExit('Fill access_token in config')
+        raise SystemExit(msg)
 
     cli = OAuth2Session(
         conf('google_id'),
-        token={
-            'access_token': access_token,
-            'token_type': conf('google_response').get('token_type')
-        },
+        token=conf('google_response'),
         scope=['https://mail.google.com/'],
         auto_refresh_url=OAUTH_URL_TOKEN,
-        token_updater=lambda t: conf.update(
-            google_response=dict(conf('google_response'), access_token=t)
-        )
+        auto_refresh_kwargs={
+            'client_id': conf('google_id'),
+            'client_secret': conf('google_secret')
+        },
+        # TODO: does't call it
+        # token_updater=lambda t: conf.update(
+        #     google_response=dict(conf('google_response'), access_token=t)
+        # )
     )
+    cli.refresh_token(OAUTH_URL_TOKEN)
     res = cli.get(API_URL_BASE + 'messages', params={'q': 'is:unread'})
     if res.ok:
         conf.error(None)

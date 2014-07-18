@@ -26,10 +26,11 @@ FILES = {
     ),
     'x11': (
         ('.xinitrc', 'x11/xinitrc'),
-        ('.conkyrc', 'x11/conkyrc'),
-        ('.config/dunst', 'x11/dunst'),
         ('.i3', 'x11/i3'),
-        ('.devilspie', 'x11/devilspie')
+        ('.conkyrc', 'x11/conkyrc'),
+        ('.config/dunst/dunstrc', 'x11/dunstrc'),
+        ('.config/sxhkd/sxhkdrc', 'x11/sxhkdrc'),
+        ('.devilspie/common.ds', 'x11/devilspie.ds'),
     ),
     'all-shell': ('vim', 'zsh', 'bin'),
     'all': ('all-shell', 'dev', 'x11'),
@@ -50,20 +51,23 @@ BOOT = {
 def create(target, files=None, boot=False, indent=''):
     def mkdir(dest):
         dir_ = os.path.dirname(dest)
-        if dir_ and not os.path.exists(dir_):
+        if not dir_:
+            return
+        if os.path.lexists(dir_):
+            clean(dir_)
+        if not os.path.exists(dir_):
             os.makedirs(dir_)
 
     def clean(dest):
         bak_dir = './bak'
         bak = os.path.join(bak_dir, dest.lstrip(os.path.sep))
-        if os.path.exists(bak):
+        if os.path.exists(bak) or os.path.lexists(bak):
             if os.path.islink(bak) or os.path.isfile(bak):
                 os.unlink(bak)
             else:
                 shutil.rmtree(bak)
-        elif not os.path.exists(bak_dir):
+        if not os.path.exists(bak_dir):
             os.mkdir(bak_dir)
-        mkdir(bak)
         os.rename(dest, bak)
         return (dest, bak)
 
