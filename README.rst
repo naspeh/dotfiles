@@ -7,4 +7,4 @@ Shell and X11 files
     # Installation
     $ ./manage.py init --boot vim zsh
 
-    # All targets: bin,x11,vim,all-shell,dev,zsh,all
+    # All targets: vim,zsh,bin,dev,x11,all-shell,all
