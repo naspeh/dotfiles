@@ -1,17 +1,12 @@
 #!/home/dotfiles/bin/env/bin/python
 import argparse
+import imaplib
 import json
-import logging
 import subprocess
+import time
 from pathlib import Path
 
-from requests_oauthlib import OAuth2Session
-
-logging.basicConfig()
-logging.getLogger('').setLevel(logging.DEBUG)
-
-OAUTH_URL_TOKEN = 'https://accounts.google.com/o/oauth2/token'
-API_URL_BASE = 'https://www.googleapis.com/gmail/v1/users/me/'
+client = imaplib.IMAP4_SSL
 
 
 class _Conf:
@@ -39,39 +34,29 @@ conf = _Conf()
 
 
 def check():
-    access_token = conf('google_response', {}).get('access_token')
-    if not access_token:
-        msg = 'Fill access_token in config'
-        conf.error(msg)
-        raise SystemExit(msg)
+    im = client('imap.gmail.com')
+    cmd = 'echo "password"| dmenu -p "gmail" -nf black -nb black'
+    pwd = subprocess.check_output(cmd, shell=True).decode().rstrip('\n')
+    res = im.login(conf('email'), pwd)
+    if res[0] != 'OK':
+        conf.error(res)
+        exit(1)
 
-    cli = OAuth2Session(
-        conf('google_id'),
-        token=conf('google_response'),
-        scope=['https://mail.google.com/'],
-        auto_refresh_url=OAUTH_URL_TOKEN,
-        auto_refresh_kwargs={
-            'client_id': conf('google_id'),
-            'client_secret': conf('google_secret')
-        },
-        # TODO: does't call it
-        # token_updater=lambda t: conf.update(
-        #     google_response=dict(conf('google_response'), access_token=t)
-        # )
-    )
-    cli.refresh_token(OAUTH_URL_TOKEN)
-    res = cli.get(API_URL_BASE + 'messages', params={'q': 'is:unread'})
-    if res.ok:
-        conf.error(None)
-        uids = [i['id'] for i in res.json().get('messages', [])]
-        unread = conf('unread', [])
-        if uids != unread:
-            conf.update(unread=uids)
-        if any(uid not in unread for uid in uids):
-            subprocess.call(conf('cmd'), shell=True)
-    else:
-        conf.error('%r %r' % (res, res.reason))
+    im.select('INBOX', readonly=True)
+    while True:
+        res = im.uid('SEARCH', None, 'UNSEEN')
+        if res[0] == 'OK':
+            conf.error(None)
+            uids = [int(i) for i in res[1][0].split()]
+            unread = conf('unread', [])
+            if uids != unread:
+                conf.update(unread=uids)
+            if any(uid not in unread for uid in uids):
+                subprocess.call(conf('cmd'), shell=True)
+        else:
+            conf.error(res)
 
+        time.sleep(conf('timeout', 60))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('gmail')
@@ -79,8 +64,14 @@ if __name__ == '__main__':
     parser.add_argument('-e', action='store_true', help='last error message')
     args = parser.parse_args()
     if args.i:
-        print(len(conf('unread')))
+        if conf('error_message'):
+            print('!')
+        else:
+            print(len(conf('unread')))
     elif args.e:
         print(conf('error_message'))
     else:
-        check()
+        try:
+            check()
+        except client.error as e:
+            conf.error(str(e))

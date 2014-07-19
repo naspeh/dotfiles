@@ -13,7 +13,7 @@ ${exec cat ~/.config/tider/i3bar.txt},
 
 ### Weather and Gmail
 ${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
-{"full_text": "Gmail [${execi 30 ~/bin/gmail -i}]", "color": "\#cc88cc"},\
+{"full_text": "Gmail [${execi 10 ~/bin/gmail -i}]", "color": "\#cc88cc"},\
 {"full_text": "${execi 60 ~/bin/weather}", "color": "\#8888cc"},\
 $endif
 

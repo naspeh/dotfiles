@@ -129,8 +129,3 @@ ${voffset -4}\
 ${color1}${font :style=bold:size=9}Tider$font${color3}${voffset 1}${hr 0}$color
 ${exec cat ~/.config/tider/stats.txt}
 ${color3}${voffset 1}${hr 0}\
-
-###Checks
-${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
-${execi 30 ~/bin/gmail}
-$endif\
