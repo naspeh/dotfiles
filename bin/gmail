@@ -6,12 +6,11 @@ import subprocess
 import time
 from pathlib import Path
 
-client = imaplib.IMAP4_SSL
-
 
 class _Conf:
     def __init__(self):
-        self.path = (Path(__file__).parent / 'gmail.json').resolve()
+        base = Path(__file__).resolve().parent.parent
+        self.path = base / 'var' / 'gmail.json'
 
         with self.path.open('br') as f:
             self.data = json.loads(f.read().decode())
@@ -31,7 +30,7 @@ class _Conf:
         return self.data.get(key, default)
 
 conf = _Conf()
-im = None
+client = imaplib.IMAP4_SSL
 
 
 def check():

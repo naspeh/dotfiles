@@ -1,16 +1,5 @@
 *.pyc
 var
-/bin/gmail.json
-/bin/env/*
 
 /env/vim/.netrwhist
 /env/vim/bundle/*
-
-/env/zsh/*
-!/env/zsh/rc
-
-/env/pacman/*
-!/env/pacman/pacman.conf
-
-/env/pip/*
-!/env/pip/pip.conf
