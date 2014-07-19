@@ -20,8 +20,7 @@ if [ "$1" = "skype" ]; then
 fi
 
 gmail &
-chromium &
-(sleep 1; i3-msg '[class="(?i)chromium"] move workspace 1: web') &
+i3-msg 'workspace "1: web"; exec chromium'
 
 [ "$1" = "light" ] && exit
 
