@@ -13,7 +13,13 @@ if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
 fi
 
+if [ "$1" = "skype" ]; then
+    skype &
+    skype-call-recorder &
+    exit
+fi
 
+gmail &
 chromium &
 (sleep 1; i3-msg '[class="(?i)chromium"] move workspace 1: web') &
 
@@ -21,6 +27,4 @@ chromium &
 
 yandex-disk start
 dropboxd &
-skype &
-skype-call-recorder &
 #(sleep 1; gajim) &

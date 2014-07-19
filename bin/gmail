@@ -31,30 +31,39 @@ class _Conf:
         return self.data.get(key, default)
 
 conf = _Conf()
+im = None
 
 
 def check():
-    im = client('imap.gmail.com')
     cmd = 'echo "password"| dmenu -p "gmail" -nf black -nb black'
     pwd = subprocess.check_output(cmd, shell=True).decode().rstrip('\n')
-    res = im.login(conf('email'), pwd)
-    if res[0] != 'OK':
-        conf.error(res)
-        exit(1)
-
-    im.select('INBOX', readonly=True)
     while True:
-        res = im.uid('SEARCH', None, 'UNSEEN')
-        if res[0] == 'OK':
-            conf.error(None)
-            uids = [int(i) for i in res[1][0].split()]
-            unread = conf('unread', [])
-            if uids != unread:
-                conf.update(unread=uids)
-            if any(uid not in unread for uid in uids):
-                subprocess.call(conf('cmd'), shell=True)
+        try:
+            im = client('imap.gmail.com')
+            res = im.login(conf('email'), pwd)
+            if res[0] != 'OK':
+                conf.error(res)
+                exit(1)
+
+            im.select('INBOX', readonly=True)
+        except IOError as e:
+            conf.error(str(e))
+        except client.error as e:
+            conf.error(str(e))
+            print(e)
+            exit(1)
         else:
-            conf.error(res)
+            res = im.uid('SEARCH', None, 'UNSEEN')
+            if res[0] == 'OK':
+                conf.error(None)
+                uids = [int(i) for i in res[1][0].split()]
+                unread = conf('unread', [])
+                if uids != unread:
+                    conf.update(unread=uids)
+                if any(uid not in unread for uid in uids):
+                    subprocess.call(conf('cmd'), shell=True)
+            else:
+                conf.error(res)
 
         time.sleep(conf('timeout', 60))
 
@@ -71,7 +80,4 @@ if __name__ == '__main__':
     elif args.e:
         print(conf('error_message'))
     else:
-        try:
-            check()
-        except client.error as e:
-            conf.error(str(e))
+        check()

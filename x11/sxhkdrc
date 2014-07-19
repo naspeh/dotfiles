@@ -25,8 +25,8 @@ alt+ctrl+h
 alt+s; {r,q}
     systemctl {reboot,poweroff}
 
-alt+i; {i,l,k}
-    internet { ,light,kill}
+alt+i; {i,l,k,s}
+    internet { ,light,kill,skype}
 
 alt+a; {a,Tab,w,s,d,r,q}
     tider call {target,toggle_active,menu,report,disable,reload,quit}
