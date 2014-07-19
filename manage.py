@@ -37,13 +37,6 @@ FILES = {
 }
 BOOT = {
     'vim': '{0}/bin/vimup i && {0}/bin/vimup c'.format(SRC_DIR),
-    'bin': (
-        '[ -d {0} ] || virtualenv {0}'
-        ' && source {0}bin/activate'
-        ' && pip install -Ur bin/requirements.txt'
-        ' && pip freeze'
-        .format('bin/env/')
-    ),
     'pacman': '{}/bin/pkglist -p'.format(SRC_DIR)
 }
 

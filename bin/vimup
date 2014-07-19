@@ -1,4 +1,4 @@
-#!/home/dotfiles/bin/env/bin/python
+#!/usr/bin/env python
 import argparse
 import functools
 import json
