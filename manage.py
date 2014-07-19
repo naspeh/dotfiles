@@ -1,40 +1,42 @@
 #!/usr/bin/env python
 import argparse
+import collections
 import os
 import shutil
 import subprocess
 
 SRC_DIR = os.path.realpath(os.path.dirname(__file__))
-FILES = {
-    'vim': (
+FILES = collections.OrderedDict((
+    ('vim', (
         ('.vimrc', 'env/vim/rc'),
         ('.vim', 'env/vim'),
-    ),
-    'zsh': (
-        ('.zshrc', 'env/zsh/rc'),
-        ('.zsh', 'env/zsh'),
-    ),
-    'bin': (
+    )),
+    ('zsh', (
+        ('.zshrc', 'env/zshrc'),
+        ('.zsh', 'var/zsh'),
+    )),
+    ('bin', (
         ('bin', 'bin'),
-    ),
-    'dev': (
+    )),
+    ('dev', (
         ('.gitconfig', 'env/gitconfig'),
         ('.gitignore', 'env/gitignore'),
         ('.hgrc', 'env/hgrc'),
         ('.hgignore', 'env/hgignore'),
-        ('.pip', 'env/pip'),
-    ),
-    'x11': (
+        ('.pip', 'var/pip'),
+        ('.pip/pip.conf', 'env/pip.conf'),
+    )),
+    ('x11', (
         ('.xinitrc', 'x11/xinitrc'),
         ('.i3', 'x11/i3'),
         ('.conkyrc', 'x11/conkyrc'),
         ('.config/dunst/dunstrc', 'x11/dunstrc'),
         ('.config/sxhkd/sxhkdrc', 'x11/sxhkdrc'),
         ('.devilspie/common.ds', 'x11/devilspie.ds'),
-    ),
-    'all-shell': ('vim', 'zsh', 'bin'),
-    'all': ('all-shell', 'dev', 'x11'),
-}
+    )),
+    ('all-shell', ('vim', 'zsh', 'bin')),
+    ('all', ('all-shell', 'dev', 'x11')),
+))
 BOOT = {
     'vim': '{0}/bin/vimup i && {0}/bin/vimup c'.format(SRC_DIR),
     'pacman': '{}/bin/pkglist -p'.format(SRC_DIR)
@@ -42,25 +44,28 @@ BOOT = {
 
 
 def create(target, files=None, boot=False, indent=''):
-    def mkdir(dest):
-        dir_ = os.path.dirname(dest)
+    def mkdir(dest, child=True):
+        dir_ = os.path.dirname(dest) if child else dest
         if not dir_:
             return
-        if os.path.lexists(dir_):
-            clean(dir_)
+        if not child:
+            rmpath(dir_)
         if not os.path.exists(dir_):
             os.makedirs(dir_)
+
+    def rmpath(dest):
+        if os.path.exists(dest) or os.path.lexists(dest):
+            if os.path.islink(dest) or os.path.isfile(dest):
+                os.unlink(dest)
+            else:
+                shutil.rmtree(dest)
 
     def clean(dest):
         bak_dir = './bak'
         if not os.path.exists(bak_dir):
             os.mkdir(bak_dir)
         bak = os.path.join(bak_dir, dest.lstrip(os.path.sep))
-        if os.path.exists(bak) or os.path.lexists(bak):
-            if os.path.islink(bak) or os.path.isfile(bak):
-                os.unlink(bak)
-            else:
-                shutil.rmtree(bak)
+        rmpath(bak)
         mkdir(bak)
         os.rename(dest, bak)
         return (dest, bak)
@@ -74,6 +79,8 @@ def create(target, files=None, boot=False, indent=''):
             continue
         dest, src = item
         src = os.path.join(SRC_DIR, src)
+        if not os.path.exists(src):
+            mkdir(src, child=False)
         if os.path.realpath(dest) == src:
             continue
         if os.path.lexists(dest):
@@ -108,21 +115,22 @@ def process_args(args=None):
         .arg('-b', '--boot', action='store_true')
 
     cmd('pacman', help='init pacman')\
-        .arg('-r', '--root', default='/home/pacman')\
-        .exe(lambda a: (
-            create('pacman', boot=True, files=[(a.root, 'env/pacman')])
-        ))
+        .arg('-r', '--root', default='/home')
 
     args = parser.parse_args(args)
     os.chdir(args.home)
 
-    if hasattr(args, 'exe'):
-        args.exe(args)
-    elif args.cmd == 'init':
+    if args.cmd == 'init':
         print('Working directory: %s' % args.home)
         targets = args.target if args.target else FILES.keys()
         for target in targets:
             create(target, boot=args.boot)
+    elif args.cmd == 'pacman':
+        os.chdir(args.root)
+        create('pacman', boot=True, files=(
+            ('pacman', 'var/pacman'),
+            ('pacman/pacman.conf', 'env/pacman.conf')
+        ))
     else:
         raise ValueError('Wrong subcommand')
 
