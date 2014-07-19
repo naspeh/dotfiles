@@ -20,7 +20,11 @@ if [ "$1" = "skype" ]; then
 fi
 
 gmail &
-i3-msg 'workspace "1: web"; exec chromium'
+if [ "$SESSION" = "i3" ]; then
+    i3-msg 'workspace 1: web; exec chromium'
+else
+    chromium
+fi
 
 [ "$1" = "light" ] && exit
 
