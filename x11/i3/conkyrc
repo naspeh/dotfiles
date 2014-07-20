@@ -20,7 +20,12 @@ $endif
 ### WiFi
 ${if_up wlan0}\
 {"full_text": "⚡ ${wireless_essid wlan0} [${wireless_link_qual_perc wlan0}%]", "color": "\#88cc88"},
-$endif\
+$endif
+
+### Battery
+#${if_existing /proc/acpi/ibm}\
+#{"full_text": "✇ $battery_short ${if_empty $battery_time}$else[$battery_time]$endif", "color": "\#88cc88"},
+#$endif
 
 ### Time
 {"full_text": "${time %a %b %d, %H:%M}"},

@@ -49,4 +49,7 @@
         )
         (geometry "950x650+350-0")
     )
+    (if (is(application_name) "orage")
+        (geometry "237x177-0+24")
+    )
 )
