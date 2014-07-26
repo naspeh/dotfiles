@@ -11,7 +11,7 @@ export PATH="$PATH:$HOME/bin"
 export EDITOR=vim
 export BROWSER=chromium
 export TERMINAL=evilvte
-#export DE=xfce4
+export DE=xfce
 
 export GDK_USE_XFT=1
 export QT_XFT=1

@@ -10,7 +10,7 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # Startup
-exec --no-startup-id startup
+exec --no-startup-id dex -a -e xfce
 
 set $mod Mod1
 set $terminal evilvte

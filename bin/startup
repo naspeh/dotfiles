@@ -1,8 +1,5 @@
 #!/bin/sh
 if [ "$SESSION" = "i3" ]; then
-    /usr/lib/lxpolkit/lxpolkit &
-    xfsettingsd &
-
     hsetroot -solid "#333343"
     i3-msg 'workspace "2: term"; exec evilvte'
 else
