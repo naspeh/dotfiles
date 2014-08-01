@@ -64,7 +64,7 @@ def check():
             else:
                 conf.error(res)
 
-        time.sleep(conf('timeout', 60))
+        time.sleep(conf('timeout', 120))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('gmail')

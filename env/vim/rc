@@ -161,7 +161,7 @@ let g:jedi#show_call_signatures=0
 let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
 let g:jedi#documentation_command="<leader>o"
-let g:jedi#usages_command="<leader>u"
+let g:jedi#usages_command="<leader>i"
 let g:jedi#completions_command="<C-g>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
@@ -186,10 +186,15 @@ nnoremap <leader>u :UndotreeToggle<cr>
 
 
 " Bundle 'maksimr/vim-jsbeautify'
+" Bundle 'beautify-web/js-beautify' maksimr--vim-jsbeautify/plugin/lib
+nnoremap <leader>j :call JsBeautify()<cr>
+
+
 " Bundle 'tpope/vim-fugitive'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
 " Bundle 'terryma/vim-multiple-cursors'
+" Bundle 'jsx/jsx.vim'
 
 
 " ------------------------------

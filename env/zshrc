@@ -2,7 +2,7 @@
 ZDOTDIR=~/.zsh
 
 export EDITOR=vim
-export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/bin:./node_modules/.bin/"
 export PYTHONSTARTUP=~/.pythonrc
 
 if [ -n "$DISPLAY" ]; then
