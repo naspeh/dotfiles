@@ -1,7 +1,7 @@
-#XF86Audio{Raise,Lower}Volume
-#    amixer sset Master {2%+, 2%-} unmute
-#XF86AudioMute
-#    amixer sset Master toggle
+XF86Audio{Raise,Lower}Volume
+    amixer sset Master {2%+, 2%-} unmute && notify-send "Volume $(amixer sget Master | grep -Pom1 '\d*%')"
+XF86AudioMute
+    amixer sset Master toggle && notify-send "Volume $(amixer sget Master | grep -Pom1 '\[(on|off)\]')"
 
 alt+t
     $TERMINAL
