@@ -3,8 +3,11 @@ import argparse
 import imaplib
 import json
 import subprocess
-import time
 from pathlib import Path
+
+import requests
+
+OAUTH_URL_TOKEN = 'https://accounts.google.com/o/oauth2/token'
 
 
 class _Conf:
@@ -33,38 +36,66 @@ conf = _Conf()
 client = imaplib.IMAP4_SSL
 
 
+class AuthError(Exception):
+    pass
+
+
+def auth_refresh():
+    refresh_token = conf('google_response', {}).get('refresh_token')
+    if not refresh_token:
+        raise AuthError('refresh_token is empty')
+
+    res = requests.post(OAUTH_URL_TOKEN, data={
+        'client_id': conf('google_id'),
+        'client_secret': conf('google_secret'),
+        'refresh_token': refresh_token,
+        'grant_type': 'refresh_token',
+    })
+    if res.ok:
+        new = dict(conf('google_response'), **json.loads(res.text))
+        conf.update(google_response=new)
+        return
+    raise AuthError('%s: %s' % (res.reason, res.text))
+
+
+def login(im, retry=False):
+    access_token = conf('google_response', {}).get('access_token')
+    try:
+        im.authenticate('XOAUTH2', lambda x: (
+            'user=%s\1auth=Bearer %s\1\1'
+            % (conf('email'), access_token)
+        ))
+    except im.error as e:
+        if retry:
+            raise AuthError(e)
+
+        auth_refresh()
+        login(im, True)
+
+
 def check():
-    cmd = 'echo "password"| dmenu -p "gmail" -nf black -nb black'
-    pwd = subprocess.check_output(cmd, shell=True).decode().rstrip('\n')
-    while True:
-        try:
-            im = client('imap.gmail.com')
-            res = im.login(conf('email'), pwd)
-            if res[0] != 'OK':
-                conf.error(res)
-                exit(1)
+    try:
+        im = client('imap.gmail.com')
+        login(im)
 
-            im.select('INBOX', readonly=True)
-        except IOError as e:
-            conf.error(str(e))
-        except client.error as e:
-            conf.error(str(e))
-            print(e)
-            exit(1)
+        im.select('INBOX', readonly=True)
+    except (IOError, AuthError) as e:
+        conf.error(str(e))
+        print(e)
+        exit(1)
+    else:
+        res = im.uid('SEARCH', None, 'UNSEEN')
+        if res[0] == 'OK':
+            conf.error(None)
+            uids = [int(i) for i in res[1][0].split()]
+            unread = conf('unread', [])
+            if uids != unread:
+                conf.update(unread=uids)
+            if any(uid not in unread for uid in uids):
+                subprocess.call(conf('cmd'), shell=True)
         else:
-            res = im.uid('SEARCH', None, 'UNSEEN')
-            if res[0] == 'OK':
-                conf.error(None)
-                uids = [int(i) for i in res[1][0].split()]
-                unread = conf('unread', [])
-                if uids != unread:
-                    conf.update(unread=uids)
-                if any(uid not in unread for uid in uids):
-                    subprocess.call(conf('cmd'), shell=True)
-            else:
-                conf.error(res)
+            conf.error(res)
 
-        time.sleep(conf('timeout', 120))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('gmail')
