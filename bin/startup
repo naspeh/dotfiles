@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$SESSION" = "i3" ]; then
-    hsetroot -solid "#333343"
+    feh --bg-scale /usr/share/archlinux/wallpaper/archlinux-deep-aurora.jpg
     i3-msg 'workspace "2: term"; exec evilvte'
 else
     if [ "$(hostname)" = "pad" ]; then
@@ -11,7 +11,6 @@ else
 fi
 
 sxhkd &
-xcmenu &
 devilspie &
 xcompmgr &
 cbatticon &
@@ -19,7 +18,8 @@ conky &
 sbxkb &
 orage &
 volumeicon &
-#parcellite &
+#xcmenu &
+parcellite &
 stardict -h &
 tider &
 perevod &
