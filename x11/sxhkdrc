@@ -1,7 +1,7 @@
 XF86Audio{Raise,Lower}Volume
-    amixer sset Master {2%+, 2%-} unmute && notify-send "Volume $(amixer sget Master | grep -Pom1 '\d*%')"
+    amixer sset Master {2%+, 2%-} unmute && notify-send -h int:value:$(amixer sget Master | grep -Pom1 '\d*%') "Volume"
 XF86AudioMute
-    amixer sset Master toggle && notify-send "Volume $(amixer sget Master | grep -Pom1 '\[(on|off)\]')"
+    amixer sset Master toggle && notify-send "$(amixer sget Master | grep -Pom1 '\[(on|off)\]') Volume"
 
 alt+t
     $TERMINAL
@@ -13,8 +13,8 @@ alt+Print
     xfce4-screenshooter
 alt+f
     perevod call fetch
-alt+c
-    xcmenuctrl
+#alt+c
+#    xcmenuctrl
 alt+ctrl+l
     i3lock -i ~/lock-s.png
 alt+ctrl+b
@@ -25,8 +25,8 @@ alt+ctrl+h
 alt+s; {r,q}
     systemctl {reboot,poweroff}
 
-alt+i; {i,l,k,s,g}
-    internet { ,light,kill,skype,gmail}
+alt+i; {i,l,k,s,w}
+    internet { ,light,kill,skype,work}
 
 alt+a; {a,Tab,w,s,d,r,q}
     tider call {target,toggle_active,menu,report,disable,reload,quit}

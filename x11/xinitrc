@@ -23,8 +23,7 @@ xrdb ~/.Xresources
 
 # Start Gnome Keyring
 #killall gnome-keyring-daemon
-eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
-export GPG_AGENT_INFO SSH_AUTH_SOCK
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
 
 case $1 in
   startxfce4|i3|awesome|wmii|wmfs) SESSION=$1;;
