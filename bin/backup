@@ -70,7 +70,7 @@ def main():
 
     cmd('tar', help='archive delta directory')\
         .arg('-l', '--label', help='label for archive')\
-        .arg('-d', '--delete', help='delete delta directory')
+        .arg('-d', '--delete', action='store_true', help='delete in the end')
 
     cmd('copy', help='copy backup directory').arg_fake()\
         .arg('src', default=BDIR, nargs='?', help='source path')\
