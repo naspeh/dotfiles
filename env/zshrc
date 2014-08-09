@@ -89,6 +89,7 @@ venv() {
     else
         env_path="$VENV_HOME/$env_name"
         activate="$env_path/bin/activate"
+        [ -e $activate ] || return 1
     fi
 
     if [ -e "$activate" ]; then
@@ -162,6 +163,11 @@ alias pips="pip search"
 alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
 alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
+alias dockerc='\
+    v=$(docker ps -a -q) && [ -n "$v" ] && docker stop $v; [ -n "$v" ] && docker rm $v;\
+    v=$(docker images -qf "dangling=true") && [ -n "$v" ] && docker rmi $v;\
+    docker images\
+'
 
 ### Prompt
 autoload colors; colors
