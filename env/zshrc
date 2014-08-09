@@ -164,8 +164,9 @@ alias pyclean="find . -name \"*.pyc\" -exec rm -rf {} \;"
 alias pysmtpd="python -m smtpd -n -c DebuggingServer localhost:1025"
 
 alias dockerc='\
-    v=$(docker ps -a -q) && [ -n "$v" ] && docker stop $v; [ -n "$v" ] && docker rm $v;\
-    v=$(docker images -qf "dangling=true") && [ -n "$v" ] && docker rmi $v;\
+    v=$(docker ps -q) && [ -n "$v" ] && docker stop $(echo $v);\
+    v=$(docker ps -a -q) && [ -n "$v" ] && docker rm $(echo $v);\
+    v=$(docker images -qf "dangling=true") && [ -n "$v" ] && docker rmi $(echo $v);\
     docker images\
 '
 
