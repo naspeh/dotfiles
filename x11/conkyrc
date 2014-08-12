@@ -87,7 +87,7 @@ ${voffset -4}${cpugraph cpu3 15,123 000033 00cc00}${alignr}${cpugraph cpu4 15,12
 ${voffset -8}\
 ${color1}${font :style=bold:size=9}Top Processes$font${color3}${voffset 1}${hr 0}$color
 ${voffset 4}${color2}${hr 0}
-${voffset -16}${color2}Name${goto 127}PID${goto 177}CPU%${goto 227}RAM%$color
+${voffset -14}${color2}Name${goto 127}PID${goto 177}CPU%${goto 227}RAM%$color
 ${top name 1}${goto 115}${top pid 1}${goto 165}${top cpu 1}${goto 215}${top mem 1}
 ${top name 2}${goto 115}${top pid 2}${goto 165}${top cpu 2}${goto 215}${top mem 2}
 ${top name 3}${goto 115}${top pid 3}${goto 165}${top cpu 3}${goto 215}${top mem 3}

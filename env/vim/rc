@@ -343,6 +343,7 @@ nmap <leader>p :setlocal paste! paste?<cr>
 nmap <leader>w :setlocal wrap! wrap?<cr>
 nmap <leader>s :setlocal spell! spell?<cr>
 
+" Maximize/Unmaximize window
 nmap <leader>z :set winwidth=9999<cr>
 nmap <leader>zz :set winwidth=1<cr><C-W>=
 

@@ -78,23 +78,26 @@ def check():
         im = client('imap.gmail.com')
         login(im)
 
-        im.select('INBOX', readonly=True)
     except (IOError, AuthError) as e:
         conf.error(str(e))
         print(e)
         exit(1)
     else:
-        res = im.uid('SEARCH', None, 'UNSEEN')
-        if res[0] == 'OK':
-            conf.error(None)
-            uids = [int(i) for i in res[1][0].split()]
-            unread = conf('unread', [])
-            if uids != unread:
-                conf.update(unread=uids)
-            if any(uid not in unread for uid in uids):
-                subprocess.call(conf('cmd'), shell=True)
-        else:
-            conf.error(res)
+        uids = []
+        for box in conf('boxes', ['INBOX']):
+            im.select('"%s"' % box, readonly=True)
+            res = im.uid('SEARCH', None, 'UNSEEN')
+            if res[0] == 'OK':
+                conf.error(None)
+                uids += [int(i) for i in res[1][0].split()]
+            else:
+                conf.error(res)
+
+        unread = conf('unread', [])
+        if uids != unread:
+            conf.update(unread=uids)
+        if any(uid not in unread for uid in uids):
+            subprocess.call(conf('cmd'), shell=True)
 
 
 if __name__ == '__main__':
