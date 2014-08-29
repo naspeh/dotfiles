@@ -143,6 +143,7 @@ alias free="free -t -m"
 alias pacmanc="sudo pacman --config=/home/pacman/pacman.conf"
 alias pacaur="pacaur --rebuild"
 alias cower="cower --color=auto --rsort=votes"
+alias wifi-menu="sudo wifi-menu"
 
 if [[ "$TERM" == *256* ]]; then
     alias mc="mc -S modarin256"
@@ -154,6 +155,7 @@ alias o=xdg-open
 alias myip="curl ip.appspot.com"
 alias timesync='sudo ntpdate ua.pool.ntp.org'
 alias rsyncc='rsync -aAXHvh --stats'
+alias rsyncp='rsync -rth --progress --stats'
 
 alias pipi="pip install"
 alias pipu="pip uninstall"

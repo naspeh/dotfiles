@@ -114,8 +114,8 @@ $endif\
 ${if_up eth0}\
 ${voffset -4}\
 ${color1}${font :style=bold:size=9}Ethernet$font${color3}${voffset 1}${hr 0}$color
-${downspeedgraph eth0 75,123 003300 6ddd00}${alignr}\
-${upspeedgraph eth0 75,123 330000 e3170d}
+${downspeedgraph eth0 25,123 003300 6ddd00}${alignr}\
+${upspeedgraph eth0 25,123 330000 e3170d}
 Local:${color2}${goto 50}${addr eth0}$color${goto 130}\
 Public:${color2}${goto 180}${execi 30 curl ip.appspot.com}$color
 Down: ${color2}${goto 50}${downspeedf eth0} k/s$color${goto 130}\

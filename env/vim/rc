@@ -86,7 +86,7 @@ let xterm16_brightness='high'
 colorscheme xterm16  " silent for first run
 
 
-" Bundle 'scrooloose/nerdtree'
+"- Bundle 'scrooloose/nerdtree'
 call MapDo('<leader>f', ':NERDTreeToggle<cr>')
 let NERDTreeWinSize=35
 let NERDTreeChDirMode=2
