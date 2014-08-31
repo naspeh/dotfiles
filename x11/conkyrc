@@ -38,9 +38,9 @@ minimum_size 1000
 # Colors
 default_shade_color 000000
 default_outline_color 000000
-default_color dddddd
+default_color ddeeee
 color1 00ff00
-color2 ffffff
+color2 ddeeee
 color7 0000ff
 color3 00ff00
 color8 ffff00

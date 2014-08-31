@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 import contextlib
+import os
 import re
+import sys
 import subprocess
 
 _conf = None
+
+
+if os.geteuid() != 0:
+    subprocess.call(['sudo'] + sys.argv)
+    exit()
 
 
 @contextlib.contextmanager
