@@ -137,15 +137,17 @@ let g:tagbar_foldlevel=0
 
 " Bundle 'grep.vim'
 let Grep_Skip_Dirs_='.git .hg __pycache__'
-let Grep_Skip_Dirs=Grep_Skip_Dirs_
+let Grep_Skip_Dirs__=Grep_Skip_Dirs_.' migrations'
+let Grep_Skip_Dirs=Grep_Skip_Dirs__
 let Grep_Skip_Files='*.pyc'
 noremap <leader>gg :call VarToggle(
-    \'g:Grep_Skip_Dirs', Grep_Skip_Dirs_, Grep_Skip_Dirs_.' migrations'
+    \'g:Grep_Skip_Dirs', Grep_Skip_Dirs__, Grep_Skip_Dirs_
 \)<cr>
 
 
 " Bundle 'tpope/vim-commentary'
 vnoremap <leader>c :Commentary<cr>gv
+noremap <leader>c :Commentary<cr>
 
 
 let g:jedi#force_py_version=3
