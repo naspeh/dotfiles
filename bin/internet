@@ -1,4 +1,13 @@
 #!/bin/zsh
+OK=OK
+function check {
+    if [ '0' = $(ping -c1 -W1 google.com | grep -c "1 received") ]; then
+        rm -f /tmp/internet-up
+        exit 1
+    fi
+    touch /tmp/internet-up
+    echo $OK
+}
 
 if [ "$1" = "kill" ]; then
     killall dropbox gajim skype skype-call-recorder chromium
@@ -6,8 +15,18 @@ if [ "$1" = "kill" ]; then
     exit
 fi
 
+if [ "$1" = "check" ]; then
+    [ -f /tmp/internet-up ] && echo $OK
+    exit
+fi
+
+if [ "$1" = "real-check" ]; then
+    check > /dev/null
+    exit
+fi
+
 # Wait for the internet
-while [ '0' = $(ping -c1 google.com | grep -c "1 received") ]; do done
+while [ "$(check)" != $OK ]; do sleep 1; done
 
 if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0

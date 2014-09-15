@@ -48,7 +48,7 @@ color9 ff0000
 
 TEXT
 ### Weather
-${if_match ${execi 30 curl ip.appspot.com | wc -c} > 0}\
+${if_match "${exec internet check }" == "OK"}\
 ${color1}${font :style=bold:size=9}Weather$font${color3}${voffset 1}${hr 0}$color
 ${font :style=bold:size=9}${execi 60 ~/bin/weather}$font
 ${font Sans:size=7}${execi 60 ~/bin/weather -v -i "  "}
