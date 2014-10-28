@@ -72,6 +72,12 @@ endfun
 nmap <leader>tt :call TextMode()<cr>
 nmap <leader>ta :setlocal formatoptions-=l<cr>:call TextMode()<cr>
 
+fun! Tab2()
+    setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+endfun
+nmap <leader>2t :call Tab2()<cr>
+autocmd FileType yaml call Tab2()
+
 " ------------------------------
 " Plugins activate
 " ------------------------------
@@ -137,7 +143,7 @@ let g:tagbar_foldlevel=0
 
 " Bundle 'grep.vim'
 let Grep_Skip_Dirs_='.git .hg __pycache__'
-let Grep_Skip_Dirs__=Grep_Skip_Dirs_.' migrations'
+let Grep_Skip_Dirs__=Grep_Skip_Dirs_.' migrations .virtualenv'
 let Grep_Skip_Dirs=Grep_Skip_Dirs__
 let Grep_Skip_Files='*.pyc'
 noremap <leader>gg :call VarToggle(
@@ -349,7 +355,6 @@ nmap <leader>s :setlocal spell! spell?<cr>
 nmap <leader>z :set winwidth=9999<cr>
 nmap <leader>zz :set winwidth=1<cr><C-W>=
 
-nmap <leader>2t :setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2<cr>
 nmap <leader>r :source ~/.vimrc<cr>
 nmap <leader>a ggVG<cr>
 nmap <leader>n :lnext<cr>

@@ -1,6 +1,7 @@
 #!/bin/sh
 if [ "$SESSION" = "i3" ]; then
     #feh --bg-scale /usr/share/archlinux/wallpaper/archlinux-deep-aurora.jpg
+    wmname LG3D
     feh --bg-scale ~/lock-s.png
     i3-msg 'workspace "2: term"; exec evilvte'
 else

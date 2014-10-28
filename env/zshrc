@@ -156,6 +156,7 @@ alias myip="curl ip.appspot.com"
 alias timesync='sudo ntpdate ua.pool.ntp.org'
 alias rsyncc='rsync -aAXHvh --stats'
 alias rsyncp='rsync -rth --progress --stats'
+alias rand16='openssl rand -base64 16'
 
 alias pipi="pip install"
 alias pipu="pip uninstall"
@@ -207,12 +208,12 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{11}%r'
 zstyle ':vcs_info:*' enable git hg svn
 precmd () {
+
     if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
         zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{blue}] '
     } else {
         zstyle ':vcs_info:*' formats '%F{blue}[%F{green}%b%c%u%F{red} ●%F{blue}] '
     }
-
     vcs_info
     titlebar_precmd
 }
