@@ -23,8 +23,8 @@ ${if_up wlan0}\
 $endif
 
 ### Battery
-#${if_existing /proc/acpi/ibm}\
-#{"full_text": "✇ $battery_short ${if_empty $battery_time}$else[$battery_time]$endif", "color": "\#88cc88"},
+#${if_empty $battery_time}$else\
+#{"full_text": "✇ $battery_short [$battery_time]", "color": "\#88cc88"},
 #$endif
 
 ### Time

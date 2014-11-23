@@ -102,7 +102,7 @@ SSID:${color2}${goto 50}${wireless_essid wlan0}$color${goto 130}\
 Signal:${color2}${goto 180}${wireless_link_qual wlan0}/${wireless_link_qual_max wlan0}$color
 ${voffset -4}${wireless_link_bar 3,250 wlan0}
 Local:${color2}${goto 50}${addr wlan0}$color${goto 130}\
-Public:${color2}${goto 180}${execi 30 curl ip.appspot.com}$color
+Public:${color2}${goto 170}${execi 30 curl ip.appspot.com}$color
 ${downspeedgraph wlan0 15,123 003300 6ddd00}${alignr}\
 ${upspeedgraph wlan0 15,123 330000 e3170d}
 Down: ${color2}${goto 50}${downspeedf wlan0} k/s$color${goto 130}\

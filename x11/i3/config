@@ -37,28 +37,25 @@ floating_modifier $mod
 
 for_window [class="(?i)goldendict"] floating enable
 for_window [class="(?i)stardict"] floating enable
-for_window [class="(?i)dropbox"] floating enable
 for_window [class="(?i)(gajim|pidgin)"] floating enable, move workspace 8: jabber
 for_window [class="(?i)skype"] floating enable, move workspace 9: skype
 for_window [class="(?i)deadbeef"] floating enable
 for_window [class="(?i)transmission"] floating enable
 for_window [class="(?i)orage"] floating enable
 for_window [class="(?i)globaltime"] floating enable
-for_window [class="(?i)lxappearance"] floating enable
 for_window [class="(?i)lxpolkit"] floating enable
 for_window [class="(?i)gmrun"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable, move position 200px 100px
 for_window [class="(?i)xfce4-notifyd"] floating enable, border none
 for_window [class="(?i)solaar"] floating enable
 for_window [title="Event Tester"] floating enable
-for_window [class="(?i)thunar" title="File Operation Progress"] floating enable
-for_window [class="(?i)chromium" window_role="pop-up"] floating enable
+for_window [class="(?i)thunar"] floating enable
 for_window [class="(?i)pavucontrol"] floating enable
 
 # Try to minify floating conditions
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
-for_window [title="Preferences$"] floating enable
+for_window [title="(?i)preferences$"] floating enable
 
 # bindsym $mod+t exec $terminal
 # bindsym $mod+e exec dmenu_run

@@ -1,4 +1,5 @@
 #!/bin/sh
+# http "http://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where u = 'c' and woeid in (select woeid from geo.places where text = 'UA Yaremche' limit 1)&format=xml"
 city=UPXX0040
 
 function usage {

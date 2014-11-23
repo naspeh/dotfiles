@@ -10,6 +10,7 @@ if [ -n "$DISPLAY" ]; then
     [ -n "$TMUX" ] && export TERM=screen-256color
 fi
 
+bindkey -e
 REPORTTIME=2
 
 export HISTTIMEFORMAT="%t%d.%m.%y %H:%M:%S%t"
@@ -23,13 +24,16 @@ setopt hist_find_no_dups
 setopt appendhistory
 setopt sharehistory
 
+# bind UP and DOWN arrow keys
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
+
 setopt autocd
 setopt notify
 setopt extendedglob
 unsetopt beep
 unsetopt nomatch
 unsetopt correct_all
-bindkey -e
 
 # type a directory's name to cd to it
 compctl -/ cd
