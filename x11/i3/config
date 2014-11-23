@@ -73,6 +73,7 @@ for_window [title="(?i)preferences$"] floating enable
 
 bindsym $mod+grave workspace back_and_forth
 bindsym $mod+u [urgent="oldest"] focus
+bindsym $mod+g exec windows
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
