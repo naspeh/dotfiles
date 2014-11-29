@@ -20,8 +20,7 @@ conky &
 sbxkb &
 orage &
 volumeicon &
-xcmenu -c -d &
-#parcellite &
+parcellite &
 stardict -h &
 tider &
 perevod &

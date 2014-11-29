@@ -100,6 +100,9 @@ let NERDTreeChDirMode=2
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.pyc$']
 
+" Bundle 'tpope/vim-vinegar'
+" Bundle 'troydm/easytree.vim'
+
 
 " Bundle 'kien/ctrlp.vim'
 call MapDo('<F3>', ':CtrlPBuffer<cr>')

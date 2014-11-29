@@ -13,8 +13,6 @@ alt+Print
     xfce4-screenshooter
 alt+f
     perevod call fetch
-alt+c
-    xcmenuctrl
 alt+ctrl+l
     i3lock -i ~/lock-s.png
 alt+ctrl+b
