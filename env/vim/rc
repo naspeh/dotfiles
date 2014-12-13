@@ -90,10 +90,6 @@ let xterm16_brightness='high'
 colorscheme xterm16
 
 
-" Bundle 'tpope/vim-vinegar'
-" Bundle 'troydm/easytree.vim'
-
-
 " Bundle 'kien/ctrlp.vim'
 call MapDo('<F3>', ':CtrlPBuffer<cr>')
 call MapDo('<F4>', ':CtrlPCurWD<cr>')
@@ -123,9 +119,8 @@ nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
 
 " Bundle 'milkypostman/vim-togglelist'
-"The default mappings are:
-"nmap <leader>l :call ToggleLocationList()<CR>
-"nmap <leader>q :call ToggleQuickfixList()<CR>
+nmap <leader>l :call ToggleLocationList()<CR>
+nmap <leader>q :call ToggleQuickfixList()<CR>
 
 
 " Bundle 'grep.vim'
@@ -171,6 +166,8 @@ let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 nnoremap <leader>j :call JsBeautify()<cr>
 
 
+" Bundle 'tpope/vim-vinegar'
+" Bundle 'troydm/easytree.vim'
 " Bundle 'tpope/vim-fugitive'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
@@ -283,9 +280,8 @@ set backspace=indent,eol,start
 set nojoinspaces
 set nofoldenable
 
-filetype on            " enables filetype detection
-filetype plugin on     " enables filetype specific plugins
-"filetype plugin indent on
+filetype on
+filetype plugin on
 
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
@@ -336,8 +332,6 @@ nmap <leader>nn :lfirst<cr>
 
 nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 
-" <Nul> is <C-Space> in terminal
-"imap <Nul> <C-x><C-o>
 imap <C-f> <C-x><C-f>
 
 " ------------------------------
