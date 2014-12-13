@@ -67,7 +67,6 @@ fun! TextMode()
     "setlocal nocursorline
     setlocal spell
     setlocal whichwrap+=<,>,[,]
-    "NeoCompleteDisable
 endfun
 nmap <leader>tt :call TextMode()<cr>
 nmap <leader>ta :setlocal formatoptions-=l<cr>:call TextMode()<cr>
@@ -85,20 +84,11 @@ autocmd FileType yaml call Tab2()
 runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
-"- Bundle 'tpope/vim-sensible'
-
 " Bundle 'xterm16.vim'
 let xterm16_colormap='softlight'
 let xterm16_brightness='high'
-colorscheme xterm16  " silent for first run
+colorscheme xterm16
 
-
-"- Bundle 'scrooloose/nerdtree'
-call MapDo('<leader>f', ':NERDTreeToggle<cr>')
-let NERDTreeWinSize=35
-let NERDTreeChDirMode=2
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc$']
 
 " Bundle 'tpope/vim-vinegar'
 " Bundle 'troydm/easytree.vim'
@@ -138,13 +128,6 @@ nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 "nmap <leader>q :call ToggleQuickfixList()<CR>
 
 
-" Bundle 'majutsushi/tagbar'
-call MapDo('<leader>b', ':TagbarToggle<cr>')
-let g:tagbar_autofocus=1
-let g:tagbar_sort=1
-let g:tagbar_foldlevel=0
-
-
 " Bundle 'grep.vim'
 let Grep_Skip_Dirs_='.git .hg __pycache__'
 let Grep_Skip_Dirs__=Grep_Skip_Dirs_.' migrations .virtualenv'
@@ -162,7 +145,6 @@ noremap <leader>c :Commentary<cr>
 
 let g:jedi#force_py_version=3
 " Bundle 'davidhalter/jedi-vim'
-" Bundle 'davidhalter/jedi' davidhalter--jedi-vim/jedi
 let g:jedi#auto_initialization=1
 let g:jedi#auto_vim_configuration=1
 let g:jedi#use_tabs_not_buffers=0
@@ -185,28 +167,16 @@ let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 
 
-"- Bundle 'hdima/python-syntax'
-"let python_highlight_all=1
-
-
-" Bundle 'mitsuhiko/vim-jinja'
-let g:htmljinja_disable_detection=0
-
-
-" Bundle 'mbbill/undotree'
-nnoremap <leader>u :UndotreeToggle<cr>
-
-
 " Bundle 'maksimr/vim-jsbeautify'
-" Bundle 'beautify-web/js-beautify' maksimr--vim-jsbeautify/plugin/lib
 nnoremap <leader>j :call JsBeautify()<cr>
 
 
 " Bundle 'tpope/vim-fugitive'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
-" Bundle 'terryma/vim-multiple-cursors'
 " Bundle 'jsx/jsx.vim'
+" Bundle 'mitsuhiko/vim-jinja'
+"- Bundle 'tpope/vim-sensible'
 
 
 " ------------------------------
