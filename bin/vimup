@@ -47,7 +47,7 @@ def clean():
             shutil.rmtree(path)
 
 
-def install(bundle, dirname):
+def install(bundle, dirname, update):
     global dirbase
     bundles = [(bundle, dirname)] if bundle else parse_rc()
     for bundle, dirname in bundles:
@@ -55,11 +55,20 @@ def install(bundle, dirname):
 
         print('Process %r' % bundle)
         dirname = os.path.join(dirbase, dirname)
-        if os.path.exists(os.path.join(dirname, '.git')):
-            subprocess.call('git pull', cwd=dirname, shell=True)
+        exists = os.path.exists(os.path.join(dirname, '.git'))
+        if exists and not update:
+            continue
+
+        if exists:
+            cmd = 'git pull --update-shallow'
         else:
-            cmd = 'git clone --depth=1 %s.git %s' % (get_url(bundle), dirname)
-            subprocess.call(cmd, shell=True)
+            os.makedirs(dirname)
+            cmd = (
+                'git clone --depth=1 %s.git .'
+                '&& git submodule update --init --depth=1'
+                % get_url(bundle),
+            )
+        subprocess.call(cmd, cwd=dirname, shell=True)
         print('---')
 
 
@@ -106,7 +115,8 @@ def main(argv=None):
     cmd('install', aliases=['i'])\
         .arg('bundle', nargs='?', default='')\
         .arg('dirname', nargs='?', default='')\
-        .exe(lambda a: install(a.bundle, a.dirname))
+        .arg('-u', '--update', action='store_true')\
+        .exe(lambda a: install(a.bundle, a.dirname, a.update))
 
     cmd('clean', aliases=['c'])\
         .exe(lambda a: clean())
