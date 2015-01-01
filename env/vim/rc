@@ -166,8 +166,11 @@ let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 nnoremap <leader>j :call JsBeautify()<cr>
 
 
-" Bundle 'tpope/vim-vinegar'
 " Bundle 'troydm/easytree.vim'
+nnoremap <leader>f :EasyTreeToggle<cr>
+
+
+" Bundle 'tpope/vim-vinegar'
 " Bundle 'tpope/vim-fugitive'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'

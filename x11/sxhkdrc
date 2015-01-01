@@ -26,5 +26,5 @@ alt+s; {r,q}
 alt+i; {i,l,k,s,w}
     internet { ,light,kill,skype,work}
 
-alt+a; {a,Tab,w,s,d,r,q}
-    tider call {target,toggle_active,menu,report,disable,reload,quit}
+alt+a; {a,w,s,d,r,q}
+    tider call {target,menu,report,disable,reload,quit}

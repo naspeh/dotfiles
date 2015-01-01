@@ -11,7 +11,6 @@ function check {
 
 if [ "$1" = "kill" ]; then
     killall dropbox gajim skype skype-call-recorder chromium
-    yandex-disk stop
     exit
 fi
 
@@ -34,7 +33,7 @@ fi
 
 if [ "$1" = "skype" ]; then
     skype &
-    skype-call-recorder &
+    #skype-call-recorder &
     exit
 fi
 
@@ -46,6 +45,5 @@ fi
 
 [ "$1" = "light" ] && exit
 
-yandex-disk start
 dropboxd &
 #(sleep 1; gajim) &
