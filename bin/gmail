@@ -2,12 +2,24 @@
 import argparse
 import imaplib
 import json
+import os
 import subprocess
+from contextlib import contextmanager
 from pathlib import Path
 
 import requests
 
 OAUTH_URL_TOKEN = 'https://accounts.google.com/o/oauth2/token'
+
+
+@contextmanager
+def open_via_tmpfile(filename, suffix='.tmp', mode=None):
+    '''Manipulate the tmp file and then quickly rename to `filename`'''
+    filename = str(filename)
+    tmp = filename + suffix
+    with open(tmp, mode) as f:
+        yield f
+    os.rename(tmp, filename)
 
 
 class _Conf:
@@ -23,7 +35,7 @@ class _Conf:
         content = json.dumps(
             self.data, sort_keys=True, indent=4, separators=(',', ': ')
         )
-        with self.path.open('bw') as f:
+        with open_via_tmpfile(self.path, mode='bw') as f:
             f.write(content.encode())
 
     def error(self, msg):
