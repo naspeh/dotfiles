@@ -160,7 +160,7 @@ alias myip="curl ip.appspot.com"
 alias timesync='sudo ntpdate ua.pool.ntp.org'
 alias rsyncc='rsync -aAXHvh --stats'
 alias rsyncp='rsync -rth --progress --stats'
-alias rand16='openssl rand -base64 16'
+alias rand16='openssl rand -hex 16'
 
 alias pipi="pip install"
 alias pipu="pip uninstall"

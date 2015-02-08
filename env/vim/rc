@@ -346,5 +346,6 @@ iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
 iab bpdb; import bpdb; bpdb.set_trace()<esc>
 iab pprint; import pprint as _; _.pprint(
+iab log; import logging; log = logging.getLogger(__name__).info
 
 set secure  " must be written at the last.  see :help 'secure'.
