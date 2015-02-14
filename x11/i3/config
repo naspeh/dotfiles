@@ -30,13 +30,12 @@ hide_edge_borders both
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose an xft font, such as:
-font xft:DejaVu Sans 8
+font xft:sans 8
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-for_window [class="(?i)goldendict"] floating enable
-for_window [class="(?i)stardict"] floating enable
+for_window [class="(?i)(goldendict|stardict)"] floating enable
 for_window [class="(?i)(gajim|pidgin)"] floating enable, move workspace 8: jabber
 for_window [class="(?i)skype"] floating enable, move workspace 9: skype
 for_window [class="(?i)deadbeef"] floating enable
@@ -44,8 +43,7 @@ for_window [class="(?i)transmission"] floating enable
 for_window [class="(?i)orage"] floating enable
 for_window [class="(?i)globaltime"] floating enable
 for_window [class="(?i)lxpolkit"] floating enable
-for_window [class="(?i)gmrun"] floating enable
-for_window [class="(?i)xfce4-appfinder"] floating enable, move position 200px 100px
+for_window [class="(?i)xfce4-appfinder"] floating enable, focus floating, move position 200px 100px
 for_window [class="(?i)xfce4-notifyd"] floating enable, border none
 for_window [class="(?i)solaar"] floating enable
 for_window [title="Event Tester"] floating enable
@@ -208,7 +206,7 @@ bindsym $mod+Shift+0 move container to workspace number 0
 
 # Start i3bar
 bar {
-    font xft:DejaVu Sans, Icons 14px
+    font xft:sans 14px
     colors {
         background #ffffff
         statusline #000000

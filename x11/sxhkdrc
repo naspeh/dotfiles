@@ -20,8 +20,8 @@ alt+ctrl+b
 alt+ctrl+h
     $TERMINAL evilvte -T htop -e htop
 
-alt+s; {r,q}
-    systemctl {reboot,poweroff}
+alt+s; {r,q,s}
+    systemctl {reboot,poweroff,suspend}
 
 alt+i; {i,l,k,s,w}
     internet { ,light,kill,skype,work}
