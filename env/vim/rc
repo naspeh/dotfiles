@@ -5,17 +5,6 @@ let mapleader=","
 " ------------------------------
 " Functions
 " ------------------------------
-fun! MapDo(key, cmd)
-    execute "nmap ".a:key." " . a:cmd
-    execute "cmap ".a:key." " . "<C-C>".a:cmd
-    execute "imap ".a:key." " . "<Esc>".a:cmd
-    execute "vmap ".a:key." " . "<Esc>".a:cmd."gv"
-endfun
-
-fun! MapToggle(key, opt)
-    call MapDo(a:key, "set ".a:opt."! ".a:opt."?")
-endfun
-
 fun! VarToggle(name, ...)
     if a:0 >= 1
         let v1=a:1
@@ -44,7 +33,7 @@ fun! TextWidth()
         match OverLength /\%80v.\+/
     endif
 endfun
-call MapDo('<F11>', ':call TextWidth()<cr>')
+nmap <F11> :call TextWidth()<cr>
 autocmd FileType python call TextWidth()
 
 fun! TrimSpaces()
@@ -56,7 +45,7 @@ fun! TrimSpaces()
     normal `z
   endif
 endfun
-call MapDo('<F9>', ':call TrimSpaces()<cr>')
+nmap <F9> :call TrimSpaces()<cr>
 
 fun! TextMode()
     setlocal textwidth=90
@@ -91,15 +80,18 @@ colorscheme xterm16
 
 
 " Bundle 'kien/ctrlp.vim'
-call MapDo('<F3>', ':CtrlPBuffer<cr>')
-call MapDo('<F4>', ':CtrlPCurWD<cr>')
-call MapDo('<F5>', ':CtrlPBufTag<cr>')
 let g:ctrlp_custom_ignore={
     \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
 \}
 "let g:ctrlp_extensions=['tag', 'quickfix', 'dir']
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_mruf_relative=1
+nmap <F3> :CtrlPBuffer<cr>
+imap <F3> <esc>:CtrlPBuffer<cr>
+nmap <F4> :CtrlPCurWD<cr>
+imap <F4> <esc>:CtrlPCurWD<cr>
+nmap <F5> :CtrlPBufTag<cr>
+imap <F5> <esc>:CtrlPBufTag<cr>
 
 
 " Bundle 'scrooloose/syntastic'
@@ -114,7 +106,7 @@ let g:syntastic_auto_loc_list=2
 let g:syntastic_loc_list_height=2
 let g:syntastic_stl_format = '[%E{Err: #%e}%B{, }%W{Warn: #%w}]'
 let g:syntastic_python_flake8_args='--ignore=W601,E711'
-call MapDo('<F8>', ':SyntasticCheck<cr>:Errors<cr>')
+nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
 
@@ -174,8 +166,8 @@ nnoremap <leader>f :EasyTreeToggle<cr>
 " Bundle 'tpope/vim-fugitive'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
-" Bundle 'jsx/jsx.vim'
-" Bundle 'mitsuhiko/vim-jinja'
+"- Bundle 'jsx/jsx.vim'
+"- Bundle 'mitsuhiko/vim-jinja'
 "- Bundle 'tpope/vim-sensible'
 
 
