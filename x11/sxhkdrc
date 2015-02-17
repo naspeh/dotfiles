@@ -1,12 +1,12 @@
 XF86Audio{Raise,Lower}Volume
-    amixer sset Master {2%+, 2%-} unmute && notify-send -h int:value:$(amixer sget Master | grep -Pom1 '\d*%') "Volume"
+    amixer sset Master {1%+, 1%-} unmute && notify-send -h int:value:$(amixer sget Master | grep -Pom1 '\d*%') "Volume"
 XF86AudioMute
     amixer sset Master toggle && notify-send "$(amixer sget Master | grep -Pom1 '\[(on|off)\]') Volume"
 
 alt+t
     $TERMINAL
 alt+e
-    dmenu_run
+    rofi -rnow
 alt+{p,r}
     xfce4-appfinder { ,-c}
 alt+Print
@@ -23,8 +23,8 @@ alt+ctrl+h
 alt+s; {r,q,s}
     systemctl {reboot,poweroff,suspend}
 
-alt+i; {i,l,k,s,w}
-    internet { ,light,kill,skype,work}
+alt+i; {i,l,k,s}
+    internet { ,light,kill,skype}
 
 alt+a; {a,w,s,d,r,q}
     tider call {target,menu,report,disable,reload,quit}

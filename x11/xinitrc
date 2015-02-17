@@ -26,7 +26,7 @@ xrdb ~/.Xresources
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
 
 case $1 in
-  startxfce4|i3|awesome|wmii|wmfs) SESSION=$1;;
+  startxfce4|i3|qtile|awesome|wmii|wmfs) SESSION=$1;;
   *) SESSION=i3;;
 esac
 export SESSION
