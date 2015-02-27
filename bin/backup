@@ -69,7 +69,7 @@ def main():
     cmd('run', help='backup important data').arg_fake()
 
     cmd('tar', help='archive delta directory')\
-        .arg('-l', '--label', help='label for archive')\
+        .arg('-n', '--name', help='name for archive')\
         .arg('-d', '--delete', action='store_true', help='delete in the end')
 
     cmd('copy', help='copy backup directory').arg_fake()\
@@ -94,15 +94,15 @@ def main():
     if hasattr(args, 'fake'):
         rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     bdir = args.bdir.rstrip('/') + '/'
-    log, mnt = bdir + 'log/', bdir + 'mnt/'
-    for f in [log, mnt]:
+    dlog, dmnt, dnamed = bdir + 'log/', bdir + 'mnt/', bdir + 'named/'
+    for f in [dlog, dmnt]:
         if not os.path.exists(f):
             os.mkdir(f)
 
     def sh(cmd, **kw):
         cmd = 'echo "{}" && time ({})'.format(cmd.replace('"', '\"'), cmd)
         if args.log or os.environ.get('BACKUP_LOG', False) and not args.nolog:
-            file = '%s%s--%s.log' % (log, now, base_cmd)
+            file = '%s%s--%s.log' % (dlog, now, base_cmd)
             cmd = '({}; echo "{}") &>> {}'.format(cmd, '-' * 20, file)
         subprocess.call(cmd, shell=True, **kw)
 
@@ -119,10 +119,13 @@ def main():
 
     elif args.cmd == 'tar':
         name = today
-        if args.label:
-            name += '-' + args.label
+        if args.name:
+            name += '-' + args.name
+            name = dnamed + name
         sh(
-            'cd {dest} && tar -cvf {name}.tar --directory=delta .'
+            'cd {dest}'
+            ' && tar -cvf {name}.tar --directory=delta .'
+            ' && find *.tar -mtime +14 -delete'
             .format(dest=bdir, name=name)
         )
         if args.delete:
@@ -147,13 +150,13 @@ def main():
                 ' && {rsync} {mnt} {dest}full/'
                 .format(
                     dest=bdir, rsync=rsync,
-                    root=root, snap=snap, mnt=mnt
+                    root=root, snap=snap, mnt=dmnt
                 )
             )
         finally:
             sh(
                 'umount {mnt}; lvremove -f {snap}'
-                .format(mnt=mnt, snap=snap)
+                .format(mnt=dmnt, snap=snap)
             )
 
     elif args.cmd == 'call':
@@ -172,6 +175,9 @@ def main():
 
 if __name__ == '__main__':
     try:
+        if os.geteuid() != 0:
+            subprocess.call(['sudo'] + sys.argv)
+            exit()
         main()
     except KeyboardInterrupt:
         exit('Closed.')
