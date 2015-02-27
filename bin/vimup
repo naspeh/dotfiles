@@ -60,7 +60,7 @@ def install(bundle, dirname, update):
             continue
 
         if exists:
-            cmd = 'git pull --recurse-submodules'
+            cmd = 'git pull --recurse-submodules origin master'
         else:
             os.makedirs(dirname)
             cmd = 'git clone --recursive %s.git .' % get_url(bundle)
