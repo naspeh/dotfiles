@@ -213,5 +213,5 @@ bar {
     }
 
     position top
-    status_command ~/.i3/conky
+    status_command i3blocks -c ~/.i3/blocks.conf
 }

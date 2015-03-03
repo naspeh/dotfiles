@@ -12,15 +12,15 @@ else
     fi
 fi
 
-sxhkd &
-#devilspie &
 xcompmgr &
-cbatticon &
-conky &
+sxhkd &
 sbxkb &
 orage &
-volumeicon &
 parcellite &
 stardict -h &
 tider &
 perevod &
+#conky &
+#devilspie &
+#cbatticon &
+#volumeicon &
