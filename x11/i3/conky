@@ -1,3 +1,0 @@
-#!/bin/sh
-echo "{\"version\":1}[[]"
-conky -c ~/.i3/conkyrc

@@ -30,7 +30,6 @@ FILES = collections.OrderedDict((
     ('x11', (
         ('.xinitrc', 'x11/xinitrc'),
         ('.i3', 'x11/i3'),
-        ('.conkyrc', 'x11/conkyrc'),
         ('.config/dunst/dunstrc', 'x11/dunstrc'),
         ('.config/sxhkd/sxhkdrc', 'x11/sxhkdrc'),
         ('.devilspie/common.ds', 'x11/devilspie.ds'),
