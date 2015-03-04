@@ -1,3 +1,0 @@
-#!/bin/sh
-
-cat ~/.config/tider/blocks.txt
