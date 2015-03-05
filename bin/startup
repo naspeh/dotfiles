@@ -14,12 +14,12 @@ fi
 
 xcompmgr &
 sxhkd &
-sbxkb &
 orage &
 parcellite &
 stardict -h &
 tider &
 perevod &
+#sbxkb &
 #conky &
 #devilspie &
 #cbatticon &
