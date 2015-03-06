@@ -10,6 +10,10 @@ else
     else
         sleep 2
     fi
+    sbxkb &
+    volumeicon &
+    devilspie &
+    cbatticon &
 fi
 
 xcompmgr &
@@ -19,8 +23,3 @@ parcellite &
 stardict -h &
 tider &
 perevod &
-#sbxkb &
-#conky &
-#devilspie &
-#cbatticon &
-#volumeicon &
