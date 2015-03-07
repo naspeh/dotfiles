@@ -1,10 +1,8 @@
 #!/bin/sh
-# http "http://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where u = 'c' and woeid in (select woeid from geo.places where text = 'UA Yaremche' limit 1)&format=xml"
-city=UPXX0040
-#city=UPXX5621
+q="select * from weather.forecast where u='c' and woeid in (select woeid from geo.places where text='UA Yaremche' limit 1)"
 
 function usage {
-    echo "Usage: $0: [-v] [-c CITY] [-i INDENT]"
+    echo "Usage: $0: [-v] [-i INDENT]"
     exit 2
 }
 
@@ -17,13 +15,13 @@ while getopts "vc:i:" opt; do
     esac
 done
 
-response=$(curl -s "http://weather.yahooapis.com/forecastrss?u=c&p=$city")
+r=$(curl -s "http://query.yahooapis.com/v1/public/yql?format=xml" --data-urlencode "q=$q")
 [ $? != 0 ] && exit 1
 
 if [ $verbose ]; then
-    weather=$(echo "$response" | grep -A3 "Forecast:" | sed "s/<[^>]*>//g" | sed "1d")
+    weather=$(echo "$r" | grep -A3 "Forecast:" | sed "s/<[^>]*>//g" | sed "1d")
 else
-    weather=$(echo "$response" | grep "C<BR" | cut -d"<" -f1)
+    weather=$(echo "$r" | grep "C<BR" | cut -d"<" -f1)
 fi
 
 echo "$weather" | while read -r line; do
