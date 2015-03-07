@@ -1,22 +1,26 @@
 #!/bin/sh
-q="select * from weather.forecast where u='c' and woeid in (select woeid from geo.places where text='UA Yaremche' limit 1)"
+city='UA Yaremche'
 
 function usage {
     echo "Usage: $0: [-v] [-i INDENT]"
     exit 2
 }
 
-while getopts "vc:i:" opt; do
+while getopts "vdc:i:" opt; do
     case $opt in
-        c) city=$OPTARG;;
         v) verbose=1;;
+        d) debug=1;;
+        c) city=$OPTARG;;
         i) indent=$OPTARG;;
         ?) usage;;
     esac
 done
 
+q="select item.description from weather.forecast where u=\"c\" and woeid in (select woeid from geo.places where text=\"$city\" limit 1)"
 r=$(curl -s "http://query.yahooapis.com/v1/public/yql?format=xml" --data-urlencode "q=$q")
 [ $? != 0 ] && exit 1
+
+[ $debug ] && echo "$r"
 
 if [ $verbose ]; then
     weather=$(echo "$r" | grep -A3 "Forecast:" | sed "s/<[^>]*>//g" | sed "1d")
