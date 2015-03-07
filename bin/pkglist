@@ -3,10 +3,10 @@ PACDIR=/home/pacman
 
 function usage {
     echo "Usage: pkglist [OPTIONS]"
-    echo "  -l[vnmt] list packages (v: verbose; t: time of build; n: native; m: foreign)"
-    echo "  -c      clean global pacman;"
-    echo "  -p      save local packages;"
-    echo "  -u      update local pacman;"
+    echo "  -L[nmtdu] list packages (n: native; m: foreign; d: description; t: install time; u: project URL)"
+    echo "  -C      clean global pacman;"
+    echo "  -P      save local packages;"
+    echo "  -U      update local pacman;"
     exit 2
 }
 
@@ -48,24 +48,26 @@ function save_packages {
 }
 function list_packages {
     list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel | sort))
-    expac -Q -t '%Y-%m-%d %H:%M' "$format" $(echo $list)
+    expac -Q -t '%Y-%m-%d %H:%M' "$format_time$format" $(echo $list)
 }
 
 reset="\e[0m"
-colorM="\e[1;35m"
-format="%n"
+colored="\e[1;35m"
+format="$colored%n$reset"
+format_time=""
 
-while getopts "cpulvtmnh" opt; do
+while getopts "hCPULmntdu" opt; do
     case $opt in
-        p) operation=save_packages;;
-        c) operation=clean;;
-        u) operation=update_repo;;
-        v) format="$colorM%n$reset: %d";;
+        h) operation=usage;;
+        C) operation=clean;;
+        P) operation=save_packages;;
+        U) operation=update_repo;;
+        L) operation=list_packages;;
+        d) format="$format: %d";;
+        s) format="$format: %u";;
+        t) format_time="%l ";;
         n) filter="n";;
         m) filter="m";;
-        t) format="%l $format";;
-        l) operation=list_packages;;
-        h) operation=usage;;
     esac
 done
 
