@@ -3,7 +3,7 @@ PACDIR=/home/pacman
 
 function usage {
     echo "Usage: pkglist [OPTIONS]"
-    echo "  -l[vnm] list packages (v: verbose; n: only native; m: only foreign)"
+    echo "  -l[vnmt] list packages (v: verbose; t: time of build; n: native; m: foreign)"
     echo "  -c      clean global pacman;"
     echo "  -p      save local packages;"
     echo "  -u      update local pacman;"
@@ -46,26 +46,24 @@ function save_packages {
     sudo rsync -av /var/cache/pacman/pkg/ $PACDIR/main/
     clean_repo main
 }
-
 function list_packages {
     list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel | sort))
-    if [ $verbose ]; then
-        reset="\e[0m"
-        colorM="\e[1;35m"
-        expac -Q "$colorM%n$reset: %d" $(echo $list)
-    else
-        echo "$list"
-    fi
+    expac -Q -t '%Y-%m-%d %H:%M' "$format" $(echo $list)
 }
 
-while getopts "cpulvmnh" opt; do
+reset="\e[0m"
+colorM="\e[1;35m"
+format="%n"
+
+while getopts "cpulvtmnh" opt; do
     case $opt in
         p) operation=save_packages;;
         c) operation=clean;;
         u) operation=update_repo;;
-        v) verbose=1;;
+        v) format="$colorM%n$reset: %d";;
         n) filter="n";;
         m) filter="m";;
+        t) format="%l $format";;
         l) operation=list_packages;;
         h) operation=usage;;
     esac
