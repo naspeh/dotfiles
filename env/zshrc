@@ -144,10 +144,11 @@ alias tmux='tmux -2'
 alias nohup='nohup > /dev/null $1'
 alias free="free -t -m"
 
+alias wifi-menu="sudo wifi-menu"
+
 alias pacmanc="sudo pacman --config=/home/pacman/pacman.conf"
 alias pacaur="pacaur --rebuild"
 alias cower="cower --color=auto --rsort=votes"
-alias wifi-menu="sudo wifi-menu"
 
 if [[ "$TERM" == *256* ]]; then
     alias mc="mc -S modarin256"
