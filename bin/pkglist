@@ -3,7 +3,7 @@ PACDIR=/home/pacman
 
 function usage {
     echo "Usage: pkglist [OPTIONS]"
-    echo "  -L[nmtdu] list packages (n: native; m: foreign; d: description; t: install time; u: project URL)"
+    echo "  -L[nmtv] list packages (n: native; m: foreign; v: verbose; t: install time;)"
     echo "  -C      clean global pacman;"
     echo "  -P      save local packages;"
     echo "  -U      update local pacman;"
@@ -51,20 +51,21 @@ function list_packages {
     expac -Q -t '%Y-%m-%d %H:%M' "$format_time$format" $(echo $list)
 }
 
-reset="\e[0m"
-colored="\e[1;35m"
-format="$colored%n$reset"
+creset="\e[0m"
+cpurple="\e[1;35m"
+cgray="\e[0;37m"
+cbold="\e[1m"
+format="$cpurple%n$creset"
 format_time=""
 
-while getopts "hCPULmntdu" opt; do
+while getopts "hCPULmntv" opt; do
     case $opt in
         h) operation=usage;;
         C) operation=clean;;
         P) operation=save_packages;;
         U) operation=update_repo;;
         L) operation=list_packages;;
-        d) format="$format: %d";;
-        s) format="$format: %u";;
+        v) format="$format: $cgray$cbold%d$creset $cgray(%u)$creset";;
         t) format_time="%l ";;
         n) filter="n";;
         m) filter="m";;
