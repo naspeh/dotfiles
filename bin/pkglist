@@ -10,6 +10,27 @@ function usage {
     exit 2
 }
 
+creset="\e[0m"
+cpurple="\e[1;35m"
+cgray="\e[0;37m"
+cbold="\e[1m"
+format="$cpurple%n$creset"
+format_time=""
+
+while getopts "hCPULmntv" opt; do
+    case $opt in
+        h) operation=usage;;
+        C) operation=clean;;
+        P) operation=save_packages;;
+        U) operation=update_repo;;
+        L) operation=list_packages;;
+        v) format="$format: $cgray$cbold%d$creset $cgray(%u)$creset";;
+        t) format_time="%l ";;
+        n) filter="n";;
+        m) filter="m";;
+    esac
+done
+
 function clean {
     if [[ ! -n $(pacman -Qdt) ]]; then
         echo "No orphans to remove."
@@ -50,27 +71,6 @@ function list_packages {
     list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel | sort))
     expac -Q -t '%Y-%m-%d %H:%M' "$format_time$format" $(echo $list)
 }
-
-creset="\e[0m"
-cpurple="\e[1;35m"
-cgray="\e[0;37m"
-cbold="\e[1m"
-format="$cpurple%n$creset"
-format_time=""
-
-while getopts "hCPULmntv" opt; do
-    case $opt in
-        h) operation=usage;;
-        C) operation=clean;;
-        P) operation=save_packages;;
-        U) operation=update_repo;;
-        L) operation=list_packages;;
-        v) format="$format: $cgray$cbold%d$creset $cgray(%u)$creset";;
-        t) format_time="%l ";;
-        n) filter="n";;
-        m) filter="m";;
-    esac
-done
 
 if [ $operation ]; then
     $operation
