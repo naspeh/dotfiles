@@ -15,6 +15,11 @@ export DE=xfce
 
 export GDK_USE_XFT=1
 export QT_XFT=1
+export _JAVA_OPTIONS="\
+  -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel\
+  -Dswing.aatext=true\
+  -Dawt.useSystemAAFontSettings=on\
+"
 
 xset -b
 setxkbmap -option "terminate:ctrl_alt_bksp"

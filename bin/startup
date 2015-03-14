@@ -11,15 +11,14 @@ else
     else
         sleep 2
     fi
-    sbxkb &
     volumeicon &
-    devilspie &
     cbatticon &
+    sbxkb &
+    devilspie &
 fi
 
 xcompmgr &
 sxhkd &
-orage &
 parcellite &
 stardict -h &
 tider &

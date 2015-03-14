@@ -5,10 +5,10 @@ XF86AudioMute
 
 alt+t
     $TERMINAL
-alt+e
+alt+r
     rofi -rnow
-alt+{p,r}
-    xfce4-appfinder { ,-c}
+alt+p
+    xfce4-appfinder
 alt+Print
     xfce4-screenshooter
 alt+f
@@ -19,12 +19,18 @@ alt+ctrl+b
     chromium
 alt+ctrl+h
     $TERMINAL -T htop -e htop
+alt+ctrl+o
+    orage
 
 alt+s; {r,q,s}
     systemctl {reboot,poweroff,suspend}
-
 alt+i; {i,l,k,s}
     internet { ,light,kill,skype}
-
 alt+a; {a,w,s,d,r,q}
     tider call {target,menu,report,disable,reload,quit}
+
+# Xfce specific
+alt+F1
+    xfce4-popup-applicationsmenu
+alt+F2
+    xfce4-popup-windowmenu
