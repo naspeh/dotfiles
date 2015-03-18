@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 PACDIR=/home/pacman
 
 function usage {
@@ -40,6 +42,11 @@ function clean {
 }
 
 function update_repo {
+    if [ $2 ]; then
+        clean_repo $2 1
+        exit;
+    fi
+
     clean_repo main 1
     clean_repo abs 1
 
@@ -49,17 +56,18 @@ function update_repo {
 
 function clean_repo {
     cd $PACDIR/$1
-    dbfile="local-$1.db"
+    dbfile="naspeh-$1.db"
     sudo rm -f $dbfile*
-    sudo paccache -rvc . -k1
+    sudo paccache -rvu -c. -k0
+    sudo paccache -rv -c. -k1
     if [ $2 ]; then
-        sudo repo-add "local-$1.db.tar.gz" *.pkg.tar.xz
+        sudo repo-add "$dbfile.tar.gz" *.pkg.tar.xz
     fi
 }
 
 function save_packages {
-    pkglist -ln > $PACDIR/main.txt
-    pkglist -lm > $PACDIR/abs.txt
+    pkglist -Ln > $PACDIR/main.txt
+    pkglist -Lm > $PACDIR/abs.txt
     pacman -Q > $PACDIR/all.txt
 
     clean_repo abs
@@ -73,7 +81,7 @@ function list_packages {
 }
 
 if [ $operation ]; then
-    $operation
+    $operation "$@"
 else
     usage
 fi
