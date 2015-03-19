@@ -1,0 +1,15 @@
+#!/bin/sh
+case "$1" in
+battery)
+    acpi -b |awk -F " " '{print toupper(substr($3,1,3))" "int($4)"% ("substr($5,1,5)")\n";if (int( $4) < 20) print "#FF0000"}'
+;;
+wifi)
+    [[ $(iwgetid -r) == "" ]] && printf 'OFF\nOFF\n#cccccc' || echo "$(iwgetid -r), $(grep wlan0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')%"
+;;
+volume)
+    amixer get Master | awk -F"[][]" '/dB/ { if ($6 == "on") print $2; else printf "OFF\nOFF\n#cccccc"; }'
+;;
+*)
+    echo $"Usage: $0 {battery|wifi|volume}"
+    exit 1
+esac
