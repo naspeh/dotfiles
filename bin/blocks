@@ -1,7 +1,7 @@
 #!/bin/sh
 case "$1" in
 battery)
-    acpi -b |awk -F " " '{print toupper(substr($3,1,3))" "int($4)"% ("substr($5,1,5)")\n";if (int( $4) < 20) print "#FF0000"}'
+    acpi -b |awk -F " " '{print toupper(substr($3,1,3))" "int($4)"% ("substr($5,1,5)")\n";if (int($4) < 10 && $3 ~ "Dis") print "#FF0000"}'
 ;;
 wifi)
     [[ $(iwgetid -r) == "" ]] && printf 'OFF\nOFF\n#cccccc' || echo "$(iwgetid -r), $(grep wlan0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')%"
