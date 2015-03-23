@@ -23,9 +23,6 @@ FILES = collections.OrderedDict((
         ('.gitignore', 'env/gitignore'),
         ('.hgrc', 'env/hgrc'),
         ('.hgignore', 'env/hgignore'),
-        ('.pip', 'var/pip'),
-        ('.pip/wheels', 'var/pip/wheels'),
-        ('.pip/pip.conf', 'env/pip.conf'),
         ('.pythonrc', 'env/pythonrc'),
     )),
     ('x11', (
