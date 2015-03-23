@@ -26,6 +26,7 @@ FILES = collections.OrderedDict((
         ('.pip', 'var/pip'),
         ('.pip/wheels', 'var/pip/wheels'),
         ('.pip/pip.conf', 'env/pip.conf'),
+        ('.pythonrc', 'env/pythonrc'),
     )),
     ('x11', (
         ('.xinitrc', 'x11/xinitrc'),
