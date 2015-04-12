@@ -6,7 +6,7 @@ XF86AudioMute
 alt+t
     $TERMINAL
 alt+r
-    rofi -rnow
+    rofi -show run
 alt+p
     xfce4-appfinder
 alt+Print
@@ -24,8 +24,8 @@ alt+ctrl+o
 
 alt+s; {r,q,s}
     systemctl {reboot,poweroff,suspend}
-alt+i; {i,l,k,s}
-    internet { ,light,kill,skype}
+alt+i; {i,l,k,s,p,w,d}
+    internet { ,light,kill,skype,ppp,wifi,down}
 alt+a; {a,w,s,d,r,q}
     tider call {target,menu,report,disable,reload,quit}
 

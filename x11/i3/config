@@ -49,6 +49,7 @@ for_window [title="Event Tester"] floating enable
 
 # Try to minify floating conditions
 for_window [title="(?i)preferences$"] floating enable
+for_window [window_role="pop-up"] floating enable
 
 # bindsym $mod+t exec $terminal
 # bindsym $mod+e exec dmenu_run

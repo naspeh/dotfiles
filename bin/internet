@@ -9,6 +9,22 @@ function check {
     echo $OK
 }
 
+if [ "$1" = "down" ]; then
+    netctl stop-all
+    exit
+fi
+
+if [ "$1" = "wifi" ]; then
+    netctl start keenetic
+    exit
+fi
+
+if [ "$1" = "ppp" ]; then
+    netctl stop-all
+    netctl start ppp-it
+    exit
+fi
+
 if [ "$1" = "kill" ]; then
     killall dropbox gajim skype skype-call-recorder chromium
     exit
