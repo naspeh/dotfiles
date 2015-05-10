@@ -1,4 +1,11 @@
 #!/bin/sh
+
+xset -b
+xrdb ~/.Xresources
+setxkbmap -option "terminate:ctrl_alt_bksp"
+setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
+xset -dpms
+
 if [ "$SESSION" = "i3" ]; then
     wmname LG3D
     i3lock -i ~/lock-s.png
@@ -9,6 +16,8 @@ else
         sleep 1
     else
         sleep 2
+        setxkbmap -layout "us,ru,ua" -option "grp:caps_toggle,grp_led:caps"
+        xset -dpms
     fi
     volumeicon &
     cbatticon &

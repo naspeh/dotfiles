@@ -22,11 +22,6 @@ export _JAVA_OPTIONS="\
   -Dawt.useSystemAAFontSettings=on\
 "
 
-xset -b
-setxkbmap -option "terminate:ctrl_alt_bksp"
-setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
-xrdb ~/.Xresources
-
 # Start Gnome Keyring
 #killall gnome-keyring-daemon
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
