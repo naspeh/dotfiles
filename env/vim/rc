@@ -79,6 +79,11 @@ let xterm16_brightness='high'
 colorscheme xterm16
 
 
+"- Bundle 'junegunn/seoul256.vim'
+" let g:seoul256_background = 254
+" colorscheme seoul256
+
+
 " Bundle 'kien/ctrlp.vim'
 let g:ctrlp_custom_ignore={
     \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
@@ -165,11 +170,12 @@ nnoremap <leader>f :EasyTreeToggle<cr>
 " Bundle 'tpope/vim-vinegar'
 " Bundle 'tpope/vim-fugitive'
 " Bundle 'powerman/vim-plugin-ruscmd'
-"- Bundle 'gregsexton/MatchTag'
+" Bundle 'gregsexton/MatchTag'
+" Bundle 'mustache/vim-mustache-handlebars'
 "- Bundle 'jsx/jsx.vim'
 "- Bundle 'mitsuhiko/vim-jinja'
 "- Bundle 'tpope/vim-sensible'
-
+" Bundle 'junegunn/goyo.vim'
 
 " ------------------------------
 " Configure
@@ -280,7 +286,6 @@ filetype plugin on
 
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
-autocmd BufNewFile,BufRead *.tpl setlocal ft=htmljinja
 autocmd BufNewFile,BufRead *.js.inc setlocal ft=javascript
 autocmd BufNewFile,BufRead *.css.inc setlocal ft=css
 
@@ -336,7 +341,7 @@ iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
 iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
-iab pdbb; import bpdb; bpdb.set_trace()<esc>
+iab bpdb; import bpdb; bpdb.set_trace()<esc>
 iab pprint; import pprint as _; _.pprint(
 iab log; import logging; log = logging.getLogger(__name__).info
 
