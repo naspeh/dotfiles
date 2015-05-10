@@ -1,23 +1,21 @@
 #!/bin/sh
-
 xset -b
 xrdb ~/.Xresources
 setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
-xset -dpms
 
 if [ "$SESSION" = "i3" ]; then
     wmname LG3D
-    i3lock -i ~/lock-s.png
     feh --bg-scale ~/lock-s.png
+    i3lock -i ~/lock-s.png
     i3-msg 'workspace "2: term"; exec evilvte'
 else
-    if [ "$(hostname)" = "pad" ]; then
-        sleep 1
-    else
+    if [ "$(hostname)" = "box" ]; then
         sleep 2
         setxkbmap -layout "us,ru,ua" -option "grp:caps_toggle,grp_led:caps"
         xset -dpms
+    else
+        sleep 1
     fi
     volumeicon &
     cbatticon &
