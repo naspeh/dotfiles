@@ -13,8 +13,9 @@ export BROWSER=chromium
 export TERMINAL=evilvte
 export DE=xfce
 
-export GDK_USE_XFT=1
 export QT_XFT=1
+export GDK_USE_XFT=1
+export AWT_TOOLKIT=XToolkit
 export _JAVA_OPTIONS="\
   -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel\
   -Dswing.aatext=true\

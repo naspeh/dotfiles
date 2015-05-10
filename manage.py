@@ -31,6 +31,7 @@ FILES = collections.OrderedDict((
         ('.config/dunst/dunstrc', 'x11/dunstrc'),
         ('.config/sxhkd/sxhkdrc', 'x11/sxhkdrc'),
         ('.devilspie/common.ds', 'x11/devilspie.ds'),
+        ('.config/gtk-3.0/gtk.css', 'x11/gtk.css'),
     )),
     ('all-shell', ('vim', 'zsh', 'bin')),
     ('all', ('all-shell', 'dev', 'x11')),
