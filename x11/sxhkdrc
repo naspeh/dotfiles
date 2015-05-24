@@ -14,7 +14,7 @@ alt+Print
 alt+f
     perevod call fetch
 alt+ctrl+l
-    i3lock -i ~/lock-s.png
+    my lock
 alt+ctrl+b
     chromium
 alt+ctrl+h

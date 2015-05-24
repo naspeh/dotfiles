@@ -301,6 +301,7 @@ autocmd InsertLeave * set nocursorline
 set autoread
 autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
 autocmd FileChangedShell * echo "Warning: File changed on disk"
+autocmd BufWritePost ~/todo.rst :silent !my todo
 
 " Sudo saves the file
 command! Sw w !sudo tee % > /dev/null
@@ -339,7 +340,7 @@ imap <C-f> <C-x><C-f>
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
-iab pdb; import pdb; pdb.set_trace()<esc>
+iab pdb; import ptpdb; ptpdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
 iab bpdb; import bpdb; bpdb.set_trace()<esc>
 iab pprint; import pprint as _; _.pprint(

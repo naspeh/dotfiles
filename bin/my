@@ -1,0 +1,16 @@
+#!/bin/sh
+case "$1" in
+todo)
+    pygmentize -o ~/todo.png ~/todo.rst
+    convert ~/todo.png -background "#bcd" -gravity center -extent 1366x768 ~/todo.png
+;;
+lock)
+    i3lock -i ~/todo.png
+;;
+bg)
+    feh -R 30 --bg-center ~/todo.png
+;;
+*)
+    echo $"Usage: $0 {todo|lock|bg}"
+    exit 1
+esac

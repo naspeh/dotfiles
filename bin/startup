@@ -6,8 +6,8 @@ setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 
 if [ "$SESSION" = "i3" ]; then
     wmname LG3D
-    feh --bg-scale ~/lock-s.png
-    i3lock -i ~/lock-s.png
+    my lock
+    my bg
     i3-msg 'workspace "2: term"; exec evilvte'
 else
     if [ "$(hostname)" = "box" ]; then
