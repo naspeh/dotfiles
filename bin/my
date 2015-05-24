@@ -1,8 +1,9 @@
 #!/bin/sh
 case "$1" in
 todo)
-    pygmentize -o ~/todo.png ~/todo.rst
-    convert ~/todo.png -background "#bcd" -gravity center -extent 1366x768 ~/todo.png
+    pygmentize -O "font_name=Liberation Mono,font_size=16" -o ~/todo.png ~/todo.rst
+    convert ~/todo.png -background "#000" -gravity center -extent 1366x768 ~/todo.png
+    my bg
 ;;
 lock)
     i3lock -i ~/todo.png
