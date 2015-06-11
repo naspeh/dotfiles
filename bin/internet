@@ -9,24 +9,8 @@ function check {
     echo $OK
 }
 
-if [ "$1" = "down" ]; then
-    netctl stop-all
-    exit
-fi
-
-if [ "$1" = "wifi" ]; then
-    netctl start keenetic
-    exit
-fi
-
-if [ "$1" = "ppp" ]; then
-    netctl stop-all
-    netctl start ppp-it
-    exit
-fi
-
 if [ "$1" = "kill" ]; then
-    killall dropbox gajim skype skype-call-recorder chromium
+    killall dropbox skype chromium
     exit
 fi
 
@@ -41,7 +25,7 @@ if [ "$1" = "real-check" ]; then
 fi
 
 # Wait for the internet
-while [ "$(check)" != $OK ]; do sleep 1; done
+while [ "$(internet check)" != $OK ]; do sleep 1; done
 
 if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
@@ -49,7 +33,6 @@ fi
 
 if [ "$1" = "skype" ]; then
     skype &
-    #skype-call-recorder &
     exit
 fi
 
@@ -62,4 +45,3 @@ fi
 [ "$1" = "light" ] && exit
 
 dropbox &
-#(sleep 1; gajim) &
