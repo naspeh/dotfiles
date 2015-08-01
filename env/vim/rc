@@ -123,7 +123,7 @@ nmap <leader>q :call ToggleQuickfixList()<CR>
 
 " Bundle 'grep.vim'
 let Grep_Skip_Dirs_='.git .hg __pycache__'
-let Grep_Skip_Dirs__=Grep_Skip_Dirs_.' migrations .virtualenv'
+let Grep_Skip_Dirs__=Grep_Skip_Dirs_.' migrations .virtualenv node_modules'
 let Grep_Skip_Dirs=Grep_Skip_Dirs__
 let Grep_Skip_Files='*.pyc'
 noremap <leader>gg :call VarToggle(
