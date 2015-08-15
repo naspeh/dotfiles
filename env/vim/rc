@@ -157,14 +157,16 @@ nnoremap <leader>j :call JsBeautify()<cr>
 " Bundle 'troydm/easytree.vim'
 nnoremap <leader>f :EasyTreeToggle<cr>
 
-
+"- Bundle 'tpope/vim-dispatch'
 " Bundle 'mhinz/vim-grepper'
+cnoremap <c-n> <down>
+cnoremap <c-p> <up>
 nnoremap <leader>gg :Grepper!<cr>
 let g:grepper = {
     \'jump': 0,
     \'open': 1,
     \'switch': 1,
-    \'tools': ['git', 'grep']
+    \'dispatch': 0
 \}
 
 
