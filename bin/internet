@@ -9,6 +9,12 @@ function check {
     echo $OK
 }
 
+if [ "$1" = "ppp" ]; then
+    sudo usb_modeswitch -v 12d1 -p 1446 -c /usr/share/usb_modeswitch/12d1:1446
+    sudo netctl restart ppp-it
+    exit
+fi
+
 if [ "$1" = "kill" ]; then
     killall dropbox skype chromium
     exit
@@ -25,7 +31,7 @@ if [ "$1" = "real-check" ]; then
 fi
 
 # Wait for the internet
-while [ "$(internet check)" != $OK ]; do sleep 1; done
+while [ "$(check)" != $OK ]; do sleep 1; done
 
 if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
