@@ -121,16 +121,6 @@ nmap <leader>l :call ToggleLocationList()<CR>
 nmap <leader>q :call ToggleQuickfixList()<CR>
 
 
-" Bundle 'grep.vim'
-let Grep_Skip_Dirs_='.git .hg __pycache__'
-let Grep_Skip_Dirs__=Grep_Skip_Dirs_.' migrations .virtualenv node_modules'
-let Grep_Skip_Dirs=Grep_Skip_Dirs__
-let Grep_Skip_Files='*.pyc'
-noremap <leader>gg :call VarToggle(
-    \'g:Grep_Skip_Dirs', Grep_Skip_Dirs__, Grep_Skip_Dirs_
-\)<cr>
-
-
 " Bundle 'tpope/vim-commentary'
 vnoremap <leader>c :Commentary<cr>gv
 noremap <leader>c :Commentary<cr>
@@ -166,6 +156,16 @@ nnoremap <leader>j :call JsBeautify()<cr>
 
 " Bundle 'troydm/easytree.vim'
 nnoremap <leader>f :EasyTreeToggle<cr>
+
+
+" Bundle 'mhinz/vim-grepper'
+nnoremap <leader>gg :Grepper!<cr>
+let g:grepper = {
+    \'jump': 0,
+    \'open': 1,
+    \'switch': 1,
+    \'tools': ['git', 'grep']
+\}
 
 
 " Bundle 'tpope/vim-vinegar'
