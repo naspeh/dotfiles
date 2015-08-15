@@ -144,9 +144,9 @@ nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
 
 " Bundle 'ervandew/supertab'
-let g:SuperTabMappingForward = '<nul>' " '<c-space>'
-let g:SuperTabMappingBackward = '<s-nul>' " '<s-c-space>'
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabMappingForward='<nul>' " '<c-space>'
+let g:SuperTabMappingBackward='<s-nul>' " '<s-c-space>'
+let g:SuperTabDefaultCompletionType="<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 
 
@@ -156,6 +156,7 @@ nnoremap <leader>j :call JsBeautify()<cr>
 
 " Bundle 'troydm/easytree.vim'
 nnoremap <leader>f :EasyTreeToggle<cr>
+
 
 "- Bundle 'tpope/vim-dispatch'
 " Bundle 'mhinz/vim-grepper'
@@ -168,6 +169,12 @@ let g:grepper = {
     \'switch': 1,
     \'dispatch': 0
 \}
+
+
+" Bundle 'tpope/vim-repeat'
+" Bundle 'svermeulen/vim-easyclip'
+let g:EasyClipShareYanks=1
+let g:EasyClipShareYanksDirectory='$HOME/.vim/'
 
 
 " Bundle 'tpope/vim-vinegar'

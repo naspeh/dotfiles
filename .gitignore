@@ -1,5 +1,5 @@
 *.pyc
 var
 
-/env/vim/.netrwhist
+/env/vim/.*
 /env/vim/bundle/*
