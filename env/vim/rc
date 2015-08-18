@@ -171,14 +171,9 @@ let g:grepper = {
 \}
 
 
-" Bundle 'tpope/vim-repeat'
-" Bundle 'svermeulen/vim-easyclip'
-let g:EasyClipShareYanks=1
-let g:EasyClipShareYanksDirectory='$HOME/.vim/'
-
-
 " Bundle 'tpope/vim-vinegar'
 " Bundle 'tpope/vim-fugitive'
+" Bundle 'tpope/vim-repeat'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
 " Bundle 'mustache/vim-mustache-handlebars'
