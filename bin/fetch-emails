@@ -18,6 +18,8 @@ def fetch(conf_file):
         r['unread'] for r in res.json()['labels?']['items']
         if r['name'] in conf.get('labels', ['\\Inbox'])
     ][0]
+    print(unread)
+
     if unread > conf.get('unread', 0):
         subprocess.call(conf['cmd'], shell=True)
         conf['unread'] = unread
