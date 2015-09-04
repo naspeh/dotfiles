@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+import argparse
+import json
+import subprocess
+
+import requests
+
+
+def fetch(conf_file):
+    with open(conf_file, 'br') as f:
+        conf = json.loads(f.read().decode())
+
+    res = requests.get(
+        'https://yadro.org/sidebar/', {'fmt': 'json'},
+        auth=(conf['username'], conf['token'])
+    )
+    unread = [
+        r['unread'] for r in res.json()['labels?']['items']
+        if r['name'] in conf.get('labels', ['\\Inbox'])
+    ][0]
+    if unread > conf.get('unread', 0):
+        subprocess.call(conf['cmd'], shell=True)
+        conf['unread'] = unread
+        c = json.dumps(conf, sort_keys=True, indent=4, separators=(',', ': '))
+        with open(conf_file, 'bw') as f:
+            f.write(c.encode())
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('conf', help='path to config')
+
+    args = parser.parse_args()
+    fetch(args.conf)
