@@ -20,12 +20,14 @@ def fetch(conf_file):
     ][0]
     print(unread)
 
-    if unread > conf.get('unread', 0):
-        subprocess.call(conf['cmd'], shell=True)
+    unread_last = conf.get('unread', 0)
+    if unread != unread_last:
         conf['unread'] = unread
         c = json.dumps(conf, sort_keys=True, indent=4, separators=(',', ': '))
         with open(conf_file, 'bw') as f:
             f.write(c.encode())
+    if unread > unread_last:
+        subprocess.call(conf['cmd'], shell=True)
 
 
 if __name__ == '__main__':
