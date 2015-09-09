@@ -111,7 +111,7 @@ let g:syntastic_auto_loc_list=2
 let g:syntastic_loc_list_height=2
 let g:syntastic_stl_format = '[%E{Err: #%e}%B{, }%W{Warn: #%w}]'
 " let g:syntastic_python_flake8_args='--ignore=W601,E711'
-let g:syntastic_javascript_checkers = ['gjslint', 'jshint']
+let g:syntastic_javascript_checkers = ['gjslint', 'jshint', 'eslint']
 nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 nmap <leader>ss :call VarToggle('g:syntastic_auto_loc_list', 1, 2)<cr>
 
@@ -150,10 +150,6 @@ let g:SuperTabDefaultCompletionType="<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 
 
-" Bundle 'maksimr/vim-jsbeautify'
-nnoremap <leader>j :call JsBeautify()<cr>
-
-
 " Bundle 'troydm/easytree.vim'
 nnoremap <leader>f :EasyTreeToggle<cr>
 
@@ -171,16 +167,34 @@ let g:grepper = {
 \}
 
 
+" Bundle 'itchyny/vim-gitbranch'
+" Bundle 'bling/vim-airline'
+let g:airline_theme='light'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = ''
+let g:airline_section_b = '⎇  %{gitbranch#name()}'
+
+
+"- Bundle 'maksimr/vim-jsbeautify'
+" nnoremap <leader>j :call JsBeautify()<cr>
+
+
+"- Bundle 'othree/javascript-libraries-syntax.vim'
+"- Bundle 'mxw/vim-jsx'
+" let g:jsx_ext_required = 0
+
 " Bundle 'tpope/vim-vinegar'
-" Bundle 'tpope/vim-fugitive'
 " Bundle 'tpope/vim-repeat'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
 " Bundle 'mustache/vim-mustache-handlebars'
-"- Bundle 'jsx/jsx.vim'
-"- Bundle 'mitsuhiko/vim-jinja'
+"- Bundle 'tpope/vim-fugitive'
 "- Bundle 'tpope/vim-sensible'
-" Bundle 'junegunn/goyo.vim'
+"- Bundle 'mitsuhiko/vim-jinja'
+"- Bundle 'cohama/agit.vim'
+
 
 " ------------------------------
 " Configure
@@ -230,28 +244,12 @@ set wildmenu
 set wildmode=longest,full
 set wildignore+=*.pyc,__pycache__
 
-" Base from https://github.com/scrooloose/vimfiles
-set statusline =%#identifier#[%f]%* "filename
-set statusline+=%#warningmsg#%{&ff!='unix'?'['.&ff.']':''}%* "warn not unix
-set statusline+=%#warningmsg#%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}%* "warn not utf8
-set statusline+=%h                  "help file flag
-set statusline+=%y                  "filetype
-set statusline+=%#identifier#%r%*   "read only flag
-set statusline+=%#warningmsg#%m%*   "modified flag
-set statusline+=%{fugitive#statusline()}
-set statusline+=%#warningmsg#%{SyntasticStatuslineFlag()}%*
-set statusline+=%#error#%{&paste?'[paste]':''}%* " warn paste
-set statusline+=%=                  "left/right separator
-set statusline+=%c,                 "cursor column
-set statusline+=%l/%L               "cursor line/total lines
-set statusline+=\ %P                "percent through file
-set laststatus=2
-
 set showcmd
 set showmode
 set cmdheight=2
 set confirm
 set report=0
+set laststatus=2
 
 set mouse=r
 set mousemodel=popup
@@ -291,8 +289,6 @@ filetype plugin on
 
 autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
-autocmd BufNewFile,BufRead *.js.inc setlocal ft=javascript
-autocmd BufNewFile,BufRead *.css.inc setlocal ft=css
 
 autocmd Syntax javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd Syntax css set omnifunc=csscomplete#CompleteCSS
