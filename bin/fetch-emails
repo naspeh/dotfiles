@@ -11,7 +11,7 @@ def fetch(conf_file):
         conf = json.loads(f.read().decode())
 
     res = requests.get(
-        'https://yadro.org/sidebar/', {'fmt': 'json'},
+        'https://yadro.org/api/sidebar/',
         auth=(conf['username'], conf['token'])
     )
     unread = [
