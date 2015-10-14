@@ -11,11 +11,15 @@ def fetch(conf_file):
         conf = json.loads(f.read().decode())
 
     res = requests.get(
-        'https://yadro.org/api/sidebar/',
+        'https://yadro.org/api/labels/',
         auth=(conf['username'], conf['token'])
     )
+    labels = res.json()
+    if not labels:
+        return
+
     unread = [
-        r['unread'] for r in res.json()['labels']['items']
+        r['unread'] for r in labels['items']
         if r['name'] in conf.get('labels', ['\\Inbox'])
     ][0]
     print(unread)
