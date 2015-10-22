@@ -59,7 +59,7 @@ function clean_repo {
     dbfile="naspeh-$1.db"
     sudo rm -f $dbfile*
     sudo paccache -rvu -c. -k0
-    sudo paccache -rv -c. -k1
+    sudo paccache -rv -c. -k2
     if [ $2 ]; then
         sudo repo-add "$dbfile.tar.gz" *.pkg.tar.xz
     fi

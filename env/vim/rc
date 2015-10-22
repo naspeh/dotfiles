@@ -119,17 +119,17 @@ let g:jedi#force_py_version=3
 let g:jedi#auto_initialization=1
 let g:jedi#auto_vim_configuration=1
 let g:jedi#use_tabs_not_buffers=0
-let g:jedi#rename_command=0
 let g:jedi#completions_enabled=1
 let g:jedi#smart_auto_mappings = 0
-let g:jedi#popup_on_dot=1
+let g:jedi#popup_on_dot=0
 let g:jedi#popup_select_first=1
 let g:jedi#show_call_signatures=2
+let g:jedi#rename_command=0
 let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
 let g:jedi#documentation_command="<leader>o"
 let g:jedi#usages_command="<leader>i"
-let g:jedi#completions_command="<C-g>"
+let g:jedi#completions_command="<C-Space>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
 
