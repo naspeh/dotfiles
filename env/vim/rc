@@ -140,10 +140,6 @@ let g:SuperTabDefaultCompletionType="<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 
 
-" Bundle 'troydm/easytree.vim'
-nnoremap <leader>f :EasyTreeToggle<cr>
-
-
 "- Bundle 'tpope/vim-dispatch'
 " Bundle 'mhinz/vim-grepper'
 cnoremap <c-n> <down>
@@ -278,6 +274,11 @@ set nowrap
 set backspace=indent,eol,start
 set nojoinspaces
 set nofoldenable
+
+" Vimmers, You Don’t Need NerdTree
+" https://medium.com/@mozhuuuuu/vimmers-you-dont-need-nerdtree-18f627b561c3
+let g:netrw_liststyle=3
+nnoremap <leader>f :Explore<cr>
 
 filetype on
 filetype plugin on
