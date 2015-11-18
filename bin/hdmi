@@ -1,29 +1,18 @@
 #!/bin/sh
 MON=HDMI1
-ASOUNDRC=/home/naspeh/.asoundrc
 
 ext_off() {
     # Autoconfigure the internal monitor and disable the external one
     xrandr --output LVDS1 --auto --output $MON --off
-    if [ -e $ASOUNDRC ]; then
-        rm $ASOUNDRC
-        systemctl restart alsa-state.service
-    fi
-}
-ext_on() {
-    cp "$ASOUNDRC".bak $ASOUNDRC
-    systemctl restart alsa-state.service
 }
 
 xrandr | grep $MON | grep " connected "
 if [ $? -eq 0 ]; then
     # External monitor is connected
-    xrandr --output $MON --auto
+    xrandr --output $MON --auto --right-of LVDS1
     if [ $? -ne 0 ]; then
         # Something went wrong
         ext_off
-    else
-        ext_on
     fi
 else
     # External monitor is not connected

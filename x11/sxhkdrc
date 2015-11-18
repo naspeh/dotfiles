@@ -21,8 +21,10 @@ alt+ctrl+h
     $TERMINAL -T htop -e htop
 alt+ctrl+o
     orage
+alt+ctrl+m
+    hdmi
 
-alt+s; {r,q,s}
+alt+ctrl+{r,q,s}
     systemctl {reboot,poweroff,suspend}
 alt+i; {i,l,k,s,p,w,d}
     internet { ,light,kill,skype,ppp,wifi,down}

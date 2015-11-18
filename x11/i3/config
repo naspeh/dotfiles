@@ -44,6 +44,7 @@ for_window [class="(?i)(orage|globaltime)"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable, focus floating, move position 200px 100px
 for_window [class="(?i)xfce4-notifyd"] floating enable, border none
 for_window [class="(?i)lxappearance"] floating enable
+for_window [class="(?i)pavucontrol"] floating enable
 for_window [class="(?i)solaar"] floating enable
 for_window [title="Event Tester"] floating enable
 
