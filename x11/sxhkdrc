@@ -22,7 +22,7 @@ alt+ctrl+h
 alt+ctrl+o
     orage
 alt+ctrl+m
-    hdmi
+    monitor
 
 alt+ctrl+{r,q,s}
     systemctl {reboot,poweroff,suspend}

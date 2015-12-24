@@ -13,7 +13,7 @@ else
     if [ "$(hostname)" = "box" ]; then
         sleep 2
         setxkbmap -layout "us,ru,ua" -option "grp:caps_toggle,grp_led:caps"
-        xset -dpms
+        #xset -dpms
     else
         sleep 1
     fi
