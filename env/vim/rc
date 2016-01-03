@@ -179,6 +179,7 @@ let g:neocomplete#enable_at_startup=0
 " Bundle 'tpope/vim-vinegar'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
+" Bundle 'vim-scripts/dbext.vim'
 "- Bundle 'mustache/vim-mustache-handlebars'
 "- Bundle 'tpope/vim-repeat'
 "- Bundle 'tpope/vim-fugitive'

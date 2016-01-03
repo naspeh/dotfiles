@@ -38,6 +38,7 @@ floating_modifier $mod
 for_window [class="(?i)(goldendict|stardict)"] floating enable
 for_window [class="(?i)(gajim|pidgin)"] floating enable, move workspace 8: jabber
 for_window [class="(?i)skype"] floating enable, move workspace 9: skype
+for_window [class="(?i)upwork"] floating enable, move workspace 7: upwork
 for_window [class="(?i)deadbeef"] floating enable
 for_window [class="(?i)transmission"] floating enable
 for_window [class="(?i)(orage|globaltime)"] floating enable
