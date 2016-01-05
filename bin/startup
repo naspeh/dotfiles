@@ -8,7 +8,7 @@ if [ "$SESSION" = "i3" ]; then
     wmname LG3D
     my lock
     my bg
-    i3-msg 'workspace "2: term"; exec evilvte'
+    i3-msg 'workspace "2: term"; exec $TERMINAL'
 else
     if [ "$(hostname)" = "box" ]; then
         sleep 2
