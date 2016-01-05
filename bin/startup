@@ -16,6 +16,8 @@ else
     else
         sleep 1
     fi
+    volumeicon &
+    sbxkb &
     devilspie &
 fi
 
@@ -24,8 +26,6 @@ sxhkd &
 tider &
 perevod &
 stardict -h &
-volumeicon &
 cbatticon &
-sbxkb &
 clipit &
 #parcellite &
