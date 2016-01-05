@@ -40,7 +40,10 @@ TARGETS = {
         'backup copy /media/trans/backups/pad/ --nolog'
     ),
     'box_to_sea': (
-        None,
+        (
+            '[ -d /media/sea/backups ] || '
+            'mount /dev/sea/arch /media/sea'
+        ),
         'backup copy /arch/ /media/sea/ --nolog --extra="'
         '   --exclude={/lost+found,/.delta,/backup}'
         '   --backup --backup-dir=/media/sea/.delta/'
