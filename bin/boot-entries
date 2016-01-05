@@ -22,19 +22,27 @@ def entry(label):
     with open('/boot/loader/entries/arch-%s.conf' % label, 'bw') as f:
         yield _conf, lambda c: f.write(c.encode())
 
-with entry('bak') as (conf, save):
-    name = subprocess.check_output('expac -Q "%n %v" linux', shell=True)
+# with entry('bak') as (conf, save):
+#     name = subprocess.check_output('expac -Q "%n %v" linux', shell=True)
+#     name = name.decode().strip()
+#     conf = conf.replace('/vmlinuz-linux', '/vmlinuz-linux-bak')
+#     conf = conf.replace('/initramfs-linux.img', '/initramfs-linux-bak.img')
+#     conf = '# {}\n{}'.format(name, conf)
+#     save(conf)
+
+#     subprocess.call(
+#         'cp /boot/vmlinuz-linux /boot/vmlinuz-linux-bak'
+#         '&& cp /boot/initramfs-linux.img /boot/initramfs-linux-bak.img',
+#         shell=True
+#     )
+
+with entry('lts') as (conf, save):
+    name = subprocess.check_output('expac -Q "%n %v" linux-lts', shell=True)
     name = name.decode().strip()
-    conf = conf.replace('/vmlinuz-linux', '/vmlinuz-linux-bak')
-    conf = conf.replace('/initramfs-linux.img', '/initramfs-linux-bak.img')
+    conf = conf.replace('/vmlinuz-linux', '/vmlinuz-linux-lts')
+    conf = conf.replace('/initramfs-linux.img', '/initramfs-linux-lts.img')
     conf = '# {}\n{}'.format(name, conf)
     save(conf)
-
-    subprocess.call(
-        'cp /boot/vmlinuz-linux /boot/vmlinuz-linux-bak'
-        '&& cp /boot/initramfs-linux.img /boot/initramfs-linux-bak.img',
-        shell=True
-    )
 
 with entry('console') as (c, save):
     c = re.sub(r'(?m)^options.*$', r'\g<0> systemd.unit=multi-user.target', c)

@@ -1,5 +1,12 @@
 #!/bin/sh
 case "$1" in
+bat)
+    rem_time=$(acpi -b | awk '{print $(NF-1)}')
+    hrs=$(date --date="$rem_time" +%H)
+    mins=$(date --date="$rem_time" +%M)
+    rem_mins=$(echo "$hrs*60 + $mins" | bc)
+    [ $rem_mins -le 360 ] && systemctl poweroff || exit 0;
+;;
 todo)
     pygmentize -O "font_name=Liberation Mono,font_size=16" -o ~/todo.png ~/todo.rst
     convert ~/todo.png -background "#000" -gravity center -extent 1366x768 ~/todo.png
@@ -12,6 +19,6 @@ bg)
     feh -R 30 --bg-center ~/todo.png
 ;;
 *)
-    echo $"Usage: $0 {todo|lock|bg}"
+    echo $"Usage: $0 {todo|lock|bg|bat}"
     exit 1
 esac
