@@ -1,7 +1,7 @@
 #!/bin/zsh
 ZDOTDIR=~/.zsh
 
-export EDITOR=vim
+export EDITOR=nvim
 export PATH="$PATH:$HOME/bin:./node_modules/.bin/"
 export PYTHONSTARTUP=~/.pythonrc
 
@@ -191,8 +191,8 @@ case $TERM in
         titlebar_preexec () { print -Pn "\e]0;$1 %n@%m: %~\a" }
         ;;
     (screen*)
-        titlebar_precmd () { echo -ne "\ek${1%% *}\e\\" }
-        titlebar_preexec () { echo -ne "\ek${1%% *}\e\\" }
+        titlebar_precmd () { print -Pn "\e]0;%n@%m: %~ $1\a" }
+        titlebar_preexec () { print -Pn "\e]0;%n@%m: %~ $1\a" }
         ;;
     (*)
         titlebar_precmd () {}
@@ -200,10 +200,10 @@ case $TERM in
         ;;
 esac
 precmd () {
-    titlebar_precmd
+    titlebar_precmd $*
 }
 preexec () {
-    titlebar_preexec
+    titlebar_preexec $*
 }
 
 # VCS info

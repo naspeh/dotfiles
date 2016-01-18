@@ -334,6 +334,11 @@ nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 
 imap <C-f> <C-x><C-f>
 
+" Neovim
+if exists(':tnoremap')
+    tnoremap <Esc> <C-\><C-n>
+endif
+
 " ------------------------------
 " Misc
 " ------------------------------

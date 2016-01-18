@@ -8,7 +8,7 @@ import subprocess
 SRC_DIR = os.path.realpath(os.path.dirname(__file__))
 FILES = collections.OrderedDict((
     ('vim', (
-        ('.vimrc', 'env/vim/rc'),
+        ('.vimrc', 'env/vim/init.vim'),
         ('.vim', 'env/vim'),
     )),
     ('zsh', (

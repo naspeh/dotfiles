@@ -3,3 +3,4 @@ var
 
 /env/vim/.*
 /env/vim/bundle/*
+/env/vim/undofiles
