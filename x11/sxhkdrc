@@ -3,9 +3,6 @@ XF86Audio{Raise,Lower}Volume
 XF86AudioMute
     amixer sset Master toggle && pkill -RTMIN+1 i3blocks
 
-XF86{Back,Forward}
-    xdotool key --window=$(xdotool getactivewindow) {Prior, Next}
-
 alt+t
     $TERMINAL
 alt+r

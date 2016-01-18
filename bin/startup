@@ -1,8 +1,13 @@
 #!/bin/sh
 xset -b
 xrdb ~/.Xresources
+
 setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
+
+# PgDn & PgUp on x220
+xmodmap -e "keycode 166 = Prior"
+xmodmap -e "keycode 167 = Next"
 
 if [ "$SESSION" = "i3" ]; then
     wmname LG3D
