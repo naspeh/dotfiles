@@ -62,7 +62,7 @@ autocmd FileType yaml call Tab2()
 runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
-"- Bundle 'xterm16.vim'
+"- Bundle 'vim-scripts/xterm16.vim'
 " let xterm16_colormap='softlight'
 " let xterm16_brightness='high'
 " colorscheme xterm16
