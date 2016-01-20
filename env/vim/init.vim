@@ -72,7 +72,9 @@ execute pathogen#infect()
 " colorscheme seoul256
 
 " Bundle 'altercation/vim-colors-solarized'
-set background=light
+" set t_Co=256
+" let g:solarized_termcolors=256
+set background=dark
 colorscheme solarized
 
 
@@ -341,6 +343,7 @@ imap <C-f> <C-x><C-f>
 " Neovim
 if exists(':tnoremap')
     tnoremap <Esc> <C-\><C-n>
+    let g:terminal_scrollback_buffer_size=100000
 endif
 
 " ------------------------------
