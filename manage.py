@@ -10,6 +10,7 @@ FILES = collections.OrderedDict((
     ('vim', (
         ('.vimrc', 'env/vim/init.vim'),
         ('.vim', 'env/vim'),
+        ('.config/nvim', 'env/vim'),
     )),
     ('zsh', (
         ('.zshrc', 'env/zshrc'),
@@ -30,8 +31,9 @@ FILES = collections.OrderedDict((
         ('.i3', 'x11/i3'),
         ('.config/dunst/dunstrc', 'x11/dunstrc'),
         ('.config/sxhkd/sxhkdrc', 'x11/sxhkdrc'),
-        ('.devilspie/common.ds', 'x11/devilspie.ds'),
         ('.config/gtk-3.0/gtk.css', 'x11/gtk.css'),
+        ('.config/sakura/sakura.conf', 'x11/sakura.conf'),
+        ('.devilspie/common.ds', 'x11/devilspie.ds'),
     )),
     ('all-shell', ('vim', 'zsh', 'bin')),
     ('all', ('all-shell', 'dev', 'x11')),
