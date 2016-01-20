@@ -12,9 +12,10 @@ FILES = collections.OrderedDict((
         ('.vim', 'env/vim'),
         ('.config/nvim', 'env/vim'),
     )),
-    ('zsh', (
+    ('shell', (
         ('.zshrc', 'env/zshrc'),
         ('.zsh', 'var/zsh'),
+        ('.tmux.conf', 'env/tmux.conf'),
     )),
     ('bin', (
         ('bin', 'bin'),
@@ -35,7 +36,7 @@ FILES = collections.OrderedDict((
         ('.config/sakura/sakura.conf', 'x11/sakura.conf'),
         ('.devilspie/common.ds', 'x11/devilspie.ds'),
     )),
-    ('all-shell', ('vim', 'zsh', 'bin')),
+    ('all-shell', ('vim', 'shell', 'bin')),
     ('all', ('all-shell', 'dev', 'x11')),
 ))
 BOOT = {
