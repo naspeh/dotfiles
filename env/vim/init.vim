@@ -147,7 +147,7 @@ let g:SuperTabDefaultCompletionType="<c-x><c-o>"
 " Bundle 'mhinz/vim-grepper'
 cnoremap <c-n> <down>
 cnoremap <c-p> <up>
-nnoremap <leader>gg :Grepper!<cr>
+nnoremap <leader>gg :Grepper<cr>
 let g:grepper = {
     \'jump': 0,
     \'open': 1,
@@ -165,6 +165,7 @@ endif
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_section_b='⎇  %{gitbranch#name()}'
+
 
 "- Bundle 'Shougo/neocomplete.vim'
 let g:neocomplete#enable_at_startup=0

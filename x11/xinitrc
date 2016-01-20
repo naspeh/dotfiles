@@ -8,11 +8,9 @@ fi
 
 export PATH="$PATH:$HOME/bin"
 
-export EDITOR=vim
 export BROWSER=chromium
 export DE=xfce
 export TERMINAL=sakura
-export HTOP="$TERMINAL -t htop -e htop"
 
 export QT_XFT=1
 export GDK_USE_XFT=1
