@@ -22,7 +22,6 @@ else
         sleep 1
     fi
     volumeicon &
-    sbxkb &
     devilspie &
 fi
 

@@ -20,6 +20,13 @@ lock)
 bg)
     feh -R 30 --bg-center ~/todo.png
 ;;
+lang)
+    if [ "$(setxkbmap -print | grep -c us+ua)" == "1" ]; then
+        setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
+    else
+        setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
+    fi
+;;
 *)
     echo $"Usage: $0 {todo|lock|bg|bat}"
     exit 1

@@ -23,6 +23,8 @@ alt+ctrl+o
     orage
 alt+ctrl+m
     monitor
+alt+ctrl+u
+    my lang
 
 alt+ctrl+{r,q,s}
     systemctl {reboot,poweroff,suspend}
