@@ -17,7 +17,6 @@ if [ "$SESSION" = "i3" ]; then
 else
     if [ "$(hostname)" = "box" ]; then
         sleep 2
-        setxkbmap -layout "us,ru,ua" -option "grp:caps_toggle,grp_led:caps"
     else
         sleep 1
     fi
