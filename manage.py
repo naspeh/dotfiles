@@ -34,6 +34,7 @@ FILES = collections.OrderedDict((
         ('.config/sxhkd/sxhkdrc', 'x11/sxhkdrc'),
         ('.config/gtk-3.0/gtk.css', 'x11/gtk.css'),
         ('.config/sakura/sakura.conf', 'x11/sakura.conf'),
+        ('.config/termite/config', 'x11/termite.conf'),
         ('.devilspie/common.ds', 'x11/devilspie.ds'),
     )),
     ('all-shell', ('vim', 'shell', 'bin')),

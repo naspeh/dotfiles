@@ -8,7 +8,7 @@ fi
 
 export PATH="$PATH:$HOME/bin"
 
-export TERMINAL=sakura
+export TERMINAL=termite
 export BROWSER=chromium
 export DE=xfce
 
