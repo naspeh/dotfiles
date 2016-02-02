@@ -7,6 +7,7 @@
             (is(window_name) "sakura")
             (is(application_name) "Xfce Terminal")
             (is(application_name) "evilvte")
+            (is(application_name) "termite")
             (and
                 (contains(window_name) "Chromium")
                 (matches(window_role) "browser")
