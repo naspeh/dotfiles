@@ -7,7 +7,8 @@ import socket
 import subprocess
 import sys
 
-BDIR = '/arch/backup/'
+HOSTNAME = socket.gethostname()
+BDIR = '/extra/backups/%s/' % HOSTNAME
 RSYNC = 'sudo rsync -aAXHvh --stats --delete'
 FILTERS = [
     '+ /boot/',
@@ -141,8 +142,8 @@ def main():
         )
 
     elif args.cmd == 'full':
-        snap = '/dev/%s/snap' % socket.gethostname()
-        root = '/dev/%s/root' % socket.gethostname()
+        snap = '/dev/%s/snap' % HOSTNAME
+        root = '/dev/%s/root' % HOSTNAME
         rsync += ' -x --exclude=/var/lib/docker/devicemapper --exclude=' + (
             '{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found}'
         )
@@ -166,7 +167,7 @@ def main():
         check, cmd_ = TARGETS.get(args.target)
         if args.show:
             print(' && '.join([c for c in [check, cmd_] if c]))
-        elif args.target.startswith(socket.gethostname()):
+        elif args.target.startswith(HOSTNAME):
             if check and 0 != subprocess.call(check, shell=True):
                 raise SystemExit('Check failed: %s' % check)
 
