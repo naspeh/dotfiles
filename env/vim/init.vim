@@ -91,6 +91,8 @@ nmap <F4> :CtrlPCurWD<cr>
 imap <F4> <esc>:CtrlPCurWD<cr>
 nmap <F5> :CtrlPBufTag<cr>
 imap <F5> <esc>:CtrlPBufTag<cr>
+nmap <F6> :CtrlPBufTagAll<cr>
+imap <F6> <esc>:CtrlPBufTagAll<cr>
 
 
 " Bundle 'scrooloose/syntastic'
@@ -159,8 +161,9 @@ let g:grepper = {
 
 
 " Bundle 'itchyny/vim-gitbranch'
-" Bundle 'bling/vim-airline'
-let g:airline_theme='sol'
+" Bundle 'vim-airline/vim-airline'
+" Bundle 'vim-airline/vim-airline-themes'
+let g:airline_theme='solarized'
 if !exists('g:airline_symbols')
     let g:airline_symbols={}
 endif
@@ -185,7 +188,7 @@ let g:neocomplete#enable_at_startup=0
 " Bundle 'tpope/vim-vinegar'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
-" Bundle 'vim-scripts/dbext.vim'
+"- Bundle 'vim-scripts/dbext.vim'
 "- Bundle 'mustache/vim-mustache-handlebars'
 "- Bundle 'tpope/vim-repeat'
 "- Bundle 'tpope/vim-fugitive'
