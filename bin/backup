@@ -42,11 +42,13 @@ TARGETS = {
     ),
     'pad_to_extra': (
         '[ -d /extra/backups ] || exit 1',
-        'backup copy /extra/backups/pad/ --nolog'
+        'backup copy /extra/backups/pad/ --nolog &&'
+        'rsync -avh /arch/tmp/ /extra/backups/pad-tmp/'
     ),
     'kat_to_extra': (
         '[ -d /extra/backups ] || exit 1',
-        'backup copy /extra/backups/kat/ --nolog'
+        'backup copy /extra/backups/kat/ --nolog &&'
+        'rsync -avh /arch/tmp/ /extra/backups/kat-tmp/'
     ),
     'kat_to_sea': (
         (
