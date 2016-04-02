@@ -15,11 +15,11 @@ if [ "$SESSION" = "i3" ]; then
     my bg
     i3-msg 'workspace "2: term"; exec $TERMINAL'
 else
-    if [ "$(hostname)" = "box" ]; then
-        sleep 2
-    else
-        sleep 1
-    fi
+    # if [ "$(hostname)" = "box" ]; then
+    #     sleep 2
+    # else
+    #     sleep 1
+    # fi
     volumeicon &
     devilspie &
 fi

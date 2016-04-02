@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 HOSTNAME = socket.gethostname()
-BDIR = '/extra/backups/%s/' % HOSTNAME
+BDIR = '/arch/backup/'
 RSYNC = 'sudo rsync -aAXHvh --stats --delete'
 FILTERS = [
     '+ /boot/',
@@ -40,12 +40,20 @@ TARGETS = {
         ),
         'backup copy /media/trans/backups/pad/ --nolog'
     ),
-    'box_to_sea': (
+    'pad_to_extra': (
+        '[ -d /extra/backups ] || exit 1',
+        'backup copy /extra/backups/pad/ --nolog'
+    ),
+    'kat_to_extra': (
+        '[ -d /extra/backups ] || exit 1',
+        'backup copy /extra/backups/kat/ --nolog'
+    ),
+    'kat_to_sea': (
         (
             '[ -d /media/sea/backups ] || '
             'mount /dev/sea/arch /media/sea'
         ),
-        'backup copy /arch/ /media/sea/ --nolog --extra="'
+        'backup copy /extra/ /media/sea/ --nolog --extra="'
         '   --exclude={/lost+found,/.delta,/backup}'
         '   --backup --backup-dir=/media/sea/.delta/'
         '"'
