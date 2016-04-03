@@ -8,6 +8,7 @@ import subprocess
 import sys
 
 HOSTNAME = socket.gethostname()
+GATE = '192.168.1.1'
 BDIR = '/arch/backup/'
 RSYNC = 'sudo rsync -aAXHvh --stats --delete'
 FILTERS = [
@@ -31,16 +32,18 @@ FILTERS = [
 ]
 TARGETS = {
     '*_to_mi': (
-        '',
-        'rsync -avh --stats --delete'
-        '   /arch/backup/ root@192.168.1.1:/arch/backups/{0}/'
-        .format(HOSTNAME)
+        'ssh root@{0} [ -d /arch/backups ] || exit 1'.format(GATE),
+        'rsync -avhy --stats --delete --delete-after'
+        '   --backup --backup-dir=/arch/.delta/backups/{0}'
+        '   /arch/backup/ root@{1}:/arch/backups/{0}/'
+        .format(HOSTNAME, GATE)
     ),
     'kat_to_mi': (
-        '',
-        'rsync -avh --stats --delete'
-        '   /arch/photo/ root@192.168.1.1:/arch/photo/'
-        .format(HOSTNAME)
+        'ssh root@{0} [ -d /arch/backups ] || exit 1'.format(GATE),
+        'rsync -avhy --stats --delete --delete-after'
+        '   --backup --backup-dir=/arch/.delta/backups/{0}'
+        '   /arch/photo/ root@{1}:/arch/photo/'
+        .format(HOSTNAME, GATE)
     ),
     'pad_to_trans': (
         (
