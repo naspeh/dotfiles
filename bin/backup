@@ -32,7 +32,14 @@ FILTERS = [
 TARGETS = {
     '*_to_mi': (
         '',
-        'rsync -avh --stats /arch/backup/ root@192.168.1.1:/arch/backups/{0}/'
+        'rsync -avh --stats --delete'
+        '   /arch/backup/ root@192.168.1.1:/arch/backups/{0}/'
+        .format(HOSTNAME)
+    ),
+    'kat_to_mi': (
+        '',
+        'rsync -avh --stats --delete'
+        '   /arch/photo/ root@192.168.1.1:/arch/photo/'
         .format(HOSTNAME)
     ),
     'pad_to_trans': (
