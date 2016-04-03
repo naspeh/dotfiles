@@ -24,14 +24,16 @@ FILTERS = [
     '+ /arch/naspeh/',
     '+ /arch/nayavu/',
     '+ /arch/photo/',
+    '+ /arch/temp/',
     '- /arch/*',
     '- /**/.cache/',
     '- /*'
 ]
 TARGETS = {
-    'pad_to_box': (
-        'ping -c1 box | grep "1 received"',
-        'backup copy box:/arch/backups/pad/ --nolog'
+    '*_to_mi': (
+        '',
+        'rsync -avh --stats /arch/backup/ root@192.168.1.1:/arch/backups/{0}/'
+        .format(HOSTNAME)
     ),
     'pad_to_trans': (
         (
@@ -39,16 +41,6 @@ TARGETS = {
             'mount /dev/disk/by-label/t-arch /media/trans'
         ),
         'backup copy /media/trans/backups/pad/ --nolog'
-    ),
-    'pad_to_extra': (
-        '[ -d /extra/backups ] || exit 1',
-        'backup copy /extra/backups/pad/ --nolog &&'
-        'rsync -avh /arch/tmp/ /extra/backups/pad-tmp/'
-    ),
-    'kat_to_extra': (
-        '[ -d /extra/backups ] || exit 1',
-        'backup copy /extra/backups/kat/ --nolog &&'
-        'rsync -avh /arch/tmp/ /extra/backups/kat-tmp/'
     ),
     'kat_to_sea': (
         (
@@ -177,7 +169,7 @@ def main():
         check, cmd_ = TARGETS.get(args.target)
         if args.show:
             print(' && '.join([c for c in [check, cmd_] if c]))
-        elif args.target.startswith(HOSTNAME):
+        elif args.target.startswith(HOSTNAME) or args.target.startswith('*'):
             if check and 0 != subprocess.call(check, shell=True):
                 raise SystemExit('Check failed: %s' % check)
 
