@@ -38,30 +38,39 @@ TARGETS = {
         '   /arch/backup/ root@{1}:/arch/backups/{0}/'
         .format(HOSTNAME, GATE)
     ),
-    'kat_to_mi': (
-        'ssh root@{0} [ -d /arch/backups ] || exit 1'.format(GATE),
-        'rsync -avhy --stats --delete --delete-after'
+    '*_to_trans': (
+        (
+            '[ -d /media/trans/backups ] || ('
+            '   mkdir -p /media/trans &&'
+            '   mount /dev/disk/by-label/t-arch /media/trans'
+            ')'
+        ),
+        'backup copy /media/trans/backups/{0} --nolog --extra="'
         '   --backup --backup-dir=/arch/.delta/backups/{0}'
-        '   /arch/photo/ root@{1}:/arch/photo/'
-        .format(HOSTNAME, GATE)
+        '"'.format(HOSTNAME)
     ),
-    'pad_to_trans': (
+    '*_to_sea': (
         (
-            '[ -d /media/trans/backups ] || '
-            'mount /dev/disk/by-label/t-arch /media/trans'
+            '[ -d /media/sea/backups ] || ('
+            '   mkdir -p /media/sea &&'
+            '   mount /dev/sea/arch /media/sea'
+            ')'
         ),
-        'backup copy /media/trans/backups/pad/ --nolog'
+        'backup copy /media/sea/backups/{0} --nolog --extra="'
+        '   --backup --backup-dir=/arch/.delta/backups/{0}'
+        '"'.format(HOSTNAME)
     ),
-    'kat_to_sea': (
+    '*_to_box': (
         (
-            '[ -d /media/sea/backups ] || '
-            'mount /dev/sea/arch /media/sea'
+            '[ -d /media/box/backups ] || ('
+            '   mkdir -p /media/box &&'
+            '   mount /dev/box/arch /media/box'
+            ')'
         ),
-        'backup copy /extra/ /media/sea/ --nolog --extra="'
-        '   --exclude={/lost+found,/.delta,/backup}'
-        '   --backup --backup-dir=/media/sea/.delta/'
-        '"'
-    )
+        'backup copy /media/box/backups/{0} --nolog --extra="'
+        '   --backup --backup-dir=/arch/.delta/backups/{0}'
+        '"'.format(HOSTNAME)
+    ),
 }
 
 
