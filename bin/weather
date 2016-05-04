@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 import json
 import re
+import sys
 import requests
 
-q = 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="Yaremche,UA") and u="c"'
+city = sys.argv[1] if len(sys.argv) == 2 else 'Yaremche'
+q = 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="%s") and u="c"' % city
 
 res = requests.get('http://query.yahooapis.com/v1/public/yql', {'format': 'json', 'q': q})
 res = json.loads(res.text)
@@ -14,11 +16,11 @@ symbols = (
     ('.*Snow.*', '❄'),
     ('.*(Rain|Shower).*', '☂'),
     ('.*Thunderstorm.*', '☈'),
-    ('.*Lightning.*', '☇')
+    ('.*Lightning.*', '☇'),
 )
 for pattern, s in symbols:
     if re.match(pattern, res['text']):
         symbol = s
         break
 
-print('{symbol} {text}, {temp}°C'.format(symbol=symbol,**res))
+print('{symbol} {text}, {temp}°C'.format(symbol=symbol, **res))
