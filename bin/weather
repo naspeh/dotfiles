@@ -1,40 +1,24 @@
-#!/bin/sh
-city='UA Yaremche'
+#!/usr/bin/env python
+import json
+import re
+import requests
 
-function usage {
-    echo "Usage: $0: [-v] [-i INDENT]"
-    exit 2
-}
+q = 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="Yaremche,UA") and u="c"'
 
-while getopts "vdc:i:" opt; do
-    case $opt in
-        v) verbose=1;;
-        d) debug=1;;
-        c) city=$OPTARG;;
-        i) indent=$OPTARG;;
-        ?) usage;;
-    esac
-done
+res = requests.get('http://query.yahooapis.com/v1/public/yql', {'format': 'json', 'q': q})
+res = json.loads(res.text)
+res = res['query']['results']['channel']['item']['condition']
 
-q="select item.description from weather.forecast where u=\"c\" and woeid in (select woeid from geo.places where text=\"$city\" limit 1)"
-r=$(curl -s "http://query.yahooapis.com/v1/public/yql?format=xml" --data-urlencode "q=$q")
-[ $? != 0 ] && exit 1
+symbol = '☀'
+symbols = (
+    ('.*Snow.*', '❄'),
+    ('.*(Rain|Shower).*', '☂'),
+    ('.*Thunderstorm.*', '☈'),
+    ('.*Lightning.*', '☇')
+)
+for pattern, s in symbols:
+    if re.match(pattern, res['text']):
+        symbol = s
+        break
 
-[ $debug ] && echo "$r"
-
-if [ $verbose ]; then
-    weather=$(echo "$r" | grep -A3 "Forecast:" | sed "s/<[^>]*>//g" | sed "1d")
-else
-    weather=$(echo "$r" | grep "C<BR" | cut -d"<" -f1)
-fi
-
-echo "$weather" | while read -r line; do
-    case $line in
-        *Snow*) symbol="❄";;
-        *Rain*|*Shower*) symbol="☂";;
-        *Thunderstorm*) symbol="☈";;
-        *Lightning*) symbol="☇";;
-        *) symbol="☀";;
-    esac
-    echo "$indent$symbol $line"
-done
+print('{symbol} {text}, {temp}°C'.format(symbol=symbol,**res))
