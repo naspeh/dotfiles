@@ -30,47 +30,26 @@ FILTERS = [
     '- /**/.cache/',
     '- /*'
 ]
+
+
+def star(diskname, devpath=None):
+    devpath = devpath if devpath else '/dev/%s/arch' % diskname
+    return (
+        (
+            '[ -d /media/{diskname}/backups ] || ('
+            '   mkdir -p /media/{diskname} &&'
+            '   mount {devpath} /media/{diskname}'
+            ')'.format(diskname=diskname, devpath=devpath)
+        ),
+        'backup copy /media/{diskname}/backups/{hostname} --nolog --extra="'
+        '   --backup --backup-dir=/media/{diskname}/backups/_delta/{hostname}'
+        '"'.format(diskname=diskname, hostname=HOSTNAME)
+    )
+
 TARGETS = {
-    '*_to_mi': (
-        'ssh root@{0} [ -d /arch/backups ] || exit 1'.format(GATE),
-        'rsync -avhy --stats --delete --delete-after'
-        '   --backup --backup-dir=/arch/.delta/backups/{0}'
-        '   /arch/backup/ root@{1}:/arch/backups/{0}/'
-        .format(HOSTNAME, GATE)
-    ),
-    '*_to_trans': (
-        (
-            '[ -d /media/trans/backups ] || ('
-            '   mkdir -p /media/trans &&'
-            '   mount /dev/disk/by-label/t-arch /media/trans'
-            ')'
-        ),
-        'backup copy /media/trans/backups/{0} --nolog --extra="'
-        '   --backup --backup-dir=/media/trans/backups/_delta/{0}'
-        '"'.format(HOSTNAME)
-    ),
-    '*_to_sea': (
-        (
-            '[ -d /media/sea/backups ] || ('
-            '   mkdir -p /media/sea &&'
-            '   mount /dev/sea/arch /media/sea'
-            ')'
-        ),
-        'backup copy /media/sea/backups/{0} --nolog --extra="'
-        '   --backup --backup-dir=/arch/.delta/backups/{0}'
-        '"'.format(HOSTNAME)
-    ),
-    '*_to_box': (
-        (
-            '[ -d /media/box/backups ] || ('
-            '   mkdir -p /media/box &&'
-            '   mount /dev/box/arch /media/box'
-            ')'
-        ),
-        'backup copy /media/box/backups/{0} --nolog --extra="'
-        '   --backup --backup-dir=/media/box/backups/_delta/{0}'
-        '"'.format(HOSTNAME)
-    ),
+    '*_to_trans': star('trans', '/dev/disk/by-label/t-arch'),
+    '*_to_sea': star('sea'),
+    '*_to_box': star('box'),
 }
 
 
