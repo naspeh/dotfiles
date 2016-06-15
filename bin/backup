@@ -46,7 +46,7 @@ TARGETS = {
             ')'
         ),
         'backup copy /media/trans/backups/{0} --nolog --extra="'
-        '   --backup --backup-dir=/arch/.delta/backups/{0}'
+        '   --backup --backup-dir=/media/trans/backups/_delta/{0}'
         '"'.format(HOSTNAME)
     ),
     '*_to_sea': (
@@ -68,7 +68,7 @@ TARGETS = {
             ')'
         ),
         'backup copy /media/box/backups/{0} --nolog --extra="'
-        '   --backup --backup-dir=/arch/.delta/backups/{0}'
+        '   --backup --backup-dir=/media/box/backups/_delta/{0}'
         '"'.format(HOSTNAME)
     ),
 }
