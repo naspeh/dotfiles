@@ -8,12 +8,16 @@ setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 # PgDn & PgUp on x220
 xmodmap -e "keycode 166 = Prior"
 xmodmap -e "keycode 167 = Next"
+xmodmap -e "keycode 174 = Prior"
+xmodmap -e "keycode 172 = Next"
+xmodmap -e "keycode 171 = End"
+xmodmap -e "keycode 173 = Home"
 
 if [ "$SESSION" = "i3" ]; then
     wmname LG3D
     my lock
     my bg
-    i3-msg 'workspace "2: term"; exec $TERMINAL'
+    i3-msg 'workspace "3: term"; exec $TERMINAL'
 else
     # if [ "$(hostname)" = "box" ]; then
     #     sleep 2

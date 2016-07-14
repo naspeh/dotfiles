@@ -36,8 +36,14 @@ if [ "$1" = "skype" ]; then
     exit
 fi
 
+if [ "$1" = "music" ]; then
+    chromium --app=https://play.google.com/music/listen
+    exit
+fi
+
 if [ "$SESSION" = "i3" ]; then
-    i3-msg 'workspace 1: web; exec chromium'
+    i3-msg 'workspace 2: web; exec chromium'
+    chromium --app=https://yadro.org
 else
     chromium
 fi
