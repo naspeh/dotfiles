@@ -7,8 +7,6 @@ import re
 import shutil
 import subprocess
 
-import requests
-
 
 dirbase = rcfile = None
 get_url = lambda n: 'https://github.com/%s' % n
@@ -70,6 +68,8 @@ def install(bundle, dirname, update):
 
 
 def get_info(bundles):
+    import requests
+
     save = False if bundles else True
     bundles = [get_bundle(i, '') for i in bundles] if bundles else parse_rc()
 
