@@ -11,7 +11,7 @@ def fetch(conf_file):
         conf = json.loads(f.read().decode())
 
     res = requests.get(
-        'https://yadro.org/api/labels/',
+        'https://mail.pusto.org/api/labels/',
         auth=(conf['username'], conf['token'])
     )
     labels = res.json()

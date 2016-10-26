@@ -34,8 +34,8 @@ alt+ctrl+u
 
 alt+ctrl+{r,q,s}
     systemctl {reboot,poweroff,suspend}
-alt+i; {i,l,k,s,m}
-    internet { ,light,kill,skype,music}
+alt+i; {i,e,l,k,s,m}
+    internet { ,mail,light,kill,skype,music}
 alt+a; {a,w,s,d,r,q}
     tider call {target,menu,report,disable,reload,quit}
 

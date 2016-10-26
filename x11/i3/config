@@ -50,9 +50,7 @@ for_window [class="(?i)xfce4-notifyd"] floating enable, border none
 for_window [class="(?i)lxappearance"] floating enable
 for_window [class="(?i)pavucontrol"] floating enable
 for_window [class="(?i)solaar"] floating enable
-for_window [title="Event Tester"] floating enable
-for_window [title="Mailur" window_role="pop-up"] move workspace 1: mail, floating disable
-for_window [title="Google Play Music" window_role="pop-up"] move workspace 8: music, floating disable
+for_window [title="^Event Tester$"] floating enable
 
 bindsym $mod+t exec $terminal
 
