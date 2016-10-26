@@ -146,17 +146,20 @@ let g:SuperTabMappingBackward='<s-nul>' " '<s-c-space>'
 let g:SuperTabDefaultCompletionType="<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 
+"- Bundle 'Valloric/YouCompleteMe'
+
 
 "- Bundle 'tpope/vim-dispatch'
-" Bundle 'mhinz/vim-grepper'
-cnoremap <c-n> <down>
-cnoremap <c-p> <up>
-nnoremap <leader>gg :Grepper<cr>
+"- Bundle 'mhinz/vim-grepper'
+" cnoremap <c-n> <down>
+" cnoremap <c-p> <up>
+" nnoremap <leader>gg :Grepper<cr>
+" nnoremap <leader>ga :Grepper -tool ag<cr>
 let g:grepper = {
+    \'tools': ['git', 'ag', 'grep'],
     \'jump': 0,
     \'open': 1,
     \'switch': 1,
-    \'dispatch': 0
 \}
 
 
@@ -285,10 +288,27 @@ set backspace=indent,eol,start
 set nojoinspaces
 set nofoldenable
 
-" Vimmers, You Don’t Need NerdTree
 " https://medium.com/@mozhuuuuu/vimmers-you-dont-need-nerdtree-18f627b561c3
 let g:netrw_liststyle=3
 nnoremap <leader>f :Explore<cr>
+
+" https://robots.thoughtbot.com/faster-grepping-in-vim
+" The Silver Searcher
+if executable('ag')
+    " Use ag over grep
+    set grepprg=ag\ --nogroup\ --nocolor
+
+    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+    " ag is fast enough that CtrlP doesn't need to cache
+    let g:ctrlp_use_caching = 0
+
+endif
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap <leader>vg :vimgrep //jg **
+nnoremap <leader>gg :Ag -r<SPACE>
+
 
 filetype on
 filetype plugin on
