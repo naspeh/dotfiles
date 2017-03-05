@@ -38,31 +38,29 @@ fi
 
 if [ "$1" = "music" ]; then
     i3-msg 'workspace 8: music'
-    chromium --app=https://play.google.com/music/listen
+    chromium --app=https://play.google.com/music/listen &
     i3-msg 'floating disable'
     exit
 fi
 
 if [ "$1" = "slack" ]; then
     i3-msg 'workspace 7: slack'
-    chromium --app=https://sourcefabric.slack.com/messages/superdesk/details/
+    chromium --app=https://sourcefabric.slack.com/messages/superdesk/details/ &
     i3-msg 'floating disable'
     exit
 fi
 
 if [ "$1" = "mail" ]; then
     i3-msg 'workspace 1: mail'
-    chromium --app=https://mail.pusto.org
+    chromium --app=https://mail.pusto.org &
     i3-msg 'floating disable'
     exit
 fi
 
 if [ "$SESSION" = "i3" ]; then
     i3-msg 'workspace 2: web'
-    chromium
-else
-    chromium
 fi
+chromium &
 
 [ "$1" = "light" ] && exit
 

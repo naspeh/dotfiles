@@ -192,7 +192,7 @@ bindsym $mod+Shift+0 move container to workspace number 0
 
 # Start i3bar
 bar {
-    font xft:sans 14px
+    font xft:sans 12px
     colors {
         background #efefef
         statusline #000000

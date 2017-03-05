@@ -1,13 +1,13 @@
 XF86Audio{Raise,Lower}Volume
-#   amixer sset Master {2%+, 2%-} unmute && pkill -RTMIN+1 i3blocks
+   amixer sset Master {2%+, 2%-} unmute && pkill -RTMIN+1 i3blocks
 #   pactl set-sink-volume @DEFAULT_SINK@ {+,-}2% && pkill -RTMIN+1 i3blocks
 #   pamixer  -{i,d} 2 && pkill -RTMIN+1 i3blocks
-    ponymix unmute; ponymix {in,de}crease 2% && pkill -RTMIN+1 i3blocks
+#    ponymix unmute; ponymix {in,de}crease 2% && pkill -RTMIN+1 i3blocks
 XF86AudioMute
-#   amixer sset Master toggle && pkill -RTMIN+1 i3blocks
+   amixer sset Master toggle && pkill -RTMIN+1 i3blocks
 #   pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -RTMIN+1 i3blocks
 #   pamixer -t && pkill -RTMIN+1 i3blocks
-    ponymix unmute; ponymix toggle && pkill -RTMIN+1 i3blocks
+#    ponymix unmute; ponymix toggle && pkill -RTMIN+1 i3blocks
 
 alt+t
     $TERMINAL
@@ -38,6 +38,9 @@ alt+i; {i,e,l,k,s,m}
     internet { ,mail,light,kill,skype,music}
 alt+a; {a,w,s,d,r,q}
     tider call {target,menu,report,disable,reload,quit}
+
+#alt+c
+#    clipster -sc
 
 # Xfce specific
 alt+F1

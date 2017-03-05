@@ -30,9 +30,13 @@ fi
 
 xcompmgr &
 sxhkd &
+cbatticon &
 tider &
+
 perevod &
 stardict -h &
-cbatticon &
-clipit &
-#parcellite &
+#goldendict &
+
+parcellite &
+#clipit &
+#clipster -d &

@@ -198,6 +198,7 @@ let g:neocomplete#enable_at_startup=0
 "- Bundle 'tpope/vim-sensible'
 "- Bundle 'mitsuhiko/vim-jinja'
 "- Bundle 'cohama/agit.vim'
+"- Bundle 'justinmk/vim-dirvish'
 
 
 " ------------------------------
