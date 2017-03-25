@@ -28,6 +28,7 @@ else
     devilspie &
 fi
 
+nm-applet --sm-disable &
 xcompmgr &
 sxhkd &
 cbatticon &

@@ -306,7 +306,7 @@ if executable('ag')
     let g:ctrlp_use_caching = 0
 
 endif
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap <leader>vg :vimgrep //jg **
 nnoremap <leader>gg :Ag -r<SPACE>
 
