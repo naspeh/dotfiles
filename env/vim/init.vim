@@ -55,6 +55,24 @@ endfun
 nmap <leader>2t :call Tab2()<cr>
 autocmd FileType yaml call Tab2()
 
+fun! ToggleQuickfixList()
+    let qnr = winnr("$")
+    cwindow
+    let qnr2 = winnr("$")
+    if qnr == qnr2
+        cclose
+    endif
+endfun
+fun! ToggleLocationList()
+    let lnr = winnr("$")
+    lwindow
+    let lnr2 = winnr("$")
+    if lnr == lnr2
+        lclose
+    endif
+endfun
+nmap <leader>l :call ToggleLocationList()<CR>
+nmap <leader>q :call ToggleQuickfixList()<CR>
 " ------------------------------
 " Plugins activate
 " ------------------------------
@@ -78,12 +96,8 @@ set background=light
 colorscheme solarized
 
 
-" Bundle 'kien/ctrlp.vim'
-let g:ctrlp_custom_ignore={
-    \'dir':  '\.git$\|\.hg$\|\.svn$\|__pycache__$',
-\}
-"let g:ctrlp_extensions=['tag', 'quickfix', 'dir']
-let g:ctrlp_working_path_mode=0
+" Bundle 'ctrlpvim/ctrlp.vim'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_mruf_relative=1
 nmap <F3> :CtrlPBuffer<cr>
 imap <F3> <esc>:CtrlPBuffer<cr>
@@ -93,6 +107,8 @@ nmap <F5> :CtrlPBufTag<cr>
 imap <F5> <esc>:CtrlPBufTag<cr>
 nmap <F6> :CtrlPBufTagAll<cr>
 imap <F6> <esc>:CtrlPBufTagAll<cr>
+nmap <F7> :CtrlPQuickfix<cr>
+imap <F7> <esc>:CtrlPQuickfix<cr>
 
 
 " Bundle 'scrooloose/syntastic'
@@ -111,9 +127,9 @@ let g:syntastic_javascript_checkers = ['jshint', 'eslint']
 nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 
 
-" Bundle 'milkypostman/vim-togglelist'
-nmap <leader>l :call ToggleLocationList()<CR>
-nmap <leader>q :call ToggleQuickfixList()<CR>
+"- Bundle 'milkypostman/vim-togglelist'
+"nmap <leader>l :call ToggleLocationList()<CR>
+"nmap <leader>q :call ToggleQuickfixList()<CR>
 
 
 " Bundle 'tpope/vim-commentary'
@@ -195,11 +211,13 @@ let g:neocomplete#enable_at_startup=0
 "- Bundle 'mustache/vim-mustache-handlebars'
 "- Bundle 'tpope/vim-repeat'
 "- Bundle 'tpope/vim-fugitive'
-"- Bundle 'tpope/vim-sensible'
 "- Bundle 'mitsuhiko/vim-jinja'
 "- Bundle 'cohama/agit.vim'
 "- Bundle 'justinmk/vim-dirvish'
 
+" Try to write config from scratch with:
+"- Bundle 'tpope/vim-sensible'
+"- Bundle 'tpope/vim-unimpaired'
 
 " ------------------------------
 " Configure
@@ -289,27 +307,30 @@ set backspace=indent,eol,start
 set nojoinspaces
 set nofoldenable
 
-" https://medium.com/@mozhuuuuu/vimmers-you-dont-need-nerdtree-18f627b561c3
-let g:netrw_liststyle=3
+" https://shapeshed.com/vim-netrw/
+"let g:netrw_liststyle=3
+"let g:netrw_banner=0
 nnoremap <leader>f :Explore<cr>
 
 " https://robots.thoughtbot.com/faster-grepping-in-vim
-" The Silver Searcher
+" http://codeinthehole.com/tips/using-the-silver-searcher-with-vim/
+" https://elliotekj.com/2016/11/22/setup-ctrlp-to-use-ripgrep-in-vim/
 if executable('ag')
-    " Use ag over grep
-    set grepprg=ag\ --nogroup\ --nocolor
-
-    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-    " ag is fast enough that CtrlP doesn't need to cache
+    set grepprg=ag\ --vimgrep
+    set grepformat=%f:%l:%c:%m
+    let g:ctrlp_user_command = 'ag -g . %s'
     let g:ctrlp_use_caching = 0
 
 endif
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap <leader>vg :vimgrep //jg **
-nnoremap <leader>gg :Ag -r<SPACE>
-
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --with-filename\ --no-heading
+  set grepformat=%f:%l:%c:%m
+  let g:ctrlp_user_command = 'rg --files %s'
+  let g:ctrlp_use_caching = 0
+endif
+command! -nargs=+ -complete=file -bar G silent! lgrep! <args>|lwindow|redraw!
+nnoremap <leader>gg :G<SPACE>
+nnoremap <leader>gv :lvimgrep //jg **
 
 filetype on
 filetype plugin on
