@@ -25,15 +25,12 @@ setopt appendhistory
 setopt sharehistory
 
 # bind UP and DOWN arrow keys
-bindkey '^[[A' history-beginning-search-backward
-bindkey '^[[B' history-beginning-search-forward
-# https://bbs.archlinux.org/viewtopic.php?id=149977
-# autoload up-line-or-beginning-search
-# autoload down-line-or-beginning-search
-# zle -N up-line-or-beginning-search
-# zle -N down-line-or-beginning-search
-# [[ -n "${key[Up]}" ]] && bindkey "${key[Up]}" up-line-or-beginning-search
-# [[ -n "${key[Down]}" ]] && bindkey "${key[Down]}" down-line-or-beginning-search
+# next two lines work locally
+bindkey '\e[A' history-beginning-search-backward
+bindkey '\e[B' history-beginning-search-forward
+# next two lines work over ssh
+[[ -n "${key[Up]}" ]] && bindkey "${key[Up]}" history-beginning-search-backward
+[[ -n "${key[Down]}" ]] && bindkey "${key[Down]}" history-beginning-search-forward
 
 setopt autocd
 setopt notify
