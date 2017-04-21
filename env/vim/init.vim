@@ -107,23 +107,29 @@ nmap <F5> :CtrlPBufTag<cr>
 imap <F5> <esc>:CtrlPBufTag<cr>
 nmap <F6> :CtrlPBufTagAll<cr>
 imap <F6> <esc>:CtrlPBufTagAll<cr>
-nmap <F7> :CtrlPQuickfix<cr>
-imap <F7> <esc>:CtrlPQuickfix<cr>
+"nmap <F7> :CtrlPQuickfix<cr>
+"imap <F7> <esc>:CtrlPQuickfix<cr>
 
 
 " Bundle 'scrooloose/syntastic'
-let g:syntastic_check_on_open=0
+let g:syntastic_mode_map = {
+    \"mode": "passive",
+    \"active_filetypes": [],
+    \"passive_filetypes": []
+\}
+let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=0
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_enable_balloons=1
 let g:syntastic_enable_highlighting=1
-let g:syntastic_always_populate_loc_list=1
+let g:syntastic_always_populate_loc_list=0
 let g:syntastic_auto_loc_list=2
 let g:syntastic_loc_list_height=2
-let g:syntastic_stl_format = '[%E{Err: #%e}%B{, }%W{Warn: #%w}]'
-" let g:syntastic_python_flake8_args='--ignore=W601,E711'
+let g:syntastic_stl_format = '[%E{E%e}%B{, }%W{W%w}]'
+"let g:syntastic_python_flake8_args='--ignore=W601,E711'
 let g:syntastic_javascript_checkers = ['jshint', 'eslint']
+nmap <F7> :SyntasticToggleMode<cr>
 nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 
 
