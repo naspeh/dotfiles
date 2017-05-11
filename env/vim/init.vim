@@ -68,7 +68,8 @@ fun! ToggleLocationList()
     lwindow
     let lnr2 = winnr("$")
     if lnr == lnr2
-        lclose
+        " close all locationlist at once
+        windo if &buftype == "quickfix" || &buftype == "locationlist" | lclose | endif
     endif
 endfun
 nmap <leader>l :call ToggleLocationList()<CR>
