@@ -81,21 +81,11 @@ nmap <leader>q :call ToggleQuickfixList()<CR>
 runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
-"- Bundle 'vim-scripts/xterm16.vim'
-" let xterm16_colormap='softlight'
-" let xterm16_brightness='high'
-" colorscheme xterm16
-
-"- Bundle 'junegunn/seoul256.vim'
-" let g:seoul256_background = 254
-" colorscheme seoul256
-
 " Bundle 'altercation/vim-colors-solarized'
 " set t_Co=256
 " let g:solarized_termcolors=256
 set background=light
 colorscheme solarized
-
 
 " Bundle 'ctrlpvim/ctrlp.vim'
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
@@ -110,7 +100,6 @@ nmap <F6> :CtrlPBufTagAll<cr>
 imap <F6> <esc>:CtrlPBufTagAll<cr>
 "nmap <F7> :CtrlPQuickfix<cr>
 "imap <F7> <esc>:CtrlPQuickfix<cr>
-
 
 " Bundle 'scrooloose/syntastic'
 let g:syntastic_mode_map = {
@@ -133,19 +122,12 @@ let g:syntastic_javascript_checkers = ['jshint', 'eslint']
 nmap <F7> :SyntasticToggleMode<cr>
 nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 
-
-"- Bundle 'milkypostman/vim-togglelist'
-"nmap <leader>l :call ToggleLocationList()<CR>
-"nmap <leader>q :call ToggleQuickfixList()<CR>
-
-
 " Bundle 'tpope/vim-commentary'
 vnoremap <leader>c :Commentary<cr>gv
 noremap <leader>c :Commentary<cr>
 
-
-let g:jedi#force_py_version=3
 " Bundle 'davidhalter/jedi-vim'
+let g:jedi#force_py_version=3
 let g:jedi#auto_initialization=1
 let g:jedi#auto_vim_configuration=1
 let g:jedi#use_tabs_not_buffers=0
@@ -162,29 +144,11 @@ let g:jedi#usages_command="<leader>i"
 let g:jedi#completions_command="<C-Space>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
-
 " Bundle 'ervandew/supertab'
 let g:SuperTabMappingForward='<nul>' " '<c-space>'
 let g:SuperTabMappingBackward='<s-nul>' " '<s-c-space>'
 let g:SuperTabDefaultCompletionType="<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
-
-"- Bundle 'Valloric/YouCompleteMe'
-
-
-"- Bundle 'tpope/vim-dispatch'
-"- Bundle 'mhinz/vim-grepper'
-" cnoremap <c-n> <down>
-" cnoremap <c-p> <up>
-" nnoremap <leader>gg :Grepper<cr>
-" nnoremap <leader>ga :Grepper -tool ag<cr>
-let g:grepper = {
-    \'tools': ['git', 'ag', 'grep'],
-    \'jump': 0,
-    \'open': 1,
-    \'switch': 1,
-\}
-
 
 " Bundle 'itchyny/vim-gitbranch'
 " Bundle 'vim-airline/vim-airline'
@@ -197,32 +161,15 @@ let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_section_b='⎇  %{gitbranch#name()}'
 
+" Bundle 'powerman/vim-plugin-ruscmd'
 
-"- Bundle 'Shougo/neocomplete.vim'
-let g:neocomplete#enable_at_startup=0
-
-
+" TODO: frontend related
 "- Bundle 'maksimr/vim-jsbeautify'
 " nnoremap <leader>j :call JsBeautify()<cr>
+"- Bundle 'marijnh/tern_for_vim'
+"- Bundle 'gregsexton/MatchTag'
 
-
-" Bundle 'marijnh/tern_for_vim'
-"- Bundle 'othree/javascript-libraries-syntax.vim'
-"- Bundle 'mxw/vim-jsx'
-" let g:jsx_ext_required = 0
-
-" -Bundle 'tpope/vim-vinegar'
-" Bundle 'powerman/vim-plugin-ruscmd'
-" Bundle 'gregsexton/MatchTag'
-"- Bundle 'vim-scripts/dbext.vim'
-"- Bundle 'mustache/vim-mustache-handlebars'
-"- Bundle 'tpope/vim-repeat'
-"- Bundle 'tpope/vim-fugitive'
-"- Bundle 'mitsuhiko/vim-jinja'
-"- Bundle 'cohama/agit.vim'
-"- Bundle 'justinmk/vim-dirvish'
-
-" Try to write config from scratch with:
+" TODO: Try to write config from scratch with:
 "- Bundle 'tpope/vim-sensible'
 "- Bundle 'tpope/vim-unimpaired'
 
