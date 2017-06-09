@@ -211,7 +211,7 @@ let g:neocomplete#enable_at_startup=0
 "- Bundle 'mxw/vim-jsx'
 " let g:jsx_ext_required = 0
 
-" Bundle 'tpope/vim-vinegar'
+" -Bundle 'tpope/vim-vinegar'
 " Bundle 'powerman/vim-plugin-ruscmd'
 " Bundle 'gregsexton/MatchTag'
 "- Bundle 'vim-scripts/dbext.vim'
@@ -316,8 +316,9 @@ set nofoldenable
 
 " https://shapeshed.com/vim-netrw/
 "let g:netrw_liststyle=3
-"let g:netrw_banner=0
-nnoremap <leader>f :Explore<cr>
+let g:netrw_banner=0
+let g:netrw_list_hide = netrw_gitignore#Hide()
+nnoremap - :Explore<cr>
 
 " https://robots.thoughtbot.com/faster-grepping-in-vim
 " http://codeinthehole.com/tips/using-the-silver-searcher-with-vim/
