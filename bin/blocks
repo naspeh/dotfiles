@@ -17,7 +17,8 @@ wifi)
 ;;
 volume)
     #amixer get Master|awk -F"[][]" '/dB/ { if ($6 == "on") print $2; else printf "OFF\nOFF\n#cccccc"; }'
-    (ponymix is-muted && printf "OFF\nOFF\n#cccccc") || ponymix get-volume
+    #(ponymix is-muted && printf "OFF\nOFF\n#cccccc") || ponymix get-volume
+    amixer get Master|awk -F"[][]" '/%/ { if ($4 == "on") print $2; else printf "OFF\nOFF\n#cccccc"; }'
 ;;
 *)
     echo $"Usage: $0 {battery|wifi|volume}"
