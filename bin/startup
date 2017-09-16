@@ -25,7 +25,9 @@ else
     sbxkb &
 fi
 
-nm-applet --sm-disable &
+#nm-applet --sm-disable &
+connman-gtk &
+
 xcompmgr &
 sxhkd &
 cbatticon &

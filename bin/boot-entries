@@ -3,13 +3,13 @@ import contextlib
 import os
 import re
 import sys
-import subprocess
+import subprocess as sp
 
 _conf = None
 
 
 if os.geteuid() != 0:
-    subprocess.call(['sudo'] + sys.argv)
+    sp.call(['sudo'] + sys.argv)
     exit()
 
 
@@ -22,27 +22,35 @@ def entry(label):
     with open('/boot/loader/entries/arch-%s.conf' % label, 'bw') as f:
         yield _conf, lambda c: f.write(c.encode())
 
-# with entry('bak') as (conf, save):
-#     name = subprocess.check_output('expac -Q "%n %v" linux', shell=True)
+# with entry('bak') as (cnf, save):
+#     name = sp.check_output('expac -Q "%n %v" linux', shell=True)
 #     name = name.decode().strip()
-#     conf = conf.replace('/vmlinuz-linux', '/vmlinuz-linux-bak')
-#     conf = conf.replace('/initramfs-linux.img', '/initramfs-linux-bak.img')
-#     conf = '# {}\n{}'.format(name, conf)
-#     save(conf)
+#     cnf = cnf.replace('/vmlinuz-linux', '/vmlinuz-linux-bak')
+#     cnf = cnf.replace('/initramfs-linux.img', '/initramfs-linux-bak.img')
+#     cnf = '# {}\n{}'.format(name, cnf)
+#     save(cnf)
 
-#     subprocess.call(
+#     sp.call(
 #         'cp /boot/vmlinuz-linux /boot/vmlinuz-linux-bak'
 #         '&& cp /boot/initramfs-linux.img /boot/initramfs-linux-bak.img',
 #         shell=True
 #     )
 
-with entry('lts') as (conf, save):
-    name = subprocess.check_output('expac -Q "%n %v" linux-lts', shell=True)
+with entry('lts') as (cnf, save):
+    name = sp.check_output('expac -Q "%n %v" linux-lts', shell=True)
     name = name.decode().strip()
-    conf = conf.replace('/vmlinuz-linux', '/vmlinuz-linux-lts')
-    conf = conf.replace('/initramfs-linux.img', '/initramfs-linux-lts.img')
-    conf = '# {}\n{}'.format(name, conf)
-    save(conf)
+    cnf = cnf.replace('/vmlinuz-linux', '/vmlinuz-linux-lts')
+    cnf = cnf.replace('/initramfs-linux.img', '/initramfs-linux-lts.img')
+    cnf = '# {}\n{}'.format(name, cnf)
+    save(cnf)
+
+# with entry('hardened') as (cnf, save):
+#     name = sp.check_output('expac -Q "%n %v" linux-hardened', shell=True)
+#     name = name.decode().strip()
+#     cnf = cnf.replace('/vmlinuz-linux', '/vmlinuz-linux-hardened')
+#     cnf = cnf.replace('/initramfs-linux.img', '/initramfs-linux-hardened.img')
+#     cnf = '# {}\n{}'.format(name, cnf)
+#     save(cnf)
 
 with entry('console') as (c, save):
     c = re.sub(r'(?m)^options.*$', r'\g<0> systemd.unit=multi-user.target', c)
