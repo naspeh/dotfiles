@@ -43,13 +43,6 @@ if [ "$1" = "music" ]; then
     exit
 fi
 
-if [ "$1" = "slack" ]; then
-    i3-msg 'workspace 7: slack'
-    chromium --app=https://sourcefabric.slack.com/messages/superdesk/details/
-    i3-msg 'floating disable'
-    exit
-fi
-
 if [ "$1" = "mail" ]; then
     i3-msg 'workspace 1: mail'
     chromium --app=https://mail.pusto.org

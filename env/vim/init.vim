@@ -101,6 +101,7 @@ imap <F6> <esc>:CtrlPBufTagAll<cr>
 "nmap <F7> :CtrlPQuickfix<cr>
 "imap <F7> <esc>:CtrlPQuickfix<cr>
 
+"- Bundle 'w0rp/ale' # Asynchronous Lint Engine
 " Bundle 'scrooloose/syntastic'
 let g:syntastic_mode_map = {
     \"mode": "passive",
@@ -161,13 +162,15 @@ let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_section_b='⎇  %{gitbranch#name()}'
 
-" Bundle 'powerman/vim-plugin-ruscmd'
+"- Bundle 'powerman/vim-plugin-ruscmd'
+"- Bundle 'lyokha/vim-xkbswitch'
 
 " TODO: frontend related
 "- Bundle 'maksimr/vim-jsbeautify'
 " nnoremap <leader>j :call JsBeautify()<cr>
 "- Bundle 'marijnh/tern_for_vim'
 "- Bundle 'gregsexton/MatchTag'
+"- Bundle 'posva/vim-vue'
 
 " TODO: Try to write config from scratch with:
 "- Bundle 'tpope/vim-sensible'
@@ -302,6 +305,10 @@ autocmd Syntax xml set omnifunc=xmlcomplete#CompleteTags
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
+
+if executable('xkb-switch')
+    autocmd InsertLeave * !xkb-switch -s us
+endif
 
 set autoread
 autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
