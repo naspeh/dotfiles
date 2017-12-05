@@ -165,8 +165,9 @@ let g:airline_section_b='⎇  %{gitbranch#name()}'
 "- Bundle 'powerman/vim-plugin-ruscmd'
 "- Bundle 'lyokha/vim-xkbswitch'
 
-" Bundle 'Valloric/MatchTagAlways'
-"- Bundle 'gregsexton/MatchTag'
+runtime macros/matchit.vim
+"- Bundle 'Valloric/MatchTagAlways'
+" Bundle 'gregsexton/MatchTag'
 
 " TODO: frontend related
 "- Bundle 'maksimr/vim-jsbeautify'
@@ -348,6 +349,7 @@ nmap <leader>nn :lfirst<cr>
 nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 
 imap <C-space> <C-x><C-o>
+imap <nul> <C-x><C-o>
 imap <C-a> <C-x><C-o>
 imap <C-f> <C-x><C-f>
 
