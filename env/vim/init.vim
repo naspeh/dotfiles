@@ -53,7 +53,7 @@ fun! Tab2()
     setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 endfun
 nmap <leader>2t :call Tab2()<cr>
-autocmd FileType yaml call Tab2()
+autocmd FileType yaml,json,javascript,css,html call Tab2()
 
 fun! ToggleQuickfixList()
     let qnr = winnr("$")
@@ -128,7 +128,7 @@ vnoremap <leader>c :Commentary<cr>gv
 noremap <leader>c :Commentary<cr>
 
 " Bundle 'davidhalter/jedi-vim'
-let g:jedi#force_py_version=3
+"let g:jedi#force_py_version=3
 let g:jedi#auto_initialization=1
 let g:jedi#auto_vim_configuration=1
 let g:jedi#use_tabs_not_buffers=0
@@ -145,7 +145,7 @@ let g:jedi#usages_command="<leader>i"
 let g:jedi#completions_command="<C-Space>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
-" Bundle 'ervandew/supertab'
+"- Bundle 'ervandew/supertab'
 let g:SuperTabMappingForward='<nul>' " '<c-space>'
 let g:SuperTabMappingBackward='<s-nul>' " '<s-c-space>'
 let g:SuperTabDefaultCompletionType="<c-x><c-o>"
@@ -165,11 +165,13 @@ let g:airline_section_b='⎇  %{gitbranch#name()}'
 "- Bundle 'powerman/vim-plugin-ruscmd'
 "- Bundle 'lyokha/vim-xkbswitch'
 
+" Bundle 'Valloric/MatchTagAlways'
+"- Bundle 'gregsexton/MatchTag'
+
 " TODO: frontend related
 "- Bundle 'maksimr/vim-jsbeautify'
 " nnoremap <leader>j :call JsBeautify()<cr>
 "- Bundle 'marijnh/tern_for_vim'
-"- Bundle 'gregsexton/MatchTag'
 "- Bundle 'posva/vim-vue'
 
 " TODO: Try to write config from scratch with:
@@ -297,10 +299,10 @@ autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
 autocmd BufNewFile,BufRead *.mustache setlocal ft=html
 
-autocmd Syntax javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd Syntax css set omnifunc=csscomplete#CompleteCSS
-autocmd Syntax html set omnifunc=htmlcomplete#CompleteTags
-autocmd Syntax xml set omnifunc=xmlcomplete#CompleteTags
+"autocmd Syntax javascript set omnifunc=javascriptcomplete#CompleteJS
+"autocmd Syntax css set omnifunc=csscomplete#CompleteCSS
+"autocmd Syntax html set omnifunc=htmlcomplete#CompleteTags
+"autocmd Syntax xml set omnifunc=xmlcomplete#CompleteTags
 
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
@@ -345,6 +347,8 @@ nmap <leader>nn :lfirst<cr>
 
 nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 
+imap <C-space> <C-x><C-o>
+imap <C-a> <C-x><C-o>
 imap <C-f> <C-x><C-f>
 
 " Neovim
