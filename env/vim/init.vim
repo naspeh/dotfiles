@@ -346,6 +346,7 @@ nmap <leader>a ggVG<cr>
 nmap <leader>n :lnext<cr>
 nmap <leader>nn :lfirst<cr>
 
+set iskeyword+=-
 nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 
 imap <C-space> <C-x><C-o>
