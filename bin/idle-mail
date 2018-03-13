@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+import argparse
+import imaplib
+import json
+import logging
+import subprocess
+
+
+log = logging.getLogger('idle-mail')
+logging.basicConfig(level=logging.INFO)
+
+
+def connect(conf):
+    con = imaplib.IMAP4_SSL(conf['server'])
+    con.login(conf['username'], conf['password'])
+    con.select()
+    return con
+
+
+def unread(conf):
+    con = connect(conf)
+    typ, res = con.uid('SEARCH', 'UNSEEN')
+    if typ == 'OK':
+        num = len(res[0].decode().split())
+        subprocess.run(conf['cmd_upd'], input=b'%i' % num, shell=True)
+        return
+    raise ValueError(typ, res)
+
+
+def idle(conf):
+    con = connect(conf)
+    tag = con._new_tag()
+    con.send(b'%s IDLE\r\n' % tag)
+    res = con.readline()
+    if res != b'+ idling\r\n':
+        raise SystemExit('No IDLE?: %s' % res)
+
+    log.info('Started for %s' % conf['username'])
+    while 1:
+        res = con.readline()
+        if res == b'* OK Still here\r\n':
+            continue
+        log.info('Got: %s' % res.decode())
+        msg = res.split()[2]
+        if msg == b'EXISTS':
+            subprocess.call(conf['cmd_new'], shell=True)
+        unread(conf)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('conf', help='path to config')
+
+    args = parser.parse_args()
+    with open(args.conf, 'br') as f:
+        conf = json.loads(f.read().decode())
+
+    unread(conf)
+    idle(conf)
+
+
+if __name__ == '__main__':
+    main()

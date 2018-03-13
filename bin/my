@@ -29,6 +29,9 @@ lang)
         setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
     fi
 ;;
+prettyurl)
+    python2 -c "import urllib; print(urllib.unquote('''$(xclip -o)'''));" | xclip -selection c
+;;
 *)
     echo $"Usage: $0 {todo|lock|bg|bat}"
     exit 1

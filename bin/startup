@@ -38,5 +38,7 @@ stardict -h &
 #goldendict &
 
 #parcellite &
-clipit &
+#clipit &
 #clipster -d &
+greenclip daemon &
+[ -f ~/d/var/mailur.json ] && idle-mail ~/d/var/mailur.json &
