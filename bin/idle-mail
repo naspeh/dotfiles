@@ -4,10 +4,12 @@ import imaplib
 import json
 import logging
 import subprocess
+import threading
 
 
 log = logging.getLogger('idle-mail')
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+current = 0
 
 
 def connect(conf):
@@ -17,17 +19,20 @@ def connect(conf):
     return con
 
 
-def unread(conf):
+def fetch_unread(conf):
+    global unread
     con = connect(conf)
     typ, res = con.uid('SEARCH', 'UNSEEN')
     if typ == 'OK':
-        num = len(res[0].decode().split())
-        subprocess.run(conf['cmd_upd'], input=b'%i' % num, shell=True)
-        return
+        unread = res[0].decode().split()
+        subprocess.run(conf['cmd_upd'], input=b'%i' % len(unread), shell=True)
+        return unread
     raise ValueError(typ, res)
 
 
-def idle(conf):
+def idle(conf, num):
+    global current
+
     con = connect(conf)
     tag = con._new_tag()
     con.send(b'%s IDLE\r\n' % tag)
@@ -35,28 +40,40 @@ def idle(conf):
     if res != b'+ idling\r\n':
         raise SystemExit('No IDLE?: %s' % res)
 
+    unread = set()
     log.info('Started for %s' % conf['username'])
     while 1:
         res = con.readline()
+        if current != num:
+            return
         if res == b'* OK Still here\r\n':
             continue
-        log.info('Got: %s' % res.decode())
-        msg = res.split()[2]
-        if msg == b'EXISTS':
+        log.debug('Got: %s' % res.decode().strip())
+        msg = res.decode().split()[2]
+        new_unread = set(fetch_unread(conf))
+        log.debug('%s: %s - %s', msg, new_unread, unread)
+        if msg == 'EXISTS' and new_unread - unread:
             subprocess.call(conf['cmd_new'], shell=True)
-        unread(conf)
+        unread = new_unread
 
 
 def main():
+    global current
+
     parser = argparse.ArgumentParser()
     parser.add_argument('conf', help='path to config')
-
+    parser.add_argument('-t', '--timeout', type=float)
     args = parser.parse_args()
     with open(args.conf, 'br') as f:
         conf = json.loads(f.read().decode())
 
-    unread(conf)
-    idle(conf)
+    while 1:
+        current += 1
+        fetch_unread(conf)
+
+        t = threading.Thread(target=idle, args=(conf, current), daemon=True)
+        t.start()
+        t.join(args.timeout)
 
 
 if __name__ == '__main__':
