@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+import html
+import json
+import subprocess as sp
+
+# 1920x1080
+lang = 'ru'
+scr_x, scr_y = 1920, 1080
+win_w, win_h = 830, 400
+win_x, win_y = scr_x - win_w, scr_y - win_h
+win_size = '{}, {}'.format(win_w, win_h)
+win_move = '{}, {}'.format(win_x, win_y)
+cmd = '''
+chromium --app='
+    data:text/html,
+    <html><body>
+    <script>
+        window.resizeTo({win_size});
+        window.moveTo({win_move});
+        window.location={url};
+    </script>
+    </body></html>'
+'''
+
+selection=sp.check_output('xsel -p', shell=True).decode()
+print('selection:', selection)
+text = html.escape(selection)
+url = json.dumps(
+    'http://translate.google.com/#auto/{lang}/{text}'
+    .format(text=text, lang=lang)
+)
+print('url:', url)
+cmd = cmd.format(**locals())
+print('cmd:', cmd)
+sp.call(cmd, shell=True)
