@@ -1,4 +1,15 @@
 #!/usr/bin/env python
+"""
+Config example
+{
+    "server": "demo.pusto.org",
+    "username": "demo",
+    "password": "demo",
+    "query": "unseen keyword #inbox",
+    "cmd_upd": "cat > ~/d/var/mailur.unread; pkill -RTMIN+2 i3blocks",
+    "cmd_new": "aplay -q ~/d/var/msg.wav"
+}
+"""
 import argparse
 import imaplib
 import json
@@ -22,7 +33,7 @@ def connect(conf):
 def fetch_unread(conf):
     global unread
     con = connect(conf)
-    typ, res = con.uid('SEARCH', 'UNSEEN')
+    typ, res = con.uid('SEARCH', conf.get('query', 'UNSEEN'))
     if typ == 'OK':
         unread = res[0].decode().split()
         subprocess.run(conf['cmd_upd'], input=b'%i' % len(unread), shell=True)

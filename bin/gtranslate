@@ -3,10 +3,9 @@ import html
 import json
 import subprocess as sp
 
-# 1920x1080
 lang = 'ru'
-scr_x, scr_y = 1920, 1080
-win_w, win_h = 830, 400
+scr_x, scr_y = 1366, 768
+win_w, win_h = 800, 400
 win_x, win_y = scr_x - win_w, scr_y - win_h
 win_size = '{}, {}'.format(win_w, win_h)
 win_move = '{}, {}'.format(win_x, win_y)
@@ -26,7 +25,7 @@ selection=sp.check_output('xsel -p', shell=True).decode()
 print('selection:', selection)
 text = html.escape(selection)
 url = json.dumps(
-    'http://translate.google.com/#auto/{lang}/{text}'
+    'http://translate.google.com/%23auto/{lang}/{text}'
     .format(text=text, lang=lang)
 )
 print('url:', url)
