@@ -5,7 +5,7 @@ import subprocess as sp
 
 lang = 'ru'
 scr_x, scr_y = 1366, 768
-win_w, win_h = 800, 400
+win_w, win_h = 850, 400
 win_x, win_y = scr_x - win_w, scr_y - win_h
 win_size = '{}, {}'.format(win_w, win_h)
 win_move = '{}, {}'.format(win_x, win_y)

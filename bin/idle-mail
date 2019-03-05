@@ -57,7 +57,7 @@ def idle(conf, num):
         res = con.readline()
         if current != num:
             return
-        if res == b'* OK Still here\r\n':
+        if not res or res == b'* OK Still here\r\n':
             continue
         log.debug('Got: %s' % res.decode().strip())
         msg = res.decode().split()[2]
