@@ -36,13 +36,13 @@ fun! TextMode()
     " setlocal textwidth=90
     " setlocal formatoptions=aw2tql
 
+    setlocal formatoptions=1l
+
     " http://vim.wikia.com/wiki/VimTip989
     setlocal wrap
     setlocal linebreak
     setlocal nolist
     setlocal showbreak=❯
-    setlocal formatoptions-=t
-    setlocal formatoptions+=l
     setlocal textwidth=0
     setlocal wrapmargin=0
 endfun
@@ -82,13 +82,15 @@ runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
 " Bundle 'altercation/vim-colors-solarized'
-" set t_Co=256
-" let g:solarized_termcolors=256
 set background=light
 colorscheme solarized
 
+"- Bundle 'nightsense/cosmic_latte'
+" set background=light
+" colorscheme cosmic_latte
+
 " Bundle 'ctrlpvim/ctrlp.vim'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_mruf_relative=1
 nmap <F3> :CtrlPBuffer<cr>
 imap <F3> <esc>:CtrlPBuffer<cr>
@@ -113,7 +115,7 @@ let g:syntastic_enable_signs=0
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_enable_balloons=1
-let g:syntastic_enable_highlighting=1
+let g:syntastic_enable_highlighting=0
 let g:syntastic_always_populate_loc_list=0
 let g:syntastic_auto_loc_list=2
 let g:syntastic_loc_list_height=2
@@ -163,11 +165,22 @@ let g:airline_right_sep=''
 let g:airline_section_b='⎇  %{gitbranch#name()}'
 
 "- Bundle 'powerman/vim-plugin-ruscmd'
-"- Bundle 'lyokha/vim-xkbswitch'
+" Bundle 'lyokha/vim-xkbswitch'
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchIMappings = ['ru']
+
+
+"- Bundle 'gabrielelana/vim-markdown'
+" Bundle 'tpope/vim-markdown'
+
+"- Bundle 'mhinz/vim-signify'
+" Bundle 'Yggdroot/indentLine'
+"- Bundle 'tpope/vim-fugitive'
+"- Bundle 'liuchengxu/eleline.vim'
 
 runtime macros/matchit.vim
 "- Bundle 'Valloric/MatchTagAlways'
-" Bundle 'gregsexton/MatchTag'
+"- Bundle 'gregsexton/MatchTag'
 
 " TODO: frontend related
 "- Bundle 'maksimr/vim-jsbeautify'
@@ -182,6 +195,7 @@ runtime macros/matchit.vim
 " ------------------------------
 " Configure
 " ------------------------------
+set exrc
 
 set title
 set nobackup
@@ -211,6 +225,14 @@ set number
 set ruler
 set colorcolumn=+1 "mark the ideal max text width
 
+
+" undercurl
+" https://github.com/vim/vim/issues/1306
+" hi SpellBad gui=undercurl guisp=red term=undercurl cterm=undercurl
+" let &t_8u = "\<Esc>[58;2;%lu;%lu;%lum"
+let &t_Cs = "\e[4:3m"
+let &t_Ce = "\e[4:0m"
+
 set list
 set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 set linebreak
@@ -230,7 +252,6 @@ set wildignore+=*.pyc,__pycache__
 set showcmd
 set showmode
 set cmdheight=2
-set confirm
 set report=0
 set laststatus=2
 
@@ -284,7 +305,7 @@ if executable('ag')
 
 endif
 if executable('rg')
-  set grepprg=rg\ --vimgrep\ --with-filename\ --no-heading
+  set grepprg=rg\ --vimgrep
   set grepformat=%f:%l:%c:%m
   let g:ctrlp_user_command = 'rg --files %s'
   let g:ctrlp_use_caching = 0
@@ -309,9 +330,9 @@ autocmd BufNewFile,BufRead *.mustache setlocal ft=html
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
 
-if executable('xkb-switch')
-    autocmd InsertLeave * !xkb-switch -s us
-endif
+" if executable('xkb-switch')
+"     autocmd InsertLeave * !xkb-switch -s us
+" endif
 
 set autoread
 autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
