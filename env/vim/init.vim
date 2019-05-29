@@ -74,6 +74,50 @@ fun! ToggleLocationList()
 endfun
 nmap <leader>l :call ToggleLocationList()<CR>
 nmap <leader>q :call ToggleQuickfixList()<CR>
+
+python << EOF
+"""
+Create github url and put into clipboard for line or for multi-line selection
+
+Inspired by:
+- https://github.com/k0kubun/vim-open-github
+- https://github.com/tonchis/vim-to-github
+"""
+import re
+import subprocess as sp
+import vim
+
+cmd_tpl = """
+path=$(realpath "%s")
+cd $(dirname $path)
+echo $path
+git rev-parse --show-toplevel
+git remote get-url origin
+git rev-parse HEAD
+"""
+
+def to_github():
+    selection = 'L%s-L%s' % (
+        vim.current.range.start + 1,
+        vim.current.range.end + 1
+    )
+    cmd = ['sh', '-c', cmd_tpl % vim.current.buffer.name]
+    output = sp.check_output(cmd).strip()
+    full_path, root, remote, hash = output.split()
+    path = re.sub(r'^%s/' % re.escape(root), '', full_path)
+    if re.match('git@', remote):
+        base_url = re.sub('^git@(.*?)\:', r'https://\1/', remote)
+    base_url = re.sub('\.git$', '', base_url)
+    urls = (
+        '%s/%s/%s/%s#%s' % (base_url, t, hash, path, selection)
+        for t in ('blob', 'blame')
+    )
+    for url in urls:
+        sp.call('echo "%s" | xsel -b; sleep 1' % url, shell=True)
+EOF
+nmap <leader>gh :python to_github()<cr>
+vmap <leader>gh :python to_github()<cr>
+
 " ------------------------------
 " Plugins activate
 " ------------------------------
@@ -171,7 +215,7 @@ let g:XkbSwitchIMappings = ['ru']
 
 
 "- Bundle 'gabrielelana/vim-markdown'
-" Bundle 'tpope/vim-markdown'
+"- Bundle 'tpope/vim-markdown'
 
 "- Bundle 'mhinz/vim-signify'
 " Bundle 'Yggdroot/indentLine'
