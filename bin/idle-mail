@@ -34,7 +34,7 @@ def fetch_unread(conf):
     global unread
     con = connect(conf)
     typ, res = con.uid('SEARCH', conf.get('query', 'UNSEEN'))
-    if typ == 'OK':
+    if typ == 'OK' and conf.get('cmd_upd'):
         unread = res[0].decode().split()
         subprocess.run(conf['cmd_upd'], input=b'%i' % len(unread), shell=True)
         return unread
@@ -63,7 +63,7 @@ def idle(conf, num):
         msg = res.decode().split()[2]
         new_unread = set(fetch_unread(conf))
         log.debug('%s: %s - %s', msg, new_unread, unread)
-        if msg == 'EXISTS' and new_unread - unread:
+        if msg == 'EXISTS' and new_unread - unread and conf.get('cmd_new'):
             subprocess.call(conf['cmd_new'], shell=True)
         unread = new_unread
 

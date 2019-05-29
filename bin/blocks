@@ -11,8 +11,8 @@ wifi)
     if [ "$(iwgetid -r)" = "" ]; then
         printf 'OFF\nOFF\n#cccccc'
     else
-        level="$(grep wlan0 /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')%"
-        echo "$(iwgetid -r), $level"
+        level="$(grep wlan0 /proc/net/wireless | awk '{ print int($3) }')"
+        echo "$(iwgetid -r) $level"
     fi
 ;;
 volume)
