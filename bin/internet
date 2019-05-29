@@ -31,13 +31,32 @@ if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
 fi
 
-if [ "$1" = "skype" ]; then
-    skype &
+if [ "$1" = "slack" ]; then
+    i3-msg 'workspace 7: slack'
+    chromium --app=https://15five.slack.com/
+    i3-msg 'floating disable'
+    exit
+fi
+
+
+if [ "$1" = "work" ]; then
+    i3-msg 'workspace 7: work'
+    chromium --app=https://mail.google.com/mail/u/1/; i3-msg 'floating disable'
+    chromium --app=https://calendar.google.com/calendar/b/1/r; i3-msg 'floating disable'
+    chromium --app=https://15five.quip.com/; i3-msg 'floating disable'
+    chromium --app=https://15five.15five.com/; i3-msg 'floating disable'
+    chromium --app=https://15five.slack.com/; i3-msg 'floating disable'
+    exit
+fi
+
+if [ "$1" = "zoom" ]; then
+    i3-msg 'workspace 8: zoom'
+    zoom
     exit
 fi
 
 if [ "$1" = "music" ]; then
-    i3-msg 'workspace 8: music'
+    i3-msg 'workspace 9: music'
     chromium --app=https://play.google.com/music/listen
     i3-msg 'floating disable'
     exit
