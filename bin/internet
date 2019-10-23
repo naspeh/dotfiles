@@ -51,6 +51,7 @@ fi
 
 if [ "$1" = "zoom" ]; then
     i3-msg 'workspace 8: zoom'
+    # flatpak run us.zoom.Zoom
     zoom
     exit
 fi
@@ -58,6 +59,14 @@ fi
 if [ "$1" = "music" ]; then
     i3-msg 'workspace 9: music'
     chromium --app=https://play.google.com/music/listen
+    i3-msg 'floating disable'
+    exit
+fi
+
+
+if [ "$1" = "tidal" ]; then
+    i3-msg 'workspace 9: music'
+    chromium --app=https://listen.tidal.com
     i3-msg 'floating disable'
     exit
 fi
