@@ -19,7 +19,7 @@ cbold="\e[1m"
 format="$cpurple%n$creset"
 format_time=""
 
-while getopts "hCPULmntv" opt; do
+while getopts "hCPULmntvs" opt; do
     case $opt in
         h) operation=usage;;
         C) operation=clean;;
@@ -27,11 +27,17 @@ while getopts "hCPULmntv" opt; do
         U) operation=update_repo;;
         L) operation=list_packages;;
         v) format="$format: $cgray$cbold%d$creset $cgray(%u)$creset";;
+        s) format="%n";;
         t) format_time="%l ";;
         n) filter="n";;
         m) filter="m";;
     esac
 done
+
+function ensure_dirs {
+    [ -d $PACDIR/main ] || sudo mkdir $PACDIR/main;
+    [ -d $PACDIR/abs ] || sudo mkdir $PACDIR/abs;
+}
 
 function clean {
     if [[ ! -n $(pacman -Qdt) ]]; then
@@ -58,8 +64,6 @@ function clean_repo {
     cd $PACDIR/$1
     dbfile="naspeh-$1.db"
     sudo rm -f $dbfile*
-    sudo paccache -rvu -c. -k0
-    sudo paccache -rv -c. -k2
     if [ $2 ]; then
         sudo repo-add "$dbfile.tar.gz" *.pkg.tar.xz
     fi
@@ -70,17 +74,17 @@ function save_packages {
     pkglist -Lm > $PACDIR/abs.txt
     pacman -Q > $PACDIR/all.txt
 
-    clean_repo abs
-
     sudo rsync -av /var/cache/pacman/pkg/ $PACDIR/main/
-    clean_repo main
+    sudo pacman -Scv  --noconfirm y --cachedir $PACDIR/main --cachedir $PACDIR/abs/
+    sudo chown -R naspeh:users $PACDIR
 }
 function list_packages {
-    list=$(comm -23 <(pacman -Qeq$filter) <(pacman -Qgq base base-devel | sort))
+    list=$(comm -23 <(pacman -Qeq$filter | sort) <(pacman -Qgq base base-devel | sort))
     expac -Q -t '%Y-%m-%d %H:%M' "$format_time$format" $(echo $list)
 }
 
 if [ $operation ]; then
+    ensure_dirs
     $operation "$@"
 else
     usage
