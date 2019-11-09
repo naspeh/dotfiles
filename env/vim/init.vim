@@ -209,7 +209,7 @@ let g:airline_right_sep=''
 let g:airline_section_b='⎇  %{gitbranch#name()}'
 
 "- Bundle 'powerman/vim-plugin-ruscmd'
-" Bundle 'lyokha/vim-xkbswitch'
+"- Bundle 'lyokha/vim-xkbswitch'
 let g:XkbSwitchEnabled = 1
 let g:XkbSwitchIMappings = ['ru']
 
@@ -225,6 +225,11 @@ let g:XkbSwitchIMappings = ['ru']
 runtime macros/matchit.vim
 "- Bundle 'Valloric/MatchTagAlways'
 "- Bundle 'gregsexton/MatchTag'
+
+"- Bundle 'itchyny/vim-cursorword'
+"- Bundle 'itchyny/calendar.vim'
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 0
 
 " TODO: frontend related
 "- Bundle 'maksimr/vim-jsbeautify'
@@ -374,9 +379,9 @@ autocmd BufNewFile,BufRead *.mustache setlocal ft=html
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
 
-" if executable('xkb-switch')
-"     autocmd InsertLeave * !xkb-switch -s us
-" endif
+if executable('xkb-switch')
+    autocmd InsertLeave * !xkb-switch -s us
+endif
 
 set autoread
 autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
