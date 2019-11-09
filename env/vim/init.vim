@@ -75,7 +75,7 @@ endfun
 nmap <leader>l :call ToggleLocationList()<CR>
 nmap <leader>q :call ToggleQuickfixList()<CR>
 
-python << EOF
+python3 << EOF
 """
 Create github url and put into clipboard for line or for multi-line selection
 

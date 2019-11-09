@@ -48,6 +48,8 @@ function clean {
 }
 
 function update_repo {
+    ensure_dirs
+
     if [ $2 ]; then
         clean_repo $2 1
         exit;
@@ -70,6 +72,8 @@ function clean_repo {
 }
 
 function save_packages {
+    ensure_dirs
+
     pkglist -Ln > $PACDIR/main.txt
     pkglist -Lm > $PACDIR/abs.txt
     pacman -Q > $PACDIR/all.txt
@@ -84,7 +88,6 @@ function list_packages {
 }
 
 if [ $operation ]; then
-    ensure_dirs
     $operation "$@"
 else
     usage
