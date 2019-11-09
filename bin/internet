@@ -85,4 +85,4 @@ chromium &
 
 [ "$1" = "light" ] && exit
 
-dropbox &
+#dropbox &

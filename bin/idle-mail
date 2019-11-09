@@ -36,7 +36,7 @@ def fetch_unread(conf):
     typ, res = con.uid('SEARCH', conf.get('query', 'UNSEEN'))
     if typ == 'OK' and conf.get('cmd_upd'):
         unread = res[0].decode().split()
-        subprocess.run(conf['cmd_upd'], input=b'%i' % len(unread), shell=True)
+        subprocess.run(conf['cmd_upd'], input=b'%i\n' % len(unread), shell=True)
         return unread
     raise ValueError(typ, res)
 

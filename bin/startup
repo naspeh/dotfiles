@@ -1,21 +1,33 @@
 #!/bin/sh
 xset -b
-xrdb ~/.Xresources
+xset s off
+sudo ip link set enp0s31f6 down
+#xrdb ~/.Xresources
 
-setxkbmap -option "terminate:ctrl_alt_bksp"
+#setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 
+# t490s %) remap Insert to End
+# xmodmap -e "keycode 118 = End"
+xmodmap -e "keysym Insert = End"
+
+# Create a ~/.Xmodmap file with content:
+# keysym XF86Back = Page_Up
+# keysym XF86Forward = Page_Down
+# Add this line to your ~/.xinitrc to make it work:
+# xmodmap ~/.Xmodmap
+
 # PgDn & PgUp on x220
-xmodmap -e "keycode 166 = Prior"
-xmodmap -e "keycode 167 = Next"
-xmodmap -e "keycode 174 = Prior"
-xmodmap -e "keycode 172 = Next"
-xmodmap -e "keycode 171 = End"
-xmodmap -e "keycode 173 = Home"
+#xmodmap -e "keycode 166 = Prior"
+#xmodmap -e "keycode 167 = Next"
+#xmodmap -e "keycode 174 = Prior"
+#xmodmap -e "keycode 172 = Next"
+#xmodmap -e "keycode 171 = End"
+#xmodmap -e "keycode 173 = Home"
 
 if [ "$SESSION" = "i3" ]; then
     wmname LG3D
-    my lock
+    #my lock
     my bg
     i3-msg 'workspace "3: term"; exec $TERMINAL'
 else
@@ -25,16 +37,21 @@ else
     sbxkb &
 fi
 
-#nm-applet --sm-disable &
-connman-gtk &
+nm-applet --sm-disable &
+#connman-gtk &
 
-xcompmgr &
+#xcompmgr &
 sxhkd &
-cbatticon &
-redshift-gtk &
 tider &
+(sleep 3 && syncthing-gtk -m) &
 
-perevod &
+cbatticon &
+#xfce4-power-manager &
+
+#systemctl --user enable redshift-gtk.service
+#redshift-gtk &
+
+#perevod &
 stardict -h &
 #goldendict &
 
@@ -42,3 +59,10 @@ stardict -h &
 #clipit &
 #clipster -d &
 greenclip daemon &
+
+#systemctl --user enable clipmenud.service
+#clipmenud &
+#CM_SELECTIONS=clipboard CM_DIR=~/.cache/clipmenu clipmenud
+
+#xss-lock -n /usr/share/docs/xss-lock/dim-screen.sh -- i3lock -n -c 000000
+#xss-lock -- my lock

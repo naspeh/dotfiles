@@ -11,14 +11,27 @@ XF86AudioMute
 XF86AudioMicMute
     amixer set Capture toggle
 
+XF86MonBrightness{Down,Up}
+    xbacklight -inc {-,+}10 && notify-send "$(printf '  %d%%' $(xbacklight -get))"
+
 alt+t
     $TERMINAL
 alt+r
     rofi -show run
+# alt+c
+#     CM_LAUNCHER=rofi clipmenu
+alt+c
+    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+alt+e
+    rofimoji
+
 alt+p
     xfce4-appfinder
-alt+Print
+alt+ctrl+Print
     xfce4-screenshooter
+alt+Print
+#    ffcast -qb -# "$(xdotool getactivewindow)" png ~/Screenshots/"$(date +%F--%T)".png
+    maim -i $(xdotool getactivewindow) ~/Screenshots/"$(date +%F--%T)".png
 alt+g
     gtranslate
 alt+ctrl+l
@@ -30,21 +43,22 @@ alt+ctrl+h
 alt+ctrl+o
     orage
 alt+ctrl+m
-    monitor
+    #monitor
+    lxrandr
 alt+ctrl+u
     my lang
 
 alt+ctrl+{r,q,s}
     systemctl {reboot,poweroff,suspend}
+
 alt+i; {i,e,l,k,w,s,z,m,t}
     internet { ,mail,light,kill,work,slack,zoom,music,tidal}
+
 alt+a; {a,w,s,d,r,q}
     tider call {target,menu,report,disable,reload,quit}
 
-alt+c
-    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
-#    clipster -sc
-
+alt+s; {s,q}
+    {ffcast -# "$(xdotool getactivewindow)" rec ~/Screenshots/"$(date +%F--%T)".mkv,pkill -fxn '(/\S+)*ffmpeg\s.*\sx11grab\s.*'}
 
 # Xfce specific
 alt+F1

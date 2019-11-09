@@ -11,7 +11,8 @@ wifi)
     if [ "$(iwgetid -r)" = "" ]; then
         printf 'OFF\nOFF\n#cccccc'
     else
-        level="$(grep wlan0 /proc/net/wireless | awk '{ print int($3) }')"
+        device=$(iw dev | awk '$1=="Interface"{print $2}')
+        level="$(grep $device /proc/net/wireless | awk '{ print int($3) }')"
         echo "$(iwgetid -r) $level"
     fi
 ;;
@@ -19,6 +20,14 @@ volume)
     #amixer get Master|awk -F"[][]" '/dB/ { if ($6 == "on") print $2; else printf "OFF\nOFF\n#cccccc"; }'
     #(ponymix is-muted && printf "OFF\nOFF\n#cccccc") || ponymix get-volume
     amixer get Master|awk -F"[][]" '/%/ { if ($4 == "on") print $2; else printf "OFF\nOFF\n#cccccc"; }'
+;;
+fan)
+echo "\
+L:$(cat /proc/acpi/ibm/fan | grep 'level:.*' | awk '{print $2}') \
+S:$(cat /proc/acpi/ibm/fan | grep 'speed:.*' | awk '{print $2}') \
+T:$(sensors | grep -A2 acpitz-acpi-0 | tail -n1 | awk '{print $2}') \
+T:$(sensors | grep "Package id 0" | awk '{print $4}')\
+"
 ;;
 *)
     echo $"Usage: $0 {battery|wifi|volume}"

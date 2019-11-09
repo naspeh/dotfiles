@@ -2,10 +2,11 @@
 import html
 import json
 import subprocess as sp
+import urllib.parse
 
 lang = 'ru'
-scr_x, scr_y = 1366, 768
-win_w, win_h = 850, 400
+scr_x, scr_y = 10000, 10000
+win_w, win_h = 950, 450
 win_x, win_y = scr_x - win_w, scr_y - win_h
 win_size = '{}, {}'.format(win_w, win_h)
 win_move = '{}, {}'.format(win_x, win_y)
@@ -22,8 +23,9 @@ chromium --app='
 '''
 
 selection=sp.check_output('xsel -p', shell=True).decode()
+# selection=sp.check_output('xclip -o', shell=True).decode()
 print('selection:', selection)
-text = html.escape(selection)
+text = urllib.parse.quote_plus(selection)
 url = json.dumps(
     'http://translate.google.com/%23auto/{lang}/{text}'
     .format(text=text, lang=lang)

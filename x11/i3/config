@@ -10,7 +10,8 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # Startup
-exec --no-startup-id dex -a -e xfce
+#exec --no-startup-id dex -a -e xfce
+exec --no-startup-id startup
 
 set $mod Mod1
 set $terminal $TERMINAL
@@ -29,7 +30,7 @@ hide_edge_borders both
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose an xft font, such as:
-font xft:sans 8
+font xft:sans 9
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -53,6 +54,7 @@ for_window [class="(?i)solaar"] floating enable
 for_window [class="(?i)connman-gtk"] floating enable
 for_window [title="^Event Tester$"] floating enable
 #for_window [class="(?i)zoom"] floating enable
+for_window [class="(?i)syncthing gtk"] floating enable
 
 bindsym $mod+t exec $terminal
 
@@ -194,7 +196,8 @@ bindsym $mod+Shift+0 move container to workspace number 0
 
 # Start i3bar
 bar {
-    font xft:sans 12px
+    #font xft:sans 13px
+    font pango:IBM Plex Sans 10
     colors {
         background #efefef
         statusline #000000
