@@ -75,7 +75,7 @@ endfun
 nmap <leader>l :call ToggleLocationList()<CR>
 nmap <leader>q :call ToggleQuickfixList()<CR>
 
-python3 << EOF
+python << EOF
 """
 Create github url and put into clipboard for line or for multi-line selection
 
@@ -121,19 +121,19 @@ vmap <leader>gh :python to_github()<cr>
 " ------------------------------
 " Plugins activate
 " ------------------------------
-" Bundle 'tpope/vim-pathogen'
+" + https://github.com/tpope/vim-pathogen
 runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
-" Bundle 'altercation/vim-colors-solarized'
+" + https://github.com/altercation/vim-colors-solarized
 set background=light
 colorscheme solarized
 
-"- Bundle 'nightsense/cosmic_latte'
+"- + https://github.com/nightsense/cosmic_latte
 " set background=light
 " colorscheme cosmic_latte
 
-" Bundle 'ctrlpvim/ctrlp.vim'
+" + https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_mruf_relative=1
 nmap <F3> :CtrlPBuffer<cr>
@@ -147,8 +147,22 @@ imap <F6> <esc>:CtrlPBufTagAll<cr>
 "nmap <F7> :CtrlPQuickfix<cr>
 "imap <F7> <esc>:CtrlPQuickfix<cr>
 
-"- Bundle 'w0rp/ale' # Asynchronous Lint Engine
-" Bundle 'scrooloose/syntastic'
+" Check syntax in Vim asynchronously and fix files,
+" with Language Server Protocol (LSP) support
+" + https://github.com/dense-analysis/ale
+let g:airline#extensions#ale#enabled = 1
+let g:ale_lint_on_text_changed = 'never'
+" let g:ale_lint_on_insert_leave = 0
+" let g:ale_lint_on_enter = 0
+let g:ale_sign_column_always = 0
+let g:ale_set_signs = 0
+let g:ale_set_highlights = 1
+let g:ale_list_window_size = 4
+nmap <F8> :ALELint<cr>:lw<cr>
+" max height for quicklist
+autocmd FileType qf 5wincmd_
+
+"- + https://github.com/scrooloose/syntastic
 let g:syntastic_mode_map = {
     \"mode": "passive",
     \"active_filetypes": [],
@@ -166,14 +180,14 @@ let g:syntastic_loc_list_height=2
 let g:syntastic_stl_format = '[%E{E%e}%B{, }%W{W%w}]'
 "let g:syntastic_python_flake8_args='--ignore=W601,E711'
 let g:syntastic_javascript_checkers = ['jshint', 'eslint']
-nmap <F7> :SyntasticToggleMode<cr>
-nmap <F8> :SyntasticCheck<cr>:Errors<cr>
+" nmap <F7> :SyntasticToggleMode<cr>
+" nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 
-" Bundle 'tpope/vim-commentary'
+" + https://github.com/tpope/vim-commentary
 vnoremap <leader>c :Commentary<cr>gv
 noremap <leader>c :Commentary<cr>
 
-" Bundle 'davidhalter/jedi-vim'
+" + https://github.com/davidhalter/jedi-vim
 "let g:jedi#force_py_version=3
 let g:jedi#auto_initialization=1
 let g:jedi#auto_vim_configuration=1
@@ -191,15 +205,15 @@ let g:jedi#usages_command="<leader>i"
 let g:jedi#completions_command="<C-Space>"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
-"- Bundle 'ervandew/supertab'
+"- + https://github.com/ervandew/supertab
 let g:SuperTabMappingForward='<nul>' " '<c-space>'
 let g:SuperTabMappingBackward='<s-nul>' " '<s-c-space>'
 let g:SuperTabDefaultCompletionType="<c-x><c-o>"
 "let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
 
-" Bundle 'itchyny/vim-gitbranch'
-" Bundle 'vim-airline/vim-airline'
-" Bundle 'vim-airline/vim-airline-themes'
+" + https://github.com/itchyny/vim-gitbranch
+" + https://github.com/vim-airline/vim-airline
+" + https://github.com/vim-airline/vim-airline-themes
 let g:airline_theme='solarized'
 if !exists('g:airline_symbols')
     let g:airline_symbols={}
@@ -208,38 +222,43 @@ let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_section_b='⎇  %{gitbranch#name()}'
 
-"- Bundle 'powerman/vim-plugin-ruscmd'
-"- Bundle 'lyokha/vim-xkbswitch'
+"- + https://github.com/powerman/vim-plugin-ruscmd
+"- + https://github.com/lyokha/vim-xkbswitch
 let g:XkbSwitchEnabled = 1
 let g:XkbSwitchIMappings = ['ru']
 
 
-"- Bundle 'gabrielelana/vim-markdown'
-"- Bundle 'tpope/vim-markdown'
+"- + https://github.com/gabrielelana/vim-markdown
+"- + https://github.com/tpope/vim-markdown
 
-"- Bundle 'mhinz/vim-signify'
-" Bundle 'Yggdroot/indentLine'
-"- Bundle 'tpope/vim-fugitive'
-"- Bundle 'liuchengxu/eleline.vim'
+"- + https://github.com/mhinz/vim-signify
+" + https://github.com/Yggdroot/indentLine
+"- + https://github.com/tpope/vim-fugitive
+"- + https://github.com/liuchengxu/eleline.vim
 
 runtime macros/matchit.vim
-"- Bundle 'Valloric/MatchTagAlways'
-"- Bundle 'gregsexton/MatchTag'
+"- + https://github.com/Valloric/MatchTagAlways
+"- + https://github.com/gregsexton/MatchTag
 
-"- Bundle 'itchyny/vim-cursorword'
-"- Bundle 'itchyny/calendar.vim'
+"- + https://github.com/https://github.com/itchyny/vim-cursorword
+"- + https://github.com/https://github.com/RRethy/vim-illuminate
+
+"- + https://github.com/itchyny/calendar.vim
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 0
 
+" + https://github.com/wsdjeg/FlyGrep.vim
+nnoremap <leader>fg :FlyGrep<cr>
+
 " TODO: frontend related
-"- Bundle 'maksimr/vim-jsbeautify'
+"- + https://github.com/maksimr/vim-jsbeautify
 " nnoremap <leader>j :call JsBeautify()<cr>
-"- Bundle 'marijnh/tern_for_vim'
-"- Bundle 'posva/vim-vue'
+"- + https://github.com/marijnh/tern_for_vim
+"- + https://github.com/posva/vim-vue
 
 " TODO: Try to write config from scratch with:
-"- Bundle 'tpope/vim-sensible'
-"- Bundle 'tpope/vim-unimpaired'
+"- + https://github.com/tpope/vim-sensible
+"- + https://github.com/tpope/vim-unimpaired
 
 " ------------------------------
 " Configure

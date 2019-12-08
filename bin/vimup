@@ -6,13 +6,19 @@ import os
 import re
 import shutil
 import subprocess
-
+import urllib.request
+import urllib.error
 
 dirbase = rcfile = None
-get_url = lambda n: 'https://github.com/%s' % n
+github_base = 'https://github.com/'
 pretty_json = functools.partial(
     json.dumps, sort_keys=True, indent=4, separators=(',', ': ')
 )
+bundles_re = (r'" ?\+ %s([^ \n]*)(?: ([^ \n]))?') % re.escape(github_base)
+
+
+def get_url(repo):
+    return '%s%s' % (github_base, repo)
 
 
 def get_bundle(bundle, dirname):
@@ -29,7 +35,6 @@ def parse_rc():
 
     with open(rcfile, 'br') as f:
         text = f.read().decode()
-    bundles_re = r'" ?Bundle ({0})(?: ({0}))?'.format('[^ \n]*')
     bundles = [get_bundle(*i) for i in re.findall(bundles_re, text)]
     print('Found %i bundles in %s' % (len(bundles), rcfile))
     return bundles
@@ -68,23 +73,23 @@ def install(bundle, dirname, update):
 
 
 def get_info(bundles):
-    import requests
-
     save = False if bundles else True
     bundles = [get_bundle(i, '') for i in bundles] if bundles else parse_rc()
 
     forbidden, info = False, {}
+    base_url = 'https://api.github.com/repos/'
     for name, _ in sorted(bundles):
         if not forbidden:
-            res = requests.get('https://api.github.com/repos/' + name)
-            if res.ok:
+            try:
+                res = urllib.request.urlopen(base_url + name)
+                data = json.loads(res.read())
                 info[name] = {
-                    k: v for k, v in res.json().items()
+                    k: v for k, v in data.items()
                     if k in ('description', 'html_url', 'homepage', 'watchers')
                 }
-            else:
+            except urllib.error.HTTPError as e:
                 forbidden = True
-                print('Can\'t get info from github: %r %r' % (res, res.reason))
+                print('Can\'t get info from github: %r' % e)
 
         print('%s: %s' % (name, pretty_json(info.get(name, get_url(name)))))
 
@@ -128,6 +133,7 @@ def main(argv=None):
         parser.print_usage()
     else:
         args.exe(args)
+
 
 if __name__ == '__main__':
     try:
