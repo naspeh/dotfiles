@@ -55,6 +55,7 @@ for_window [class="(?i)connman-gtk"] floating enable
 for_window [title="^Event Tester$"] floating enable
 #for_window [class="(?i)zoom"] floating enable
 for_window [class="(?i)syncthing gtk"] floating enable
+for_window [class="(?i)simplescreenrecorder"] floating enable
 
 bindsym $mod+t exec $terminal
 

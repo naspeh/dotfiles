@@ -3,12 +3,8 @@ set -x
 
 case "$1" in
 lock)
-    physlock
-    #i3lock -n -p default -t -i ~/black-dot.png
-    #i3lock -p default --indicator --clock --blur 10 --timestr="%H:%M:%S" --timecolor '#eeeeeeee' --datecolor '#eeeeeeee'
-;;
-bg)
-    feh -R 30 --bg-center ~/black-dot.png
+    i3lock -p default --indicator --clock --blur 10 --timestr="%H:%M:%S" --timecolor '#eeeeeeee' --datecolor '#eeeeeeee'
+    xset dpms force off
 ;;
 lang)
     if [ "$(setxkbmap -print | grep -c us+ua)" == "1" ]; then
@@ -18,7 +14,6 @@ lang)
     fi
 ;;
 prettyurl)
-    #python2 -c "import urllib; print(urllib.unquote('''$(xclip -o)'''));" | xclip -selection c
     python2 -c "import urllib; print(urllib.unquote('''$(xsel -o)'''));" | xsel -ib
 ;;
 *)
