@@ -1,8 +1,9 @@
 #!/bin/sh
 xset -b
 xset s off
-sudo ip link set enp0s31f6 down
-#xrdb ~/.Xresources
+
+#sudo ip link set enp0s31f6 down
+#sudo powertop --auto-tune
 
 #setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"

@@ -46,5 +46,5 @@ alt+a; {a,w,s,d,r,q}
 alt+f; {f,q}
     {ffcast -# "$(xdotool getactivewindow)" rec ~/Screenshots/"$(date +%F--%T)".mkv,pkill -fxn '(/\S+)*ffmpeg\s.*\sx11grab\s.*'}
 
-alt+s; {s,r,a}
-    rofi-pass { ,--last-used,--insert}
+alt+s; {s,r,a,b}
+    rofi-pass { ,--last-used,--insert,--bmarks}

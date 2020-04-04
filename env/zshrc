@@ -1,4 +1,7 @@
 #!/bin/zsh
+# Interesting:
+# * https://github.com/sindresorhus/pure - Pretty, minimal and fast ZSH prompt
+# * https://github.com/starship/starship - The cross-shell prompt for astronauts
 ZDOTDIR=~/.zsh
 
 export PATH="$PATH:$HOME/bin:./node_modules/.bin/"
@@ -140,6 +143,8 @@ alias lxc-destroy='sudo lxc-destroy'
 alias lxc-start='sudo lxc-start'
 alias lxc-stop='sudo lxc-stop'
 alias lxc-attach='sudo lxc-attach'
+
+alias podman='sudo podman'
 
 ### Prompt
 autoload colors; colors

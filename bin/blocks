@@ -21,6 +21,12 @@ volume)
     #(ponymix is-muted && printf "OFF\nOFF\n#cccccc") || ponymix get-volume
     amixer get Master|awk -F"[][]" '/%/ { if ($4 == "on") print $2; else printf "OFF\nOFF\n#cccccc"; }'
 ;;
+weather)
+    #curl -Ss 'https://wttr.in/Yaremche?0&T&Q' | cut -c 16- | head -2 | xargs echo
+    [[ $(internet check) ]] || exit 1
+    weather=$(curl -s wttr.in/Yaremche?format="+%c+%C+%t")
+    echo $weather | grep -q "Unknown location" || echo $weather
+;;
 fan)
 echo "\
 L:$(cat /proc/acpi/ibm/fan | grep 'level:.*' | awk '{print $2}') \
@@ -30,6 +36,6 @@ T:$(sensors | grep "Package id 0" | awk '{print $4}')\
 "
 ;;
 *)
-    echo $"Usage: $0 {battery|wifi|volume}"
+    echo $"Usage: $0 {battery|wifi|volume|weather|fan}"
     exit 1
 esac

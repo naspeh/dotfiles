@@ -46,6 +46,7 @@ def star(diskname, devpath=None):
         '"'.format(diskname=diskname, hostname=HOSTNAME)
     )
 
+
 TARGETS = {
     '*_to_trans': star('trans', '/dev/disk/by-label/t-arch'),
     '*_to_sea': star('sea'),
@@ -94,7 +95,7 @@ def main():
 
     today = dt.date.today().isoformat()
     now = dt.datetime.now().strftime("%Y-%m-%d--%X")
-    base_cmd = re.sub('[^\w]+', '-', ' '.join(sys.argv[1:]))
+    base_cmd = re.sub(r'[^\w]+', '-', ' '.join(sys.argv[1:]))
     if hasattr(args, 'fake'):
         rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
     bdir = args.bdir.rstrip('/') + '/'
