@@ -60,6 +60,7 @@ if [ "$1" = "music" ]; then
     i3-msg 'workspace 9: music'
     chromium --app=https://play.google.com/music/listen
     i3-msg 'floating disable'
+    # falkon -u https://play.google.com/music/listen
     exit
 fi
 
@@ -68,6 +69,8 @@ if [ "$1" = "tidal" ]; then
     i3-msg 'workspace 9: music'
     chromium --app=https://listen.tidal.com
     i3-msg 'floating disable'
+    # falkon -u https://listen.tidal.com
+    # falkon 'javascript:window.open("https://listen.tidal.com", "_blank","menubar=no,location=no,toolbar=no,left=100");window.close()'
     exit
 fi
 
@@ -75,6 +78,8 @@ if [ "$1" = "mail" ]; then
     i3-msg 'workspace 1: mail'
     chromium --app=https://mail.pusto.org
     i3-msg 'floating disable'
+    # falkon -u https://mail.pusto.org
+    # falkon 'javascript:window.open("https://mail.pusto.org", "_blank","menubar=no,location=no,toolbar=no,left=100");window.close()'
     exit
 fi
 
@@ -82,6 +87,7 @@ if [ "$SESSION" = "i3" ]; then
     i3-msg 'workspace 2: web'
 fi
 chromium &
+# falkon &
 
 [ "$1" = "light" ] && exit
 

@@ -10,10 +10,12 @@ export PATH="$PATH:$HOME/bin"
 
 export TERMINAL=termite
 export BROWSER=chromium
+# export BROWSER=falkon
 export DE=xfce
 
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
-export QT_STYLE_OVERRIDE=GTK+
+# export QT_STYLE_OVERRIDE=GTK+
+# export QT_QPA_PLATFORMTHEME=qgnomeplatform
 export QT_XFT=1
 export GDK_USE_XFT=1
 export AWT_TOOLKIT=XToolkit
