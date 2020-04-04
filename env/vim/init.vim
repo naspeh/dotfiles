@@ -75,7 +75,7 @@ endfun
 nmap <leader>l :call ToggleLocationList()<CR>
 nmap <leader>q :call ToggleQuickfixList()<CR>
 
-python << EOF
+python3 << EOF
 """
 Create github url and put into clipboard for line or for multi-line selection
 
@@ -102,7 +102,7 @@ def to_github():
         vim.current.range.end + 1
     )
     cmd = ['sh', '-c', cmd_tpl % vim.current.buffer.name]
-    output = sp.check_output(cmd).strip()
+    output = sp.check_output(cmd).decode().strip()
     full_path, root, remote, hash = output.split()
     path = re.sub(r'^%s/' % re.escape(root), '', full_path)
     if re.match('git@', remote):
@@ -115,8 +115,8 @@ def to_github():
     for url in urls:
         sp.call('echo "%s" | xsel -b; sleep 1' % url, shell=True)
 EOF
-nmap <leader>gh :python to_github()<cr>
-vmap <leader>gh :python to_github()<cr>
+nmap <leader>gh :python3 to_github()<cr>
+vmap <leader>gh :python3 to_github()<cr>
 
 " ------------------------------
 " Plugins activate
@@ -136,33 +136,38 @@ colorscheme solarized
 " + https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_mruf_relative=1
+let g:ctrlp_regexp = 0
 nmap <F3> :CtrlPBuffer<cr>
 imap <F3> <esc>:CtrlPBuffer<cr>
-nmap <F4> :CtrlPCurWD<cr>
-imap <F4> <esc>:CtrlPCurWD<cr>
+nmap <F4> :CtrlPMixed<cr>
+imap <F4> <esc>:CtrlPMixed<cr>
 nmap <F5> :CtrlPBufTag<cr>
 imap <F5> <esc>:CtrlPBufTag<cr>
-nmap <F6> :CtrlPBufTagAll<cr>
-imap <F6> <esc>:CtrlPBufTagAll<cr>
-"nmap <F7> :CtrlPQuickfix<cr>
-"imap <F7> <esc>:CtrlPQuickfix<cr>
+"nmap <F6> :CtrlPBufTagAll<cr>
+"imap <F6> <esc>:CtrlPBufTagAll<cr>
+nmap <F6> :CtrlPCurWD<cr>
+imap <F6> <esc>:CtrlPCurWD<cr>
+nmap <F7> :CtrlPUndo<cr>
+imap <F7> <esc>:CtrlPUndo<cr>
 
 " Check syntax in Vim asynchronously and fix files,
 " with Language Server Protocol (LSP) support
-" + https://github.com/dense-analysis/ale
+"- + https://github.com/dense-analysis/ale
 let g:airline#extensions#ale#enabled = 1
 let g:ale_lint_on_text_changed = 'never'
-" let g:ale_lint_on_insert_leave = 0
-" let g:ale_lint_on_enter = 0
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
 let g:ale_sign_column_always = 0
 let g:ale_set_signs = 0
 let g:ale_set_highlights = 1
-let g:ale_list_window_size = 4
-nmap <F8> :ALELint<cr>:lw<cr>
+" let g:ale_open_list = 1
+" let g:ale_set_loclist = 0
+" let g:ale_set_quickfix = 1
+" nmap <F7> :ALELint<cr>
 " max height for quicklist
-autocmd FileType qf 5wincmd_
+" autocmd FileType qf 5wincmd_
 
-"- + https://github.com/scrooloose/syntastic
+" + https://github.com/scrooloose/syntastic
 let g:syntastic_mode_map = {
     \"mode": "passive",
     \"active_filetypes": [],
@@ -176,12 +181,12 @@ let g:syntastic_enable_balloons=1
 let g:syntastic_enable_highlighting=0
 let g:syntastic_always_populate_loc_list=0
 let g:syntastic_auto_loc_list=2
-let g:syntastic_loc_list_height=2
+let g:syntastic_loc_list_height=5
 let g:syntastic_stl_format = '[%E{E%e}%B{, }%W{W%w}]'
 "let g:syntastic_python_flake8_args='--ignore=W601,E711'
 let g:syntastic_javascript_checkers = ['jshint', 'eslint']
 " nmap <F7> :SyntasticToggleMode<cr>
-" nmap <F8> :SyntasticCheck<cr>:Errors<cr>
+nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 
 " + https://github.com/tpope/vim-commentary
 vnoremap <leader>c :Commentary<cr>gv
@@ -198,11 +203,12 @@ let g:jedi#popup_on_dot=0
 let g:jedi#popup_select_first=1
 let g:jedi#show_call_signatures=2
 let g:jedi#rename_command=0
+let g:jedi#completions_command="<C-Space>"
 let g:jedi#goto_definitions_command="<leader>d"
 let g:jedi#goto_assignments_command="<leader>g"
-let g:jedi#documentation_command="<leader>o"
-let g:jedi#usages_command="<leader>i"
-let g:jedi#completions_command="<C-Space>"
+let g:jedi#documentation_command="<leader>jo"
+let g:jedi#usages_command="<leader>jd"
+let g:jedi#goto_stubs_command="<leader>js"
 nmap <leader>pp :call jedi#force_py_version_switch()<cr>
 
 "- + https://github.com/ervandew/supertab
@@ -232,7 +238,7 @@ let g:XkbSwitchIMappings = ['ru']
 "- + https://github.com/tpope/vim-markdown
 
 "- + https://github.com/mhinz/vim-signify
-" + https://github.com/Yggdroot/indentLine
+"- + https://github.com/Yggdroot/indentLine
 "- + https://github.com/tpope/vim-fugitive
 "- + https://github.com/liuchengxu/eleline.vim
 
@@ -247,8 +253,30 @@ runtime macros/matchit.vim
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 0
 
-" + https://github.com/wsdjeg/FlyGrep.vim
-nnoremap <leader>fg :FlyGrep<cr>
+"- + https://github.com/wsdjeg/FlyGrep.vim
+"nnoremap <leader>fg :FlyGrep<cr>
+
+" + https://github.com/zivyangll/git-blame.vim
+" nmap <leader>gb :<C-u>call gitblame#echo()<cr>
+" vmap <leader>gb :<C-u>call gitblame#echo()<cr>
+
+" -- git command on current file
+fun! GitCommand(command)
+  silent! !clear
+  exec "!git " . a:command . " %"
+endfun
+" -- git diff for current file
+map <leader>gd :call GitCommand("diff") <CR>
+" -- git log for current file
+map <leader>gl :call GitCommand("log -p") <CR>
+" -- git blame for current file
+map <leader>gb :call GitCommand("blame") <CR>
+
+"- + https://github.com/psf/black
+
+" TODO: Interesting
+"- + https://github.com/tmsvg/pear-tree
+"- + https://github.com/sbdchd/neoformat
 
 " TODO: frontend related
 "- + https://github.com/maksimr/vim-jsbeautify
@@ -448,6 +476,7 @@ imap <C-f> <C-x><C-f>
 if exists(':tnoremap')
     tnoremap <Esc> <C-\><C-n>
     let g:terminal_scrollback_buffer_size=100000
+    let g:python3_host_prog = "/usr/bin/python3"
 endif
 
 " ------------------------------
@@ -455,9 +484,8 @@ endif
 " ------------------------------
 iab pybin #!/usr/bin/env python<esc>
 iab pyutf # -*- coding: utf-8 -*-<esc>
-iab pdb; import ptpdb; ptpdb.set_trace()<esc>
+iab pdb; import pdb; pdb.set_trace()<esc>
 iab ipdb; import ipdb; ipdb.set_trace()<esc>
-iab bpdb; import bpdb; bpdb.set_trace()<esc>
 iab pprint; import pprint as _; _.pprint(
 iab log; import logging; log = logging.getLogger(__name__).info
 
