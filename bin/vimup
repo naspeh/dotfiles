@@ -14,7 +14,7 @@ github_base = 'https://github.com/'
 pretty_json = functools.partial(
     json.dumps, sort_keys=True, indent=4, separators=(',', ': ')
 )
-bundles_re = (r'" ?\+ %s([^ \n]*)(?: ([^ \n]))?') % re.escape(github_base)
+bundles_re = (r'" ?\+ %s([^ \n]*)(?: (\([^ \n])\))?') % re.escape(github_base)
 
 
 def get_url(repo):
@@ -56,14 +56,14 @@ def install(bundle, dirname, update):
     for bundle, dirname in bundles:
         bundle, dirname = get_bundle(bundle, dirname)
 
-        print('Process %r' % bundle)
+        print('Process %r to %s' % (bundle, dirname))
         dirname = os.path.join(dirbase, dirname)
         exists = os.path.exists(os.path.join(dirname, '.git'))
         if exists and not update:
             continue
 
         if exists:
-            cmd = 'git pull --recurse-submodules origin master'
+            cmd = 'git pull --ff-only --recurse-submodules origin master'
         else:
             os.makedirs(dirname)
             cmd = 'git clone --recursive %s.git .' % get_url(bundle)
