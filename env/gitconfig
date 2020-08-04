@@ -11,6 +11,8 @@
 [core]
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
     excludesfile = ~/.gitignore
+    # https://github.com/dandavison/delta
+    ; pager = delta --light --theme 'Solarized (light)'
 
 [alias]
     st = status
@@ -20,6 +22,8 @@
     df = diff
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    # https://bebehei.de/github-prs/
+    # git config --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pull/*"
     pr = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
 
 

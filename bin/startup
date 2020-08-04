@@ -13,7 +13,7 @@ setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 xmodmap -e "keysym Insert = End"
 
 
-if [ "$SESSION" = "i3" ]; then
+if [ -n "$I3SOCK" ]; then
     i3-msg 'workspace "3: term"; exec $TERMINAL'
 fi
 
@@ -25,6 +25,7 @@ tider &
 (sleep 3 && syncthing-gtk -m) &
 
 cbatticon &
+pasystray &
 #xfce4-power-manager &
 
 stardict -h &

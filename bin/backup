@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Interesting:
+# - https://github.com/laurent22/rsync-time-backup
 import argparse
 import datetime as dt
 import os

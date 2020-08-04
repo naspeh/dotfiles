@@ -27,7 +27,7 @@ export _JAVA_OPTIONS="\
 
 # Start Gnome Keyring
 #killall gnome-keyring-daemon
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
+#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
 
 case $1 in
   startxfce4|i3|qtile|awesome|wmii|wmfs) SESSION=$1;;

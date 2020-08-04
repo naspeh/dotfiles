@@ -4,7 +4,7 @@
 # * https://github.com/starship/starship - The cross-shell prompt for astronauts
 ZDOTDIR=~/.zsh
 
-export PATH="$PATH:$HOME/bin:./node_modules/.bin/"
+export PATH="$PATH:$HOME/bin:$HOME/go/bin/:./node_modules/.bin/"
 export PYTHONSTARTUP=~/.pythonrc
 
 export EDITOR=vim
@@ -145,6 +145,9 @@ alias lxc-stop='sudo lxc-stop'
 alias lxc-attach='sudo lxc-attach'
 
 alias podman='sudo podman'
+
+# https://github.com/sharkdp/bat
+alias bat='bat --theme "Solarized (light)"'
 
 ### Prompt
 autoload colors; colors
