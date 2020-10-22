@@ -27,6 +27,8 @@ alt+ctrl+b
     chromium
 alt+ctrl+h
     $TERMINAL -T htop -e htop
+alt+ctrl+f
+    doublecmd
 alt+ctrl+o
     orage
 alt+ctrl+m
@@ -40,8 +42,11 @@ alt+ctrl+{r,q,s}
 alt+i; {i,e,l,k,w,s,z,m,t}
     internet { ,mail,light,kill,work,slack,zoom,music,tidal}
 
-alt+a; {a,w,s,d,r,q}
-    tider call {target,menu,report,disable,reload,quit}
+# alt+a; {a,w,s,d,r,q}
+#    tider call {target,menu,report,disable,reload,quit}
+
+alt+a; {a,e,f,r,s}
+    timefor {select,select --update,finish,reject,report -n}
 
 alt+f; {f,q}
     {ffcast -# "$(xdotool getactivewindow)" rec ~/Screenshots/"$(date +%F--%T)".mkv,pkill -fxn '(/\S+)*ffmpeg\s.*\sx11grab\s.*'}
