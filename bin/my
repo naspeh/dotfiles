@@ -17,6 +17,6 @@ prettyurl)
     python2 -c "import urllib; print(urllib.unquote('''$(xsel -o)'''));" | xsel -ib
 ;;
 *)
-    echo $"Usage: $0 {todo|lock|bg|bat}"
+    echo $"Usage: $0 {lock|lang|prettyurl}"
     exit 1
 esac

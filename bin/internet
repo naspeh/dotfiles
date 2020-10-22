@@ -58,9 +58,9 @@ fi
 
 if [ "$1" = "music" ]; then
     i3-msg 'workspace 9: music'
-    chromium --app=https://play.google.com/music/listen
+    chromium --app=https://music.youtube.com/
     i3-msg 'floating disable'
-    # falkon -u https://play.google.com/music/listen
+    # falkon -u https://music.youtube.com/
     exit
 fi
 

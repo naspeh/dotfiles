@@ -11,8 +11,7 @@
 [core]
     whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
     excludesfile = ~/.gitignore
-    # https://github.com/dandavison/delta
-    ; pager = delta --light --theme 'Solarized (light)'
+    # pager = less -x1,5 -R
 
 [alias]
     st = status

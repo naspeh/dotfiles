@@ -56,6 +56,8 @@ for_window [title="^Event Tester$"] floating enable
 #for_window [class="(?i)zoom"] floating enable
 for_window [class="(?i)syncthing gtk"] floating enable
 for_window [class="(?i)simplescreenrecorder"] floating enable
+for_window [window_role="Tfrm"] floating enable
+for_window [window_role="TfrmMain"] floating disable
 
 bindsym $mod+t exec $terminal
 
