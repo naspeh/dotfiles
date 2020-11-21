@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+set -xe
 
 case "$1" in
 lock)
@@ -16,7 +16,15 @@ lang)
 prettyurl)
     python2 -c "import urllib; print(urllib.unquote('''$(xsel -o)'''));" | xsel -ib
 ;;
+qrcode)
+    xsel -o > /tmp/qrcode.txt
+    convert inline:/tmp/qrcode.txt /tmp/qrcode.png
+    zbarimg /tmp/qrcode.png | xsel -ib
+;;
+qrcode-downloads)
+    zbarimg /arch/downloads/qrcode.png | xsel -ib
+;;
 *)
-    echo $"Usage: $0 {lock|lang|prettyurl}"
+    echo $"Usage: $0 {lock|lang|prettyurl|qrcode|qrcode-downloads}"
     exit 1
 esac
