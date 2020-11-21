@@ -39,16 +39,6 @@ if [ "$1" = "slack" ]; then
 fi
 
 
-if [ "$1" = "work" ]; then
-    i3-msg 'workspace 7: work'
-    chromium --app=https://mail.google.com/mail/u/1/; i3-msg 'floating disable'
-    chromium --app=https://calendar.google.com/calendar/b/1/r; i3-msg 'floating disable'
-    chromium --app=https://15five.quip.com/; i3-msg 'floating disable'
-    chromium --app=https://15five.15five.com/; i3-msg 'floating disable'
-    chromium --app=https://15five.slack.com/; i3-msg 'floating disable'
-    exit
-fi
-
 if [ "$1" = "zoom" ]; then
     i3-msg 'workspace 8: zoom'
     # flatpak run us.zoom.Zoom
