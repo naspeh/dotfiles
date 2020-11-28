@@ -197,16 +197,47 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 0
 
-# Start i3bar
+# https://ethanschoonover.com/solarized/
+#$base03:    #002b36; dark-bg
+#$base02:    #073642; dark-bg
+#$base01:    #586e75;
+#$base00:    #657b83;
+#$base0:     #839496;
+#$base1:     #93a1a1;
+#$base2:     #eee8d5; light-bg
+#$base3:     #fdf6e3; light-bg
+#$yellow:    #b58900;
+#$orange:    #cb4b16;
+#$red:       #dc322f;
+#$magenta:   #d33682;
+#$violet:    #6c71c4;
+#$blue:      #268bd2;
+#$cyan:      #2aa198;
+#$green:     #859900;
 bar {
     #font xft:sans 13px
     font pango:IBM Plex Sans 10
     colors {
-        background #efefef
-        statusline #000000
-        separator #cccccc
+        # background #073642
+        # statusline #586e75
+        # separator #002b36
+
+        # https://github.com/tobiaszwaszak/i3wm
+        background #002b36
+        statusline #839496
+        separator  #586e75
+        focused_workspace  #b58900 #b58900 #002b36
+        active_workspace   #586e75 #586e75 #002b36
+        inactive_workspace #073642 #002b36 #839496
+        urgent_workspace   #dc322f #dc322f #fdf6e3
     }
 
     position top
+    #strip_workspace_numbers yes
     status_command i3blocks -c ~/.i3/blocks.conf
 }
+
+client.focused          #002b36 #586e75 #fdf6e3 #268bd2
+client.focused_inactive #002b36 #073642 #839496 #073642
+client.unfocused        #002b36 #073642 #839496 #073642
+client.urgent           #002b36 #dc322f #fdf6e3 #002b36
