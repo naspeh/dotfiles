@@ -130,6 +130,12 @@ execute pathogen#infect()
 set background=light
 colorscheme solarized
 
+" + https://github.com/romainl/flattened
+colorscheme flattened_light
+
+" + https://github.com/axvr/photon.vim
+" colorscheme antiphoton
+
 " https://github.com/nightsense/cosmic_latte
 " set background=light
 " colorscheme cosmic_latte
@@ -212,10 +218,10 @@ nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 set completeopt=menuone,longest,noinsert,noselect
 let g:lsp_async_completion = 1
 " let g:lsp_diagnostics_enabled = 1
-let g:lsp_diagnostics_float_cursor = 1
-" let g:lsp_signs_enabled = 0
-let g:lsp_log_file = '/tmp/lsp.log'
-let g:lsp_log_verbose = 0
+" let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_signs_enabled = 0
+" let g:lsp_log_file = '/tmp/lsp.log'
+" let g:lsp_log_verbose = 0
 if executable('pyls')
     autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
@@ -375,7 +381,7 @@ let b:vcm_tab_complete = "omni"
 " + https://github.com/neomake/neomake - is a plugin for Vim/Neovim to asynchronously run programs.
 " call neomake#configure#automake('rnw', 1000)
 " let g:neomake_place_signs = 0
-" let g:neomake_open_list = 2
+let g:neomake_open_list = 2
 " let g:neomake_list_height = 5
 nmap <F8> :Neomake<cr>
 
@@ -400,6 +406,8 @@ nmap <leader>gg <Plug>(FerretLack)
 " + https://github.com/eugen0329/vim-esearch - Perform search in files easily
 let g:esearch = {}
 let g:esearch.out = 'qflist'
+
+" https://github.com/pechorin/any-jump.vim - Jump to any definition and references eye IDE madness without overhead
 
 " TODO: frontend related
 " https://github.com/maksimr/vim-jsbeautify
