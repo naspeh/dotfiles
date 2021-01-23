@@ -8,7 +8,8 @@ fi
 
 export PATH="$PATH:$HOME/bin:$HOME/go/bin/"
 
-export TERMINAL=termite
+# export TERMINAL=termite
+export TERMINAL=xfce4-terminal
 export BROWSER=chromium
 # export BROWSER=falkon
 export DE=xfce
@@ -24,6 +25,8 @@ export _JAVA_OPTIONS="\
   -Dswing.aatext=true\
   -Dawt.useSystemAAFontSettings=on\
 "
+
+systemctl --user import-environment DISPLAY
 
 # Start Gnome Keyring
 #killall gnome-keyring-daemon

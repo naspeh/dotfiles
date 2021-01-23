@@ -124,6 +124,9 @@
     # browser for opening urls in context menu
     browser = /usr/bin/chromium
 
+    show_indicators = true
+    icon_position = left
+
 [frame]
     width = 1
     color = "#eeeeee"
@@ -135,17 +138,17 @@
     # xev might be helpful to find names for keys
 
     # close notification
-    close = mod1+d
+    #close = mod1+d
 
     # close all notifications
-    close_all = mod1+shift+d
+    #close_all = mod1+shift+d
 
     # redisplay last message(s)
     # On the US keyboard layout 'grave' is normally above TAB and left of '1'.
-    history = mod1+m
+    #history = mod1+shift+m
 
     # context menu
-    context = mod1+shift+m
+    #context = mod1+m
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.

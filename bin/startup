@@ -34,4 +34,5 @@ pasystray &
 stardict -h &
 #goldendict &
 
+CM_SELECTIONS=clipboard clipmenud &
 greenclip daemon &

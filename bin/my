@@ -16,6 +16,9 @@ lang)
 prettyurl)
     python2 -c "import urllib; print(urllib.unquote('''$(xsel -o)'''));" | xsel -ib
 ;;
+prettyjson)
+    xsel -o | python3 -m json.tool --sort-keys | xsel -ib
+;;
 qrcode)
     xsel -o > /tmp/qrcode.txt
     convert inline:/tmp/qrcode.txt /tmp/qrcode.png
