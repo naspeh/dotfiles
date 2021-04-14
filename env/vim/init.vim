@@ -5,18 +5,6 @@ let mapleader=","
 " ------------------------------
 " Functions
 " ------------------------------
-fun! TextWidth()
-    " highlight column 80
-    if v:version >= 703
-        setlocal colorcolumn=80
-    else
-        highlight OverLength ctermbg=grey ctermfg=black guibg=#eeeeff
-        match OverLength /\%80v.\+/
-    endif
-endfun
-nmap <F11> :call TextWidth()<cr>
-autocmd FileType python call TextWidth()
-
 fun! TrimSpaces()
   if !&binary && &filetype != 'diff'
     normal mz
@@ -131,7 +119,9 @@ set background=light
 colorscheme solarized
 
 " + https://github.com/romainl/flattened
-colorscheme flattened_light
+" colorscheme flattened_light
+set background=dark
+colorscheme flattened_dark
 
 " + https://github.com/axvr/photon.vim
 " colorscheme antiphoton
@@ -217,8 +207,7 @@ nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 " set completeopt-=preview
 set completeopt=menuone,longest,noinsert,noselect
 let g:lsp_async_completion = 1
-" let g:lsp_diagnostics_enabled = 1
-" let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_diagnostics_enabled = 0
 let g:lsp_signs_enabled = 0
 " let g:lsp_log_file = '/tmp/lsp.log'
 " let g:lsp_log_verbose = 0
@@ -545,6 +534,7 @@ autocmd BufNewFile,BufRead *.{css,less} setlocal ft=css
 autocmd BufNewFile,BufRead *.{md,mdt} setlocal ft=markdown
 autocmd BufNewFile,BufRead *.mustache setlocal ft=html
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab
+autocmd FileType python setlocal colorcolumn=80
 
 "autocmd Syntax javascript set omnifunc=javascriptcomplete#CompleteJS
 "autocmd Syntax css set omnifunc=csscomplete#CompleteCSS
