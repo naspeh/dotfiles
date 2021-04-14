@@ -24,15 +24,16 @@ nm-applet --sm-disable &
 timefor daemon &
 
 sxhkd &
+redshift-gtk -l manual:48.45205388768985:24.563229542272726 &
 (sleep 3 && syncthing-gtk -m) &
-(sleep 3 && redshift-gtk) &
 
-cbatticon &
+#cbatticon &
 pasystray &
-#xfce4-power-manager &
+blueberry-tray &
+xfce4-power-manager &
 
 stardict -h &
 #goldendict &
 
 CM_SELECTIONS=clipboard clipmenud &
-greenclip daemon &
+#greenclip daemon &

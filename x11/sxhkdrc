@@ -5,8 +5,8 @@ XF86AudioMute
 XF86AudioMicMute
     amixer set Capture toggle
 
-XF86MonBrightness{Down,Up}
-    xbacklight -inc {-,+}10 && notify-send "$(printf '  %d%%' $(xbacklight -get))"
+#XF86MonBrightness{Down,Up}
+#    xbacklight -inc {-,+}10 && notify-send "$(printf '  %d%%' $(xbacklight -get))"
 
 alt+t
     $TERMINAL

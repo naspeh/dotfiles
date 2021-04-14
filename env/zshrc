@@ -4,7 +4,7 @@
 # * https://github.com/starship/starship - The cross-shell prompt for astronauts
 ZDOTDIR=~/.zsh
 
-export PATH="$PATH:$HOME/bin:$HOME/go/bin/:./node_modules/.bin/"
+export PATH="$PATH:/$HOME/.local/bin:$HOME/bin:$HOME/go/bin/:./node_modules/.bin/"
 export PYTHONSTARTUP=~/.pythonrc
 
 export EDITOR=vim
@@ -66,6 +66,13 @@ zstyle ':completion:*:kill:*' force-list always
 zstyle ':completion:*:processes' command 'ps -xuf'
 zstyle ':completion:*:processes' sort false
 zstyle ':completion:*:processes-names' command 'ps xho command'
+
+
+# bashcompinit
+autoload -U bashcompinit
+bashcompinit
+
+eval "$(register-python-argcomplete pipx)"
 
 # project based .venv file for virtualenv activation, etc.
 venv_cd() {
