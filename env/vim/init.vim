@@ -16,27 +16,6 @@ fun! TrimSpaces()
 endfun
 nmap <F9> :call TrimSpaces()<cr>
 
-fun! TextMode()
-    setlocal nonumber
-    setlocal spell
-    setlocal whichwrap+=<,>,[,]
-
-    " setlocal textwidth=90
-    " setlocal formatoptions=aw2tql
-
-    setlocal formatoptions=1l
-
-    " http://vim.wikia.com/wiki/VimTip989
-    setlocal wrap
-    setlocal linebreak
-    setlocal nolist
-    setlocal showbreak=❯
-    setlocal textwidth=0
-    setlocal wrapmargin=0
-endfun
-nmap <leader>tt :call TextMode()<cr>
-nmap <leader>ta :setlocal formatoptions-=l<cr>:call TextMode()<cr>
-
 fun! Tab2()
     setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 endfun
@@ -114,21 +93,10 @@ vmap <leader>gh :python3 to_github()<cr>
 runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
-" + https://github.com/altercation/vim-colors-solarized
-set background=light
-colorscheme solarized
-
 " + https://github.com/romainl/flattened
 " colorscheme flattened_light
 set background=dark
 colorscheme flattened_dark
-
-" + https://github.com/axvr/photon.vim
-" colorscheme antiphoton
-
-" https://github.com/nightsense/cosmic_latte
-" set background=light
-" colorscheme cosmic_latte
 
 " + https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
@@ -146,45 +114,6 @@ nmap <F6> :CtrlPCurWD<cr>
 imap <F6> <esc>:CtrlPCurWD<cr>
 nmap <F7> :CtrlPUndo<cr>
 imap <F7> <esc>:CtrlPUndo<cr>
-
-" Check syntax in Vim asynchronously and fix files,
-" with Language Server Protocol (LSP) support
-"- + https://github.com/dense-analysis/ale
-let g:airline#extensions#ale#enabled = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_enter = 0
-let g:ale_sign_column_always = 0
-let g:ale_set_signs = 0
-let g:ale_set_highlights = 1
-" let g:ale_open_list = 1
-" let g:ale_set_loclist = 0
-" let g:ale_set_quickfix = 1
-" nmap <F7> :ALELint<cr>
-" max height for quicklist
-" autocmd FileType qf 5wincmd_
-
-" https://github.com/scrooloose/syntastic
-let g:syntastic_mode_map = {
-    \"mode": "passive",
-    \"active_filetypes": [],
-    \"passive_filetypes": []
-\}
-let g:syntastic_check_on_open=1
-let g:syntastic_enable_signs=0
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_enable_balloons=1
-let g:syntastic_enable_highlighting=1
-let g:syntastic_always_populate_loc_list=0
-let g:syntastic_auto_loc_list=2
-let g:syntastic_loc_list_height=5
-let g:syntastic_stl_format = '[%E{E%e}%B{, }%W{W%w}]'
-"let g:syntastic_python_flake8_args='--ignore=W601,E711'
-let g:syntastic_javascript_checkers = ['jshint', 'eslint']
-let g:syntastic_go_checkers = ['govet', 'errcheck', 'go']
-" nmap <F7> :SyntasticToggleMode<cr>
-nmap <F8> :SyntasticCheck<cr>:Errors<cr>
 
 " + https://github.com/prabirshrestha/vim-lsp - async language server protocol plugin for vim and neovim
 " https://github.com/prabirshrestha/asyncomplete.vim
@@ -251,31 +180,6 @@ augroup END
 vnoremap <leader>c :Commentary<cr>gv
 noremap <leader>c :Commentary<cr>
 
-" https://github.com/davidhalter/jedi-vim
-"let g:jedi#force_py_version=3
-" let g:jedi#auto_initialization=1
-" let g:jedi#auto_vim_configuration=1
-" let g:jedi#use_tabs_not_buffers=0
-" let g:jedi#completions_enabled=1
-" let g:jedi#smart_auto_mappings = 0
-" let g:jedi#popup_on_dot=0
-" let g:jedi#popup_select_first=1
-" let g:jedi#show_call_signatures=2
-" let g:jedi#rename_command=0
-" let g:jedi#completions_command="<C-Space>"
-" let g:jedi#goto_definitions_command="<leader>d"
-" let g:jedi#goto_assignments_command="<leader>g"
-" let g:jedi#documentation_command="<leader>jo"
-" let g:jedi#usages_command="<leader>jd"
-" let g:jedi#goto_stubs_command="<leader>js"
-" nmap <leader>pp :call jedi#force_py_version_switch()<cr>
-
-" https://github.com/ervandew/supertab
-let g:SuperTabMappingForward='<nul>' " '<c-space>'
-let g:SuperTabMappingBackward='<s-nul>' " '<s-c-space>'
-let g:SuperTabDefaultCompletionType="<c-x><c-o>"
-"let g:SuperTabContextDefaultCompletionType="<c-x><c-o>"
-
 " + https://github.com/itchyny/vim-gitbranch
 " + https://github.com/vim-airline/vim-airline
 " + https://github.com/vim-airline/vim-airline-themes
@@ -287,85 +191,11 @@ let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_section_b='⎇  %{gitbranch#name()}'
 
-" https://github.com/powerman/vim-plugin-ruscmd
-" https://github.com/lyokha/vim-xkbswitch
-let g:XkbSwitchEnabled = 1
-let g:XkbSwitchIMappings = ['ru']
-
-
-" https://github.com/gabrielelana/vim-markdown
-" https://github.com/tpope/vim-markdown
-
-" https://github.com/Yggdroot/indentLine - A vim plugin to display the indention levels with thin vertical lines
-" https://github.com/mhinz/vim-signify - Show a diff using Vim its sign column.
-" https://github.com/liuchengxu/eleline.vim - Another elegant statusline for vim
-
 runtime macros/matchit.vim
-" https://github.com/Valloric/MatchTagAlways
-" https://github.com/gregsexton/MatchTag
-
-" https://github.com/itchyny/vim-cursorword - Underlines the word under the cursor
-" https://github.com/RRethy/vim-illuminate - Vim plugin for automatically highlighting other uses of the word under the cursor
-
-" https://github.com/itchyny/calendar.vim
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 0
-
-" + https://github.com/tpope/vim-fugitive - A Git wrapper so awesome, it should be illegal
-" https://github.com/lambdalisue/gina.vim -  is a plugin to asynchronously control git repositories.
-" https://github.com/zivyangll/git-blame.vim - See Git Blame information in the status bar for the currently selected line.
-nmap <leader>gb :<C-u>call gitblame#echo()<cr>
-vmap <leader>gb :<C-u>call gitblame#echo()<cr>
-
-" -- git command on current file
-fun! GitCommand(command)
-  silent! !clear
-  exec "!git " . a:command . " %"
-endfun
-" -- git diff for current file
-" map <leader>gd :call GitCommand("diff") <CR>
-" -- git log for current file
-"map <leader>gl :call GitCommand("log -p") <CR>
-" -- git blame for current file
-"map <leader>gb :call GitCommand("blame") <CR>
-
-" + https://github.com/rhysd/git-messenger.vim
-let g:git_messenger_include_diff = "current"
-let g:git_messenger_no_default_mappings = "v:true"
-nmap <leader>gm <Plug>(git-messenger)
-
-" https://github.com/psf/black
-" https://github.com/romainl/vim-cool - Vim-cool disables search highlighting when you are done searching and re-enables it when you search again.
-
-" https://github.com/fatih/vim-go
-
-" https://github.com/vim-scripts/Smart-Tabs - Use tabs for indent, spaces for alignment
-" https://github.com/dpc/vim-smarttabs
 
 " Writting
 " + https://github.com/reedes/vim-pencil Rethinking Vim as a tool for writers
-" https://github.com/rhysd/vim-grammarous - A powerful grammar checker for Vim using LanguageTool.
-" https://github.com/amperser/proselint - A linter for prose.
-" https://github.com/reedes/vim-wordy - Uncover usage problems in your writing
-" https://github.com/raghur/vim-ghost - Vim/Nvim client for GhostText - Edit browser text areas in Vim/Neovim
-
-" TODO: Interesting
-" https://github.com/tmsvg/pear-tree - A Vim auto-pair plugin that supports multi-character pairs, intelligent matching, and more
-" https://github.com/sbdchd/neoformat
-" https://github.com/maralla/validator.vim - Syntax check framework for vim which checks syntax on the fly asynchronously.
-" https://github.com/maralla/completor.vim - is an asynchronous code completion framework for vim8.
-" https://github.com/liuchengxu/vim-which-key -  displays available keybindings in popup.
-" https://github.com/t9md/vim-quickhl - quickly highlight <cword> or visually selected word
-" https://github.com/tyru/caw.vim - comment plugin
-
-" + https://github.com/Shougo/echodoc.vim - Print documents in echo area.
-let g:echodoc#enable_at_startup = 1
-" let g:echodoc#type = 'popup'
-" let g:echodoc#type = 'floating'
-" highlight link EchoDocPopup Pmenu
-
-" https://github.com/ajh17/VimCompletesMe - A super simple, super minimal, super light-weight tab-completion plugin for Vim.
-let b:vcm_tab_complete = "omni"
+nmap <leader>tt :PencilToggle<cr>
 
 " + https://github.com/neomake/neomake - is a plugin for Vim/Neovim to asynchronously run programs.
 " call neomake#configure#automake('rnw', 1000)
@@ -374,39 +204,16 @@ let g:neomake_open_list = 2
 " let g:neomake_list_height = 5
 nmap <F8> :Neomake<cr>
 
-
-" https://github.com/mhinz/vim-grepper - Helps you win at grep.
-" let g:grepper = {}
-" let g:grepper.tools = ['rg', 'ag', 'git']
-" nnoremap <leader>gg :Grepper<cr>
-" nmap gs <plug>(GrepperOperator)
-" xmap gs <plug>(GrepperOperator)
-
-" https://github.com/yegappan/grep - Plugin to integrate Grep search tools with Vim
-" nmap <F10> :Rg<cr>
-" nmap <leader>gg :Rg<cr>
-
 " + https://github.com/wincent/ferret
 let g:FerretMap=0
 nmap <F10> <Plug>(FerretLack)
 nmap <leader>gg <Plug>(FerretLack)
 
-
-" + https://github.com/eugen0329/vim-esearch - Perform search in files easily
-let g:esearch = {}
-let g:esearch.out = 'qflist'
-
-" https://github.com/pechorin/any-jump.vim - Jump to any definition and references eye IDE madness without overhead
-
-" TODO: frontend related
-" https://github.com/maksimr/vim-jsbeautify
-" nnoremap <leader>j :call JsBeautify()<cr>
-" https://github.com/marijnh/tern_for_vim
-" https://github.com/posva/vim-vue
+"+ https://github.com/pechorin/any-jump.vim - Jump to any definition and references eye IDE madness without overhead
+" + https://github.com/editorconfig/editorconfig-vim
 
 " TODO: Try to write config from scratch with:
 " https://github.com/tpope/vim-sensible
-" https://github.com/tpope/vim-unimpaired
 
 " ------------------------------
 " Configure
@@ -536,11 +343,6 @@ autocmd BufNewFile,BufRead *.mustache setlocal ft=html
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab
 autocmd FileType python setlocal colorcolumn=80
 
-"autocmd Syntax javascript set omnifunc=javascriptcomplete#CompleteJS
-"autocmd Syntax css set omnifunc=csscomplete#CompleteCSS
-"autocmd Syntax html set omnifunc=htmlcomplete#CompleteTags
-"autocmd Syntax xml set omnifunc=xmlcomplete#CompleteTags
-
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
@@ -552,7 +354,6 @@ endif
 set autoread
 autocmd BufWinEnter,WinEnter,InsertEnter,InsertLeave * checktime
 autocmd FileChangedShell * echo "Warning: File changed on disk"
-autocmd BufWritePost ~/todo.rst :silent !my todo
 
 " Sudo saves the file
 command! Sw w !sudo tee % > /dev/null
@@ -562,10 +363,10 @@ vmap < <gv
 vmap > >gv
 
 " Nice scrolling if line wrap
-noremap j gj
-noremap k gk
-noremap <Down> gj
-noremap <Up> gk
+" noremap j gj
+" noremap k gk
+" noremap <Down> gj
+" noremap <Up> gk
 
 nmap <leader>h :setlocal hlsearch! hlsearch?<cr>
 nmap <leader>m :setlocal modifiable! modifiable?<cr>
