@@ -8,9 +8,10 @@ fi
 
 export PATH="$PATH:$HOME/bin:$HOME/go/bin/"
 
-# export TERMINAL=termite
+# export TERMINAL=alacritty
+# export TERMINAL=lxterminal
 export TERMINAL=xfce4-terminal
-export BROWSER=chromium
+export BROWSER=google-chrome-stable
 # export BROWSER=falkon
 export DE=xfce
 
@@ -26,8 +27,6 @@ export _JAVA_OPTIONS="\
   -Dawt.useSystemAAFontSettings=on\
 "
 
-systemctl --user import-environment DISPLAY
-
 # Start Gnome Keyring
 #killall gnome-keyring-daemon
 #eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
@@ -37,4 +36,5 @@ case $1 in
   *) SESSION=i3;;
 esac
 export SESSION
-$SESSION
+systemctl --user import-environment PATH TERMINAL BROWSER SESSION
+exec $SESSION

@@ -122,7 +122,7 @@
     dmenu = /usr/bin/dmenu -p dunst:
 
     # browser for opening urls in context menu
-    browser = /usr/bin/chromium
+    browser = /usr/bin/google-chrome-stable
 
     show_indicators = true
 

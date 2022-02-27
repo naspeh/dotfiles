@@ -8,3 +8,6 @@
 event=button/lid.*
 action=/bin/su naspeh -c 'echo %e | grep ".*close" && (DISPLAY=:0 xrandr | grep -c "HDMI. connected" || DISPLAY=:0 ~/bin/my lock)'
 ```
+
+- https://github.com/cdown/clipmenu
+- https://github.com/ms-jpq/isomorphic_copy

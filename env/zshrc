@@ -112,6 +112,7 @@ alias free="free -t -m"
 alias wifi-menu="sudo wifi-menu"
 
 alias ssha='eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa && echo SSH_AUTH_SOCK=$SSH_AUTH_SOCK'
+alias sshq='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
 alias pacmanc="sudo pacman --config=/home/pacman/pacman.conf"
 alias pacaur="pacaur --rebuild"

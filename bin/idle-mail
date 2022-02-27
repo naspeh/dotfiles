@@ -24,6 +24,7 @@ current = 0
 
 
 def connect(conf):
+    imaplib.IMAP4.debug = 4
     con = imaplib.IMAP4_SSL(conf['server'])
     con.login(conf['username'], conf['password'])
     con.select()

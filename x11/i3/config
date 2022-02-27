@@ -10,8 +10,9 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 # Startup
-#exec --no-startup-id dex -a -e xfce
+# exec --no-startup-id dex -a -e xfce
 exec --no-startup-id startup
+exec i3-msg 'workspace "3: term"; exec $TERMINAL'
 
 set $mod Mod1
 set $terminal $TERMINAL
@@ -59,8 +60,6 @@ for_window [class="(?i)simplescreenrecorder"] floating enable
 for_window [window_role="Tfrm"] floating enable
 for_window [window_role="TfrmMain"] floating disable
 
-bindsym $mod+t exec $terminal
-
 bindsym $mod+grave workspace back_and_forth
 bindsym $mod+u [urgent="oldest"] focus
 
@@ -75,41 +74,6 @@ bindsym $mod+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-
-# mode "system" {
-#     bindsym e exit
-#     bindsym s exec systemctl suspend; mode "default"
-#     bindsym r exec systemctl reboot
-#     bindsym q exec systemctl poweroff
-
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-# bindsym $mod+s mode "system"
-
-# mode "internet" {
-#     bindsym i exec internet; mode "default"
-#     bindsym l exec internet light; mode "default"
-#     bindsym k exec internet kill; mode "default"
-
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-# bindsym $mod+i mode "internet"
-
-# mode "tider" {
-#     bindsym a exec tider call target; mode "default"
-#     bindsym Tab exec tider call toggle_active; mode "default"
-#     bindsym w exec tider call menu; mode "default"
-#     bindsym s exec tider call report; mode "default"
-#     bindsym d exec tider call disable; mode "default"
-#     bindsym r exec tider call reload; mode "default"
-#     bindsym q exec tider call quit; mode "default"
-
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-# bindsym $mod+a mode "tider"
 
 mode "window" {
     bindsym q kill; mode "default"
@@ -196,6 +160,101 @@ bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 0
+
+bindsym $mod+t exec $terminal
+
+bindsym $mod+Control+r exec systemctl reboot -i
+bindsym $mod+Control+q exec systemctl poweroff -i
+bindsym $mod+Control+s exec systemctl suspend
+bindsym $mod+Control+l exec my lock
+
+bindsym $mod+r exec rofi -show run
+bindsym $mod+e exec rofimoji
+#bindsym $mod+Control+c exec rofi -show calc -modi calc -no-show-match -no-sort
+bindsym $mod+Control+c exec rofi -show calc -modi calc -no-show-match -no-sort -calc-command "echo -n '{result}' | xsel -b"
+
+bindsym $mod+c exec CM_HISTLENGTH=15 clipmenu
+bindsym $mod+g exec gtranslate
+bindsym $mod+Control+b exec google-chrome-stable
+bindsym $mod+Control+m exec autorandr horizontal
+bindsym $mod+Control+o exec gsimplecal
+bindsym $mod+Control+u exec my lang
+
+#bindsym $mod+Print exec xfce4-screenshooter
+bindcode $mod+107 exec xfce4-screenshooter
+
+bindsym XF86AudioRaiseVolume exec amixer sset Master 2%+ unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec amixer sset Master 2%- unmute && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec amixer sset Master toggle && pkill -RTMIN+1 i3blocks
+
+mode "timefor" {
+    bindsym a exec timefor select; mode "default"
+    bindsym e exec timefor select  --update; mode "default"
+    bindsym f exec timefor finish; mode "default"
+    bindsym r exec timefor reject; mode "default"
+    bindsym s exec timefor report -n; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+a mode "timefor"
+
+mode "pass" {
+    bindsym s exec rofi-pass; mode "default"
+    bindsym r exec rofi-pass --last-used; mode "default"
+    bindsym b exec rofi-pass --bmarks; mode "default"
+    bindsym l exec rofi-pass --show-last; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+s mode "pass"
+
+mode "play" {
+    bindsym v exec playerctl play-pause; mode "default"
+    bindsym n exec playerctl next; mode "default"
+    bindsym p exec playerctl previous; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+v mode "play"
+
+mode "dunst" {
+    bindsym d exec dunstctl close-all; mode "default"
+    bindsym l exec dunstctl close; mode "default"
+    bindsym h exec dunstctl history-pop; mode "default"
+    bindsym c exec dunstctl context; mode "default"
+    bindsym t exec dunstctl set-paused toggle; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+d mode "dunst"
+
+mode "screencast" {
+    bindsym f exec ffcast -# "$(xdotool getactivewindow)" rec ~/Screenshots/"$(date +%Y%m%d-%H%M%S)".mp4; mode "default"
+    bindsym q exec pkill -fxn '(/\S+)*ffmpeg\s.*\sx11grab\s.*'; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+f mode "screencast"
+
+mode "internet" {
+    bindsym i exec internet; mode "default"
+    bindsym e exec internet mail; mode "default"
+    bindsym k exec internet kill; mode "default"
+    bindsym w exec internet work; mode "default"
+    bindsym s exec internet slack; mode "default"
+    bindsym z exec internet zoom; mode "default"
+    bindsym m exec internet music; mode "default"
+    bindsym t exec internet tidal; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+i mode "internet"
 
 # https://ethanschoonover.com/solarized/
 #$base03:    #002b36; dark-bg

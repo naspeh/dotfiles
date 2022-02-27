@@ -5,29 +5,33 @@ import subprocess as sp
 import urllib.parse
 
 lang = 'ru'
-scr_x, scr_y = 10000, 10000
-win_w, win_h = 950, 450
-win_x, win_y = scr_x - win_w, scr_y - win_h
-win_size = '{}, {}'.format(win_w, win_h)
-win_move = '{}, {}'.format(win_x, win_y)
-cmd = '''
-chromium --app='
-    data:text/html,
-    <html><body>
-    <script>
-        window.resizeTo({win_size});
-        window.moveTo({win_move});
-        window.location={url};
-    </script>
-    </body></html>'
-'''
-
+# scr_x, scr_y = 10000, 10000
+# win_w, win_h = 950, 450
+# win_x, win_y = scr_x - win_w, scr_y - win_h
+# win_size = '{}, {}'.format(win_w, win_h)
+# win_move = '{}, {}'.format(win_x, win_y)
+# cmd = '''
+# google-chrome-stable --enable-logging --v=1 --app='data:text/html,
+# <html><body>
+# <script>
+#     window.resizeTo({win_size});
+#     window.moveTo({win_move});
+#     window.location={url};
+# </script>
+# </body></html>'
+# '''
+# cmd = ' '.join(cmd.split()).strip()
+# cmd='''i3-msg "workspace 99: translate"; google-chrome-stable --app={url}'''
+cmd='''google-chrome-stable --app={url}'''
 selection=sp.check_output('xsel -p', shell=True).decode()
 # selection=sp.check_output('xclip -o', shell=True).decode()
 print('selection:', selection)
-text = urllib.parse.quote_plus(selection)
+text = selection
+# text = ' '.join(selection.split())
+text = urllib.parse.quote_plus(text)
 url = json.dumps(
-    'http://translate.google.com/%23auto/{lang}/{text}'
+    'http://translate.google.com/#auto/{lang}/{text}'
+    #'http://translate.google.com/?sl=auto&tl={lang}&text={text}'
     .format(text=text, lang=lang)
 )
 print('url:', url)

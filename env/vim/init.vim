@@ -140,6 +140,13 @@ let g:lsp_diagnostics_enabled = 0
 let g:lsp_signs_enabled = 0
 " let g:lsp_log_file = '/tmp/lsp.log'
 " let g:lsp_log_verbose = 0
+if executable('pylsp')
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'pylsp',
+        \ 'cmd': {server_info->['pylsp']},
+        \ 'allowlist': ['python'],
+        \ })
+endif
 if executable('pyls')
     autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
@@ -212,6 +219,9 @@ nmap <leader>gg <Plug>(FerretLack)
 "+ https://github.com/pechorin/any-jump.vim - Jump to any definition and references eye IDE madness without overhead
 " + https://github.com/editorconfig/editorconfig-vim
 
+" https://github.com/ms-jpq/coq_nvim Fast as FUCK nvim completion. SQLite, concurrent scheduler, hundreds of hours of optimization.
+" https://github.com/ms-jpq/chadtree File manager for Neovim. Better than NERDTree.
+
 " TODO: Try to write config from scratch with:
 " https://github.com/tpope/vim-sensible
 
@@ -236,7 +246,7 @@ set fileencodings=utf-8,cp1251,koi8-r,cp866
 set termencoding=utf-8
 
 "undo settings
-set undodir=~/.vim/undofiles
+set undodir=~/.vim-undofiles
 set undofile
 
 set smartcase
@@ -312,9 +322,9 @@ set nojoinspaces
 set nofoldenable
 
 " https://shapeshed.com/vim-netrw/
-"let g:netrw_liststyle=3
 let g:netrw_banner=0
-let g:netrw_list_hide = netrw_gitignore#Hide()
+" let g:netrw_liststyle=3
+" let g:netrw_list_hide = netrw_gitignore#Hide()
 nnoremap - :Explore<cr>
 
 " https://robots.thoughtbot.com/faster-grepping-in-vim

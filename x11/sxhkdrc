@@ -12,8 +12,11 @@ alt+t
     $TERMINAL
 alt+r
     rofi -show run
+#alt+ctrl+c
+#    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 alt+ctrl+c
-    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+    rofi -show calc -modi calc -no-show-match -no-sort
+
 alt+c
     CM_HISTLENGTH=15 clipmenu
 alt+e
@@ -44,7 +47,7 @@ alt+ctrl+{r,q,s}
 alt+i; {i,e,l,k,w,s,z,m,t}
     internet { ,mail,light,kill,work,slack,zoom,music,tidal}
 
-# alt+a; {a,w,s,d,r,q}
+#alt+a; {a,w,s,d,r,q}
 #    tider call {target,menu,report,disable,reload,quit}
 
 alt+a; {a,e,f,r,s}

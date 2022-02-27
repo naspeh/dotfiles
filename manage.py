@@ -14,7 +14,7 @@ FILES = collections.OrderedDict((
     )),
     ('shell', (
         ('.zshrc', 'env/zshrc'),
-        ('.zsh', 'var/zsh'),
+        # ('.zsh', 'var/zsh'),
         ('.tmux.conf', 'env/tmux.conf'),
     )),
     ('bin', (

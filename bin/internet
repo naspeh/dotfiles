@@ -1,5 +1,6 @@
 #!/bin/zsh
 OK=OK
+BROWSER=google-chrome-stable
 function check {
     if [ '0' = $(curl -Iqs http://www.google.com | grep -c "HTTP/1.1 200 OK") ]; then
         rm -f /tmp/internet-up
@@ -10,7 +11,7 @@ function check {
 }
 
 if [ "$1" = "kill" ]; then
-    killall dropbox skype chromium
+    killall chrome
     exit
 fi
 
@@ -33,8 +34,12 @@ fi
 
 if [ "$1" = "slack" ]; then
     i3-msg 'workspace 7: slack'
-    chromium --app=https://15five.slack.com/
+    $BROWSER --app=https://hotjar.slack.com
     i3-msg 'floating disable'
+    # sleep 2
+    # i3-msg 'workspace 8: slack:community'
+    # $BROWSER --app=https://localstack-community.slack.com
+    # i3-msg 'floating disable'
     exit
 fi
 
@@ -48,7 +53,7 @@ fi
 
 if [ "$1" = "music" ]; then
     i3-msg 'workspace 9: music'
-    chromium --app=https://music.youtube.com/
+    $BROWSER --app=https://music.youtube.com/
     i3-msg 'floating disable'
     # falkon -u https://music.youtube.com/
     exit
@@ -57,7 +62,7 @@ fi
 
 if [ "$1" = "tidal" ]; then
     i3-msg 'workspace 9: music'
-    chromium --app=https://listen.tidal.com
+    $BROWSER --app=https://listen.tidal.com
     i3-msg 'floating disable'
     # falkon -u https://listen.tidal.com
     # falkon 'javascript:window.open("https://listen.tidal.com", "_blank","menubar=no,location=no,toolbar=no,left=100");window.close()'
@@ -66,7 +71,7 @@ fi
 
 if [ "$1" = "mail" ]; then
     i3-msg 'workspace 1: mail'
-    chromium --app=https://mail.pusto.org
+    $BROWSER --app=https://mail.pusto.org
     i3-msg 'floating disable'
     # falkon -u https://mail.pusto.org
     # falkon 'javascript:window.open("https://mail.pusto.org", "_blank","menubar=no,location=no,toolbar=no,left=100");window.close()'
@@ -76,9 +81,5 @@ fi
 if [ -n "$I3SOCK" ]; then
     i3-msg 'workspace 2: web'
 fi
-chromium &
+$BROWSER &
 # falkon &
-
-[ "$1" = "light" ] && exit
-
-#dropbox &

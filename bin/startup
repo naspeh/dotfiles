@@ -1,4 +1,5 @@
 #!/bin/sh
+
 xset -b
 xset s off
 
@@ -7,15 +8,18 @@ xset s off
 
 #setxkbmap -option "terminate:ctrl_alt_bksp"
 setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
+#localectl set-x11-keymap "us,ru" pc105 "" "grp:caps_toggle,grp_led:caps"
 
 # t490s %) remap Insert to End
 # xmodmap -e "keycode 118 = End"
 xmodmap -e "keysym Insert = End"
 
+amixer set Capture nocap
+pactl load-module module-switch-on-connect
 
-if [ -n "$I3SOCK" ]; then
-    i3-msg 'workspace "3: term"; exec $TERMINAL'
-fi
+# if [ -n "$I3SOCK" ]; then
+#     i3-msg 'workspace "3: term"; exec $TERMINAL'
+# fi
 
 nm-applet --sm-disable &
 #connman-gtk &
@@ -23,7 +27,7 @@ nm-applet --sm-disable &
 #tider &
 timefor daemon &
 
-sxhkd &
+#sxhkd &
 redshift-gtk -l manual:48.45205388768985:24.563229542272726 &
 (sleep 3 && syncthing-gtk -m) &
 

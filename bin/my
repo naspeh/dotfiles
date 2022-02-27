@@ -3,7 +3,8 @@ set -xe
 
 case "$1" in
 lock)
-    i3lock -p default --indicator --clock --blur 10 --timestr="%H:%M:%S" --timecolor '#eeeeeeee' --datecolor '#eeeeeeee'
+    i3lock -p default --indicator --clock --blur 10 --inside-color=#cccccc
+    # i3lock -p default --indicator --clock --blur 10 --timestr="%H:%M:%S" --timecolor '#eeeeeeee' --datecolor '#eeeeeeee'
     xset dpms force off
 ;;
 lang)
@@ -19,13 +20,16 @@ prettyurl)
 prettyjson)
     xsel -o | python3 -m json.tool --sort-keys | xsel -ib
 ;;
-qrcode)
+qrcode-copy)
     xsel -o > /tmp/qrcode.txt
     convert inline:/tmp/qrcode.txt /tmp/qrcode.png
     zbarimg /tmp/qrcode.png | xsel -ib
 ;;
-qrcode-downloads)
-    zbarimg /arch/downloads/qrcode.png | xsel -ib
+qrcode-png)
+    zbarimg ~/Downloads/qrcode.png | xsel -ib
+;;
+qrcode-svg)
+    zbarimg ~/Downloads/qrcode.svg | xsel -ib
 ;;
 *)
     echo $"Usage: $0 {lock|lang|prettyurl|qrcode|qrcode-downloads}"
