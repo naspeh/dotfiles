@@ -14,7 +14,7 @@ setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 # xmodmap -e "keycode 118 = End"
 xmodmap -e "keysym Insert = End"
 
-amixer set Capture nocap
+#amixer set Capture nocap
 pactl load-module module-switch-on-connect
 
 # if [ -n "$I3SOCK" ]; then
@@ -32,7 +32,7 @@ redshift-gtk -l manual:48.45205388768985:24.563229542272726 &
 (sleep 3 && syncthing-gtk -m) &
 
 #cbatticon &
-pasystray &
+#pasystray &
 blueberry-tray &
 xfce4-power-manager &
 

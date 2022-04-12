@@ -33,7 +33,7 @@ alt+ctrl+b
 alt+ctrl+h
     $TERMINAL -T htop -e htop
 alt+ctrl+f
-    doublecmd
+    thunar
 alt+ctrl+o
     orage
 alt+ctrl+m

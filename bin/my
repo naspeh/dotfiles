@@ -5,6 +5,7 @@ case "$1" in
 lock)
     i3lock -p default --indicator --clock --blur 10 --inside-color=#cccccc
     # i3lock -p default --indicator --clock --blur 10 --timestr="%H:%M:%S" --timecolor '#eeeeeeee' --datecolor '#eeeeeeee'
+    gpg-connect-agent --no-autostart reloadagent /bye
     xset dpms force off
 ;;
 lang)
