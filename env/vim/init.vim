@@ -44,7 +44,7 @@ nmap <leader>k :call ToggleQuickfixList()<CR>
 
 python3 << EOF
 """
-Create github url and put into clipboard for line or for multi-line selection
+Create github/gitlab url and put into clipboard for line or for multi-line selection
 
 Inspired by:
 - https://github.com/k0kubun/vim-open-github
@@ -63,11 +63,9 @@ git remote get-url origin
 git rev-parse HEAD
 """
 
-def to_github():
-    selection = 'L%s-L%s' % (
-        vim.current.range.start + 1,
-        vim.current.range.end + 1
-    )
+def push_git_urls_to_clipboard():
+    selection = {vim.current.range.start, vim.current.range.end}
+    selection = '-'.join('L%s' % i for i in selection if i)
     cmd = ['sh', '-c', cmd_tpl % vim.current.buffer.name]
     output = sp.check_output(cmd).decode().strip()
     full_path, root, remote, hash = output.split()
@@ -83,8 +81,8 @@ def to_github():
     for url in urls:
         sp.call('echo "%s" | xsel -b; sleep 1' % url, shell=True)
 EOF
-nmap <leader>gh :python3 to_github()<cr>
-vmap <leader>gh :python3 to_github()<cr>
+nmap <leader>gh :python3 push_git_urls_to_clipboard()<cr>
+vmap <leader>gh :python3 push_git_urls_to_clipboard()<cr>
 
 " ------------------------------
 " Plugins activate
