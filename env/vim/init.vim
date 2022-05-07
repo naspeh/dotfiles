@@ -391,6 +391,7 @@ nmap <leader>a ggVG<cr>
 nmap <leader>n :lnext<cr>
 nmap <leader>nn :lfirst<cr>
 nmap <leader>f :echo @%<cr>
+nmap <leader>fj :%!python -m json.tool --sort-keys --indent=2<cr>
 
 set iskeyword+=-
 nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
