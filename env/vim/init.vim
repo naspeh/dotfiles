@@ -64,7 +64,7 @@ git rev-parse HEAD
 """
 
 def push_git_urls_to_clipboard():
-    selection = {vim.current.range.start, vim.current.range.end}
+    selection = {vim.current.range.start + 1, vim.current.range.end + 1}
     selection = '-'.join('L%s' % i for i in selection if i)
     cmd = ['sh', '-c', cmd_tpl % vim.current.buffer.name]
     output = sp.check_output(cmd).decode().strip()
