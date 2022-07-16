@@ -147,8 +147,12 @@ def main():
     elif args.cmd == 'full':
         snap = '/dev/%s/snap' % HOSTNAME
         root = '/dev/%s/root' % HOSTNAME
-        rsync += ' -x --exclude=/var/lib/docker/devicemapper --exclude=' + (
-            '{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found}'
+        rsync += (
+            ' -x '
+            '--exclude=/var/lib/docker/devicemapper '
+            '--exclude=/swapfile '
+            '--exclude=/lost+found '
+            '--exclude={/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*} '
         )
         try:
             sh(
