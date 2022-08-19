@@ -50,7 +50,7 @@ for_window [class="(?i)(orage|globaltime)"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable, focus floating, move position 200px 100px
 for_window [class="(?i)xfce4-notifyd"] floating enable, border none
 for_window [class="(?i)lxappearance"] floating enable
-for_window [class="(?i)pavucontrol"] floating enable
+#for_window [class="(?i)pavucontrol"] floating enable
 for_window [class="(?i)solaar"] floating enable
 for_window [class="(?i)connman-gtk"] floating enable
 for_window [title="^Event Tester$"] floating enable
@@ -176,8 +176,9 @@ bindsym $mod+Control+c exec rofi -show calc -modi calc -no-show-match -no-sort -
 bindsym $mod+c exec CM_HISTLENGTH=15 clipmenu
 bindsym $mod+g exec gtranslate
 bindsym $mod+Control+b exec google-chrome-stable
-bindsym $mod+Control+m exec autorandr horizontal
+#bindsym $mod+Control+m exec autorandr horizontal
 bindsym $mod+Control+o exec gsimplecal
+bindsym $mod+Control+m exec my monitor
 bindsym $mod+Control+u exec my lang
 
 #bindsym $mod+Print exec xfce4-screenshooter

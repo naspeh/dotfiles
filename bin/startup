@@ -7,7 +7,9 @@ xset s off
 #sudo powertop --auto-tune &
 
 #setxkbmap -option "terminate:ctrl_alt_bksp"
-setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
+setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
+#setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
+#setxkbmap -layout "us,ua" -variant ,phonetic -option "grp:caps_toggle,grp_led:caps"
 #localectl set-x11-keymap "us,ru" pc105 "" "grp:caps_toggle,grp_led:caps"
 
 # t490s %) remap Insert to End

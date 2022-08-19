@@ -1,5 +1,6 @@
 # Dotfiles
 - https://github.com/twpayne/chezmoi Manage your dotfiles across multiple diverse machines, securely.
+- https://www.atlassian.com/git/tutorials/dotfiles The best way to store your dotfiles: A bare Git repository
 
 # i3
 - https://github.com/polybar/polybar A fast and easy-to-use status bar
