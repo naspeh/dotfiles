@@ -17,29 +17,21 @@ setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
 xmodmap -e "keysym Insert = End"
 
 #amixer set Capture nocap
-pactl load-module module-switch-on-connect
-
-# if [ -n "$I3SOCK" ]; then
-#     i3-msg 'workspace "3: term"; exec $TERMINAL'
-# fi
+#pactl load-module module-switch-on-connect
 
 nm-applet --sm-disable &
 #connman-gtk &
 
-#tider &
 timefor daemon &
 
 #sxhkd &
 redshift-gtk -l manual:48.45205388768985:24.563229542272726 &
 (sleep 3 && syncthing-gtk -m) &
 
-#cbatticon &
-#pasystray &
+pasystray &
 blueberry-tray &
 xfce4-power-manager &
 
 stardict -h &
-#goldendict &
 
 CM_SELECTIONS=clipboard clipmenud &
-#greenclip daemon &
