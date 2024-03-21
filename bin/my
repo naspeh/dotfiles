@@ -3,25 +3,32 @@ set -xe
 
 case "$1" in
 lock)
-    i3lock -p default --indicator --clock --blur 10 --inside-color=#cccccc
+    # i3lock -p default --indicator --clock --blur 10 --inside-color=#cccccc
     # i3lock -p default --indicator --clock --blur 10 --timestr="%H:%M:%S" --timecolor '#eeeeeeee' --datecolor '#eeeeeeee'
+    #i3lock -c '#1e1e1e'
     gpg-connect-agent --no-autostart reloadagent /bye
-    xset dpms force off
+    #xset dpms force off
+    #xsecurelock
+    loginctl lock-session
 ;;
 lang)
+    options="grp_led:caps,grp:alt_caps_toggle,grp:caps_switch"
     if [ "$(setxkbmap -print | grep -c us+ua)" == "1" ]; then
-        setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
+        setxkbmap -layout "us,ru" -option "$options"
     else
-        setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
+        setxkbmap -layout "us,ua" -option "$options"
     fi
+;;
+system)
+    systemctl $(echo -e 'suspend\npoweroff\nreboot' | rofi -dmenu)
 ;;
 monitor)
     if [ "$(hostnamectl hostname)" == "cat" ]; then
         laptop_cmd="xrandr --output eDP1 --auto --output DP2 --off"
         monitor_cmd="xrandr --output eDP1 --off --output DP2 --mode 2560x1440 --rate 74.99"
     else
-        laptop_cmd="xrandr --output eDP-1 --auto --output DP-2 --off"
-        monitor_cmd="xrandr --output eDP-1 --off --output DP-2 --auto "
+        laptop_cmd="xrandr --output eDP --auto --output DisplayPort-1 --off"
+        monitor_cmd="xrandr --output eDP --off --output DisplayPort-1 --auto "
     fi
     if [[ "$(xrandr| grep '.*mm x .*mm' | cut -d ' ' -f1)" == eDP* ]]; then
         $monitor_cmd
@@ -41,10 +48,10 @@ qrcode-copy)
     zbarimg /tmp/qrcode.png | xsel -ib
 ;;
 qrcode-png)
-    zbarimg ~/Downloads/qrcode.png | xsel -ib
+    zbarimg /arch/downloads/qrcode.png | xsel -ib
 ;;
 qrcode-svg)
-    zbarimg ~/Downloads/qrcode.svg | xsel -ib
+    zbarimg /arch/downloads/qrcode.svg | xsel -ib
 ;;
 *)
     echo $"Usage: $0 {lock|lang|prettyurl|qrcode|qrcode-downloads}"

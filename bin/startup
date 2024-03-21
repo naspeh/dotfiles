@@ -6,8 +6,9 @@ xset s off
 #sudo ip link set enp0s31f6 down &
 #sudo powertop --auto-tune &
 
+# https://gist.github.com/jatcwang/ae3b7019f219b8cdc6798329108c9aee List of all setxkbmap configuration options
 #setxkbmap -option "terminate:ctrl_alt_bksp"
-setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
+#setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
 #setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 #setxkbmap -layout "us,ua" -variant ,phonetic -option "grp:caps_toggle,grp_led:caps"
 #localectl set-x11-keymap "us,ru" pc105 "" "grp:caps_toggle,grp_led:caps"
@@ -29,9 +30,14 @@ redshift-gtk -l manual:48.45205388768985:24.563229542272726 &
 (sleep 3 && syncthing-gtk -m) &
 
 pasystray &
-blueberry-tray &
-xfce4-power-manager &
+#blueberry-tray &
+#xfce4-power-manager &
+mate-power-manager &
+
+xss-lock --transfer-sleep-lock -- i3lock --nofork &
+# xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
 
 stardict -h &
+navidrome -c ~/.config/navidrome/navidrome.toml &
 
 CM_SELECTIONS=clipboard clipmenud &
