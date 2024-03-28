@@ -6,7 +6,7 @@ icons = "awesome6"
 
 [[block]]
 block = "custom"
-command = ''' timefor show -t '{"text": " {{if .Active}}{{else}} {{end}} {{.FormatLabel}} ", "state": "{{if .Active}}Info{{else}}Warning{{end}}"}' '''
+command = ''' timefor show -t '{"text": " {{if .Active}}{{else}} {{end}} {{.FormatLabel}} ", "state": "{{if .Active}}Info{{else}}Idle{{end}}"}' '''
 json = true
 interval = 1
 [[block.click]]

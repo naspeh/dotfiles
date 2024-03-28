@@ -43,7 +43,7 @@ for_window [window_role="pop-up"] floating enable
 
 for_window [class="(?i)(goldendict|stardict|org.gnome.dictionary)"] floating enable
 for_window [class="(?i)skype"] floating enable, move workspace 9: skype
-for_window [class="(?i)deadbeef"] floating enable
+for_window [class="(?i)(deadbeef|supersonic)"] floating enable
 for_window [class="(?i)transmission"] floating enable
 for_window [class="(?i)(orage|globaltime)"] floating enable
 for_window [class="(?i)xfce4-appfinder"] floating enable, focus floating, move position 200px 100px
