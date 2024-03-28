@@ -14,7 +14,7 @@ github_base = 'https://github.com/'
 pretty_json = functools.partial(
     json.dumps, sort_keys=True, indent=4, separators=(',', ': ')
 )
-bundles_re = (r'" ?\+ %s([^ \n]*)(?: (\([^ \n])\))?') % re.escape(github_base)
+bundles_re = (r'\+ %s([^ \n]*)(?: (\([^ \n])\))?') % re.escape(github_base)
 
 
 def get_url(repo):

@@ -134,8 +134,9 @@ imap <F7> <esc>:CtrlPUndo<cr>
 " set completeopt-=preview
 set completeopt=menuone,longest,noinsert,noselect
 let g:lsp_async_completion = 1
-let g:lsp_diagnostics_enabled = 0
+let g:lsp_diagnostics_enabled = 1
 let g:lsp_signs_enabled = 0
+let g:lsp_document_highlight_enabled = 0
 " let g:lsp_log_file = '/tmp/lsp.log'
 " let g:lsp_log_verbose = 0
 if executable('pylsp')
@@ -171,7 +172,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
     nmap <leader>d <plug>(lsp-definition)
-    " nmap <F8> :LspDocumentDiagnostics<cr>
+    nmap <F8> :LspDocumentDiagnostics<cr>
 
     " refer to doc to add more commands
 endfunction
@@ -184,6 +185,9 @@ augroup END
 " + https://github.com/tpope/vim-commentary
 vnoremap <leader>c :Commentary<cr>gv
 noremap <leader>c :Commentary<cr>
+
+
+" + https://github.com/rhysd/git-messenger.vim - Vim and Neovim plugin to reveal the commit messages under the cursor
 
 " + https://github.com/itchyny/vim-gitbranch
 " + https://github.com/vim-airline/vim-airline
@@ -207,7 +211,7 @@ nmap <leader>tt :PencilToggle<cr>
 " let g:neomake_place_signs = 0
 let g:neomake_open_list = 2
 " let g:neomake_list_height = 5
-nmap <F8> :Neomake<cr>
+"nmap <F8> :Neomake<cr>
 
 " + https://github.com/wincent/ferret
 let g:FerretMap=0
