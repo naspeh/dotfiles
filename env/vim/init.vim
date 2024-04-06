@@ -91,10 +91,21 @@ vmap <leader>gh :python3 push_git_urls_to_clipboard()<cr>
 runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
-" + https://github.com/romainl/flattened
-" colorscheme flattened_light
+" colorscheme
 set background=dark
+if has('termguicolors')
+  set termguicolors
+endif
+
+" + https://github.com/romainl/flattened Solarized, without the bullshit
+" colorscheme flattened_light
 colorscheme flattened_dark
+
+" https://github.com/sainnhe/everforest - 🌲 Comfortable & Pleasant Color Scheme for Vim
+" let g:everforest_background = 'soft'
+" let g:everforest_better_performance = 1
+" let g:everforest_disable_italic_comment = 1
+" colorscheme everforest
 
 " + https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'

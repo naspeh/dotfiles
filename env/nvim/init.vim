@@ -6,22 +6,37 @@ set noswapfile
 
 set number
 set ruler
+set linebreak
+set nowrap
 
 set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
+fun! Tab2()
+    setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+endfun
+nmap <leader>2t :call Tab2()<cr>
+autocmd FileType yaml,json,javascript,css,html call Tab2()
+
 set mouse=r
 set mousemodel=popup
 set mousehide
 imap <S-Insert> <MiddleMouse>
 
-set wildmenu
-set wildmode=longest,full
+set wildoptions-=pum
+
+set completeopt=menuone,noinsert,noselect
 
 " share clipboard with system clipboard
 set clipboard=unnamedplus
+
+" Localization
+set spelllang=en_us,uk,ru_yo
+set encoding=utf-8
+set termencoding=utf-8
+set fileencodings=utf-8,cp1251,koi8-r,cp866
 
 " Highlight insert mode
 autocmd InsertEnter * set cursorline
@@ -136,9 +151,39 @@ vmap <leader>u :python3 push_git_urls_to_clipboard()<cr>
 runtime bundle/tpope--vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
-" + https://github.com/craftzdog/solarized-osaka.nvim
+" colorscheme
 set background=dark
-colorscheme solarized-osaka
+if has('termguicolors')
+  set termguicolors
+endif
+
+" https://github.com/romainl/flattened
+" set background=light
+" colorscheme flattened_light
+" colorscheme flattened_dark
+
+" https://github.com/craftzdog/solarized-osaka.nvim
+" colorscheme solarized-osaka
+
+" https://github.com/neanias/everforest-nvim - A Lua port of the Everforest colour scheme
+" + https://github.com/sainnhe/everforest - 🌲 Comfortable & Pleasant Color Scheme for Vim
+let g:everforest_background = 'soft'
+let g:everforest_better_performance = 1
+let g:everforest_disable_italic_comment = 1
+colorscheme everforest
+
+" https://github.com/sainnhe/gruvbox-material - Gruvbox with Material Palette
+" let g:gruvbox_material_background = 'soft'
+" let g:gruvbox_material_better_performance = 1
+" colorscheme gruvbox-material
+
+" https://github.com/morhetz/gruvbox-contrib
+" https://github.com/morhetz/gruvbox
+" let g:gruvbox_contrast_dark = 'soft'
+" colorscheme gruvbox
+
+" https://github.com/RRethy/base16-nvim
+" colorscheme base16-everforest
 
 " + https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
@@ -157,14 +202,14 @@ imap <F6> <esc>:CtrlPCurWD<cr>
 nmap <F7> :CtrlPUndo<cr>
 imap <F7> <esc>:CtrlPUndo<cr>
 
-" https://github.com/numToStr/Comment.nvim 🧠 💪 // Smart and powerful comment plugin for neovim. Supports treesitter, dot repeat, left-right/up-down motions, hooks, and more
-" + https://github.com/tpope/vim-commentary
+" https://github.com/numToStr/Comment.nvim - 🧠 💪 Smart and powerful comment plugin for neovim. Supports treesitter, dot repeat, left-right/up-down motions, hooks, and more
+" + https://github.com/tpope/vim-commentary - comment stuff out
 vmap <leader>c :Commentary<cr>gv
 nmap <leader>c :Commentary<cr>
 
 lua <<EOF
 
--- + https://github.com/nvim-lualine/lualine.nvim
+-- + https://github.com/nvim-lualine/lualine.nvim - A blazing fast and easy to configure neovim statusline plugin written in pure lua
 require('lualine').setup{
     options = {
         theme = 'auto',
@@ -172,7 +217,7 @@ require('lualine').setup{
     },
 }
 
--- + https://github.com/neovim/nvim-lspconfig
+-- + https://github.com/neovim/nvim-lspconfig - Quickstart configs for Nvim LSP
 local lspconfig = require('lspconfig')
 --lspconfig.pyright.setup{}
 lspconfig.pylsp.setup{}
@@ -183,7 +228,7 @@ lspconfig.gopls.setup{}
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+vim.keymap.set('n', '<F8>', vim.diagnostic.setloclist)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -200,10 +245,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<leader>D', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', '<leader>d', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', '<leader>i', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', '<leader>s', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set({ 'n', 'v' }, '<leader>:a', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<leader>r', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<leader>f', function()
+    vim.keymap.set('n', '<leader>ls', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set({ 'n', 'v' }, '<leader>la', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', '<leader>lr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', '<leader>lf', function()
       vim.lsp.buf.format { async = true }
     end, opts)
   end,
