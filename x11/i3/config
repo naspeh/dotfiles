@@ -41,7 +41,7 @@ floating_modifier $mod
 for_window [title="(?i)(preferences|options)$"] floating enable
 for_window [window_role="pop-up"] floating enable
 
-for_window [class="(?i)(goldendict|stardict|org.gnome.dictionary)"] floating enable
+for_window [class="(?i)(goldendict|stardict|org.gnome.dictionary|mate-dictionary|yad)"] floating enable
 for_window [class="(?i)skype"] floating enable, move workspace 9: skype
 for_window [class="(?i)(deadbeef|supersonic)"] floating enable
 for_window [class="(?i)transmission"] floating enable
@@ -58,6 +58,8 @@ for_window [class="(?i)syncthing gtk"] floating enable
 for_window [class="(?i)simplescreenrecorder"] floating enable
 for_window [window_role="Tfrm"] floating enable
 for_window [window_role="TfrmMain"] floating disable
+
+# https://i3wm.org/docs/refcard.html
 
 bindsym $mod+grave workspace back_and_forth
 bindsym $mod+u [urgent="oldest"] focus
@@ -164,10 +166,13 @@ bindsym $mod+t exec $terminal
 
 bindsym $mod+r exec rofi -show run
 bindsym $mod+e exec rofimoji
+# bindsym $mod+e exec rofi -modi emoji -show emoji -kb-custom-1 Ctrl+c
 
 bindsym $mod+c exec CM_HISTLENGTH=15 clipmenu
 bindsym $mod+g exec gtranslate
-bindsym $mod+v exec sh -c 'gnome-dictionary --look-up=$(xsel -p)'
+bindsym $mod+v exec sh -c 'trans  -no-ansi -to uk+en "$(xsel -p)" | yad --text-info --width=800 --height=600'
+# bindsym $mod+v exec sh -c 'gnome-dictionary --look-up=$(xsel -p)'
+# bindsym $mod+v exec sh -c 'mate-dictionary --look-up=$(xsel -p)'
 bindsym $mod+Control+b exec google-chrome-stable
 #bindsym $mod+Control+m exec autorandr horizontal
 bindsym $mod+Control+o exec gsimplecal
@@ -175,7 +180,8 @@ bindsym $mod+Control+m exec my monitor
 bindsym $mod+Control+u exec my lang
 
 #bindsym $mod+Print exec xfce4-screenshooter
-bindcode $mod+107 exec xfce4-screenshooter
+#bindcode $mod+107 exec xfce4-screenshooter
+bindcode $mod+107 exec mate-screenshot -i
 
 bindsym XF86AudioRaiseVolume exec amixer sset Master 2%+ unmute && pkill -RTMIN+1 i3blocks
 bindsym XF86AudioLowerVolume exec amixer sset Master 2%- unmute && pkill -RTMIN+1 i3blocks
@@ -288,31 +294,86 @@ bindsym $mod+i mode "internet"
 #$blue:      #268bd2;
 #$cyan:      #2aa198;
 #$green:     #859900;
+#bar {
+#    #font xft:sans 13px
+#    font pango:IBM Plex Sans 10
+#    colors {
+#        # background #073642
+#        # statusline #586e75
+#        # separator #002b36
+
+#        # https://github.com/tobiaszwaszak/i3wm
+#        background #002b36
+#        statusline #839496
+#        separator  #586e75
+#        focused_workspace  #b58900 #b58900 #002b36
+#        active_workspace   #586e75 #586e75 #002b36
+#        inactive_workspace #073642 #002b36 #839496
+#        urgent_workspace   #dc322f #dc322f #fdf6e3
+#    }
+
+#    position top
+#    #strip_workspace_numbers yes
+#    #status_command i3blocks -c ~/.i3/blocks.conf
+#    status_command i3status-rs ~/.i3/blocks.toml
+#}
+
+#client.focused          #002b36 #586e75 #fdf6e3 #268bd2
+#client.focused_inactive #002b36 #073642 #839496 #073642
+#client.unfocused        #002b36 #073642 #839496 #073642
+#client.urgent           #002b36 #dc322f #fdf6e3 #002b36
+
+# https://github.com/krstfz/i3wm/blob/main/themed-config/everforest/i3/everforest
+set $bgdim      #232A2E
+set $bg0        #2D353B
+set $bg1        #343F44
+set $bg2        #3D474D
+set $bg3        #475258
+set $bg4        #4F585E
+set $bg5        #56635F
+set $bg_red     #543A48
+set $bg_visual  #513045
+set $bg_yellow  #4D4C43
+set $bg_green   #425047
+set $bg_blue    #3A515D
+set $fg         #D3C6AA
+set $gray0      #7A8478
+set $gray1      #859289
+set $gray2      #9DA9A0
+set $red        #E67E80
+set $orange     #E69875
+set $yellow     #DBBC79
+set $green      #A7C080
+set $blue       #7FBBB3
+set $aqua       #83C092
+set $purple     #D699B6
+
+# target                 title      bg         text       indicator   brdr
+client.focused           $green     $green     $bg0       $green      $green
+client.unfocused         $bg0       $bg1       $gray2     $bg1        $bg1
+client.urgent            $red       $red       $bg0       $red        $red
+client.placeholder       $bg1       $bg0       $fg        $bg1        $bg1
+client.background        $bg0
+
 bar {
     #font xft:sans 13px
     font pango:IBM Plex Sans 10
     colors {
-        # background #073642
-        # statusline #586e75
-        # separator #002b36
+        background $bgdim
+        statusline $fg
+        separator $bg_green
 
-        # https://github.com/tobiaszwaszak/i3wm
-        background #002b36
-        statusline #839496
-        separator  #586e75
-        focused_workspace  #b58900 #b58900 #002b36
-        active_workspace   #586e75 #586e75 #002b36
-        inactive_workspace #073642 #002b36 #839496
-        urgent_workspace   #dc322f #dc322f #fdf6e3
+        ###                border   bg          text
+        focused_workspace  $green   $green      $bg0
+        active_workspace   $yellow  $yellow     $text
+        inactive_workspace $bg1     $bg1        $gray0
+        urgent_workspace   $red     $red        $bg0
     }
 
     position top
+    separator_symbol " | "
     #strip_workspace_numbers yes
     #status_command i3blocks -c ~/.i3/blocks.conf
-    status_command i3status-rs ~/.i3/blocks.toml
+    # status_command i3status-rs ~/.i3/blocks.toml
+    status_command i3status -c ~/.i3/status.conf
 }
-
-client.focused          #002b36 #586e75 #fdf6e3 #268bd2
-client.focused_inactive #002b36 #073642 #839496 #073642
-client.unfocused        #002b36 #073642 #839496 #073642
-client.urgent           #002b36 #dc322f #fdf6e3 #002b36

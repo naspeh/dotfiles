@@ -37,6 +37,7 @@ FILES = collections.OrderedDict((
         #('.config/termite/config', 'x11/termite.conf'),
         #('.devilspie/common.ds', 'x11/devilspie.ds'),
         ('.config/systemd/user/goreman.service', 'x11/goreman.service'),
+        ('.local/share/xfce4/terminal', 'x11/xfce4-terminal'),
     )),
     ('all-shell', ('vim', 'shell', 'bin')),
     ('all', ('all-shell', 'dev', 'x11')),
