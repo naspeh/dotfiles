@@ -8,7 +8,7 @@ mate-power-manager: mate-power-manager
 stardict:  stardict -h
 navidrome: navidrome -p 4533 -c ~/.config/navidrome/navidrome.toml
 clipmenud: CM_SELECTIONS=clipboard clipmenud
-timefor: timefor daemon --sleep-time 1s --hook "echo '<span color=\"{{if .Active}}#E69875{{else}}#7A8478{{end}}\">{{if .Active}}{{else}} {{end}} {{.FormatLabel}}</span>' > /tmp/timefor.txt; killall -USR1 i3status"
+timefor: timefor daemon --sleep-time 1s --hook "rm /tmp/timefor-*; echo '{{.FormatLabel}}' > /tmp/timefor-{{if .Active}}on{{else}}off{{end}}.txt; killall -USR1 i3status"
 internet-check: sh -ex -c 'while true; do internet real-check && sleep 60; done'
 mail: sh -ex -c 'while true; do internet check && idle-mail ~/dotfiles/var/mailur.json -t 300; done'
 xkb-switch: sh -ex -c 'while true; do xkb-switch > /tmp/lang.txt; killall -USR1 i3status; xkb-switch -w; done'
