@@ -6,21 +6,17 @@ Config example
     "username": "demo",
     "password": "demo",
     "query": "unseen keyword #inbox",
-    "cmd_upd": "cat > ~/d/var/mailur.unread; pkill -RTMIN+2 i3blocks",
-    "cmd_new": "aplay -q ~/d/var/msg.wav"
 }
 """
 import argparse
 import imaplib
 import json
 import logging
-import subprocess
 import threading
 
 
 log = logging.getLogger('idle-mail')
 logging.basicConfig(level=logging.DEBUG)
-current = 0
 
 
 def connect(conf):
@@ -32,19 +28,20 @@ def connect(conf):
 
 
 def fetch_unread(conf):
-    global unread
     con = connect(conf)
     typ, res = con.uid('SEARCH', conf.get('query', 'UNSEEN'))
-    if typ == 'OK' and conf.get('cmd_upd'):
+    if typ == 'OK':
         unread = res[0].decode().split()
-        subprocess.run(conf['cmd_upd'], input=b'%i\n' % len(unread), shell=True)
-        return unread
+        return sorted(unread)
     raise ValueError(typ, res)
 
 
-def idle(conf, num):
-    global current
+def run_fetch(conf, args):
+    unread = fetch_unread(conf)
+    print(len(unread))
 
+
+def idle(conf):
     con = connect(conf)
     tag = con._new_tag()
     con.send(b'%s IDLE\r\n' % tag)
@@ -52,40 +49,47 @@ def idle(conf, num):
     if res != b'+ idling\r\n':
         raise SystemExit('No IDLE?: %s' % res)
 
-    unread = set()
     log.info('Started for %s' % conf['username'])
+    unread = fetch_unread(conf)
+    log.debug('Current unread uids: %s', unread)
     while 1:
         res = con.readline()
-        if current != num:
-            return
         if not res or res == b'* OK Still here\r\n':
             continue
         log.debug('Got: %s' % res.decode().strip())
-        msg = res.decode().split()[2]
-        new_unread = set(fetch_unread(conf))
-        log.debug('%s: %s - %s', msg, new_unread, unread)
-        if msg == 'EXISTS' and new_unread - unread and conf.get('cmd_new'):
-            subprocess.call(conf['cmd_new'], shell=True)
-        unread = new_unread
+        new_unread = fetch_unread(conf)
+        log.debug('New unread uids: %s', new_unread)
+        if unread != new_unread:
+            break
+
+
+def run_idle(conf, args):
+    t = threading.Thread(target=idle, args=(conf,), daemon=True)
+    t.start()
+    t.join(args.timeout)
 
 
 def main():
-    global current
-
     parser = argparse.ArgumentParser()
-    parser.add_argument('conf', help='path to config')
-    parser.add_argument('-t', '--timeout', type=float)
+    parser.add_argument('--conf', '-c', help='path to config')
+    subs = parser.add_subparsers()
+
+    idle = subs.add_parser('idle')
+    idle.add_argument('-t', '--timeout', default=300, type=float)
+    idle.set_defaults(func=run_idle)
+
+    fetch = subs.add_parser('fetch')
+    fetch.set_defaults(func=run_fetch)
+
     args = parser.parse_args()
     with open(args.conf, 'br') as f:
         conf = json.loads(f.read().decode())
 
-    while 1:
-        current += 1
-        fetch_unread(conf)
+    if not hasattr(args, 'func'):
+        parser.print_usage()
+        return
 
-        t = threading.Thread(target=idle, args=(conf, current), daemon=True)
-        t.start()
-        t.join(args.timeout)
+    args.func(conf, args)
 
 
 if __name__ == '__main__':
