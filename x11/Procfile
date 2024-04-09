@@ -11,4 +11,4 @@ clipmenud: CM_SELECTIONS=clipboard clipmenud
 xkb-switch: sh -ex -c 'while true; do xkb-switch > /tmp/lang.txt; killall -USR1 i3status; xkb-switch -w; done'
 timefor: timefor daemon --sleep-time 1s --hook "rm /tmp/timefor-*; echo '{{.FormatLabel}}' > /tmp/timefor-{{if .Active}}on{{else}}off{{end}}.txt; killall -USR1 i3status"
 internet-check: sh -ex -c 'while true; do internet real-check && sleep 60; done'
-mail: sh -ex -c 'while true; do internet check && (conf=~/dotfiles/var/mailur.json; check-mail -c $conf fetch > /tmp/mail-unread.txt; killall -USR1 i3status; check-mail -c $conf idle -t 300); done'
+mail: sh -ex -c 'internet wait && check-mail -c ~/dotfiles/var/mailur.json idle -t 300 --hook "echo %(count)s > /tmp/mail-unread.txt; killall -USR1 i3status"'

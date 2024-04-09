@@ -9,31 +9,40 @@ Config example
 }
 """
 import argparse
+import atexit
+import contextlib
 import imaplib
 import json
 import logging
-import threading
+import multiprocessing
+import signal
+import subprocess
+import sys
 
-
-log = logging.getLogger('idle-mail')
+log = logging.getLogger("idle-mail")
 logging.basicConfig(level=logging.DEBUG)
 
 
+@contextlib.contextmanager
 def connect(conf):
     imaplib.IMAP4.debug = 4
-    con = imaplib.IMAP4_SSL(conf['server'])
-    con.login(conf['username'], conf['password'])
-    con.select()
-    return con
+    con = imaplib.IMAP4_SSL(conf["server"])
+    try:
+        con.login(conf["username"], conf["password"])
+        con.select()
+        yield con
+    finally:
+        log.debug("Closing connection")
+        con.close()
 
 
 def fetch_unread(conf):
-    con = connect(conf)
-    typ, res = con.uid('SEARCH', conf.get('query', 'UNSEEN'))
-    if typ == 'OK':
-        unread = res[0].decode().split()
-        return sorted(unread)
-    raise ValueError(typ, res)
+    with connect(conf) as con:
+        typ, res = con.uid("SEARCH", conf.get("query", "UNSEEN"))
+        if typ == "OK":
+            unread = res[0].decode().split()
+            return sorted(unread)
+        raise ValueError(typ, res)
 
 
 def run_fetch(conf, args):
@@ -41,56 +50,82 @@ def run_fetch(conf, args):
     print(len(unread))
 
 
-def idle(conf):
-    con = connect(conf)
-    tag = con._new_tag()
-    con.send(b'%s IDLE\r\n' % tag)
-    res = con.readline()
-    if res != b'+ idling\r\n':
-        raise SystemExit('No IDLE?: %s' % res)
+def call_hook(conf, unread, new_unread):
+    hook = conf["hook"] % {
+        "uids": new_unread,
+        "count": len(new_unread),
+        "new": (
+            len(new_unread) - len(unread)
+            if len(new_unread) > len(unread)
+            else 0
+        ),
+    }
+    log.debug("Running the hook command: %r", hook)
+    subprocess.check_call(hook, shell=True)
 
-    log.info('Started for %s' % conf['username'])
-    unread = fetch_unread(conf)
-    log.debug('Current unread uids: %s', unread)
-    while 1:
+
+def idle(conf):
+    with connect(conf) as con:
+        tag = con._new_tag()
+        con.send(b"%s IDLE\r\n" % tag)
         res = con.readline()
-        if not res or res == b'* OK Still here\r\n':
-            continue
-        log.debug('Got: %s' % res.decode().strip())
-        new_unread = fetch_unread(conf)
-        log.debug('New unread uids: %s', new_unread)
-        if unread != new_unread:
-            break
+        if res != b"+ idling\r\n":
+            raise SystemExit("No IDLE?: %s" % res)
+
+        log.debug("Started for %s" % conf["username"])
+        unread = fetch_unread(conf)
+        log.debug("Current unread uids: %s", unread)
+        call_hook(conf, unread, unread)
+        while 1:
+            res = con.readline()
+            if not res or res == b"* OK Still here\r\n":
+                continue
+            log.debug("Got: %s" % res.decode().strip())
+            new_unread = fetch_unread(conf)
+            if unread != new_unread:
+                log.debug("New unread uids: %s", new_unread)
+                call_hook(conf, unread, new_unread)
+                unread = new_unread
 
 
 def run_idle(conf, args):
-    t = threading.Thread(target=idle, args=(conf,), daemon=True)
-    t.start()
-    t.join(args.timeout)
+    conf.setdefault("hook", 'echo "count: %(count)s" new: %(new)s')
+    if args.hook:
+        conf["hook"] = args.hook
+
+    while 1:
+        p = multiprocessing.Process(target=idle, args=(conf,))
+        p.start()
+        atexit.register(lambda: p.terminate())
+        p.join(args.timeout)
+        p.terminate()
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--conf', '-c', help='path to config')
+    parser.add_argument("--conf", "-c", help="the path to config")
     subs = parser.add_subparsers()
 
-    idle = subs.add_parser('idle')
-    idle.add_argument('-t', '--timeout', default=300, type=float)
+    idle = subs.add_parser("idle")
+    idle.add_argument("-t", "--timeout", default=300, type=float)
+    idle.add_argument("--hook", help="a hook command")
     idle.set_defaults(func=run_idle)
 
-    fetch = subs.add_parser('fetch')
+    fetch = subs.add_parser("fetch")
     fetch.set_defaults(func=run_fetch)
 
     args = parser.parse_args()
-    with open(args.conf, 'br') as f:
+    with open(args.conf, "br") as f:
         conf = json.loads(f.read().decode())
 
-    if not hasattr(args, 'func'):
+    if not hasattr(args, "func"):
         parser.print_usage()
         return
 
+    signal.signal(signal.SIGINT, lambda *a: sys.exit(1))
+    signal.signal(signal.SIGTERM, lambda *a: sys.exit(1))
     args.func(conf, args)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
