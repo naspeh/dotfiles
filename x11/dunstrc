@@ -1,23 +1,55 @@
+# vi: ft=gitconfig
 [global]
-    font = Monospace 9
-    frame_width = 1
-    frame_color = "#425047"
-    dmenu = /usr/bin/rofi -dmenu -p dunst:
+font = Monospace 9
+frame_width = 1
 
-    mouse_left_click = do_action, close_current
-    mouse_right_click = context_all, close_current
+dmenu = /usr/bin/rofi -dmenu -p dunst:
+mouse_left_click = do_action, close_current
+mouse_right_click = context_all, close_current
 
+frame_color = "#3D474D"
+separator_color = "#3D474D"
 [urgency_low]
-    background = "#232A2E"
-    foreground = "#D3C6AA"
-    timeout = 5
-
+background = "#2D353B"
+foreground = "#D3C6AA"
+timeout = 5
 [urgency_normal]
-    background = "#232A2E"
-    foreground = "#D3C6AA"
-    timeout = 5
-
+background = "#2D353B"
+foreground = "#D3C6AA"
+timeout = 5
 [urgency_critical]
-    background = "#232A2E"
-    foreground = "#E67E80"
-    timeout = 0
+background = "#2D353B"
+foreground = "#E67E80"
+timeout = 0
+
+; https://github.com/tinted-theming/base16-dunst/blob/main/themes/base16-nova.dunstrc
+; frame_color = "#c5d4dd"
+; separator_color = "#c5d4dd"
+; [base16_low]
+;     msg_urgency = "low"
+;     background = "#556873"
+;     foreground = "#899ba6"
+; [base16_normal]
+;     msg_urgency = "normal"
+;     background = "#6a7d89"
+;     foreground = "#c5d4dd"
+; [base16_critical]
+;     msg_urgency = "critical"
+;     background = "#83afe5"
+;     foreground = "#556873"
+
+; https://github.com/tinted-theming/base16-dunst/blob/main/themes/base16-everforest.dunstrc
+; frame_color = "#d3c6aa"
+; separator_color = "#d3c6aa"
+; [base16_low]
+;     msg_urgency = "low"
+;     background = "#374247"
+;     foreground = "#859289"
+; [base16_normal]
+;     msg_urgency = "normal"
+;     background = "#4a555b"
+;     foreground = "#d3c6aa"
+; [base16_critical]
+;     msg_urgency = "critical"
+;     background = "#7fbbb3"
+;     foreground = "#e4e1cd"

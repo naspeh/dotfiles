@@ -182,8 +182,10 @@ colorscheme everforest
 " let g:gruvbox_contrast_dark = 'soft'
 " colorscheme gruvbox
 
-" https://github.com/RRethy/base16-nvim
+" https://github.com/tinted-theming/base16-vim
+" + https://github.com/RRethy/base16-nvim
 " colorscheme base16-everforest
+colorscheme base16-nova
 
 " + https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
