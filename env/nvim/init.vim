@@ -172,21 +172,6 @@ let g:everforest_better_performance = 1
 let g:everforest_disable_italic_comment = 1
 colorscheme everforest
 
-" https://github.com/sainnhe/gruvbox-material - Gruvbox with Material Palette
-" let g:gruvbox_material_background = 'soft'
-" let g:gruvbox_material_better_performance = 1
-" colorscheme gruvbox-material
-
-" https://github.com/morhetz/gruvbox-contrib
-" https://github.com/morhetz/gruvbox
-" let g:gruvbox_contrast_dark = 'soft'
-" colorscheme gruvbox
-
-" https://github.com/tinted-theming/base16-vim
-" + https://github.com/RRethy/base16-nvim
-" colorscheme base16-everforest
-colorscheme base16-nova
-
 " + https://github.com/ctrlpvim/ctrlp.vim
 let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_mruf_relative=1
