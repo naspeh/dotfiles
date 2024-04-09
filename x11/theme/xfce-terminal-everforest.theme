@@ -1,7 +1,7 @@
 # https://github.com/toabr/Everforest-Xfce4-Terminal/blob/master/colorschemes/everforest-dark-soft.theme
 # https://github.com/sainnhe/everforest
 [Scheme]
-Name=Everforest-dark-soft
+Name=Everforest (dark, soft)
 ColorForeground=#D3C6AA
 ColorBackground=#333c43
 TabActivityColor=#E69875
