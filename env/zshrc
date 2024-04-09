@@ -72,8 +72,6 @@ zstyle ':completion:*:processes-names' command 'ps xho command'
 autoload -U bashcompinit
 bashcompinit
 
-eval "$(register-python-argcomplete pipx)"
-
 # project based .venv file for virtualenv activation, etc.
 venv_cd() {
     if builtin cd "$@"; then
@@ -81,6 +79,10 @@ venv_cd() {
             VIRTUAL_ENV_DISABLE_PROMPT=1
             source .venv
             command -v python
+        fi
+        if [ -e .env/init.sh ]; then
+            VIRTUAL_ENV_DISABLE_PROMPT=1
+            source .env/init.sh
         fi
         return 0
     else

@@ -2,15 +2,6 @@
 set -xe
 
 case "$1" in
-lock)
-    # i3lock -p default --indicator --clock --blur 10 --inside-color=#cccccc
-    # i3lock -p default --indicator --clock --blur 10 --timestr="%H:%M:%S" --timecolor '#eeeeeeee' --datecolor '#eeeeeeee'
-    #i3lock -c '#1e1e1e'
-    gpg-connect-agent --no-autostart reloadagent /bye
-    #xset dpms force off
-    #xsecurelock
-    loginctl lock-session
-;;
 lang)
     options="grp_led:caps,grp:alt_caps_toggle,grp:caps_switch"
     if [ "$(setxkbmap -print | grep -c us+ua)" == "1" ]; then
@@ -54,6 +45,5 @@ qrcode-svg)
     zbarimg /arch/downloads/qrcode.svg | xsel -ib
 ;;
 *)
-    echo $"Usage: $0 {lock|lang|prettyurl|qrcode|qrcode-downloads}"
     exit 1
 esac

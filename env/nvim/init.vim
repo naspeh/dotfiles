@@ -63,6 +63,8 @@ imap <nul> <C-x><C-o>
 imap <C-a> <C-x><C-o>
 imap <C-f> <C-x><C-f>
 
+nmap <leader>s :setlocal spell! spell?<cr>
+nmap <leader>h :setlocal hlsearch! hlsearch?<cr>
 nmap <leader>r :source ~/.config/nvim/init.vim<cr>
 nmap <leader>a ggVG<cr>
 nmap <leader>f :echo @%<cr>
