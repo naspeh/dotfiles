@@ -1,0 +1,2 @@
+cbin/goreman filter=lfs diff=lfs merge=lfs -text
+cbin/timefor filter=lfs diff=lfs merge=lfs -text

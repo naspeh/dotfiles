@@ -19,6 +19,7 @@ FILES = collections.OrderedDict((
     )),
     ('bin', (
         ('bin', 'bin'),
+        ('cbin', 'cbin'),
     )),
     ('dev', (
         ('.gitconfig', 'env/gitconfig'),
