@@ -44,6 +44,12 @@ qrcode-png)
 qrcode-svg)
     zbarimg /arch/downloads/qrcode.svg | xsel -ib
 ;;
+backup-to-ext)
+    rsync='rsync -aAXHvh --stats --delete --backup'
+    $rsync --backup-dir=/mnt/backups/ryz.delta/ /arch/backup/ /mnt/backups/ryz/
+    $rsync --backup-dir=/mnt/photo.delta/ /arch/photo/ /mnt/photo/
+    $rsync --backup-dir=/mnt/sync.delta/ /arch/sync/ /mnt/sync/
+;;
 *)
     exit 1
 esac

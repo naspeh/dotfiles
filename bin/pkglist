@@ -83,7 +83,7 @@ function save_packages {
     sudo chown -R naspeh:users $PACDIR
 }
 function list_packages {
-    list=$(comm -23 <(pacman -Qeq$filter | sort) <({ pacman -Qqg base-devel; expac -l '\n' '%E' base; } | sort))
+    list=$(comm -23 <(pacman -Qeq$filter | sort) <({ expac -l '\n' '%E' base base-devel; } | sort))
     expac -Q -t '%Y-%m-%d %H:%M' "$format_time$format" $(echo $list)
 }
 
