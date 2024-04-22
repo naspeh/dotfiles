@@ -1,13 +1,14 @@
 #!/bin/zsh
-OK=OK
 BROWSER=google-chrome-stable
 function check {
+    rm -f /tmp/internet-up
     if [ '0' = $(curl -Iqs http://www.google.com | grep -c "HTTP/1.1 200 OK") ]; then
-        rm -f /tmp/internet-up
-        exit 1
+        echo "Internet: off"
+        return 1
     fi
     touch /tmp/internet-up
-    echo $OK
+    echo "Internet: on"
+    return 0
 }
 
 if [ "$1" = "kill" ]; then
@@ -15,18 +16,23 @@ if [ "$1" = "kill" ]; then
     exit
 fi
 
-if [ "$1" = "check" ]; then
-    [ -f /tmp/internet-up ] && echo $OK
+if [ "$1" = "real-check" ]; then
+    check || exit 1
     exit
 fi
 
-if [ "$1" = "real-check" ]; then
-    check > /dev/null
+if [ "$1" = "real-check-loop" ]; then
+    while true; do
+        check
+        sleep 60
+    done
     exit
 fi
 
 if [ "$1" = "wait" ]; then
-    while [ ! -f /tmp/internet-up ]; do sleep 10; done
+    while [ ! -f /tmp/internet-up ]; do
+        sleep 10
+    done
     exit
 
 fi

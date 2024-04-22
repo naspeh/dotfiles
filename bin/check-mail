@@ -33,7 +33,11 @@ def connect(conf):
         yield con
     finally:
         log.debug("Closing connection")
-        con.close()
+        try:
+            con.close()
+            con.logout()
+        except Exception as e:
+            log.error(e)
 
 
 def fetch_unread(conf):

@@ -170,7 +170,7 @@ bindsym $mod+e exec rofimoji
 
 bindsym $mod+c exec CM_HISTLENGTH=15 clipmenu
 bindsym $mod+g exec gtranslate
-bindsym $mod+v exec sh -c 'trans  -no-ansi -to uk+en "$(xsel -p)" | yad --text-info --width=800 --height=600'
+bindsym $mod+v exec sh -c 'xsel -p | trans -to uk+en | aha | yad --html --width=800 --height=600'
 # bindsym $mod+v exec sh -c 'gnome-dictionary --look-up=$(xsel -p)'
 # bindsym $mod+v exec sh -c 'mate-dictionary --look-up=$(xsel -p)'
 bindsym $mod+Control+b exec google-chrome-stable

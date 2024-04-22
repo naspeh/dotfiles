@@ -3,7 +3,7 @@
 Description=Goreman
 
 [Service]
-ExecStart=/home/naspeh/cbin/goreman -logtime=false -exit-on-error -f /home/naspeh/dotfiles/x11/Procfile start
+ExecStart=/home/naspeh/cbin/goreman -logtime=false -set-ports=false -exit-on-error -f /home/naspeh/dotfiles/x11/Procfile start
 
 [Install]
 WantedBy=default.target
