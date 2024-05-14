@@ -12,7 +12,7 @@ import sys
 HOSTNAME = socket.gethostname()
 GATE = '192.168.1.1'
 BDIR = '/arch/backup/'
-RSYNC = 'sudo rsync -aAXHvh --stats --delete'
+RSYNC = 'rsync -aAXHvh --stats --delete'
 FILTERS = [
     '+ /boot/',
     '+ /etc/',
@@ -21,38 +21,16 @@ FILTERS = [
     '+ /arch/',
     '+ /arch/naspeh/',
     '+ /arch/nayavu/',
-    #'+ /arch/photo/',
+    # '+ /arch/photo/',
     '+ /arch/sync/',
-    #'+ /arch/temp/',
+    # '+ /arch/temp/',
     '- /arch/*',
     '- /**/.cache/',
     '- /*'
 ]
 
 
-def star(diskname, devpath=None):
-    devpath = devpath if devpath else '/dev/%s/arch' % diskname
-    return (
-        (
-            '[ -d /media/{diskname}/backups ] || ('
-            '   mkdir -p /media/{diskname} &&'
-            '   mount {devpath} /media/{diskname}'
-            ')'.format(diskname=diskname, devpath=devpath)
-        ),
-        'backup copy /media/{diskname}/backups/{hostname} --nolog --extra="'
-        '   --backup --backup-dir=/media/{diskname}/backups/_delta/{hostname}'
-        '"'.format(diskname=diskname, hostname=HOSTNAME)
-    )
-
-
-TARGETS = {
-    '*_to_trans': star('trans', '/dev/disk/by-label/t-arch'),
-    '*_to_sea': star('sea'),
-    '*_to_box': star('box'),
-}
-
-
-def main():
+def parse_args():
     parser = argparse.ArgumentParser()
     cmds = parser.add_subparsers(title='commands')
 
@@ -78,24 +56,29 @@ def main():
     cmd('copy', help='copy backup directory').arg_fake()\
         .arg('src', default=BDIR, nargs='?', help='source path')\
         .arg('dest', help='destination path')\
+        .arg('-d', '--delta', help='backup delta')\
         .arg('-e', '--extra', default='', help='extra options for rsync')
 
     cmd('full', help='backup whole root partition').arg_fake()
-
-    cmd('call', help='call fixed action')\
-        .arg('target', choices=TARGETS.keys(), help='choice fixed action')\
-        .arg('-s', '--show', action='store_true', help='only print command')
 
     args = parser.parse_args(sys.argv[1:])
     if not hasattr(args, 'cmd'):
         parser.print_usage()
         exit(2)
+    return args
+
+
+def main():
+    args = parse_args()
 
     today = dt.date.today().isoformat()
     now = dt.datetime.now().strftime("%Y-%m-%d--%X")
     base_cmd = re.sub(r'[^\w]+', '-', ' '.join(sys.argv[1:]))
-    if hasattr(args, 'fake'):
-        rsync = RSYNC + ' --dry-run' if args.fake else RSYNC
+
+    rsync = RSYNC
+    if getattr(args, 'fake', None):
+        rsync = rsync + ' --dry-run'
+
     bdir = args.bdir.rstrip('/') + '/'
     dlog, dmnt, dnamed = bdir + 'log/', bdir + 'mnt/', bdir + 'named/'
     for f in [dlog, dmnt]:
@@ -135,9 +118,13 @@ def main():
             sh('rm -r {}delta'.format(bdir))
 
     elif args.cmd == 'copy':
+        dest = args.dest.rstrip('/')
+        if args.delta:
+            rsync += ' --backup --backup-dir={delta}'.format(delta=args.delta)
+
         sh(
             rsync + ' -x {extra} {src} {dest}/'
-            .format(src=args.src, dest=args.dest.rstrip('/'), extra=args.extra)
+            .format(src=args.src, dest=dest, extra=args.extra)
         )
 
     elif args.cmd == 'full':
@@ -165,19 +152,6 @@ def main():
                 'umount {mnt}; lvremove -f {snap}'
                 .format(mnt=dmnt, snap=snap)
             )
-
-    elif args.cmd == 'call':
-        check, cmd_ = TARGETS.get(args.target)
-        if args.show:
-            print(' && '.join([c for c in [check, cmd_] if c]))
-        elif args.target.startswith(HOSTNAME) or args.target.startswith('*'):
-            if check and 0 != subprocess.call(check, shell=True):
-                raise SystemExit('Check failed: %s' % check)
-
-            sh(cmd_)
-        else:
-            print(cmd_)
-            raise SystemExit('...Wrong hostname for this target.')
 
 
 if __name__ == '__main__':
