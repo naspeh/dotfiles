@@ -8,6 +8,7 @@ Config example
     "query": "unseen keyword #inbox",
 }
 """
+
 import argparse
 import atexit
 import contextlib
@@ -18,6 +19,7 @@ import multiprocessing
 import signal
 import subprocess
 import sys
+import time
 
 log = logging.getLogger("idle-mail")
 logging.basicConfig(level=logging.DEBUG)
@@ -58,38 +60,39 @@ def call_hook(conf, unread, new_unread):
     hook = conf["hook"] % {
         "uids": new_unread,
         "count": len(new_unread),
-        "new": (
-            len(new_unread) - len(unread)
-            if len(new_unread) > len(unread)
-            else 0
-        ),
+        "new": (len(new_unread) - len(unread) if len(new_unread) > len(unread) else 0),
     }
     log.debug("Running the hook command: %r", hook)
     subprocess.check_call(hook, shell=True)
 
 
 def idle(conf):
-    with connect(conf) as con:
-        tag = con._new_tag()
-        con.send(b"%s IDLE\r\n" % tag)
-        res = con.readline()
-        if res != b"+ idling\r\n":
-            raise SystemExit("No IDLE?: %s" % res)
 
-        log.debug("Started for %s" % conf["username"])
-        unread = fetch_unread(conf)
-        log.debug("Current unread uids: %s", unread)
-        call_hook(conf, unread, unread)
-        while 1:
+    try:
+        with connect(conf) as con:
+            tag = con._new_tag()
+            con.send(b"%s IDLE\r\n" % tag)
             res = con.readline()
-            if not res or res == b"* OK Still here\r\n":
-                continue
-            log.debug("Got: %s" % res.decode().strip())
-            new_unread = fetch_unread(conf)
-            if unread != new_unread:
-                log.debug("New unread uids: %s", new_unread)
-                call_hook(conf, unread, new_unread)
-                unread = new_unread
+            if res != b"+ idling\r\n":
+                raise SystemExit("No IDLE?: %s" % res)
+
+            log.debug("Started for %s" % conf["username"])
+            unread = fetch_unread(conf)
+            log.debug("Current unread uids: %s", unread)
+            call_hook(conf, unread, unread)
+            while 1:
+                res = con.readline()
+                if not res or res == b"* OK Still here\r\n":
+                    continue
+                log.debug("Got: %s" % res.decode().strip())
+                new_unread = fetch_unread(conf)
+                if unread != new_unread:
+                    log.debug("New unread uids: %s", new_unread)
+                    call_hook(conf, unread, new_unread)
+                    unread = new_unread
+    except Exception as e:
+        log.debug(e)
+        sys.exit(1)
 
 
 def run_idle(conf, args):
@@ -98,11 +101,15 @@ def run_idle(conf, args):
         conf["hook"] = args.hook
 
     while 1:
-        p = multiprocessing.Process(target=idle, args=(conf,))
+        start_time = time.time()
+        p = multiprocessing.Process(target=idle, args=(conf,), daemon=True)
         p.start()
         atexit.register(lambda: p.terminate())
         p.join(args.timeout)
         p.terminate()
+        if (time.time() - start_time) < args.timeout:
+            log.debug('sleep')
+            time.sleep(60)
 
 
 def main():

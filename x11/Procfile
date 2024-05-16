@@ -1,14 +1,17 @@
 nm-applet: nm-applet --sm-disable
 redshift: redshift-gtk -l manual:48.45205388768985:24.563229542272726
-syncthing: syncthing-gtk -m
+#syncthing-gtk: syncthing-gtk -m
+syncthing: syncthing serve --no-browser --logflags=1
+syncthing-status: sh -ex -c 'while true; do rm -f /tmp/syncthing-*; (my syncthing-status && touch /tmp/syncthing-on.txt || touch /tmp/syncthing-off.txt); sleep 60; done'
 pasystray: pasystray
 mate-power-manager: mate-power-manager
 #xss-lock: xss-lock --transfer-sleep-lock -- i3lock --nofork
 #xss-lock: xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock
 stardict:  stardict -h
 navidrome: navidrome -c ~/.config/navidrome/navidrome.toml
+#shairplay: shairplay
 clipmenud: CM_SELECTIONS=clipboard clipmenud
 xkb-switch: sh -ex -c 'while true; do xkb-switch > /tmp/lang.txt; killall -USR1 i3status; xkb-switch -w; done'
 timefor: timefor daemon --hook "rm /tmp/timefor-*; echo '{{.FormatLabel}}' > /tmp/timefor-{{if .Active}}on{{else}}off{{end}}.txt; killall -USR1 i3status"
-internet-check: internet real-check-loop
-mail: sh -ex -c 'internet wait && check-mail -c ~/dotfiles/var/mailur.json idle -t 300 --hook "echo %(count)s > /tmp/mail-unread.txt; killall -USR1 i3status"'
+#internet-check: internet real-check-loop
+mail: check-mail -c ~/dotfiles/var/mailur.json idle -t 300 --hook "echo %(count)s > /tmp/mail-unread.txt; killall -USR1 i3status"

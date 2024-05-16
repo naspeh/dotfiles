@@ -27,6 +27,30 @@ monitor)
         $laptop_cmd
     fi
 ;;
+monitor-two)
+    xrandr --output eDP --auto --below DisplayPort-1 --output DisplayPort-1 --auto --primary
+;;
+syncthing-uptime)
+    if syncthing cli show system > /dev/null; then
+        secs=$(syncthing cli show system | jq .uptime);
+        printf '%dh\n' $((secs/3600))
+    else
+        echo "OFF"
+    fi
+
+;;
+syncthing-status)
+    status=""
+    if syncthing cli show system > /dev/null; then
+        backup=$(syncthing cli show connections | jq '.connections["LIB4LWB-DHYOCKY-L7JQ74D-P6ANQDE-RYDBEFI-3T6PMDS-HKTRHLB-4OTYVQQ"].connected')
+        if "$backup" == "true"; then
+            echo "OK"
+            exit 0
+        fi
+    fi
+    echo "OFF"
+    exit 1
+;;
 prettyurl)
     python2 -c "import urllib; print(urllib.unquote('''$(xsel -o)'''));" | xsel -ib
 ;;
