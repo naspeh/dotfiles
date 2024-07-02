@@ -109,7 +109,7 @@ mode "scratchpad" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+p mode "scratchpad"
+# bindsym $mod+p mode "scratchpad"
 
 # change focus
 bindsym $mod+j focus left
@@ -166,7 +166,6 @@ bindsym $mod+t exec $terminal
 
 bindsym $mod+r exec rofi -show run
 bindsym $mod+e exec rofimoji
-# bindsym $mod+e exec rofi -modi emoji -show emoji -kb-custom-1 Ctrl+c
 
 bindsym $mod+c exec CM_HISTLENGTH=15 clipmenu
 bindsym $mod+g exec gtranslate
@@ -180,8 +179,8 @@ bindsym $mod+Control+m exec my monitor
 bindsym $mod+Control+u exec my lang
 
 #bindsym $mod+Print exec xfce4-screenshooter
-#bindcode $mod+107 exec xfce4-screenshooter
-bindcode $mod+107 exec mate-screenshot -i
+bindcode $mod+107 exec xfce4-screenshooter
+# bindcode $mod+107 exec mate-screenshot -i
 
 bindsym XF86AudioRaiseVolume exec amixer sset Master 2%+ unmute && pkill -RTMIN+1 i3blocks
 bindsym XF86AudioLowerVolume exec amixer sset Master 2%- unmute && pkill -RTMIN+1 i3blocks
@@ -229,7 +228,7 @@ mode "play" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-# bindsym $mod+v mode "play"
+bindsym $mod+p mode "play"
 
 mode "monitor" {
     bindsym m exec my monitor
@@ -270,6 +269,7 @@ mode "internet" {
     bindsym s exec internet slack; mode "default"
     bindsym z exec internet zoom; mode "default"
     bindsym m exec internet music; mode "default"
+    bindsym y exec internet youtube; mode "default"
     bindsym t exec internet tidal; mode "default"
 
     bindsym Return mode "default"
@@ -356,8 +356,7 @@ client.placeholder       $bg1       $bg0       $fg        $bg1        $bg1
 client.background        $bg0
 
 bar {
-    #font xft:sans 13px
-    font pango:IBM Plex Sans 10
+    font xft:sans 10
     colors {
         background $bg0
         statusline $fg
@@ -365,7 +364,7 @@ bar {
 
         ###                border   bg          text
         focused_workspace  $bg5     $bg5        $fg
-        active_workspace   $yellow  $yellow     $text
+        active_workspace   $yellow  $yellow     $bg0
         inactive_workspace $bg2     $bg0        $gray0
         urgent_workspace   $red     $red        $bg0
     }

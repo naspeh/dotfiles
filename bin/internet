@@ -63,6 +63,12 @@ if [ "$1" = "music" ]; then
     exit
 fi
 
+if [ "$1" = "youtube" ]; then
+    i3-msg 'workspace 9: music'
+    $BROWSER --app=https://youtube.com/
+    i3-msg 'floating disable'
+    exit
+fi
 
 if [ "$1" = "tidal" ]; then
     i3-msg 'workspace 9: music'
@@ -74,6 +80,13 @@ fi
 if [ "$1" = "mail" ]; then
     i3-msg 'workspace 1: mail'
     $BROWSER --app=https://mail.pusto.org
+    i3-msg 'floating disable'
+    exit
+fi
+
+if [ "$1" = "notes" ]; then
+    i3-msg 'workspace 1: mail'
+    $BROWSER --app=https://notes.pusto.org/
     i3-msg 'floating disable'
     exit
 fi

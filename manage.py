@@ -31,8 +31,10 @@ FILES = collections.OrderedDict((
     ('x11', (
         ('.xinitrc', 'x11/xinitrc'),
         ('.i3', 'x11/i3'),
-        ('.config/dunst/dunstrc', 'x11/dunstrc'),
+        ('.config/fontconfig/fonts.conf', 'x11/fonts.conf'),
         ('.config/systemd/user/goreman.service', 'x11/goreman.service'),
+        ('.config/dunst/dunstrc', 'x11/dunstrc'),
+        ('.config/tilix/schemes/everforest.json', 'x11/theme/tilix-everforest.json'),
         ('.local/share/xfce4/terminal/colorschemes/everforest-dark-soft.theme', 'x11/theme/xfce-terminal-everforest.theme'),
         ('.local/share/rofi/themes/everforest.rasi', 'x11/theme/rofi-everforest.rasi'),
     )),
