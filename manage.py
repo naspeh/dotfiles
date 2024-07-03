@@ -10,6 +10,8 @@ FILES = collections.OrderedDict((
     ('vim', (
         ('.vimrc', 'env/vim/init.vim'),
         ('.vim', 'env/vim'),
+    )),
+    ('nvim', (
         ('.config/nvim', 'env/nvim'),
     )),
     ('shell', (
@@ -38,12 +40,14 @@ FILES = collections.OrderedDict((
         ('.local/share/xfce4/terminal/colorschemes/everforest-dark-soft.theme', 'x11/theme/xfce-terminal-everforest.theme'),
         ('.local/share/rofi/themes/everforest.rasi', 'x11/theme/rofi-everforest.rasi'),
     )),
-    ('all-shell', ('vim', 'shell', 'bin')),
+    ('all-shell', ('vim', 'nvim', 'shell', 'bin')),
     ('all', ('all-shell', 'dev', 'x11')),
 ))
 BOOT = {
-    'vim': '{0}/bin/vimup i && {0}/bin/vimup c'.format(SRC_DIR),
-    'pacman': '{}/bin/pkglist -p'.format(SRC_DIR)
+    'x11': 'dconf load /com/gexperts/Tilix/ < x11/tilix.dconf',
+    'vim': 'bin/vimup i && /bin/vimup c',
+    'nvim': 'OPTS="-d env/nvim/bundle/ -r env/nvim/init.vim" && bin/vimup i $OPTS && bin/vimup c $OPTS',
+    'pacman': 'bin/pkglist -p'
 }
 
 
@@ -97,7 +101,7 @@ def create(target, files=None, boot=False, indent=''):
         info('Boot process for "%s" target' % target)
         info('| * %r' % boot)
         print('----- OUTPUT -----')
-        subprocess.check_call(boot, shell=True)
+        subprocess.check_call(boot, shell=True, cwd=SRC_DIR)
         print('------------------')
 
 

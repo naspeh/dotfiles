@@ -1,0 +1,20 @@
+[/]
+quake-specific-monitor=0
+terminal-title-style='none'
+theme-variant='system'
+window-style='disable-csd-hide-toolbar'
+
+[profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
+background-color='#333C43'
+badge-color-set=false
+bold-color-set=false
+cursor-colors-set=false
+font='Monospace 8.5'
+foreground-color='#D3C6AA'
+highlight-colors-set=false
+login-shell=true
+palette=['#4D5960', '#E67E80', '#A7C080', '#DBBC7F', '#7FBBB3', '#D699B6', '#83C092', '#D3C6AA', '#4D5960', '#E67E80', '#A7C080', '#DBBC7F', '#7FBBB3', '#D699B6', '#83C092', '#D3C6AA']
+scrollback-unlimited=true
+use-system-font=false
+use-theme-colors=false
+visible-name='Default'
