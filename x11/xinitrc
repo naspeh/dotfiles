@@ -17,7 +17,9 @@ xset s off
 #setxkbmap -layout "us,ua" -option "grp:caps_toggle,grp_led:caps"
 #setxkbmap -layout "us,ru" -option "grp:caps_toggle,grp_led:caps"
 #setxkbmap -layout "us,ua" -variant ,phonetic -option "grp:caps_toggle,grp_led:caps"
+#setxkbmap -layout "us,ua" -option "grp_led:caps,grp:caps_toggle,grp:rctrl_switch"
 #localectl set-x11-keymap "us,ru" pc105 "" "grp:caps_toggle,grp_led:caps"
+#localectl set-x11-keymap "us,ua" "" "" "grp_led:caps,grp:caps_toggle,grp:rctrl_switch"
 
 # t490s %) remap Insert to End
 # xmodmap -e "keycode 118 = End"
@@ -26,7 +28,8 @@ xmodmap -e "keysym Insert = End"
 # export TERMINAL=alacritty
 # export TERMINAL=lxterminal
 # export TERMINAL=xfce4-terminal
-export TERMINAL=tilix
+# export TERMINAL=tilix
+export TERMINAL=ghostty
 export BROWSER=google-chrome-stable
 # export BROWSER=falkon
 export DE=xfce
