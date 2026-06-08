@@ -4,7 +4,7 @@
 # * https://github.com/starship/starship - The cross-shell prompt for astronauts
 ZDOTDIR=~/.zsh
 
-export PATH="$PATH:/$HOME/.local/bin:$HOME/bin:$HOME/go/bin/:./node_modules/.bin/"
+# export PATH="$PATH:/$HOME/.local/bin:$HOME/bin:$HOME/go/bin/:./node_modules/.bin/"
 export PYTHONSTARTUP=~/.pythonrc
 
 export EDITOR=vim
@@ -75,6 +75,9 @@ bashcompinit
 # project based .venv file for virtualenv activation, etc.
 venv_cd() {
     if builtin cd "$@"; then
+        if [ -z "${ORIG_PATH}" ]; then
+            export ORIG_PATH=$PATH
+        fi
         if [ -e .venv ]; then
             VIRTUAL_ENV_DISABLE_PROMPT=1
             source .venv
@@ -97,6 +100,8 @@ venv_info() {
 
 ### Aliases
 alias cd="venv_cd"
+alias envinit="mkdir .env && touch .env/init.sh"
+alias envgo='envinit && echo '\''export GOPATH="$PWD/.env/go"\nexport PATH="$GOPATH/bin:$ORIG_PATH"'\'' > .env/init.sh'
 
 alias ls='ls --classify --color --human-readable --group-directories-first'
 alias ll='ls -l'

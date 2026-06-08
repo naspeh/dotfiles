@@ -23,6 +23,8 @@ FILTERS = [
     '+ /arch/nayavu/',
     # '+ /arch/photo/',
     '+ /arch/sync/',
+    '- /arch/sync/ricoh/',
+    '- /arch/sync/macbook-air/',
     # '+ /arch/temp/',
     '- /arch/*',
     '- /**/.cache/',

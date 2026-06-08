@@ -41,6 +41,11 @@ if [ ! "$DISPLAY" ]; then
     export DISPLAY=:0
 fi
 
+if [ "$1" = "grammar" ]; then
+    $BROWSER --app=https://languagetool.org/editor/new
+    exit
+fi
+
 if [ "$1" = "slack" ]; then
     i3-msg 'workspace 7: slack'
     $BROWSER --app=https://hotjar.slack.com

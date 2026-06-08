@@ -19,6 +19,7 @@ fun! Tab2()
 endfun
 nmap <leader>2t :call Tab2()<cr>
 autocmd FileType yaml,json,javascript,css,html call Tab2()
+autocmd FileType go setlocal noexpandtab
 
 set mouse=r
 set mousemodel=popup
@@ -35,7 +36,7 @@ set clipboard=unnamedplus
 " Localization
 set spelllang=en_us,uk,ru_yo
 set encoding=utf-8
-set termencoding=utf-8
+" set termencoding=utf-8
 set fileencodings=utf-8,cp1251,koi8-r,cp866
 
 " Highlight insert mode
@@ -57,6 +58,10 @@ nmap <F2> :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<C-M>
 " Indent blocks
 vmap < <gv
 vmap > >gv
+
+" Maximize/Unmaximize window
+nmap <leader>z :set winwidth=9999<cr>
+nmap <leader>zz :set winwidth=1<cr><C-W>=
 
 imap <C-space> <C-x><C-o>
 imap <nul> <C-x><C-o>
@@ -137,8 +142,8 @@ def push_git_urls_to_clipboard():
     path = re.sub(r'^%s/' % re.escape(root), '', full_path)
     base_url = remote
     if re.match('git@', remote):
-        base_url = re.sub('^git@(.*?)\:', r'https://\1/', remote)
-    base_url = re.sub('\.git$', '', base_url)
+        base_url = re.sub(r'^git@(.*?):', r'https://\1/', remote)
+    base_url = re.sub(r'\.git$', '', base_url)
     urls = (
         '%s/%s/%s/%s#%s' % (base_url, t, hash, path, selection)
         for t in ('blob', 'blame')
@@ -159,7 +164,7 @@ if has('termguicolors')
   set termguicolors
 endif
 
-" https://github.com/romainl/flattened
+" + https://github.com/romainl/flattened
 " set background=light
 " colorscheme flattened_light
 " colorscheme flattened_dark
@@ -202,15 +207,22 @@ lua <<EOF
 require('lualine').setup{
     options = {
         theme = 'auto',
-        icons_enabled = false,
+        icons_enabled = true,
     },
 }
 
+-- Configs: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 -- + https://github.com/neovim/nvim-lspconfig - Quickstart configs for Nvim LSP
 local lspconfig = require('lspconfig')
 --lspconfig.pyright.setup{}
-lspconfig.pylsp.setup{}
+--lspconfig.pylsp.setup{}
+-- https://github.com/astral-sh/ruff-lsp
+lspconfig.ruff_lsp.setup{}
+-- https://github.com/pappasam/jedi-language-server
+lspconfig.jedi_language_server.setup{}
+-- https://github.com/typescript-language-server/typescript-language-server
 lspconfig.tsserver.setup{}
+-- https://github.com/golang/tools/tree/master/gopls
 lspconfig.gopls.setup{}
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
